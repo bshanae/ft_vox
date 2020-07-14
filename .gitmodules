@@ -1,0 +1,6 @@
+[submodule "Project/Libraries/glfw"]
+	path = Project/Libraries/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "Project/Libraries/glm"]
+	path = Project/Libraries/glm
+	url = https://github.com/g-truc/glm.git

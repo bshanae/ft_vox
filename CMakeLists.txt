@@ -1,6 +1,62 @@
-cmake_minimum_required(VERSION 3.16)
-project(Vox)
-
+cmake_minimum_required(VERSION 3.10)
+#set(CMAKE_CXX_COMPILER  "/usr/bin/clang++")
+#set(CMAKE_C_COMPILER  "/usr/bin/clang")
 set(CMAKE_CXX_STANDARD 17)
+set(PROJECT_NAME ft_vox)
 
-add_executable(Vox main.cpp)
+project(${PROJECT_NAME})
+add_compile_options(
+        # -Werror
+        -g
+        -Wall
+        -Wextra
+        # -Wpedantic
+
+        # -Wcast-align
+        # -Wcast-qual
+        # -Wconversion
+        # -Wctor-dtor-privacy
+        # -Wenum-compare
+        # -Wfloat-equal
+        # -Wnon-virtual-dtor
+        # -Wold-style-cast
+        # -Woverloaded-virtual
+        # -Wredundant-decls
+        # -Wsign-conversion
+        # -Wsign-promo
+)
+# target_compile_features(${PROJECT_NAME} cxx_std_17)
+# add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/glfw)
+# add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/glm)
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Project/Libraries/glfw/)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
+set(INCLUDES ./)
+set(SOURCEFILES
+       Project/Srcs/main.cpp)
+include_directories(${INCLUDES})
+add_executable(${PROJECT_NAME} ${SOURCEFILES})
+link_directories(${INCLUDES}
+        ${CMAKE_CURRENT_SOURCE_DIR}/Project/Libraries/glad
+        ${CMAKE_CURRENT_SOURCE_DIR}/Project/Libraries/glfw)
+
+if (WIN32)
+    target_link_libraries(${PROJECT_NAME} glfw)
+elseif(APPLE)
+    find_library(COCOA_Framework Cocoa)
+    find_library(OpenGL_Framework OpenGL)
+    find_library(IOKit_Framework IOKit)
+    find_library(CoreVideo_Framework CoreVideo)
+
+    target_link_libraries(${PROJECT_NAME}
+            glfw
+            ${COCOA_Framework} ${OpenGL_Framework}
+            ${IOKit_Framework} ${CoreVideo_Framework})
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(${PROJECT_NAME}
+            glfw
+            GL X11 pthread dl)
+endif()
