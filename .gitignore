@@ -1,6 +1,5 @@
 cmake-build-debug
 .idea
-# Project
 .DS_Store
 .vscode
 ft_vox
