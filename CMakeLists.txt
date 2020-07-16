@@ -42,11 +42,11 @@ set(SOURCE_FILES
 
     Project/main.cpp
     Project/window.cpp
-    Project/window.h)
+    Project/window.h Project/Debug/debug_gl.cpp Project/Debug/debug_gl.h)
 
-include_directories(
-    Project/Libraries/glad/include)
-
+set(INCLUDES
+      Project/ )
+include_directories(${INCLUDES})
 link_directories(${INCLUDES}
     ${CMAKE_CURRENT_SOURCE_DIR}/Project/Libraries/glad
     ${CMAKE_CURRENT_SOURCE_DIR}/Project/Libraries/glfw)
