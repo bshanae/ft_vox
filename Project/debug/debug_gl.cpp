@@ -1,11 +1,4 @@
-//
-// Created by Oles Gedz on 16/07/2020.
-//
-
 #include "debug_gl.h"
-//
-// Created by Oles Gedz on 23/06/2020.
-//
 #include <iostream>
 
 void APIENTRY glDebugOutput(GLenum source,
@@ -21,7 +14,7 @@ void APIENTRY glDebugOutput(GLenum source,
 	return;
 
   std::cout << "---------------" << std::endl;
-  std::cout << "Debug message (" << id << "): " << message << std::endl;
+  std::cout << "debug message (" << id << "): " << message << std::endl;
 
   switch (source)
   {

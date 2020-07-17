@@ -41,12 +41,17 @@ set(SOURCE_FILES
     Project/Libraries/glad/src/glad.c
 
     Project/main.cpp
-    Project/window.cpp
-    Project/window.h Project/Debug/debug_gl.cpp Project/Debug/debug_gl.h)
+    Project/window/window.cpp
+    Project/application/application.cpp
+    Project/object/object.cpp
+    Project/model/model.cpp
+    Project/shader/shader.cpp
+    Project/program/program.cpp)
 
-set(INCLUDES
-      Project/ )
-include_directories(${INCLUDES})
+include_directories(
+    Project
+    Project/Libraries/glad/include)
+
 link_directories(${INCLUDES}
     ${CMAKE_CURRENT_SOURCE_DIR}/Project/Libraries/glad
     ${CMAKE_CURRENT_SOURCE_DIR}/Project/Libraries/glfw)

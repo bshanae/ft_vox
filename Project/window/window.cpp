@@ -11,11 +11,7 @@
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
-	if (not glfw_window)
-	{
-#warning "Add error"
-		std::terminate();
-	}
+	assert(glfw_window != nullptr and "Can't initialize window");
 
 	glfwMakeContextCurrent(glfw_window);
 //	glfwSetFramebufferSizeCallback(glfw_window, Events::framebuffer_size_callback);
@@ -26,11 +22,8 @@
 	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetInputMode(glfw_window, GLFW_STICKY_KEYS,GLFW_TRUE);
 
-	if (not gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-#warning "Add error"
-		std::terminate();
-	}
+	auto		glad_status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	assert(glad_status and "Can't initialize window");
 
 //	GLint flags;
 //	glGetIntegerv(GL_CONTEXT_FLAGS, &flags);

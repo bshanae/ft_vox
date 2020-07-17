@@ -1,7 +1,8 @@
-#include "window.h"
+#include "application/application.h"
 
 int					main()
 {
-	window::initialize();
+	std::shared_ptr<object> o = std::make_shared<object>();
+	application::initialize();
 	return 0;
 }
