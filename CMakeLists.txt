@@ -30,7 +30,7 @@ add_compile_options(
 
 # add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/glfw)
 # add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/glm)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Project/Libraries/glfw/)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Project/libraries/glfw/)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -38,7 +38,7 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 set(SOURCE_FILES
-    Project/Libraries/glad/src/glad.c
+    Project/libraries/glad/src/glad.c
 
     Project/main.cpp
     Project/window/window.cpp
@@ -46,15 +46,18 @@ set(SOURCE_FILES
     Project/object/object.cpp
     Project/model/model.cpp
     Project/shader/shader.cpp
-    Project/program/program.cpp)
+    Project/program/program.cpp
+    Project/chunk/chunk.cpp
+    Project/chunk/chunk.h)
 
+set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/ ./)
 include_directories(
-    Project
-    Project/Libraries/glad/include)
+    ${INCLUDES}
+    Project/libraries/glad/include)
 
 link_directories(${INCLUDES}
-    ${CMAKE_CURRENT_SOURCE_DIR}/Project/Libraries/glad
-    ${CMAKE_CURRENT_SOURCE_DIR}/Project/Libraries/glfw)
+    ${CMAKE_CURRENT_SOURCE_DIR}/Project/libraries/glad
+    ${CMAKE_CURRENT_SOURCE_DIR}/Project/libraries/glfw)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
