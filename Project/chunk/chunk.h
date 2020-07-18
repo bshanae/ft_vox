@@ -1,21 +1,22 @@
 #pragma once
-#include <memory>
-#include "Project/model/model.h"
-#include "Project/object/object.h"
 
+#include "model/model.h"
+#include "object/object.h"
 
-class chunk : public object  {
+class				chunk : public object
+{
+public :
+#warning "We got create from object"
+					chunk();
+  					~chunk() = default;
 
- public:
-  chunk();// we got create from object
-  ~chunk() = default;
-  model get_model();
-  void render();
+  model				get_model();
+  void				render() override;
 
-  chunk(const chunk& other); // copy constructor
+  					chunk(const chunk& other);
+  chunk				&operator = (const chunk& other);
 
-  chunk& operator=(const chunk& other); // copy assignment
+private :
 
- private:
-  model m_model;
+	model			model;
 };

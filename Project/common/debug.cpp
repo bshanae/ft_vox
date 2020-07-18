@@ -1,4 +1,4 @@
-#include "debug_gl.h"
+#include "debug.h"
 #include <iostream>
 
 void APIENTRY glDebugOutput(GLenum source,

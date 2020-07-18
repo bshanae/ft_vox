@@ -1,40 +1,38 @@
 #pragma once
 
-#include "engine/namespace.h"
-
-#include "engine/abstract/OpenGL_wrapper.h"
+#include "common/OpenGL.h"
+#include "common/aliases.h"
 
 template 			<typename type>
-class 				engine::program::uniform : public engine::abstract::OpenGL_wrapper
+class 				uniform
 {
-	friend class	engine::program::program;
+	friend class	program;
 
 public :
 					uniform() = default;
-					~uniform() override = default;
+					~uniform() = default;
 
 	void			upload(const type &data) const
 	{
-		if (object == -1)
-			error::raise(error::id::uniform_bad_value);
-		if constexpr (std::is_same<type, int>::value)
-			glUniform1i(object, data);
-		else if constexpr (std::is_same<type, float>::value)
-			glUniform1f(object, data);
-		else if constexpr (std::is_same<type, glm::vec3>::value)
-			glUniform3f(object, data.x, data.y, data.z);
-		else if constexpr (std::is_same<type, glm::vec4>::value)
-			glUniform4f(object, data.x, data.y, data.z, data.w);
-		else if constexpr (std::is_same<type, glm::mat4>::value)
-			glUniformMatrix4fv(object, 1, GL_FALSE, value_ptr(data));
+		assert(value != -1 and "Bad uniform");
+		if constexpr (is_same<type, int>::value)
+			glUniform1i(value, data);
+		else if constexpr (is_same<type, float>::value)
+			glUniform1f(value, data);
+		else if constexpr (is_same<type, glm::vec3>::value)
+			glUniform3f(value, data.x, data.y, data.z);
+		else if constexpr (is_same<type, glm::vec4>::value)
+			glUniform4f(value, data.x, data.y, data.z, data.w);
+		else if constexpr (is_same<type, glm::mat4>::value)
+			glUniformMatrix4fv(value, 1, GL_FALSE, value_ptr(data));
 		else
-			error::raise(error::id::uniform_bad_type);
+			assert(false and "Unexpected uniform type");
 	}
 
 private :
 
-	explicit		uniform(GLuint value)
-	{
-		object = value;
-	}
+	explicit		uniform(GLuint value) : value(value)
+					{}
+
+	GLuint 			value;
 };

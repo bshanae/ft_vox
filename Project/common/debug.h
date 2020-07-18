@@ -4,6 +4,8 @@
 #include "libraries/glfw/include/GLFW/glfw3.h"
 #include "libraries/glm/glm/glm.hpp"
 
+#define VOX_DEBUG		1
+
 #define glCheckError()	glCheckError_(__FILE__, __LINE__)
 
 GLenum					glCheckError_(const char *file, int line);

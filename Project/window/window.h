@@ -1,13 +1,8 @@
 #pragma once
 
-#include <memory>
-#include <string>
-
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include "../Libraries/glm/glm/glm.hpp"
-
-#include "../global.h"
+#include "common/OpenGL.h"
+#include "common/aliases.h"
+#include "common/global.h"
 
 class				window : public global<window>
 {
@@ -19,11 +14,11 @@ public :
 
 	static
 	inline
-	std::string		title = "";
+	string			title = "";
 
 	static
 	inline
-	glm::ivec2		size = glm::ivec2(1280, 720);
+	ivec2			size = ivec2(1280, 720);
 
 private :
 

@@ -1,27 +1,27 @@
 #pragma once
 
-#include "libraries/glm/glm/glm.hpp"
-#include <memory>
+#include "common/OpenGL.h"
+#include "common/aliases.h"
 
-class						object : public std::enable_shared_from_this<object>
+class					object : public enable_shared_from_this<object>
 {
 public :
 
-							object() = default;
-							~object() = default;
+						object() = default;
+						~object() = default;
 	static
-	std::shared_ptr<object>	create();
+	shared_ptr<object>	create();
 
 protected :
 
-	virtual void 			render()
+	virtual void 		render()
 	{}
 
-	virtual void 			update()
+	virtual void 		update()
 	{}
 
-	glm::vec3				position = glm::vec3(0);
-	glm::vec3				rotation = glm::vec3(0);
+	vec3				position = vec3(0);
+	vec3				rotation = vec3(0);
 
-	glm::mat4 				transformations = glm::mat4(1);
+	mat4 				transformations = mat4(1);
 };

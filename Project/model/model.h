@@ -1,34 +1,32 @@
 #pragma once
 
-#include <vector>
+#include "common/OpenGL.h"
+#include "common/aliases.h"
 
-#include "libraries/glad/include/glad/glad.h"
-
-class			model
+class				model
 {
 public:
-				model(const std::vector<GLfloat> &vertexPositions,
-					  const std::vector<GLfloat> &textureCoord,
-					  const std::vector<GLuint> &indices);
-				model(const std::vector<GLfloat> &vertexPositions,
-					  const std::vector<GLuint> &indices);
+					model(const vector<GLfloat> &vertices,
+						  const vector<GLfloat> &texture_coordinates,
+						  const vector<GLuint> &indices);
+					model(const vector<GLfloat> &vertices,
+						  const vector<GLuint> &indices);
 
-				model();
-				~model();
+					model() = default;
+					~model();
 
-	void		bind() const;
-	void		unbind() const;
+	void			bind(bool state) const;
 
-	GLuint		getIndicesCount() const;
+	GLuint			get_number_of_indices() const;
 
 private:
 
-	std::vector<GLuint> m_buffers;
+	vector<GLuint>	buffers;
 
-	GLuint m_vao = 0;
-	GLuint m_vboCount = 0;
-	GLuint m_indicesCount = 0;
+	GLuint			vao = 0;
+	GLuint			number_of_vbos = 0;
+	GLuint			number_of_indices = 0;
 
-	void addVBO(int dim, const std::vector<GLfloat> &data);
-	void addEBO(const  std::vector<GLuint> &indices);
+	void			add_vbo(int dim, const vector<GLfloat> &data);
+	void			add_ebo(const  vector<GLuint> &indices);
 };

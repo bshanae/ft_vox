@@ -1,40 +1,37 @@
 #include "shader.h"
 
-#include <sstream>
-#include <fstream>
 
-							shader::shader(type type, const std::filesystem::path &source)
+						shader::shader(type type, const path &source)
 {
-	auto					write_file_to_stream = [](std::stringstream &stream, const std::filesystem::path &path)
+	auto				write_file_to_stream = [](stringstream &stream, const path &path)
 	{
-		std::ifstream		file;
+		ifstream	file;
 
 		file.open(path);
-		if (not file.is_open());
-//			error::raise(error::id::shader_file_error);
+		assert(file.is_open() and "Can't read shader file");
 
 		stream << file.rdbuf();
 
 		file.close();
 	};
 
-	std::stringstream		stream;
+	stringstream	stream;
 
 	write_file_to_stream(stream, source);
 
-	const std::string		string = stream.str();
-	const char				*raw_string = string.data();
+	const string	string = stream.str();
+	const char			*raw_string = string.data();
 
 	value = glCreateShader(static_cast<GLuint>(type));
 	glShaderSource(value, 1, &raw_string, nullptr);
 	glCompileShader(value);
 
-	GLint					success;
+	GLint				success;
 
 	glGetShaderiv(value, GL_COMPILE_STATUS, &success);
 
-#if DEBUG
-	GLchar					log[1024];
+#if VOX_DEBUG
+	GLchar				log[1024];
 
 	if (not success)
 	{
@@ -46,14 +43,11 @@
 		error::raise(error::id::shader_compilation_error);
 	}
 #else
-	if (not success)
-	{
-//		error::raise(error::id::shader_compilation_error);
-		std::terminate();
-	}
+	assert(success and "Can't compile shader");
 #endif
 }
-shader::~shader()
+
+						shader::~shader()
 {
 	glDeleteShader(value);
 }

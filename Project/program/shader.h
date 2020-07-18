@@ -1,8 +1,7 @@
 #pragma once
 
-#include "libraries/glad/include/glad/glad.h"
-
-#include <filesystem>
+#include "common/OpenGL.h"
+#include "common/aliases.h"
 
 class				shader
 {
@@ -13,7 +12,7 @@ class				shader
 		vertex = GL_VERTEX_SHADER,
 		fragment = GL_FRAGMENT_SHADER
 	};
-					shader(type type, const std::filesystem::path &source);
+					shader(type type, const path &source);
 					~shader();
 private :
 
