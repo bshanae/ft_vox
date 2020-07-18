@@ -13,6 +13,7 @@ using 				glm::vec4;
 using 				glm::mat4;
 
 using 				glm::value_ptr;
+using				glm::radians;
 
 using				glm::perspective;
 using				glm::lookAt;

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <map>
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -16,6 +17,7 @@ using 				std::enable_shared_from_this;
 // ---------------- Containers
 
 using				std::vector;
+using				std::map;
 
 // ---------------- Pointers
 

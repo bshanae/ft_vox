@@ -1,6 +1,6 @@
 #include "window.h"
 
-#include <iostream>
+#include "application/input.h"
 
 					window::window()
 {
@@ -17,16 +17,19 @@
 
 	assert(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) and "Can't initialize window");
 
-	int 			width;
-	int 			height;
-
-	glfwGetFramebufferSize(glfw_window, &width, &height);
-	glViewport(0, 0, width, height);
+	glfwGetFramebufferSize(glfw_window, &size.x, &size.y);
+	glViewport(0, 0, size.x, size.y);
 
 //	glfwSwapInterval(1);
 
 //	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetInputMode(glfw_window, GLFW_STICKY_KEYS, GLFW_TRUE);
+
+	input::initialize();
+
+	glfwSetKeyCallback(glfw_window, input::glfw_callback_key);
+//	glfwSetMouseButtonCallback(glfw_window, glfw_callback_mouse_key);
+//	glfwSetCursorPosCallback(glfw_window, glfw_callback_mouse_movement);
 }
 
 					window::~window()

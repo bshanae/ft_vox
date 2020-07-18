@@ -4,27 +4,22 @@
 #include "common/aliases.h"
 #include "common/global.h"
 
-class				window : public global<window>
+class						window : public global<window>
 {
-	friend class 	application;
+	friend class 			application;
 
 public :
-					window();
-					~window() override;
+							window();
+							~window() override;
 
-	static
-	inline
-	string			title = "";
-
-	static
-	inline
-	ivec2			size = ivec2(1280, 720);
+	static inline string	title = "";
+	static inline ivec2		size = ivec2(1280, 720);
 
 private :
 
 	[[nodiscard]]
-	static bool 	should_close();
-	static void 	swap_buffers();
+	static bool 			should_close();
+	static void 			swap_buffers();
 
-	GLFWwindow		*glfw_window = nullptr;
+	GLFWwindow				*glfw_window = nullptr;
 };

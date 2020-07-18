@@ -1,11 +1,13 @@
 #include "application.h"
 
-#include "window.h"
+#include "application/window.h"
+#include "camera/camera.h"
 #include "object/object.h"
 
 				application::application()
 {
 	window::initialize();
+	camera::initialize();
 }
 
 void			application::execute()
