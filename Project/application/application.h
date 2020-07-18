@@ -8,6 +8,8 @@ class 							object;
 
 class 							application final : public global<application>
 {
+	friend class 				object_linker;
+
 public :
 								application();
 								~application() override = default;
@@ -23,8 +25,4 @@ private :
 
 	void						process_updating();
 	void						process_rendering();
-
-public :
-
-	friend class 				object_linker;
 };

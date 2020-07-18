@@ -14,7 +14,7 @@ class						object :
 public :
 
 							object() = default;
-							~object() = default;
+							~object() override = default;
 
 	static
 	shared_ptr<object>		create()

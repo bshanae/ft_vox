@@ -6,6 +6,12 @@
 #include "program/program.h"
 #include "program/uniform.h"
 
+
+class							renderer
+{
+	virtual void 				render(shared_ptr<object> o);
+};
+
 class							chunk : public object
 {
 public :
@@ -23,8 +29,9 @@ public :
 
 	void						render() override;
 
-								chunk(const chunk& other);
-	chunk						&operator = (const chunk& other);
+#warning "Do we need this?"
+								chunk(const chunk &other);
+	chunk						&operator = (const chunk &other);
 
 private :
 

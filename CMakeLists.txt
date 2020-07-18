@@ -48,7 +48,7 @@ set(SOURCE_FILES
 	Project/program/shader.cpp
     Project/program/program.cpp
     Project/chunk/chunk.cpp
-    Project/main.cpp)
+    Project/main.cpp Project/camera/camera.cpp Project/camera/camera.h Project/application/input.cpp Project/application/input.h)
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)
 include_directories(
