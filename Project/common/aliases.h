@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <iostream>
 #include <filesystem>
 
 // ---------------- Meta
@@ -20,9 +21,14 @@ using				std::vector;
 
 using 				std::shared_ptr;
 using 				std::make_shared;
+using 				std::unique_ptr;
+using 				std::make_unique;
 
 // ---------------- Other classes
 
+using				std::cerr;
+using				std::cout;
+using				std::endl;
 using				std::string;
 using				std::filesystem::path;
 using				std::ifstream;

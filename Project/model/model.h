@@ -6,11 +6,13 @@
 class				model
 {
 public:
-					model(const vector<GLfloat> &vertices,
-						  const vector<GLfloat> &texture_coordinates,
-						  const vector<GLuint> &indices);
-					model(const vector<GLfloat> &vertices,
-						  const vector<GLuint> &indices);
+					model(
+						const vector<GLfloat> &vertices,
+						const vector<GLfloat> &texture_coordinates,
+						const vector<GLuint> &indices);
+					model(
+						const vector<GLfloat> &vertices,
+						const vector<GLuint> &indices);
 
 					model() = default;
 					~model();
@@ -27,6 +29,6 @@ private:
 	GLuint			number_of_vbos = 0;
 	GLuint			number_of_indices = 0;
 
-	void			add_vbo(int dim, const vector<GLfloat> &data);
+	void			add_vbo(int dimension, const vector<GLfloat> &data);
 	void			add_ebo(const  vector<GLuint> &indices);
 };

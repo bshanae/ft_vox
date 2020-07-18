@@ -1,6 +1,7 @@
 #include "application.h"
 
-#include "window/window.h"
+#include "window.h"
+#include "object/object.h"
 
 				application::application()
 {
@@ -11,9 +12,10 @@ void			application::execute()
 {
 	auto		instance = global<application>::instance();
 
-
-	while (not instance->window->should_close())
+	while (not window::should_close())
 	{
+		glfwPollEvents();
+
 		instance->process_creating();
 		instance->process_destroying();
 		instance->process_updating();
@@ -25,6 +27,7 @@ void			application::process_creating()
 {
 
 }
+
 void			application::process_destroying()
 {
 
@@ -36,5 +39,8 @@ void			application::process_updating()
 }
 void			application::process_rendering()
 {
+	for (auto &object : objects)
+		object->render();
 
+	window::swap_buffers();
 }

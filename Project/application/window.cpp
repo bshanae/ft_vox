@@ -14,18 +14,33 @@
 	assert(glfw_window != nullptr and "Can't initialize window");
 
 	glfwMakeContextCurrent(glfw_window);
-	glfwSwapInterval(1);
 
-	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetInputMode(glfw_window, GLFW_STICKY_KEYS,GLFW_TRUE);
+	assert(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) and "Can't initialize window");
 
-	bool			glad_status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	int 			width;
+	int 			height;
 
-	assert(glad_status and "Can't initialize window");
+	glfwGetFramebufferSize(glfw_window, &width, &height);
+	glViewport(0, 0, width, height);
+
+//	glfwSwapInterval(1);
+
+//	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(glfw_window, GLFW_STICKY_KEYS, GLFW_TRUE);
 }
 
 					window::~window()
 {
 	glfwDestroyWindow(glfw_window);
 	glfwTerminate();
+}
+
+bool				window::should_close()
+{
+	return (glfwWindowShouldClose(instance()->glfw_window));
+}
+
+void				window::swap_buffers()
+{
+	glfwSwapBuffers(instance()->glfw_window);
 }

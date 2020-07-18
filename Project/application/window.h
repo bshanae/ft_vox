@@ -23,10 +23,8 @@ public :
 private :
 
 	[[nodiscard]]
-	bool 			should_close() const
-	{
-		return (glfwWindowShouldClose(glfw_window));
-	}
+	static bool 	should_close();
+	static void 	swap_buffers();
 
 	GLFWwindow		*glfw_window = nullptr;
 };

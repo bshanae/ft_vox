@@ -1,8 +1,6 @@
 #pragma once
 
-#include "libraries/glad/include/glad/glad.h"
-#include "libraries/glfw/include/GLFW/glfw3.h"
-#include "libraries/glm/glm/glm.hpp"
+#include "common/OpenGL.h"
 
 #define VOX_DEBUG		1
 

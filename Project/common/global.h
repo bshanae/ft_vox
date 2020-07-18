@@ -19,9 +19,7 @@ protected :
 
 	static auto					instance()
 	{
-//		if (not pointer)
-//			common::error::raise(common::error::id::empty_global_object);
-
+		assert(pointer != nullptr and "Global object is not initialized");
 		return (pointer);
 	}
 

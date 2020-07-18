@@ -40,14 +40,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 set(SOURCE_FILES
     Project/libraries/glad/src/glad.c
 
-    Project/main.cpp
-    Project/window/window.cpp
+    Project/common/debug.cpp
+    Project/application/window.cpp
     Project/application/application.cpp
-    Project/object/object.cpp
+    Project/application/object_linker.cpp
     Project/model/model.cpp
 	Project/program/shader.cpp
     Project/program/program.cpp
-    Project/chunk/chunk.cpp)
+    Project/chunk/chunk.cpp
+    Project/main.cpp)
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)
 include_directories(

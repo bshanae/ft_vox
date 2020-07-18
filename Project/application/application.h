@@ -2,9 +2,9 @@
 
 #include "common/aliases.h"
 #include "common/global.h"
-#include "object/object.h"
 
 class 							window;
+class 							object;
 
 class 							application final : public global<application>
 {
@@ -16,8 +16,6 @@ public :
 
 private :
 
-	shared_ptr<window>			window;
-
 	vector<shared_ptr<object>>	objects;
 
 	void						process_creating();
@@ -26,5 +24,7 @@ private :
 	void						process_updating();
 	void						process_rendering();
 
-	friend shared_ptr<object>	object::create();
+public :
+
+	friend class 				object_linker;
 };

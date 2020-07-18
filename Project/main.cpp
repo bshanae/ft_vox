@@ -1,7 +1,13 @@
 #include "application/application.h"
+#include "chunk/chunk.h"
 
-int					main()
+int						main()
 {
+	shared_ptr<chunk>	chunk;
+
 	application::initialize();
-	return 0;
+
+	chunk = chunk::create();
+	application::execute();
+	return (0);
 }
