@@ -9,10 +9,11 @@
 
 class						camera : public global<camera>
 {
+	friend class				application;
 public :
 							camera()
 	{
-		update();
+		recalculate();
 	}
 							~camera() override = default;
 
@@ -21,15 +22,15 @@ public :
 	static inline float 	fov = 30.f;
 
 	[[nodiscard]]
-	const mat4				&get_projection_matrix() const
+	static const mat4		&get_projection_matrix()
 	{
-		return(projection_matrix);
+		return(instance()->projection_matrix);
 	}
 
 	[[nodiscard]]
-	const mat4				&get_view_matrix() const
+	static const mat4		&get_view_matrix()
 	{
-		return (view_matrix);
+		return (instance()->view_matrix);
 	}
 
 	vec3					position = vec3(0.f);
@@ -49,6 +50,10 @@ private :
 	mat4					view_matrix = mat4(0.f);
 
 	void					update()
+	{
+	}
+
+	void					recalculate()
 	{
 		vec3				local_front;
 

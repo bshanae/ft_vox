@@ -8,13 +8,13 @@ class						window : public global<window>
 {
 	friend class 			application;
 
-public :
+
+ public :
 							window();
 							~window() override;
 
 	static inline string	title = "";
 	static inline ivec2		size = ivec2(1280, 720);
-
 private :
 
 	[[nodiscard]]
