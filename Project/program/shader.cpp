@@ -1,5 +1,6 @@
 #include "shader.h"
 
+#include "common/debug.h"
 
 						shader::shader(type type, const path &source)
 {
@@ -40,7 +41,7 @@
 		cout << raw_string << endl << endl;
 		cout << "DEBUG // GLSL OUTPUT" << endl << endl;
 		cout << log << endl << endl;
-		error::raise(error::id::shader_compilation_error);
+
 	}
 #else
 	assert(success and "Can't compile shader");

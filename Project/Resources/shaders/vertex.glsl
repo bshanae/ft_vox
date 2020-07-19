@@ -5,10 +5,15 @@ in vec3         in_position;
 uniform mat4    uniform_projection;
 uniform mat4    uniform_view;
 
-out vec3        pass_position;
+out vec4        pass_position;
 
 void            main()
 {
-    pass_position = in_position;
-    gl_Position = vec4(in_position, 1.0);
+    mat4       dummy = uniform_view;
+    mat4       dummy1 = uniform_projection;
+    mat4       m = mat4(1);
+    m[3][2] = -0.3;
+
+    pass_position = uniform_projection * uniform_view * vec4(in_position, 1.0);
+    gl_Position = pass_position;
 }

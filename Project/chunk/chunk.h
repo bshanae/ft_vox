@@ -6,7 +6,8 @@
 #include "program/program.h"
 #include "program/uniform.h"
 
-
+#warning "Move to .cpp"
+#include "camera/camera.h"
 class							renderer
 {
 	virtual void 				render(shared_ptr<object> o);
@@ -45,17 +46,6 @@ private :
 			program = make_unique<class program>(path_to_vertex_shader, path_to_fragment_shader);
 			uniform_projection = program->create_uniform<mat4>("uniform_projection");
 			uniform_view = program->create_uniform<mat4>("uniform_view");
-
-			mat4 				projection;
-			mat4 				view;
-
-			projection = glm::perspective(glm::radians(30.f), 1280.f / 720.f, 0.f, 100.f);
-			view = glm::lookAt(vec3(0), vec3(0, 0, -1), vec3(0, 1, 0));
-
-//			program->bind(true);
-//			uniform_projection.upload(projection);
-//			uniform_view.upload(view);
-//			program->bind(false);
 		}
 								~renderer() = default;
 
@@ -68,6 +58,9 @@ private :
 
 			program->bind(true);
 			model.bind(true);
+
+			uniform_projection.upload(camera::get_projection_matrix());
+			uniform_view.upload(camera::get_view_matrix());
 
 			glDrawElements(GL_TRIANGLES, model.get_number_of_indices(), GL_UNSIGNED_INT, nullptr);
 

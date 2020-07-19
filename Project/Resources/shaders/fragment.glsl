@@ -1,7 +1,7 @@
 #version 400 core
 
 out vec4    color;
-in vec3     pass_position;
+in vec4     pass_position;
 
 void        main()
 {

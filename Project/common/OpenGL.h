@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "libraries/glm/glm/glm.hpp"
 #include "libraries/glm/glm/gtc/matrix_transform.hpp"
+#include "libraries/glm/glm/gtx/string_cast.hpp"
 #include "libraries/glm/glm/gtc/type_ptr.hpp"
 
 using 				glm::ivec2;

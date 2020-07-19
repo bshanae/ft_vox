@@ -40,7 +40,9 @@ void			application::process_updating()
 	camera::instance()->update();
 
 	if (input::instance()->keys[GLFW_KEY_A] == input::key_state::PRESSED)
-		std::cout << "W" << std::endl;
+	{
+
+	}
 }
 void			application::process_rendering()
 {

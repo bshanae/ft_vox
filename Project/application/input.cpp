@@ -16,11 +16,12 @@ input::input()
  void 				input::glfw_callback_key(GLFWwindow *window, int key, int code, int action, int mode)
 {
   auto					instance = global<input>::instance();
-
-  if (instance->keys[key] == key_state::RELEASED and action == GLFW_RELEASE)
-	instance->keys[key] = key_state::DEFAULT;
-  else
-	instance->keys[key] = static_cast<key_state>(action);
+	if (instance->keys[key] == key_state::PRESSED and action == GLFW_PRESS)
+		instance->keys[key] = key_state::HELD;
+	else if (instance->keys[key] == key_state::RELEASED and action == GLFW_RELEASE)
+		instance->keys[key] = key_state::DEFAULT;
+	else
+		instance->keys[key] = static_cast<key_state>(action);
 }
 
 void input::glfw_callback_mouse_movement(GLFWwindow *window, double x, double y)
