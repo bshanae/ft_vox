@@ -20,17 +20,10 @@
 	glfwGetFramebufferSize(glfw_window, &size.x, &size.y);
 	glViewport(0, 0, size.x, size.y);
 
-//	glfwSwapInterval(1);
-
-//	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetInputMode(glfw_window, GLFW_STICKY_KEYS, GLFW_TRUE);
-
 	input::initialize();
-	glfwSetCursorPosCallback(glfw_window, input::glfw_callback_mouse_movement);
-	glfwSetKeyCallback(glfw_window, input::glfw_callback_key);
-	//glfwSetKeyCallback(glfw_window, input::glfw_callback_key);
-//	glfwSetMouseButtonCallback(glfw_window, glfw_callback_mouse_key);
-//	glfwSetCursorPosCallback(glfw_window, glfw_callback_mouse_movement);
+
+	glfwSetKeyCallback(glfw_window, input::callback_key);
+	glfwSetCursorPosCallback(glfw_window, input::callback_mouse);
 }
 
 					window::~window()

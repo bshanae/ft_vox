@@ -2,7 +2,6 @@
 
 #include "common/aliases.h"
 #include "common/global.h"
-#include "input.h"
 
 class 							window;
 class 							object;

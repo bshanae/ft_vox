@@ -10,6 +10,5 @@ enum class			event
 	mouse_press,
 	mouse_release,
 	mouse_hold,
-	mouse_scroll
 };
 
