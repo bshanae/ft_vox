@@ -13,28 +13,34 @@ void				camera::update()
 {
 //					Axis X
 	if (input::is_pressed_or_held(GLFW_KEY_A))
-		position.x -= 0.1;
+		position -= 0.1f * right;
 	else if (input::is_pressed_or_held(GLFW_KEY_D))
-		position.x += 0.1;
+		position += 0.1f * right;
 
 //					Axis y
 	if (input::is_pressed_or_held(GLFW_KEY_Q))
-		position.y -= 0.1;
+		position -= 0.1f * up;
 	else if (input::is_pressed_or_held(GLFW_KEY_E))
-		position.y += 0.1;
+		position += 0.1f * up;
 
 //					Axis Z
 	if (input::is_pressed_or_held(GLFW_KEY_W))
-		position.z -= 0.1;
+		position += 0.1f * front;
 	else if (input::is_pressed_or_held(GLFW_KEY_S))
-		position.z += 0.1;
+		position -= 0.1f * front;
 	recalculate();
 }
 
 void					camera::recalculate()
 {
 	vec3				local_front;
-
+	yaw += input::instance()->get_mouse_offset().x * sensitivity;
+	pitch +=  input::instance()->get_mouse_offset().y * sensitivity;
+	input::instance()->set_mouse_offset(ivec2(0));
+	if(pitch > 89.0f)
+		pitch =  89.0f;
+	if(pitch < -89.0f)
+		pitch = -89.0f;
 #if VOX_DEBUG
 	cerr <<
 		 "Camera : position = " <<

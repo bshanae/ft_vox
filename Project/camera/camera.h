@@ -33,16 +33,18 @@ public :
 	float					yaw = -90.f;
 	float					pitch = 0.f;
 
+
 private :
 
 	const vec3				up_const = vec3(0.f, 1.f, 0.f);
 
 	vec3					front = vec3(0.f, 0.f, -1.f);
 	vec3					up = up_const;
-	vec3					right = vec3(0.f, 0.f, 0.f);
+	vec3					right = vec3(1.f, 0.f, 0.f);
 
 	mat4					projection_matrix = mat4(0.f);
 	mat4					view_matrix = mat4(0.f);
+	static constexpr float sensitivity = 0.3f;
 
 	void					update();
 

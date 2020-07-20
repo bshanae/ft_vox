@@ -16,6 +16,9 @@ class							renderer
 class							chunk : public object
 {
 public :
+
+
+
 								chunk();
 								~chunk() = default;
 
