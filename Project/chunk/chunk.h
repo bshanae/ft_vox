@@ -1,23 +1,20 @@
 #pragma once
 
 #include "common/OpenGL.h"
-#include "model/model.h"
+#include "model.h"
 #include "object/object.h"
 #include "program/program.h"
 #include "program/uniform.h"
+#include "chunk/block.h"
 
 #warning "Move to .cpp"
 #include "camera/camera.h"
-class							renderer
-{
-	virtual void 				render(shared_ptr<object> o);
-};
 
-class							chunk : public object
+class							chunk :
+									public object,
+									public model
 {
 public :
-
-
 
 								chunk();
 								~chunk() = default;
@@ -33,13 +30,17 @@ public :
 
 	void						render() override;
 
-#warning "Do we need this?"
-								chunk(const chunk &other);
-	chunk						&operator = (const chunk &other);
-
 private :
 
-	model						model;
+	static constexpr int		size[3] = {16, 16, 16};
+
+	using						blocks_type = array<array<array<block, size[2]>, size[1]>, size[0]>;
+
+	blocks_type					blocks;
+	shared_ptr<model>			model;
+
+	vector<float>				vertices;
+	vector<int>					indices;
 
 	class						renderer
 	{
@@ -54,20 +55,20 @@ private :
 
 		void					render(const chunk &chunk)
 		{
-			const class model	&model = chunk.model;
+			const auto			&model = chunk.model;
 
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			program->bind(true);
-			model.bind(true);
+			model->bind(true);
 
 			uniform_projection.upload(camera::get_projection_matrix());
 			uniform_view.upload(camera::get_view_matrix());
 
 			glDrawElements(GL_TRIANGLES, model.get_number_of_indices(), GL_UNSIGNED_INT, nullptr);
 
-			model.bind(false);
+			model->bind(false);
 			program->bind(false);
 		}
 
@@ -86,4 +87,62 @@ private :
 
 	static inline
 	unique_ptr<renderer>		renderer;
+
+	enum class					direction
+	{
+		begin,
+		left,
+		right,
+		bottom,
+		top,
+		back,
+		front,
+		end
+	};
+
+	void						build_block(block block_type, ivec3 index);
+	void						build_quad(direction type, ivec3 index);
+
+	ivec3						get_neighbor(ivec3 index, direction direction)
+	{
+		switch (direction)
+		{
+			case (direction::left) :
+				return (index + ivec3(-1, 0, 0));
+
+			case (direction::right) :
+				return (index + ivec3(1, 0, 0));
+
+			case (direction::bottom) :
+				return (index + ivec3(0, -1, 0));
+
+			case (direction::top) :
+				return (index + ivec3(0, 1, 0));
+
+			case (direction::back) :
+				return (index + ivec3(0, 0, -1));
+
+			case (direction::front) :
+				return (index + ivec3(0, 0, 1));
+
+			default :
+				return (index);
+		}
+	}
+
+	bool						does_index_exist(ivec3 value)
+	{
+		if (value.x < 0 or value.x >= size[0])
+			return (false);
+		if (value.y < 0 or value.y >= size[1])
+			return (false);
+		if (value.z < 0 or value.z >= size[2])
+			return (false);
+		return (true);
+	}
+
+	bool						is_block_empty(ivec3 index)
+	{
+		return (blocks[index.x][index.y][index.z].is_empty());
+	}
 };

@@ -34,13 +34,17 @@ void				camera::update()
 void					camera::recalculate()
 {
 	vec3				local_front;
-	yaw += input::instance()->get_mouse_offset().x * sensitivity;
-	pitch +=  input::instance()->get_mouse_offset().y * sensitivity;
+	yaw += input::get_mouse_offset().x * sensitivity;
+	pitch +=  input::get_mouse_offset().y * sensitivity;
+
+#warning "Fix this"
 	input::instance()->set_mouse_offset(ivec2(0));
+
 	if(pitch > 89.0f)
 		pitch =  89.0f;
 	if(pitch < -89.0f)
 		pitch = -89.0f;
+
 #if VOX_DEBUG
 	cerr <<
 		 "Camera : position = " <<

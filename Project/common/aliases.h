@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include <map>
+#include <array>
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -18,6 +19,7 @@ using 				std::enable_shared_from_this;
 
 using				std::vector;
 using				std::map;
+using				std::array;
 
 // ---------------- Pointers
 

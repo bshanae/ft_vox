@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 #set(CMAKE_C_COMPILER  "/usr/bin/clang")
 
 set(CMAKE_CXX_STANDARD 17)
-set(PROJECT_NAME ft_vox)
+set(PROJECT_NAME Vox)
 project(${PROJECT_NAME})
 
 add_compile_options(
@@ -44,11 +44,13 @@ set(SOURCE_FILES
     Project/application/window.cpp
     Project/application/application.cpp
     Project/application/object_linker.cpp
-    Project/model/model.cpp
+    Project/chunk/model.cpp
 	Project/program/shader.cpp
     Project/program/program.cpp
     Project/chunk/chunk.cpp
-    Project/main.cpp Project/camera/camera.cpp Project/camera/camera.h Project/application/input.cpp Project/application/input.h)
+    Project/main.cpp Project/camera/camera.cpp
+    Project/application/input.cpp
+    )
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)
 include_directories(
