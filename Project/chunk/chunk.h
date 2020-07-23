@@ -17,7 +17,7 @@ class							chunk :
 public :
 
 								chunk();
-								~chunk() = default;
+								~chunk() override = default;
 
 	static
 	shared_ptr<chunk>			create()
@@ -32,7 +32,7 @@ public :
 
 private :
 
-	static constexpr int		size[3] = {16, 16, 16};
+	static constexpr int		size[3] = {16, 16, 256};
 
 	using						blocks_type = array<array<array<block, size[2]>, size[1]>, size[0]>;
 
@@ -40,7 +40,7 @@ private :
 	shared_ptr<model>			model;
 
 	vector<float>				vertices;
-	vector<int>					indices;
+	vector<GLuint>				indices;
 
 	class						renderer
 	{
@@ -66,7 +66,7 @@ private :
 			uniform_projection.upload(camera::get_projection_matrix());
 			uniform_view.upload(camera::get_view_matrix());
 
-			glDrawElements(GL_TRIANGLES, model.get_number_of_indices(), GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, model->get_number_of_indices(), GL_UNSIGNED_INT, nullptr);
 
 			model->bind(false);
 			program->bind(false);

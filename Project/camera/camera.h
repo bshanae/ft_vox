@@ -44,7 +44,8 @@ private :
 	mat4					projection_matrix = mat4(0.f);
 	mat4					view_matrix = mat4(0.f);
 
-	static constexpr float	sensitivity = 0.3f;
+	static constexpr float	movement_speed = 0.1f;
+	static constexpr float	rotation_speed = 0.05f;
 
 	void					update();
 

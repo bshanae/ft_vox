@@ -15,7 +15,7 @@ public :
 
 	bool			is_empty()
 	{
-		return false;
+		return (false);
 	}
 
 	type			type;

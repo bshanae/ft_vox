@@ -11,9 +11,6 @@ class							input : public global<input>
 	friend class				application;
 	friend class				window;
 
-#warning "Remove this"
-	friend class				camera;
-
 public :
 
 	enum class					key_state : int
@@ -62,12 +59,6 @@ public :
 	static ivec2				get_mouse_current_position()
 	{
 		return (instance()->mouse_current_position);
-	}
-
-	[[deprecated]]
-	void						set_mouse_offset(const ivec2 &value)
-	{
-		mouse_offset = value;
 	}
 
  private :

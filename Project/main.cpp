@@ -3,11 +3,8 @@
 
 int						main()
 {
-	shared_ptr<chunk>	chunk;
-
 	application::initialize();
-
-	chunk = chunk::create();
+	chunk::create();
 	application::execute();
 	return (0);
 }

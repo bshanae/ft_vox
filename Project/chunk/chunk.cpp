@@ -3,51 +3,59 @@
 #include "common/aliases.h"
 #include "model.h"
 
-static float front [] ={
-	0.5f,  0.5f,  0.5f,
-	0.5f, -0.5f,  0.5f,
-	-0.5f, -0.5f,  0.5f,   //FRONT
-	-0.5f,  0.5f,  0.5f
+static float			front[] ={
+	+0.5f, +0.5f, +0.5f,
+	+0.5f, -0.5f, +0.5f,
+	-0.5f, -0.5f, +0.5f,
+	-0.5f, +0.5f, +0.5f
 };
-static float back [] = {
-	0.5f,  0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f, //BACK
+
+static float			back[] = {
+	+0.5f, +0.5f, -0.5f,
+	+0.5f, -0.5f, -0.5f,
 	-0.5f, -0.5f, -0.5f,
-	-0.5f,  0.5f, -0.5f
+	-0.5f, +0.5f, -0.5f
 };
-static float top [] = {
-	-0.5f,  0.5f,  0.5f,
-	-0.5f,  0.5f, -0.5f,    //TOP
-	0.5f,  0.5f, -0.5f,
-	0.5f,  0.5f,  0.5f
+
+static float			top[] = {
+	-0.5f, +0.5f, +0.5f,
+	-0.5f, +0.5f, -0.5f,
+	+0.5f, +0.5f, -0.5f,
+	+0.5f, +0.5f, +0.5f
 };
-static float bottom [] = {
-	-0.5f, -0.5f,  0.5f,
-	-0.5f, -0.5f, -0.5f,    //DOWN
-	0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f,  0.5f
-};
-static float right [] = {
-	0.5f,  0.5f,  0.5f,
-	0.5f, -0.5f,  0.5f,    //RIGHT
-	0.5f, -0.5f, -0.5f,
-	0.5f,  0.5f, -0.5f
-};
-static float left [] = {
+
+static float			bottom[] = {
+	-0.5f, -0.5f, +0.5f,
 	-0.5f, -0.5f, -0.5f,
-	-0.5f,  0.5f, -0.5f,     //LEFT
-	-0.5f,  0.5f,  0.5f,
-	-0.5f, -0.5f,  0.5f
+	+0.5f, -0.5f, -0.5f,
+	+0.5f, -0.5f, +0.5f
+};
+
+static float			right[] = {
+	+0.5f, +0.5f, +0.5f,
+	+0.5f, -0.5f, +0.5f,
+	+0.5f, -0.5f, -0.5f,
+	+0.5f, +0.5f, -0.5f
+};
+
+static float			left[] = {
+	-0.5f, -0.5f, -0.5f,
+	-0.5f, +0.5f, -0.5f,
+	-0.5f, +0.5f, +0.5f,
+	-0.5f, -0.5f, +0.5f
 };
 
 static GLuint			indices[] =
 {
-	0,  1,  3,
-	1,  2,  3
+	0, 1, 3,
+	1, 2, 3
 };
 
 						chunk::chunk()
 {
+	this->vertices.insert(vertices.end(), front, front + 12);
+	this->indices.insert(indices.end(), ::indices, ::indices + 6);
+	model = make_shared<::model>(this->vertices, this->indices);
 }
 
 void					chunk::render()
