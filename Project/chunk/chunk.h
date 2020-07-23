@@ -65,8 +65,8 @@ private :
 
 			uniform_projection.upload(camera::get_projection_matrix());
 			uniform_view.upload(camera::get_view_matrix());
-
-			glDrawElements(GL_TRIANGLES, model.get_number_of_indices(), GL_UNSIGNED_INT, nullptr);
+#warning  from model. to model->
+			glDrawElements(GL_TRIANGLES, model->get_number_of_indices(), GL_UNSIGNED_INT, nullptr);
 
 			model->bind(false);
 			program->bind(false);
