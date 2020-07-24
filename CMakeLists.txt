@@ -39,7 +39,7 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 set(SOURCE_FILES
     Project/libraries/glad/src/glad.c
-
+    Project/libraries/FastNoise/FastNoise.cpp
     Project/common/debug.cpp
     Project/application/window.cpp
     Project/application/application.cpp
@@ -50,7 +50,7 @@ set(SOURCE_FILES
     Project/chunk/chunk.cpp
     Project/main.cpp Project/camera/camera.cpp
     Project/application/input.cpp
-    )
+    Project/generation/generator.cpp Project/generation/generator_controller.cpp Project/generation/generator_controller.h Project/generation/plain_generator.cpp Project/generation/plain_generator.h)
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)
 include_directories(
