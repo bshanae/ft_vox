@@ -2,6 +2,8 @@
 
 class				block
 {
+	friend class 	chunk;
+
 public :
 
 	enum class		type
@@ -9,16 +11,19 @@ public :
 		air,
 		dirt
 	};
-					block(type type = type::air) : type(type)
+
+	explicit		block(type type = type::air) : type(type)
 					{}
 					~block() = default;
 
-	bool			is_empty()
+	[[nodiscard]]
+	bool			is_empty() const
 	{
-		return (false);
+		return (type == type::air);
 	}
 
-	type			type;
+private :
 
-	int				health;
+	type			type = type::air;
+	int				health = 0;
 };
