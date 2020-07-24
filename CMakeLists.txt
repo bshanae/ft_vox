@@ -50,13 +50,13 @@ set(SOURCE_FILES
     Project/program/shader.cpp
     Project/program/program.cpp
 
-    Project/chunk/model.cpp
-    Project/chunk/chunk.cpp
-    Project/chunk/renderer.cpp
+    Project/map/model.cpp
+    Project/map/chunk.cpp
+    Project/map/renderer.cpp
 
     Project/camera/camera.cpp
 
-    Project/main.cpp)
+    Project/main.cpp Project/map/map.cpp Project/map/map.h)
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)
 include_directories(

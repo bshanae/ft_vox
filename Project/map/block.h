@@ -17,7 +17,7 @@ public :
 					~block() = default;
 
 	[[nodiscard]]
-	bool			is_empty() const
+	bool			empty() const
 	{
 		return (type == type::air);
 	}

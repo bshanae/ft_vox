@@ -1,6 +1,6 @@
 #include "application/application.h"
-#include "chunk/renderer.h"
-#include "chunk/chunk.h"
+#include "map/renderer.h"
+#include "map/chunk.h"
 
 int						main()
 {

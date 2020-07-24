@@ -1,10 +1,11 @@
 #pragma once
 
 #include "common/OpenGL.h"
+#include "common/array3.h"
 #include "model.h"
 #include "object/object.h"
 
-#include "chunk/block.h"
+#include "map/block.h"
 
 class							chunk :
 									public object,
@@ -33,7 +34,7 @@ private :
 //	static constexpr int		size[3] = {16, 256, 16};
 	static constexpr int		size[3] = {4, 4, 4};
 
-	using						blocks_type = array<array<array<block, size[2]>, size[1]>, size[0]>;
+	using						blocks_type = array3<block, size[0], size[1], size[2]>;
 
 	blocks_type					blocks;
 	shared_ptr<model>			model;
@@ -41,23 +42,7 @@ private :
 	vector<float>				vertices;
 	vector<GLuint>				indices;
 
-	enum class					direction
-	{
-		begin,
-		left,
-		right,
-		bottom,
-		top,
-		back,
-		front,
-		end
-	};
-
 	void						build_model();
-	void						build_block(ivec3 index);
-	void						build_quad(direction type, ivec3 index);
-
-	static ivec3				get_neighbor_block(ivec3 index, direction direction);
-	static bool					does_block_exist(ivec3 index);
-	bool						is_block_empty(ivec3 index);
+	void						build_block(const blocks_type::index &index);
+	void						build_quad(axis axis, sign sign, const blocks_type::index &index);
 };

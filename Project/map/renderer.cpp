@@ -1,6 +1,6 @@
 #include "renderer.h"
 
-#include "chunk/chunk.h"
+#include "map/chunk.h"
 #include "camera/camera.h"
 
 						renderer::renderer()

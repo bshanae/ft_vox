@@ -67,7 +67,7 @@ public :
 	ivec2						mouse_last_position = ivec2 (-1, -1);
 	ivec2						mouse_current_position = ivec2 (0);
 
-	map<int, key_state>			keys;
+	std::map<int, key_state>	keys;
 
 	static void 				callback_key(GLFWwindow *window, int key, int code, int action, int mode);
 	static void 				callback_mouse(GLFWwindow *window, double x, double y);
