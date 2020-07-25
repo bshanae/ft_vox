@@ -16,9 +16,6 @@ void					renderer::render(const chunk &chunk)
 	auto 				instance = global<renderer>::instance();
 	const auto			&model = chunk.model;
 
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-
 	instance->program->bind(true);
 	model->bind(true);
 

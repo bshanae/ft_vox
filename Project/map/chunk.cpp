@@ -6,9 +6,9 @@
 
 static float			front[] = {
 	+0.5f, +0.5f, +0.5f,
-	+0.5f, -0.5f, +0.5f,
+	-0.5f, +0.5f, +0.5f,
 	-0.5f, -0.5f, +0.5f,
-	-0.5f, +0.5f, +0.5f
+	+0.5f, -0.5f, +0.5f
 };
 
 static float			back[] = {
@@ -20,9 +20,9 @@ static float			back[] = {
 
 static float			top[] = {
 	-0.5f, +0.5f, +0.5f,
-	-0.5f, +0.5f, -0.5f,
+	+0.5f, +0.5f, +0.5f,
 	+0.5f, +0.5f, -0.5f,
-	+0.5f, +0.5f, +0.5f
+	-0.5f, +0.5f, -0.5f
 };
 
 static float			bottom[] = {
@@ -41,9 +41,9 @@ static float			right[] = {
 
 static float			left[] = {
 	-0.5f, -0.5f, -0.5f,
-	-0.5f, +0.5f, -0.5f,
+	-0.5f, -0.5f, +0.5f,
 	-0.5f, +0.5f, +0.5f,
-	-0.5f, -0.5f, +0.5f
+	-0.5f, +0.5f, -0.5f,
 };
 
 static GLuint			indices[] =

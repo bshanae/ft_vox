@@ -24,6 +24,11 @@
 
 	glfwSetKeyCallback(glfw_window, input::callback_key);
 	glfwSetCursorPosCallback(glfw_window, input::callback_mouse);
+
+#warning "Why it doesn't work?"
+//	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 }
 
 					window::~window()

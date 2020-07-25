@@ -38,8 +38,13 @@ void			application::process_updating()
 {
 	camera::instance()->update();
 }
+
 void			application::process_rendering()
 {
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT);
+
 	for (auto &object : objects)
 		object->render();
 
