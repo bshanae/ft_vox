@@ -34,6 +34,7 @@ void				camera::update()
 void					camera::recalculate()
 {
 	vec3				local_front;
+
 	yaw += input::get_mouse_offset().x * rotation_speed;
 	pitch += input::get_mouse_offset().y * rotation_speed;
 

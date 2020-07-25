@@ -27,4 +27,5 @@ private :
 
 	uniform<mat4>			uniform_projection;
 	uniform<mat4>			uniform_view;
+	uniform<mat4>			uniform_transformation;
 };

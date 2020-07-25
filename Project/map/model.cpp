@@ -31,12 +31,61 @@
 					model::~model()
 {
 	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(buffers.size(), buffers.data());
+	glDeleteBuffers(vbos.size(), vbos.data());
 }
 
 void				model::bind(bool state) const
 {
 	glBindVertexArray(state ? vao : 0);
+}
+
+int					model::get_number_of_indices() const
+{
+	return (number_of_indices);
+}
+
+vec3				model::get_scaling() const
+{
+	return (scaling);
+}
+
+vec3				model::get_translation() const
+{
+	return (translation);
+}
+
+vec3				model::get_rotation() const
+{
+	return (rotation);
+}
+
+mat4				model::get_transformation() const
+{
+	return (transformation);
+}
+
+void				model::set_translation(const vec3 &value)
+{
+	translation = value;
+	recalculate_transformation();
+}
+
+void				model::set_rotation(const vec3 &value)
+{
+	rotation = value;
+	recalculate_transformation();
+}
+
+void				model::set_scaling(float value)
+{
+	scaling = vec3(value);
+	recalculate_transformation();
+}
+
+void				model::set_scaling(const vec3 &value)
+{
+	scaling = value;
+	recalculate_transformation();
 }
 
 void				model::add_vbo(int dimension, const vector<GLfloat> &data)
@@ -51,14 +100,14 @@ void				model::add_vbo(int dimension, const vector<GLfloat> &data)
 		data.data(),
 		GL_STATIC_DRAW);
 	glVertexAttribPointer(
-		number_of_vbos,
+		vbos.size(),
 		dimension,
 		GL_FLOAT,
 		GL_FALSE,
 		0,
 		(GLvoid *)nullptr);
-	glEnableVertexAttribArray(number_of_vbos++);
-	buffers.push_back(vbo);
+	glEnableVertexAttribArray(vbos.size());
+	vbos.push_back(vbo);
 }
 
 void				model::add_ebo(const vector<GLuint> &indices)
@@ -72,10 +121,19 @@ void				model::add_ebo(const vector<GLuint> &indices)
 		indices.size() * sizeof(indices[0]),
 		indices.data(),
 		GL_STATIC_DRAW);
-	buffers.push_back(ebo);
+	vbos.push_back(ebo);
 }
 
-GLuint				model::get_number_of_indices() const
+void 				model::recalculate_transformation()
 {
-	return (number_of_indices);
+	vec3 			rotation;
+
+	rotation.x = radians(this->rotation.x);
+	rotation.y = radians(this->rotation.y);
+	rotation.z = radians(this->rotation.z);
+
+	transformation = mat4(1.f);
+	transformation *= translate(translation);
+	transformation *= eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
+	transformation *= scale(scaling);
 }

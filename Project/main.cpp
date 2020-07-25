@@ -1,14 +1,17 @@
 #include "application/application.h"
 #include "map/renderer.h"
-#include "map/chunk.h"
+#include "map/map.h"
 
 int						main()
 {
 	application::initialize();
-#warning "Improve architecture"
 	renderer::initialize();
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	chunk::create();
+	glFrontFace(GL_CCW);
+
+	map::create();
+
 	application::execute();
 	return (0);
 }

@@ -51,6 +51,11 @@ public :
 								index(int x, int y, int z) : x(x), y(y), z(z)
 								{}
 
+		ivec3 					to_glm() const
+		{
+			return (ivec3(x, y, z));
+		}
+
 		index					operator + (const index &that) const
 		{
 			index				result;
