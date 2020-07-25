@@ -39,7 +39,7 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 set(SOURCE_FILES
     Project/libraries/glad/src/glad.c
-
+    Project/libraries/FastNoise/FastNoise.cpp
     Project/common/debug.cpp
 
     Project/application/window.cpp
@@ -49,14 +49,17 @@ set(SOURCE_FILES
 
     Project/program/shader.cpp
     Project/program/program.cpp
-
-    Project/map/model.cpp
-    Project/map/chunk.cpp
-    Project/map/renderer.cpp
-
+   # Project/chunk/chunk.cpp
+    Project/main.cpp
     Project/camera/camera.cpp
-
-    Project/main.cpp Project/map/map.cpp Project/map/map.h)
+    Project/application/input.cpp
+    Project/generation/generator.cpp
+    Project/map/map.cpp
+    Project/map/chunk.cpp
+    Project/map/model.cpp
+    Project/map/renderer.cpp
+    Project/generation/generator_controller.cpp
+    Project/generation/plain_generator.cpp)
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)
 include_directories(

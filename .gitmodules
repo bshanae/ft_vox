@@ -4,3 +4,6 @@
 [submodule "Project/Libraries/glm"]
 	path = Project/Libraries/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Project/libraries/FastNoise"]
+	path = Project/libraries/FastNoise
+	url = https://github.com/Auburns/FastNoise.git
