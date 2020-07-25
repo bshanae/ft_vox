@@ -27,6 +27,7 @@ void				input::callback_mouse(GLFWwindow *window, double x, double y)
 	if ((instance->mouse_last_position = instance->mouse_current_position) == ivec2(-1, -1))
 		instance->mouse_last_position = ivec2 (x, y);
 	instance->mouse_current_position = ivec2 (x, y);
+#warning "CHECK"
 	instance->mouse_offset = ivec2(
 		instance->mouse_current_position.x - instance->mouse_last_position.x,
 		instance->mouse_last_position.y - instance->mouse_current_position.y);

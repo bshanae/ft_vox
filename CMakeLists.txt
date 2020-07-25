@@ -41,16 +41,22 @@ set(SOURCE_FILES
     Project/libraries/glad/src/glad.c
 
     Project/common/debug.cpp
+
     Project/application/window.cpp
     Project/application/application.cpp
     Project/application/object_linker.cpp
-    Project/chunk/model.cpp
-	Project/program/shader.cpp
-    Project/program/program.cpp
-    Project/chunk/chunk.cpp
-    Project/main.cpp Project/camera/camera.cpp
     Project/application/input.cpp
-    )
+
+    Project/program/shader.cpp
+    Project/program/program.cpp
+
+    Project/map/model.cpp
+    Project/map/chunk.cpp
+    Project/map/renderer.cpp
+
+    Project/camera/camera.cpp
+
+    Project/main.cpp Project/map/map.cpp Project/map/map.h)
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)
 include_directories(

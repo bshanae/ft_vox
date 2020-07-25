@@ -11,9 +11,6 @@ class							input : public global<input>
 	friend class				application;
 	friend class				window;
 
-#warning "Remove this"
-	friend class				camera;
-
 public :
 
 	enum class					key_state : int
@@ -64,19 +61,13 @@ public :
 		return (instance()->mouse_current_position);
 	}
 
-	[[deprecated]]
-	void						set_mouse_offset(const ivec2 &value)
-	{
-		mouse_offset = value;
-	}
-
  private :
 
 	ivec2						mouse_offset = ivec2 (0);
 	ivec2						mouse_last_position = ivec2 (-1, -1);
 	ivec2						mouse_current_position = ivec2 (0);
 
-	map<int, key_state>			keys;
+	std::map<int, key_state>	keys;
 
 	static void 				callback_key(GLFWwindow *window, int key, int code, int action, int mode);
 	static void 				callback_mouse(GLFWwindow *window, double x, double y);

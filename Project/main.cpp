@@ -1,13 +1,14 @@
 #include "application/application.h"
-#include "chunk/chunk.h"
+#include "map/renderer.h"
+#include "map/chunk.h"
 
 int						main()
 {
-	shared_ptr<chunk>	chunk;
-
 	application::initialize();
-
-	chunk = chunk::create();
+#warning "Improve architecture"
+	renderer::initialize();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	chunk::create();
 	application::execute();
 	return (0);
 }
