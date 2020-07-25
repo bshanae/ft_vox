@@ -5,10 +5,11 @@
 int						main()
 {
 	application::initialize();
-#warning "Improve architecture"
 	renderer::initialize();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	chunk::create();
+
+	auto 				chunk = chunk::create();
+
 	application::execute();
 	return (0);
 }

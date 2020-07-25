@@ -6,15 +6,21 @@
 class				map
 {
 public :
-					map() = default;
+					map()
+	{
+		for (auto &iterator : chunks)
+		{
+//			iterator->get_value() = chunk();
+//			iterator->get_value().offset = iterator->get_index().to_glm();
+		}
+	}
 					~map() = default;
 private :
 
 	static
 	inline
-	constexpr int	size[3] = {1, 1, 1};
+	constexpr int	size[3] = {4, 4, 4};
 
-	using			chunks_type = array<array<array<chunk, size[2]>, size[1]>, size[0]>;
+	using			chunks_type = array3<chunk, size[2], size[1], size[0]>;
+	chunks_type		chunks;
 };
-
-

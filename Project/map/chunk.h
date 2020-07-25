@@ -11,6 +11,7 @@ class							chunk :
 									public object,
 									public model
 {
+	friend class 				map;
 	friend class 				renderer;
 
 public :
@@ -41,6 +42,8 @@ private :
 
 	vector<float>				vertices;
 	vector<GLuint>				indices;
+
+	ivec3 						position = ivec3(0, 0, 0);
 
 	void						build_model();
 	void						build_block(const blocks_type::index &index);
