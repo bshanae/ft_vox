@@ -28,7 +28,7 @@ public :
 		return (instance()->view_matrix);
 	}
 
-	vec3					position = vec3(0.f, 0.0f, 1.6f);
+	vec3					position = vec3(0.f, 0.0f, 15.f);
 
 	float					yaw = -90.f;
 	float					pitch = 0.f;
