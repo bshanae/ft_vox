@@ -20,7 +20,6 @@ public :
 		released = GLFW_RELEASE,
 		held = GLFW_REPEAT
 	};
-
 								input();
 
 	[[nodiscard]] static bool	is_pressed(int key)
@@ -63,15 +62,16 @@ public :
 
  private :
 
-	ivec2						mouse_offset = ivec2 (0);
-	ivec2						mouse_last_position = ivec2 (-1, -1);
-	ivec2						mouse_current_position = ivec2 (0);
+	vec2						mouse_offset = vec2(0.f);
+	vec2						mouse_last_position = vec2(0.f);
+	vec2						mouse_current_position = vec2(0.f);
 
 	std::map<int, key_state>	keys;
 
 	static void 				callback_key(GLFWwindow *window, int key, int code, int action, int mode);
-	static void 				callback_mouse(GLFWwindow *window, double x, double y);
 	static void 				callback_mouse_key(GLFWwindow *window, int key, int action, int mode);
+
+	void						update();
 };
 
 

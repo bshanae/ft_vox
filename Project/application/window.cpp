@@ -22,8 +22,8 @@
 
 	input::initialize();
 
+	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetKeyCallback(glfw_window, input::callback_key);
-	glfwSetCursorPosCallback(glfw_window, input::callback_mouse);
 
 #warning "Why it doesn't work?"
 //	glEnable(GL_DEPTH_TEST);
@@ -45,4 +45,13 @@ bool				window::should_close()
 void				window::swap_buffers()
 {
 	glfwSwapBuffers(instance()->glfw_window);
+}
+
+vec2				window::get_mouse_position()
+{
+	double			x;
+	double			y;
+
+	glfwGetCursorPos(instance()->glfw_window, &x, &y);
+	return {x, y};
 }

@@ -43,15 +43,6 @@ void					camera::recalculate()
 	if (pitch < -89.0f)
 		pitch = -89.0f;
 
-#if VOX_DEBUG
-	cerr <<
-		"Camera : position = " <<
-		glm::to_string(position) <<
-		", yaw = " << yaw <<
-		", pitch = " << pitch <<
-		endl;
-#endif
-
 	local_front.x = cos(radians(yaw)) * cos(radians(pitch));
 	local_front.y = sin(radians(pitch));
 	local_front.z = sin(radians(yaw)) * cos(radians(pitch));

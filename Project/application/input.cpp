@@ -20,21 +20,23 @@ void				input::callback_key(GLFWwindow *window, int key, int code, int action, i
   		instance->keys[key] = static_cast<key_state>(action);
 }
 
-void				input::callback_mouse(GLFWwindow *window, double x, double y)
+void				input::update()
 {
 	static bool 	first_call = true;
+
 	auto			instance = global<input>::instance();
+	vec2 			position = window::get_mouse_position();
 
 	if (first_call)
 	{
 		first_call = false;
-		instance->mouse_last_position = ivec2(x, y);
+		instance->mouse_last_position = position;
 		instance->mouse_offset = ivec2(0);
 	}
 	else
 		instance->mouse_last_position = instance->mouse_current_position;
 
-	instance->mouse_current_position = ivec2(x, y);
+	instance->mouse_current_position = position;
 	instance->mouse_offset.x = instance->mouse_current_position.x - instance->mouse_last_position.x;
 	instance->mouse_offset.y = instance->mouse_last_position.y - instance->mouse_current_position.y;
 }

@@ -1,6 +1,7 @@
 #include "application.h"
 
 #include "application/window.h"
+#include "application/input.h"
 #include "camera/camera.h"
 #include "object/object.h"
 
@@ -21,6 +22,8 @@ void			application::execute()
 		instance->process_destroying();
 		instance->process_updating();
 		instance->process_rendering();
+
+		input::instance()->update();
 	}
 }
 
