@@ -1,26 +1,28 @@
 #pragma once
 
 #include "common/OpenGL.h"
+#include "common/global.h"
 
 #include "map/chunk.h"
 
-class							chunk_generator : global<chunk_generator>
+class						chunk_generator
 {
 public :
 
-	static
-	shared_ptr<chunk_generator>	get_generator(const shared_ptr<chunk> &chunk)
-	{
-		auto 		instance = global<chunk_generator>::instance();
-
-		instance->use_chunk(chunk);
-		return (instance);
-	}
-
 	[[nodiscard]]
-	virtual block				get_block(const chunk::index &) const = 0;
+	static
+	block					get_block(const vec3 &position)
+	{
+		return (pointer->block_getter(position));
+	}
 
 protected :
 
-	virtual void				use_chunk(const shared_ptr<chunk> &chunk) = 0;
+	static
+	inline
+	shared_ptr<chunk_generator>	pointer;
+
+	[[nodiscard]]
+	virtual
+	block						block_getter(const vec3 &position) = 0;
 };
