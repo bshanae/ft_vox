@@ -64,43 +64,43 @@ void					chunk::render()
 
 void					chunk::build_model()
 {
-	blocks_type::index	index;
+	index				index;
 
 	for (index.x = 0; index.x < 4; index.x++)
 		for (index.z = 0; index.z < 4; index.z++)
-			blocks.at(index).type = block::type::dirt;
+			at(index).type = block::type::dirt;
 
 	this->vertices.clear();
 	this->indices.clear();
 
-	for (auto &iterator : blocks)
+	for (auto &iterator : *this)
 		build_block(iterator->get_index());
 
 	model = make_shared<::model>(this->vertices, this->indices);
 }
 
-void					chunk::build_block(const blocks_type::index &index)
+void					chunk::build_block(const index &index)
 {
-	auto 				try_build_quad = [this](axis axis, sign sign, const blocks_type::index &index)
+	auto 				try_build_quad = [this, index](axis axis, sign sign)
 	{
 		auto			neighbor = index.neighbor((::axis)axis, (::sign)sign);
 
 		if (not neighbor)
 			build_quad((::axis)axis, (::sign)sign, index);
-		else if (blocks.at(neighbor).empty())
+		else if (at(neighbor).empty())
 			build_quad((::axis)axis, (::sign)sign, index);
 	};
 
-	if (blocks.at(index).empty())
+	if (at(index).empty())
 		return ;
 	for (int axis = (int)axis::x; axis <= (int)axis::z; axis++)
 	{
-		try_build_quad((::axis)axis, sign::minus, index);
-		try_build_quad((::axis)axis, sign::plus, index);
+		try_build_quad((::axis)axis, sign::minus);
+		try_build_quad((::axis)axis, sign::plus);
 	}
 }
 
-void					chunk::build_quad(axis axis, sign sign, const blocks_type::index &index)
+void					chunk::build_quad(axis axis, sign sign, const index &index)
 {
 	if (axis == axis::x and sign == sign::plus)
 		vertices.insert(vertices.end(), right, right + 12);

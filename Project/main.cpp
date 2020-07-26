@@ -1,6 +1,7 @@
 #include "application/application.h"
 #include "map/renderer.h"
 #include "map/map.h"
+#include "map/chunk_generator.h"
 
 int						main()
 {

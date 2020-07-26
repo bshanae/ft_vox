@@ -7,14 +7,22 @@
 
 #include "map/block.h"
 
+#warning "Create settings module"
+static constexpr int			chunk_size[3] = {4, 4, 4};
+
+
 class							chunk :
 									public object,
-									public model
+									public model,
+									private array3<block, chunk_size[0], chunk_size[1], chunk_size[2]>
 {
+	friend class				chunk_generator;
 	friend class 				map;
 	friend class 				renderer;
 
 public :
+
+	using						index = array3<block, chunk_size[0], chunk_size[1], chunk_size[2]>::index;
 
 								chunk();
 								~chunk() override = default;
@@ -32,20 +40,12 @@ public :
 
 private :
 
-//	static constexpr int		size[3] = {16, 256, 16};
-	static constexpr int		size[3] = {4, 4, 4};
-
-	using						blocks_type = array3<block, size[0], size[1], size[2]>;
-
-	blocks_type					blocks;
 	shared_ptr<model>			model;
 
 	vector<float>				vertices;
 	vector<GLuint>				indices;
 
-	ivec3 						position = ivec3(0, 0, 0);
-
 	void						build_model();
-	void						build_block(const blocks_type::index &index);
-	void						build_quad(axis axis, sign sign, const blocks_type::index &index);
+	void						build_block(const index &index);
+	void						build_quad(axis axis, sign sign, const index &index);
 };

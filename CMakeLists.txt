@@ -53,8 +53,7 @@ set(SOURCE_FILES
     Project/main.cpp
     Project/camera/camera.cpp
     Project/application/input.cpp
-    Project/generation/generator.cpp
-    Project/map/map.cpp
+	Project/map/map.cpp
     Project/map/chunk.cpp
     Project/map/model.cpp
     Project/map/renderer.cpp

@@ -9,7 +9,7 @@ class				map : public object
 public :
 					map()
 	{
-		const auto 	chunk_size = vec3(chunk::size[0], chunk::size[1], chunk::size[2]);
+		const auto 	chunk_size = vec3(::chunk_size[0], ::chunk_size[1], ::chunk_size[2]);
 		auto 		translation = vec3(0.f);
 
 		for (auto &iterator : chunks)

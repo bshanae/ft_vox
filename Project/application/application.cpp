@@ -9,31 +9,9 @@
 				application::application()
 {
 	window::initialize();
+	input::initialize();
 	camera::initialize();
 	generator_controller::initialize();
-	generator_controller::execute();
-
-
-
-	std::array<std::array<float, 20>, 20> map;
-
-	for (int i = 0; i < 20; i++)
-	{
-		for (int j = 0; j < 20; j++)
-		{
-			map[i][j] = generator_controller::instance()->get_generator(
-				generator_controller::generator_type::plain)->get_noise(i,j);
-		}
-	}
-
-	for (int i = 0; i < 20; i++)
-	{
-		for (int j = 0; j < 20; j++)
-		{
-			std::cout << map[i][j] << " ";
-		}
-		std::cout << std::endl;
-	}
 }
 
 void			application::execute()

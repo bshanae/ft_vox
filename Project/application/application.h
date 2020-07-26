@@ -5,6 +5,7 @@
 
 class 							window;
 class 							object;
+
 class 							application final : public global<application>
 {
 	friend class 				object_linker;
@@ -12,6 +13,7 @@ class 							application final : public global<application>
 public :
 								application();
 								~application() override = default;
+
 	static void					execute();
 
 private :
