@@ -3,6 +3,12 @@
 #include "application/window.h"
 #include "application/input.h"
 
+				application::application()
+{
+	window::initialize();
+	input::initialize();
+}
+
 void			application::execute()
 {
 	auto		instance = global<application>::instance();

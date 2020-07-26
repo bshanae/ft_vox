@@ -10,7 +10,7 @@ class 							object;
 class 							application final : public global<application>
 {
 public :
-								application() = default;
+								application();
 								~application() override = default;
 
 	static void					execute();
