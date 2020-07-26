@@ -19,6 +19,8 @@ private :
 
 	vector<shared_ptr<object>>	objects;
 
+	void						process_input();
+
 	void						process_creating();
 	void						process_destroying();
 

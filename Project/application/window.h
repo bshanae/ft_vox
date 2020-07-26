@@ -14,8 +14,11 @@ public :
 	static inline ivec2		size = ivec2(1280, 720);
 
 	[[nodiscard]]
-	static bool 			should_close();
+	static bool 			closed();
+	static void 			close();
+
 	static void 			swap_buffers();
+
 	static vec2				get_mouse_position();
 
 private :

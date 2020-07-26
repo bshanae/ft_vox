@@ -13,14 +13,9 @@ void			application::execute()
 {
 	auto		instance = global<application>::instance();
 
-	while (not window::should_close())
+	while (not window::closed())
 	{
-		glfwPollEvents();
-		input::instance()->update_mouse_data();
-
-		if (input::is_pressed(GLFW_KEY_ESCAPE))
-			break ;
-
+		instance->process_input();
 		instance->process_creating();
 		instance->process_destroying();
 		instance->process_updating();
@@ -28,9 +23,27 @@ void			application::execute()
 	}
 }
 
-void			application::process_creating()
+void			application::process_input()
 {
 
+}
+
+void			application::process_creating()
+{
+	static bool	empty_polygons = false;
+
+	input::instance()->reset_keys();
+	input::instance()->update_mouse();
+
+	glfwPollEvents();
+
+	if (input::is_pressed(GLFW_KEY_ESCAPE))
+		window::close();
+	if (input::is_pressed(GLFW_KEY_P))
+	{
+		empty_polygons = not empty_polygons;
+		glPolygonMode(GL_FRONT_AND_BACK, empty_polygons ? GL_LINE : GL_FILL);
+	}
 }
 
 void			application::process_destroying()

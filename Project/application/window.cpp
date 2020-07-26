@@ -35,9 +35,14 @@
 	glfwTerminate();
 }
 
-bool				window::should_close()
+bool				window::closed()
 {
 	return (glfwWindowShouldClose(instance()->glfw_window));
+}
+
+void 				window::close()
+{
+	glfwSetWindowShouldClose(instance()->glfw_window, true);
 }
 
 void				window::swap_buffers()

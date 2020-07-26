@@ -10,17 +10,19 @@
 
 void				input::callback_key(GLFWwindow *window, int key, int code, int action, int mode)
 {
-	auto			instance = global<input>::instance();
-
-	if (instance->keys[key] == key_state::pressed and action == GLFW_PRESS)
-		instance->keys[key] = key_state::held;
-  	else if (instance->keys[key] == key_state::released and action == GLFW_RELEASE)
-  		instance->keys[key] = key_state::waiting;
-  	else
-  		instance->keys[key] = static_cast<key_state>(action);
+	instance()->keys[key] = static_cast<key_state>(action);
 }
 
-void				input::update_mouse_data()
+void				input::reset_keys()
+{
+	for (auto &iterator : keys)
+		if (iterator.second == key_state::pressed)
+			iterator.second = key_state::held;
+		else if (iterator.second == key_state::released)
+			iterator.second = key_state::waiting;
+}
+
+void				input::update_mouse()
 {
 	static bool 	first_call = true;
 
