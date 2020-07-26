@@ -2,16 +2,15 @@
 
 #include "common/aliases.h"
 #include "common/global.h"
+#include "application/object.h"
 
 class 							window;
 class 							object;
 
 class 							application final : public global<application>
 {
-	friend class 				object_linker;
-
 public :
-								application();
+								application() = default;
 								~application() override = default;
 
 	static void					execute();
@@ -25,5 +24,7 @@ private :
 
 	void						process_updating();
 	void						process_rendering();
+
+	friend void 				object::link_to_application();
 };
 

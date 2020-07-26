@@ -71,7 +71,7 @@ public :
 	static void 				callback_key(GLFWwindow *window, int key, int code, int action, int mode);
 	static void 				callback_mouse_key(GLFWwindow *window, int key, int action, int mode);
 
-	void						update();
+	void						update_mouse_data();
 };
 
 

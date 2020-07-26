@@ -5,6 +5,8 @@
 #include <type_traits>
 
 using				std::is_same;
+using				std::enable_if;
+using				std::is_base_of;
 
 // ---------------- Containers
 
@@ -23,6 +25,8 @@ using 				std::shared_ptr;
 using 				std::make_shared;
 using 				std::unique_ptr;
 using 				std::make_unique;
+using 				std::static_pointer_cast;
+using 				std::dynamic_pointer_cast;
 using 				std::enable_shared_from_this;
 
 // ---------------- Other classes

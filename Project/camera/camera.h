@@ -3,8 +3,9 @@
 #include "common/OpenGL.h"
 #include "common/aliases.h"
 #include "common/global.h"
+#include "application/unique_object.h"
 
-class						camera : public global<camera>
+class						camera : public unique_object<camera>
 {
 	friend class			application;
 
@@ -19,6 +20,8 @@ public :
 	[[nodiscard]]
 	static mat4				get_projection_matrix()
 	{
+		auto 				test = instance();
+
 		return(instance()->projection_matrix);
 	}
 
@@ -47,7 +50,7 @@ private :
 	static constexpr float	movement_speed = 0.1f;
 	static constexpr float	rotation_speed = 0.05f;
 
-	void					update();
+	void					update() override;
 
 	void					recalculate();
 };

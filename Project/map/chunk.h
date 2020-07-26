@@ -2,8 +2,8 @@
 
 #include "common/OpenGL.h"
 #include "common/array3.h"
-#include "model.h"
-#include "object/object.h"
+#include "application/object.h"
+#include "map/model.h"
 
 #include "map/block.h"
 
@@ -32,11 +32,9 @@ public :
 	{
 		auto					chunk = make_shared<class chunk>();
 
-		link_to_application(chunk);
+		chunk->link_to_application();
 		return (chunk);
 	}
-
-	void						render() override;
 
 private :
 
@@ -44,6 +42,8 @@ private :
 
 	vector<float>				vertices;
 	vector<GLuint>				indices;
+
+	void						render() override;
 
 	void						build_model();
 	void						build_block(const index &index);

@@ -12,7 +12,7 @@ class						renderer : public global<renderer>
 {
 public :
 							renderer();
-							~renderer() = default;
+							~renderer() override = default;
 
 	static void				render(const chunk &chunk);
 

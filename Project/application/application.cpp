@@ -2,17 +2,6 @@
 
 #include "application/window.h"
 #include "application/input.h"
-#include "camera/camera.h"
-#include "object/object.h"
-#include "generation/generator_controller.h"
-
-				application::application()
-{
-	window::initialize();
-	input::initialize();
-	camera::initialize();
-	generator_controller::initialize();
-}
 
 void			application::execute()
 {
@@ -21,12 +10,15 @@ void			application::execute()
 	while (not window::should_close())
 	{
 		glfwPollEvents();
+		input::instance()->update_mouse_data();
+
+		if (input::is_pressed(GLFW_KEY_ESCAPE))
+			break ;
+
 		instance->process_creating();
 		instance->process_destroying();
 		instance->process_updating();
 		instance->process_rendering();
-
-		input::instance()->update();
 	}
 }
 
@@ -42,7 +34,8 @@ void			application::process_destroying()
 
 void			application::process_updating()
 {
-	camera::instance()->update();
+	for (auto &object : objects)
+		object->update();
 }
 
 void			application::process_rendering()

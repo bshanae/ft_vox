@@ -1,10 +1,11 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "application/object_linker.h"
+#include "common/global.h"
+#include "application/unique_object.h"
 #include "map/chunk.h"
 
-class				map : public object
+class				map : public unique_object<map>
 {
 public :
 					map()
@@ -22,15 +23,6 @@ public :
 		}
 	}
 					~map() override = default;
-
-	static
-	shared_ptr<map>	create()
-	{
-		auto		map = make_shared<class map>();
-
-		link_to_application(map);
-		return (map);
-	}
 
 private :
 

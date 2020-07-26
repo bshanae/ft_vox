@@ -20,7 +20,7 @@ void				input::callback_key(GLFWwindow *window, int key, int code, int action, i
   		instance->keys[key] = static_cast<key_state>(action);
 }
 
-void				input::update()
+void				input::update_mouse_data()
 {
 	static bool 	first_call = true;
 

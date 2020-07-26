@@ -1,16 +1,21 @@
 #include "application/application.h"
-#include "map/renderer.h"
 #include "map/map.h"
-#include "map/chunk_generator.h"
+
+#include "application/window.h"
+#include "camera/camera.h"
+#include "renderer/renderer.h"
+#include "generation/generator_controller.h"
 
 int						main()
 {
 	application::initialize();
+
 	renderer::initialize();
+	generator_controller::initialize();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glFrontFace(GL_CCW);
 
+	camera::create();
 	map::create();
 
 	application::execute();

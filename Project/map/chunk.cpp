@@ -2,7 +2,7 @@
 
 #include "common/aliases.h"
 #include "map/model.h"
-#include "map/renderer.h"
+#include "renderer/renderer.h"
 
 static float			front[] = {
 	+0.5f, +0.5f, +0.5f,
