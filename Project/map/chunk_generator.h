@@ -13,7 +13,8 @@ public :
 	static
 	block					get_block(const vec3 &position)
 	{
-		return (pointer->block_getter(position));
+		assert(pointer != nullptr and "Can't generate chunk");
+		return (pointer->get_block_implementation(position));
 	}
 
 protected :
@@ -24,5 +25,5 @@ protected :
 
 	[[nodiscard]]
 	virtual
-	block						block_getter(const vec3 &position) = 0;
+	block						get_block_implementation(const vec3 &position) = 0;
 };
