@@ -26,10 +26,10 @@ static vector<GLfloat>	back_vertices = {
 };
 
 static vector<GLfloat>	back_texture_coordinates = {
-	1.f, 1.f,
-	1.f, 0.f,
-	0.f, 0.f,
 	0.f, 1.f,
+	0.f, 0.f,
+	1.f, 0.f,
+	1.f, 1.f,
 };
 
 static vector<GLfloat>	top_vertices = {
@@ -82,10 +82,10 @@ static vector<GLfloat>	left_vertices = {
 };
 
 static vector<GLfloat>	left_texture_coordinates = {
-	0.f, 1.f,
-	1.f, 1.f,
+	0.f, 0.f,
 	1.f, 0.f,
-	0.f, 0.f
+	1.f, 1.f,
+	0.f, 1.f
 };
 
 
