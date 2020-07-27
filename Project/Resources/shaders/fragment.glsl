@@ -1,10 +1,12 @@
 #version 400 core
 
-in vec2     pass_texture_coordinates;
+in vec2     		pass_texture_coordinates;
 
-out vec4	color;
+out vec4			color;
+
+uniform sampler2D	uniform_texture;
 
 void		main()
 {
-	color = vec4(1, 1, 1, 1);
+	color = texture(uniform_texture, pass_texture_coordinates);
 }
