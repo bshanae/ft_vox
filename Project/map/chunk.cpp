@@ -4,49 +4,92 @@
 #include "map/model.h"
 #include "renderer/renderer.h"
 
-static float			front[] = {
+static vector<GLfloat>	front_vertices = {
 	+0.5f, +0.5f, +0.5f,
 	-0.5f, +0.5f, +0.5f,
 	-0.5f, -0.5f, +0.5f,
 	+0.5f, -0.5f, +0.5f
 };
 
-static float			back[] = {
+static vector<GLfloat>	front_texture_coordinates = {
+	1.f, 1.f,
+	0.f, 1.f,
+	0.f, 0.f,
+	1.f, 0.f,
+};
+
+static vector<GLfloat>	back_vertices = {
 	+0.5f, +0.5f, -0.5f,
 	+0.5f, -0.5f, -0.5f,
 	-0.5f, -0.5f, -0.5f,
 	-0.5f, +0.5f, -0.5f
 };
 
-static float			top[] = {
+static vector<GLfloat>	back_texture_coordinates = {
+	1.f, 1.f,
+	1.f, 0.f,
+	0.f, 0.f,
+	0.f, 1.f,
+};
+
+static vector<GLfloat>	top_vertices = {
 	-0.5f, +0.5f, +0.5f,
 	+0.5f, +0.5f, +0.5f,
 	+0.5f, +0.5f, -0.5f,
 	-0.5f, +0.5f, -0.5f
 };
 
-static float			bottom[] = {
+static vector<GLfloat>	top_texture_coordinates = {
+	0.f, 0.f,
+	1.f, 0.f,
+	1.f, 1.f,
+	0.f, 1.f,
+};
+
+static vector<GLfloat>	bottom_vertices = {
 	-0.5f, -0.5f, +0.5f,
 	-0.5f, -0.5f, -0.5f,
 	+0.5f, -0.5f, -0.5f,
 	+0.5f, -0.5f, +0.5f
 };
 
-static float			right[] = {
+static vector<GLfloat>	bottom_texture_coordinates = {
+	0.f, 0.f,
+	0.f, 1.f,
+	1.f, 1.f,
+	1.f, 0.f,
+};
+
+static vector<GLfloat>	right_vertices = {
 	+0.5f, +0.5f, +0.5f,
 	+0.5f, -0.5f, +0.5f,
 	+0.5f, -0.5f, -0.5f,
 	+0.5f, +0.5f, -0.5f
 };
 
-static float			left[] = {
+static vector<GLfloat>	right_texture_coordinates = {
+	0.f, 1.f,
+	0.f, 0.f,
+	1.f, 0.f,
+	1.f, 1.f,
+};
+
+static vector<GLfloat>	left_vertices = {
 	-0.5f, -0.5f, -0.5f,
 	-0.5f, -0.5f, +0.5f,
 	-0.5f, +0.5f, +0.5f,
 	-0.5f, +0.5f, -0.5f,
 };
 
-static GLuint			indices[] =
+static vector<GLfloat>	left_texture_coordinates = {
+	0.f, 1.f,
+	1.f, 1.f,
+	1.f, 0.f,
+	0.f, 0.f
+};
+
+
+static vector<GLuint>	indices =
 {
 	0, 1, 3,
 	1, 2, 3
@@ -54,6 +97,9 @@ static GLuint			indices[] =
 
 						chunk::chunk()
 {
+	for (auto iterator : *this)
+		iterator->get_value().type = block::type::dirt;
+
 	build_model();
 }
 
@@ -64,19 +110,14 @@ void					chunk::render()
 
 void					chunk::build_model()
 {
-	index				index;
-
-	for (index.x = 0; index.x < 4; index.x++)
-		for (index.z = 0; index.z < 4; index.z++)
-			at(index).type = block::type::dirt;
-
 	this->vertices.clear();
+	this->texture_coordinates.clear();
 	this->indices.clear();
 
 	for (auto &iterator : *this)
 		build_block(iterator->get_index());
 
-	model = make_shared<::model>(this->vertices, this->indices);
+	model = make_shared<::model>(this->vertices, this->texture_coordinates, this->indices);
 }
 
 void					chunk::build_block(const index &index)
@@ -93,6 +134,7 @@ void					chunk::build_block(const index &index)
 
 	if (at(index).empty())
 		return ;
+
 	for (int axis = (int)axis::x; axis <= (int)axis::z; axis++)
 	{
 		try_build_quad((::axis)axis, sign::minus);
@@ -103,30 +145,48 @@ void					chunk::build_block(const index &index)
 void					chunk::build_quad(axis axis, sign sign, const index &index)
 {
 	if (axis == axis::x and sign == sign::plus)
-		vertices.insert(vertices.end(), right, right + 12);
+	{
+		append_to_vector(vertices, right_vertices);
+		append_to_vector(texture_coordinates, right_texture_coordinates);
+	}
 	else if (axis == axis::x and sign == sign::minus)
-		vertices.insert(vertices.end(), left, left + 12);
+	{
+		append_to_vector(vertices, left_vertices);
+		append_to_vector(texture_coordinates, left_texture_coordinates);
+	}
 	else if (axis == axis::y and sign == sign::plus)
-		vertices.insert(vertices.end(), top, top + 12);
+	{
+		append_to_vector(vertices, top_vertices);
+		append_to_vector(texture_coordinates, top_texture_coordinates);
+	}
 	else if (axis == axis::y and sign == sign::minus)
-		vertices.insert(vertices.end(), bottom, bottom + 12);
+	{
+		append_to_vector(vertices, bottom_vertices);
+		append_to_vector(texture_coordinates, bottom_texture_coordinates);
+	}
 	else if (axis == axis::z and sign == sign::plus)
-		vertices.insert(vertices.end(), front, front + 12);
+	{
+		append_to_vector(vertices, front_vertices);
+		append_to_vector(texture_coordinates, front_texture_coordinates);
+	}
 	else if (axis == axis::z and sign == sign::minus)
-		vertices.insert(vertices.end(), back, back + 12);
+	{
+		append_to_vector(vertices, back_vertices);
+		append_to_vector(texture_coordinates, back_texture_coordinates);
+	}
 	else
 		assert(false and "Can't build quad");
 
-	for (int i = vertices.size() - 12; i < (int)vertices.size(); i += 3)
+	for (int i = (int)vertices.size() - 12; i < (int)vertices.size(); i += 3)
 	{
-		vertices[i + 0] += index.x;
-		vertices[i + 1] += index.y;
-		vertices[i + 2] += index.z;
+		vertices[i + 0] += (float)index.x;
+		vertices[i + 1] += (float)index.y;
+		vertices[i + 2] += (float)index.z;
 	}
 
-	const int			offset = this->indices.size() / 6 * 4;
+	const int			offset = (int)this->indices.size() / 6 * 4;
 
-	this->indices.insert(indices.end(), ::indices, ::indices + 6);
-	for (int i = this->indices.size() - 6; i < (int)this->indices.size(); i++)
+	append_to_vector(indices, ::indices);
+	for (int i = (int)this->indices.size() - 6; i < (int)this->indices.size(); i++)
 		this->indices[i] += offset;
 }

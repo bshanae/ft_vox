@@ -20,8 +20,6 @@ public :
 	[[nodiscard]]
 	static mat4				get_projection_matrix()
 	{
-		auto 				test = instance();
-
 		return(instance()->projection_matrix);
 	}
 

@@ -53,9 +53,10 @@ set(SOURCE_FILES
 
 	Project/camera/camera.cpp
 
-	Project/map/map.cpp
-    Project/map/chunk.cpp
+	Project/map/texture.cpp
     Project/map/model.cpp
+	Project/map/map.cpp
+	Project/map/chunk.cpp
 
 	Project/renderer/renderer.cpp
 
