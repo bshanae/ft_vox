@@ -65,8 +65,11 @@ set(SOURCE_FILES
 
 	Project/loader/loader.cpp
 	Project/loader/file.cpp
-
+    Project/map/biomes/biome.cpp
+    Project/map/biomes/plain.cpp
 	Project/main.cpp)
+
+
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)
 include_directories(
