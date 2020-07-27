@@ -177,6 +177,25 @@ public :
 			}
 		}
 
+		index					reflect() const
+		{
+			index				result = *this;
+
+			auto 				reflect_component = [](int &component, const int &bound)
+			{
+				if (component < 0)
+					component = bound - 1;
+				else if (component >= bound)
+					component = 0;
+			};
+
+			reflect_component(result.x, size_x);
+			reflect_component(result.y, size_y);
+			reflect_component(result.z, size_z);
+
+			return (result);
+		}
+
 	private :
 
 		void					increase()

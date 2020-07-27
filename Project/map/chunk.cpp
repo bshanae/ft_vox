@@ -100,12 +100,15 @@ static vector<GLuint>	indices =
 {
 	for (auto iterator : *this)
 		iterator->get_value().type_value = block::type::dirt;
-
-	build_model();
 }
 
 void					chunk::render()
 {
+	if (not is_model_built)
+	{
+		is_model_built = true;
+		build_model();
+	}
 	renderer::render(*this);
 }
 
@@ -123,12 +126,21 @@ void					chunk::build_model()
 
 void					chunk::build_block(const index &index)
 {
-	auto 				try_build_quad = [this, index](axis axis, sign sign)
+	auto 				this_pointer = dynamic_pointer_cast<chunk>(shared_from_this());
+	auto 				try_build_quad = [this, this_pointer, index](axis axis, sign sign)
 	{
 		auto			neighbor = index.neighbor((::axis)axis, (::sign)sign);
 
 		if (not neighbor)
-			build_quad((::axis)axis, (::sign)sign, index);
+		{
+			auto 		neighbor_chunk = neighbor_provider ? neighbor_provider(this_pointer, axis, sign) : nullptr;
+			auto		reflected = neighbor.reflect();
+
+			if (neighbor_chunk and not neighbor_chunk->at(reflected).empty())
+				;
+			else
+				build_quad((::axis)axis, (::sign)sign, index);
+		}
 		else if (at(neighbor).empty())
 			build_quad((::axis)axis, (::sign)sign, index);
 	};

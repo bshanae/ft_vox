@@ -37,6 +37,7 @@ using 				std::enable_shared_from_this;
 #include <iostream>
 #include <filesystem>
 #include <iterator>
+#include <functional>
 
 using				std::cerr;
 using				std::cout;
@@ -46,6 +47,7 @@ using				std::filesystem::path;
 using				std::ifstream;
 using				std::stringstream;
 using				std::input_iterator_tag;
+using				std::function;
 
 // ---------------- Other functions
 
