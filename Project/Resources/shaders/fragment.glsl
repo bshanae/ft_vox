@@ -1,10 +1,10 @@
 #version 400 core
 
-out vec4    color;
-in vec4     pass_position;
+in vec2     pass_texture_coordinates;
 
-void        main()
+out vec4	color;
+
+void		main()
 {
-    color = vec4(1, 1, 1, 1);
+	color = vec4(1, 1, 1, 1);
 }
-
