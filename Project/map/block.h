@@ -12,18 +12,19 @@ public :
 		dirt
 	};
 
-	explicit		block(type type = type::air) : type(type)
+	explicit		block(type type = type::air) : type_value(type)
 					{}
 					~block() = default;
 
 	[[nodiscard]]
 	bool			empty() const
 	{
-		return (type == type::air);
+		return (type_value == type::air);
 	}
 
 private :
 
-	type			type = type::air;
+	type			type_value = type::air;
+
 	int				health = 0;
 };

@@ -8,7 +8,7 @@
 #include "map/block.h"
 
 #warning "Create settings module"
-static constexpr int	chunk_size[3] = {1, 1, 1};
+static constexpr int	chunk_size[3] = {4, 4, 4};
 
 
 class					chunk :

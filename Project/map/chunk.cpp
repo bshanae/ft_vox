@@ -3,6 +3,7 @@
 #include "common/aliases.h"
 #include "map/model.h"
 #include "renderer/renderer.h"
+#include "map/texture_atlas.h"
 
 static vector<GLfloat>	front_vertices = {
 	+0.5f, +0.5f, +0.5f,
@@ -98,7 +99,7 @@ static vector<GLuint>	indices =
 						chunk::chunk()
 {
 	for (auto iterator : *this)
-		iterator->get_value().type = block::type::dirt;
+		iterator->get_value().type_value = block::type::dirt;
 
 	build_model();
 }
@@ -183,6 +184,18 @@ void					chunk::build_quad(axis axis, sign sign, const index &index)
 		vertices[i + 1] += (float)index.y;
 		vertices[i + 2] += (float)index.z;
 	}
+
+	auto				transform_texture_coordinate = [](float &x, float &y)
+	{
+		vec2 			size = texture_atlas::get_texture_size();
+		vec2			position = texture_atlas::get_texture_position(block::type::dirt);
+
+		x = position.x + size.x * x;
+		y = position.y + size.y * y;
+	};
+
+	for (int i = (int)texture_coordinates.size() - 8; i < (int)texture_coordinates.size(); i += 2)
+		transform_texture_coordinate(texture_coordinates[i + 0], texture_coordinates[i + 1]);
 
 	const int			offset = (int)this->indices.size() / 6 * 4;
 

@@ -28,9 +28,8 @@ private :
 
 	static
 	inline
-	constexpr int	size[3] = {1, 1, 1};
+	constexpr int	size[3] = {4, 1, 4};
 
-#warning "Don't use pointers?"
 	using			chunks_type = array3<shared_ptr<chunk>, size[2], size[1], size[0]>;
 	chunks_type		chunks;
 };

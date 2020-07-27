@@ -13,7 +13,7 @@ public :
 							camera();
 							~camera() override = default;
 
-	static inline float		near_plane = 0.f;
+	static inline float		near_plane = 0.5f;
 	static inline float		far_plane = 1000.f;
 	static inline float 	fov = 30.f;
 
