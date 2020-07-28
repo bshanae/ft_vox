@@ -1,9 +1,9 @@
 #include "map.h"
 
-static const vec3		left = vec3(-chunk_size[0], 0.f, 0.f);
-static const vec3		right = vec3(+chunk_size[0], 0.f, 0.f);
-static const vec3		forward = vec3(0.f, 0.f, chunk_size[2]);
-static const vec3		back = vec3(0.f, 0.f, -chunk_size[2]);
+static const vec3		left = vec3(-chunk_settings::size[0], 0.f, 0.f);
+static const vec3		right = vec3(+chunk_settings::size[0], 0.f, 0.f);
+static const vec3		forward = vec3(0.f, 0.f, chunk_settings::size[2]);
+static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
 						map::map()
 {
