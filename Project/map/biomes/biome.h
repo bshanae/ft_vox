@@ -1,9 +1,11 @@
 #pragma once
 class biome
 {
- 	static constexpr int frequency = 0.01f;
- 	static constexpr  int octaves = 3;
+public:
+	float frequency = 0.014f;
+	int octaves = 3;
 
-
+	biome() = default;
+	~biome() = default;
 
 };

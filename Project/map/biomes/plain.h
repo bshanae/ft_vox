@@ -2,7 +2,13 @@
 #include "map/biomes/biome.h"
 class plain : public biome
 {
-	static constexpr int frequency = 0.01f;
-	static constexpr  int octaves = 3;
+public:
+	plain()
+			: biome()
+	{
+		frequency = 0.15f;
+		octaves = 3;
+	}
+	~plain() = default;
 
 };
