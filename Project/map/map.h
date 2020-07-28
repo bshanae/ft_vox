@@ -5,25 +5,40 @@
 #include "application/unique_object.h"
 #include "map/chunk.h"
 
-static
-inline
-constexpr int			map_size[3] = {4, 1, 4};
+struct							map_settings
+{
+	static inline float			visibility_limit = 40.f;
+	static inline float			cashing_limit = 40.f;
+};
 
-class					map :
-							public array3<shared_ptr<chunk>, map_size[2], map_size[1], map_size[0]>,
-							public unique_object<map>
+class							map : public unique_object<map>
 {
 public :
-						map();
-						~map() override = default;
+								map();
+								~map() override = default;
 private :
 
-	using 				index_map_type = std::map<shared_ptr<chunk>, index>;
-	index_map_type		index_map;
+	struct						vec3_comparator
+	{
+		bool					operator () (const vec3& left, const vec3 &right) const
+		{
+			return (left.x < right.x or (left.x == right.x and (left.y < right.y or (left.y == right.y and left.z < right.z))));
+		}
+	};
+
+	vec3						position = vec3(0.f);
+
+	using 						chunks_type = std::map<vec3, shared_ptr<chunk>, vec3_comparator>;
+	chunks_type					chunks;
+
+	void						early_update() override;
 
 	static
-	shared_ptr<chunk>	provide_neighbor_chunk(
-						const shared_ptr<chunk> &main,
-						axis axis,
-						sign sign);
+	shared_ptr<chunk>			provide_neighbor_chunk(
+									const shared_ptr<chunk> &main,
+									axis axis,
+									sign sign);
+
+	void						create_chunk_if_needed(const vec3 &position);
+	void						destroy_chunk_if_needed(const shared_ptr<chunk> &chunk);
 };

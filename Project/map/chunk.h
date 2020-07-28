@@ -8,14 +8,15 @@
 
 #include "map/block.h"
 
-#warning "Create settings module"
-static constexpr int		chunk_size[3] = {4, 4, 4};
-
+struct						chunk_settings
+{
+	static constexpr int	size[3] = {4, 4, 4};
+};
 
 class						chunk :
 								public object,
 								public model,
-								private array3<block, chunk_size[0], chunk_size[1], chunk_size[2]>
+								private array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>
 {
 	friend class			chunk_generator;
 	friend class 			map;
@@ -23,21 +24,31 @@ class						chunk :
 
 public :
 
-	using					index = array3<block, chunk_size[0], chunk_size[1], chunk_size[2]>::index;
+	using					index = array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>::index;
 
 							chunk();
 							~chunk() override = default;
 
+	explicit				chunk(const vec3 &position);
+
+	template				<typename ...args_type>
 	static
-	shared_ptr<chunk>		create()
+	shared_ptr<chunk>		create(args_type &&...args)
 	{
-		auto				chunk = make_shared<class chunk>();
+		auto				chunk = make_shared<class chunk>(args...);
 
 		chunk->link_to_application();
 		return (chunk);
 	}
 
+	[[nodiscard]] vec3		get_position()
+	{
+		return (position);
+	}
+
 private :
+
+	vec3 					position = vec3(0);
 
 	shared_ptr<model>		model;
 

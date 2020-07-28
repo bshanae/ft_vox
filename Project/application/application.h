@@ -24,6 +24,9 @@ private :
 	void						process_creating();
 	void						process_destroying();
 
+	[[deprecated]]
+	void						process_early_updating();
+
 	void						process_updating();
 	void						process_rendering();
 

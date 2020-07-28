@@ -5,13 +5,15 @@
 
 #include "map/chunk.h"
 
-class						chunk_generator
+class							chunk_generator
 {
 public :
+								chunk_generator() = default;
+	virtual						~chunk_generator() = default;
 
 	[[nodiscard]]
 	static
-	block					get_block(const vec3 &position)
+	block						get_block(const vec3 &position)
 	{
 		assert(pointer != nullptr and "Can't generate chunk");
 		return (pointer->get_block_implementation(position));

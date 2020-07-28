@@ -25,3 +25,4 @@ using				glm::eulerAngleYXZ;
 
 using 				glm::value_ptr;
 using				glm::radians;
+using 				glm::distance;

@@ -13,9 +13,11 @@ using				std::is_base_of;
 #include <map>
 #include <array>
 #include <vector>
+#include <queue>
 
 using				std::vector;
 using				std::array;
+using				std::queue;
 
 // ---------------- Pointers
 
@@ -38,6 +40,8 @@ using 				std::enable_shared_from_this;
 #include <filesystem>
 #include <iterator>
 #include <functional>
+#include <optional>
+#include <limits>
 
 using				std::cerr;
 using				std::cout;
@@ -48,6 +52,8 @@ using				std::ifstream;
 using				std::stringstream;
 using				std::input_iterator_tag;
 using				std::function;
+using				std::optional;
+using				std::numeric_limits;
 
 // ---------------- Other functions
 

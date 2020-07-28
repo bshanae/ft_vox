@@ -16,6 +16,7 @@ void			application::execute()
 	while (not window::closed())
 	{
 		instance->process_input();
+		instance->process_early_updating();
 		instance->process_creating();
 		instance->process_destroying();
 		instance->process_updating();
@@ -49,6 +50,14 @@ void			application::process_creating()
 void			application::process_destroying()
 {
 
+}
+
+void			application::process_early_updating()
+{
+	auto 		copy = objects;
+
+	for (auto &object : copy)
+		object->early_update();
 }
 
 void			application::process_updating()

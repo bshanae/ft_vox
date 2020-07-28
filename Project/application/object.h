@@ -27,6 +27,9 @@ protected :
 	virtual void 			render()
 	{}
 
+	[[deprecated]]
+	virtual void 			early_update()
+	{}
 	virtual void 			update()
 	{}
 

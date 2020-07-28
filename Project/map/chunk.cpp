@@ -102,6 +102,12 @@ static vector<GLuint>	indices =
 		iterator->get_value().type_value = block::type::dirt;
 }
 
+						chunk::chunk(const vec3 &position) : chunk()
+{
+	this->position = position;
+	model::set_translation(vec3(position.x, position.y, position.z));
+}
+
 void					chunk::render()
 {
 	if (not is_model_built)
