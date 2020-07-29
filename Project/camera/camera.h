@@ -13,6 +13,8 @@ struct						camera_settings
 	static inline float		near_plane = 0.5f;
 	static inline float		far_plane = 1000.f;
 	static inline float 	fov = 30.f;
+
+	static inline vec3		initial_position = vec3(0.f, 5.0f, 0.f);
 };
 
 class						camera : public unique_object<camera>
@@ -49,7 +51,7 @@ private :
 	vec3					up = up_const;
 	vec3					right = vec3(1.f, 0.f, 0.f);
 
-	vec3					position = vec3(0.f, 0.0f, 15.f);
+	vec3					position = camera_settings::initial_position;
 
 	float					yaw = -90.f;
 	float					pitch = 0.f;

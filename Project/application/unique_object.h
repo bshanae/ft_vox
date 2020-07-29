@@ -17,16 +17,15 @@ public :
 	static
 	shared_ptr<unique_object>		create()
 	{
-		if constexpr (not std::is_base_of<unique_object<final_type>, final_type>::value)
+		if constexpr (not is_base_of<unique_object<final_type>, final_type>::value)
 			assert(false and "Bad usage of unique object");
 
 		shared_ptr<unique_object>	object;
 
 		global<final_type>::initialize();
 		object = global<final_type>::instance();
-		object->link_to_application();
+		create_internal(object);
 		pointer = dynamic_pointer_cast<final_type>(object);
-		auto test = pointer;
 		return (object);
 	}
 

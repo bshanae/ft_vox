@@ -7,21 +7,25 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
 						map::map()
 {
+	chunk::neighbor_provider = &map::provide_neighbor_chunk;
+}
+
+void					map::start()
+{
 	create_chunk_if_needed(vec3(0));
 	create_chunk_if_needed(left);
 	create_chunk_if_needed(right);
 	create_chunk_if_needed(forward);
 	create_chunk_if_needed(back);
-	chunk::neighbor_provider = &map::provide_neighbor_chunk;
 }
 
 #include "camera/camera.h"
 
-void					map::early_update()
+void					map::update()
 {
 #warning "This should be done by player"
-	position.x = camera::get_position().x;
-	position.z = camera::get_position().z;
+	pivot.x = camera::get_position().x;
+	pivot.z = camera::get_position().z;
 
 	for (auto [position, chunk] : chunks)
 	{
@@ -29,6 +33,8 @@ void					map::early_update()
 		create_chunk_if_needed(position + right);
 		create_chunk_if_needed(position + forward);
 		create_chunk_if_needed(position + back);
+
+		destroy_chunk_if_needed(chunk);
 	}
 }
 
@@ -58,7 +64,7 @@ shared_ptr<chunk>		map::provide_neighbor_chunk(
 
 void					map::create_chunk_if_needed(const vec3 &position)
 {
-	if (distance(this->position, position) >= map_settings::cashing_limit)
+	if (distance(this->pivot, position) >= map_settings::cashing_limit)
 		return ;
 	if (auto iterator = chunks.find(position); iterator != chunks.end())
 		return ;
@@ -68,6 +74,9 @@ void					map::create_chunk_if_needed(const vec3 &position)
 
 void					map::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 {
-	if (distance(this->position, position) >= map_settings::cashing_limit)
-		;// destroy
+	if (distance(this->pivot, chunk->position) >= map_settings::cashing_limit)
+	{
+		chunks.erase(chunk->position);
+		chunk->destroy();
+	}
 }

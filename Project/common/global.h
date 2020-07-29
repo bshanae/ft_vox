@@ -1,6 +1,6 @@
 #pragma once
 
-#include <memory>
+#include "common/aliases.h"
 
 template						<typename final_type>
 class							global
@@ -12,12 +12,12 @@ public :
 	template					<typename ...args_type>
 	static void					initialize(args_type ...args)
 	{
-		if constexpr (not std::is_base_of<global<final_type>, final_type>::value)
+		if constexpr (not is_base_of<global<final_type>, final_type>::value)
 			assert(false and "Bad usage of global class");
 
 		assert(pointer == nullptr and "Global instance is already initialized");
-		pointer = std::make_shared<final_type>(args...);
-		std::static_pointer_cast<global>(pointer)->initializer(pointer);
+		pointer = make_shared<final_type>(args...);
+		static_pointer_cast<global>(pointer)->initializer(pointer);
 	}
 
 protected :
@@ -28,12 +28,12 @@ protected :
 		return (pointer);
 	}
 
-	virtual void				initializer(std::shared_ptr<final_type>)
+	virtual void				initializer(shared_ptr<final_type>)
 	{}
 
 private :
 
 	static
 	inline
-	std::shared_ptr<final_type>	pointer;
+	shared_ptr<final_type>	pointer;
 };

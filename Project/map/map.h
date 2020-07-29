@@ -26,12 +26,13 @@ private :
 		}
 	};
 
-	vec3						position = vec3(0.f);
+	vec3						pivot = vec3(0.f);
 
 	using 						chunks_type = std::map<vec3, shared_ptr<chunk>, vec3_comparator>;
 	chunks_type					chunks;
 
-	void						early_update() override;
+	void						start() override;
+	void						update() override;
 
 	static
 	shared_ptr<chunk>			provide_neighbor_chunk(

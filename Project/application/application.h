@@ -7,6 +7,11 @@
 class 							window;
 class 							object;
 
+struct							application_settings
+{
+	static inline vec3			background = vec3(0.2f);
+};
+
 class 							application final : public global<application>
 {
 public :
@@ -18,18 +23,16 @@ public :
 private :
 
 	vector<shared_ptr<object>>	objects;
+	vector<shared_ptr<object>>	new_objects;
 
 	void						process_input();
 
 	void						process_creating();
 	void						process_destroying();
 
-	[[deprecated]]
-	void						process_early_updating();
-
 	void						process_updating();
 	void						process_rendering();
 
-	friend void 				object::link_to_application();
+	friend void					object::connect_to_application();
 };
 

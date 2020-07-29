@@ -3,35 +3,36 @@
 #include "common/OpenGL.h"
 #include "common/aliases.h"
 
-class						object : public enable_shared_from_this<object>
+class							object : public enable_shared_from_this<object>
 {
-	friend class 			application;
+	friend class 				application;
 
 public :
 
-							object() = default;
-	virtual					~object() = default;
+								object() = default;
+	virtual						~object() = default;
 
-	static
-	shared_ptr<object>		create()
-	{
-		shared_ptr<object>	object;
-
-		object = make_shared<class object>();
-		object->link_to_application();
-		return (object);
-	}
+	static shared_ptr<object>	create();
+	void 						destroy();
 
 protected :
 
-	virtual void 			render()
-	{}
+	static void					create_internal(const shared_ptr<object> &object);
 
-	[[deprecated]]
-	virtual void 			early_update()
-	{}
-	virtual void 			update()
-	{}
+	virtual void 				start() {}
+	virtual void 				finish() {}
+	virtual void 				render() {}
+	virtual void 				update() {}
 
-	void	 				link_to_application();
+private :
+
+	enum class 					state
+	{
+		undefined,
+		just_created,
+		normal,
+		should_be_destroyed
+	}							state = state::undefined;
+
+	void						connect_to_application();
 };

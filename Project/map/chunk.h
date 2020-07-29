@@ -37,7 +37,7 @@ public :
 	{
 		auto				chunk = make_shared<class chunk>(args...);
 
-		chunk->link_to_application();
+		create_internal(chunk);
 		return (chunk);
 	}
 
@@ -56,6 +56,7 @@ private :
 	vector<GLfloat>			texture_coordinates;
 	vector<GLuint>			indices;
 
+	void					start() override;
 	void					render() override;
 
 	void					build_model();
@@ -72,7 +73,4 @@ private :
 	static
 	inline
 	neighbor_provider_type	neighbor_provider = nullptr;
-
-#warning "Use creation method"
-	bool					is_model_built = false;
 };

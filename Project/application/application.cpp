@@ -16,7 +16,6 @@ void			application::execute()
 	while (not window::closed())
 	{
 		instance->process_input();
-		instance->process_early_updating();
 		instance->process_creating();
 		instance->process_destroying();
 		instance->process_updating();
@@ -25,11 +24,6 @@ void			application::execute()
 }
 
 void			application::process_input()
-{
-
-}
-
-void			application::process_creating()
 {
 	static bool	empty_polygons = false;
 
@@ -47,17 +41,31 @@ void			application::process_creating()
 	}
 }
 
-void			application::process_destroying()
+void			application::process_creating()
 {
+	objects.insert(objects.end(), new_objects.begin(), new_objects.end());
+	new_objects.clear();
 
+	for (auto &object : objects)
+	{
+		if (object->state == object::state::just_created)
+		{
+			object->start();
+			object->state = object::state::normal;
+		}
+	}
 }
 
-void			application::process_early_updating()
+void			application::process_destroying()
 {
-	auto 		copy = objects;
-
-	for (auto &object : copy)
-		object->early_update();
+	for (auto iterator = objects.begin(); iterator != objects.end(); )
+		if ((*iterator)->state == object::state::should_be_destroyed)
+		{
+			(*iterator)->finish();
+			iterator = objects.erase(iterator);
+		}
+		else
+			++iterator;
 }
 
 void			application::process_updating()
@@ -68,7 +76,9 @@ void			application::process_updating()
 
 void			application::process_rendering()
 {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	auto 		&background = application_settings::background;
+
+	glClearColor(background.x, background.y, background.z, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 

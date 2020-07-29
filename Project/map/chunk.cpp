@@ -108,13 +108,13 @@ static vector<GLuint>	indices =
 	model::set_translation(vec3(position.x, position.y, position.z));
 }
 
+void					chunk::start()
+{
+	build_model();
+}
+
 void					chunk::render()
 {
-	if (not is_model_built)
-	{
-		is_model_built = true;
-		build_model();
-	}
 	renderer::render(*this);
 }
 
