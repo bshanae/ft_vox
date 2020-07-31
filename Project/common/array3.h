@@ -350,14 +350,17 @@ public :
 			return (data != that.data or index != that.index);
 		}
 
-#warning "Use cast"
-		auto					&get_value() const
+		auto					&value()
 		{
 			return ((*data)[index.x][index.y][index.z]);
 		}
 
-#warning "Use cast"
-		const index				&get_index() const
+		const auto				&value() const
+		{
+			return ((*data)[index.x][index.y][index.z]);
+		}
+
+								operator index () const
 		{
 			return (index);
 		}
@@ -433,12 +436,12 @@ public :
 			return (data != that.data or index != that.index);
 		}
 
-		const auto				&get_value() const
+		const auto				&value() const
 		{
 			return ((*data)[index.x][index.y][index.z]);
 		}
 
-		const index				&get_index() const
+		operator index () const
 		{
 			return (index);
 		}

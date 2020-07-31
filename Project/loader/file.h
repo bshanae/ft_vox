@@ -15,11 +15,57 @@ public :
 	void					close();
 
 	bool					is_empty();
-	bool					is_eof();
+	bool					is_good() const;
+	bool					is_fail() const;
+	bool					is_eof() const;
+
+							operator bool () const;
+
+	void 					clear();
+
+	template				<typename type = char>
+	class					ignore
+	{
+		friend class 		::file;
+
+	public :
+
+		explicit			ignore(int value = 1) : value(sizeof(type) * value) {}
+
+	private :
+
+		const int			value;
+	};
+
+	class					string
+	{
+		friend class 		::file;
+
+	public :
+
+		explicit			string(int requested_size) : requested_size(requested_size)
+		{
+			internal.reserve(requested_size);
+		}
+
+							operator std::string ()
+		{
+			return (internal);
+		}
+
+		friend file			&operator >> (file &file, string &value);
+
+	private :
+
+		const int			requested_size;
+		std::string 		internal;
+	};
 
 	friend file				&operator << (file &file, char value);
 	friend file				&operator << (file &file, int value);
 	friend file				&operator << (file &file, float value);
+	friend file				&operator << (file &file, const char *value);
+	friend file				&operator << (file &file, const std::string &value);
 	friend file				&operator << (file &file, const vec3 &value);
 
 	friend file				&operator >> (file &file, char &value);
@@ -27,46 +73,14 @@ public :
 	friend file				&operator >> (file &file, float &value);
 	friend file				&operator >> (file &file, vec3 &value);
 
-	template				<typename type = char>
-	class					ignore
-	{
-	public :
-
-		explicit			ignore(int value = 1)
-		{
-			this->value = sizeof(type) * value;
-		}
-
-		class				value : public property<int>
-		{
-			friend class 	file::ignore<type>;
-
-		private :
-
-			void			operator = (const int &value) override
-			{
-				this->value = value;
-			}
-
-		public :
-
-			operator int () const override
-			{
-				return (value);
-			}
-
-		private :
-
-			int				value;
-		}					value;
-	};
-
 	template				<typename type>
 	friend file				&operator >> (file &file, const ignore<type> &ignore)
 	{
 		file.stream.ignore(ignore.value);
 		return (file);
 	}
+
+	friend file				&operator >> (file &file, string &value);
 
 	enum class				label
 	{

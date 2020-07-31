@@ -10,11 +10,15 @@ struct						loader_settings
 
 	static
 	inline
-	const path				path_to_profile = "test.vox";
+	path					path_to_profile = "test.vox";
 
 private :
 
 	static inline int 		chunk_linear_size = chunk_settings::size[0] * chunk_settings::size[1] * chunk_settings::size[2];
+
+	static
+	inline
+	const string			header = "Vox";
 };
 
 /*
@@ -41,8 +45,8 @@ class						loader :
 								public global<loader>
 {
 public :
-							loader() : file(loader_settings::path_to_profile) {}
-							~loader() override = default;
+							loader();
+							~loader() override;
 private :
 
 	enum class 				chunk_state : char

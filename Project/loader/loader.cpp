@@ -1,14 +1,31 @@
 #include "loader.h"
 
+						loader::loader() : file(loader_settings::path_to_profile)
+{
+	file.open();
+	if (file.is_empty())
+		file << loader_settings::header;
+	else
+	{
+		file::string	test(loader_settings::header.size());
+
+		file >> test;
+		assert((string)test == loader_settings::header and "Profile has invalid format");
+	}
+}
+
+						loader::~loader()
+{
+	file.close();
+}
+
 void					loader::initializer(shared_ptr<loader> loader)
 {
 	static_assert(sizeof(block::type) == 1u and "Block type should be size of byte");
 	chunk_loader::pointer = static_pointer_cast<chunk_loader>(loader);
 }
 
-#warning "Need header"
-
-shared_ptr<chunk>		loader::download_implementation(const vec3 &world_position)
+shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
 {
 	int					pointer;
 	bool 				have_found_chunk = false;
@@ -16,7 +33,8 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &world_position)
 	chunk_state			test_state;
 	vec3				test_position;
 
-	file.open();
+	file.read_pointer = loader_settings::header.size();
+	file.write_pointer = loader_settings::header.size();
 
 	while (not file.is_eof())
 	{
@@ -25,10 +43,7 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &world_position)
 		file >> (char &)test_state;
 		file >> test_position;
 
-		cerr << "test state = " << (char)test_state << endl;
-		cerr << "test position = " << to_string(test_position) << endl << endl;
-
-		if (test_position == world_position)
+		if (test_position == position)
 		{
 			have_found_chunk = true;
 			break ;
@@ -37,23 +52,17 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &world_position)
 		file >> file::ignore(loader_settings::chunk_linear_size);
 	}
 
-	if (not have_found_chunk)
-	{
-		cerr << "Chunk not found" << endl;
-		return (nullptr);
-	}
+	assert(have_found_chunk and "Chunk not found");
 
 	shared_ptr<chunk>	chunk;
 
-	chunk = chunk::create(world_position);
+	chunk = chunk::create(position);
 	chunk_editor::use(chunk);
 	for (auto iterator = chunk_editor::begin(); iterator != chunk_editor::end(); iterator++)
 		file >> (char &)chunk_editor::at(iterator);
 
 	file.write_pointer = pointer;
 	file << (char)(chunk_state::invalid);
-
-	file.close();
 
 	return (chunk);
 }
@@ -65,30 +74,32 @@ void					loader::upload_implementation(const shared_ptr<chunk> &chunk)
 
 	chunk_state			state;
 
-	file.open();
+	file.read_pointer = loader_settings::header.size();
+	file.write_pointer = loader_settings::header.size();
 
-	if (not file.is_empty())
+	while (true)
 	{
-		while (not file.is_eof())
+		pointer = file.read_pointer;
+
+		if (not (file >> (char &)state))
+			break ;
+
+		file >> file::ignore<float>(3);
+		file >> file::ignore(loader_settings::chunk_linear_size);
+
+		if (state != chunk_state::valid)
 		{
-			pointer = file.read_pointer;
-
-			file >> (char &)state;
-			file >> file::ignore<float>(3);
-			file >> file::ignore(loader_settings::chunk_linear_size);
-
-			if (state != chunk_state::valid)
-			{
-				have_found_place_for_writing = true;
-				break;
-			}
+			have_found_place_for_writing = true;
+			break;
 		}
-
-		if (have_found_place_for_writing)
-			file.write_pointer = pointer;
-		else
-			file.write_pointer = file::label::end;
 	}
+
+	file.clear();
+
+	if (have_found_place_for_writing)
+		file.write_pointer = pointer;
+	else
+		file.write_pointer = file::label::end;
 
 	file << (char)chunk_state::valid;
 	file << chunk->get_position();
@@ -96,6 +107,4 @@ void					loader::upload_implementation(const shared_ptr<chunk> &chunk)
 	chunk_editor::use(chunk);
 	for (auto iterator = chunk_editor::begin(); iterator != chunk_editor::end(); iterator++)
 		file << (char)chunk_editor::at(iterator);
-
-	file.close();
 }

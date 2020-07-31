@@ -23,16 +23,13 @@ int						main()
 	{
 		auto left = chunk::create(vec3(-5, 10, -20));
 		auto right = chunk::create(vec3(5, 10, -20));
+		auto upper = chunk::create(vec3(5, 20, -20));
 
 		loader::upload(left);
 		loader::upload(right);
-
-		loader::download(vec3(-5, 10, -20));
-
-		auto upper = chunk::create(vec3(5, 20, -20));
-
 		loader::upload(upper);
 
+		loader::download(vec3(-5, 10, -20));
 		loader::download(vec3(5, 20, -20));
 
 		left->destroy();

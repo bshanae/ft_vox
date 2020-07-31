@@ -28,16 +28,28 @@ bool				file::is_empty()
 	return (result);
 }
 
-bool				file::is_eof()
+bool				file::is_good() const
 {
-	bool			result;
-
-	result = stream.eof();
-	if (result)
-		stream.clear();
-	return (result);
+	return (stream.good());
+}
+bool				file::is_fail() const
+{
+	return (stream.fail());
+}
+bool				file::is_eof() const
+{
+	return (stream.eof());
 }
 
+					file::operator bool () const
+{
+	return (is_good());
+}
+
+void 				file::clear()
+{
+	stream.clear();
+}
 
 file				&operator << (file &file, char value)
 {
@@ -54,6 +66,18 @@ file				&operator << (file &file, int value)
 file				&operator << (file &file, float value)
 {
 	file.stream.write(reinterpret_cast<char *>(&value), sizeof(float));
+	return (file);
+}
+
+file				&operator << (file &file, const char *value)
+{
+	file.stream.write(value, strlen(value));
+	return (file);
+}
+
+file				&operator << (file &file, const string &value)
+{
+	file.stream.write(value.c_str(), value.size());
 	return (file);
 }
 
@@ -78,6 +102,17 @@ file				&operator >> (file &file, int &value)
 file				&operator >> (file &file, float &value)
 {
 	file.stream.read(reinterpret_cast<char *>(&value), sizeof(float));
+	return (file);
+}
+
+file				&operator >> (file &file, file::string &value)
+{
+	char			buffer[value.requested_size + 1];
+
+	file.stream.read(buffer, value.requested_size);
+	buffer[value.requested_size] = '\0';
+
+	value.internal = std::string(buffer);
 	return (file);
 }
 
@@ -123,4 +158,6 @@ void				file::create_new()
 	stream.open(path, ios::out);
 	assert(stream.is_open() and "Can't open profile");
 	stream.close();
+
+	stream.open(path, ios::in | ios::out | ios::binary);
 }

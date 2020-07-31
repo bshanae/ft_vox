@@ -7,9 +7,9 @@ set(PROJECT_NAME Vox)
 project(${PROJECT_NAME})
 
 add_compile_options(
-    -g
-    -Wall
-    -Wextra
+#    -g
+#    -Wall
+#    -Wextra
 
     # -Wpedantic
     # -Wcast-align

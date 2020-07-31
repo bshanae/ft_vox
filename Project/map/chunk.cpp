@@ -102,7 +102,7 @@ static vector<GLuint>	indices =
 	model::set_translation(vec3(position.x, position.y, position.z));
 
 	for (auto iterator : *this)
-		iterator->get_value().type_value = block::type::dirt;
+		iterator.value().type_value = block::type::dirt;
 }
 
 void					chunk::start()
@@ -122,7 +122,7 @@ void					chunk::build_model()
 	this->indices.clear();
 
 	for (auto &iterator : *this)
-		build_block(iterator->get_index());
+		build_block(iterator);
 
 	model = make_shared<::model>(this->vertices, this->texture_coordinates, this->indices);
 }

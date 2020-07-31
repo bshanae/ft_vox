@@ -25,12 +25,12 @@ protected :
 		return (target->end());
 	}
 
-	block::type			&at(const chunk::iterator &iterator) const
+	block::type			&at(chunk::iterator &iterator) const
 	{
-		return (iterator.get_value().type_value);
+		return (iterator.value().type_value);
 	}
 
-	block::type			&at(const chunk::index &index) const
+	block::type			&at(chunk::index &index) const
 	{
 		return (target->at(index).type_value);
 	}
