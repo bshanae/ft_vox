@@ -2,8 +2,8 @@
 
 #include "common/aliases.h"
 #include "common/global.h"
-#include "generation/generator.h"
-#include "generation/plain_generator.h"
+#include "generator/generator.h"
+#include "generator/plain_generator.h"
 
 class						generator_controller : public global<generator_controller>
 {

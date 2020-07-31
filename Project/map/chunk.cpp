@@ -96,16 +96,13 @@ static vector<GLuint>	indices =
 	1, 2, 3
 };
 
-						chunk::chunk()
-{
-	for (auto iterator : *this)
-		iterator->get_value().type_value = block::type::dirt;
-}
-
-						chunk::chunk(const vec3 &position) : chunk()
+						chunk::chunk(const vec3 &position)
 {
 	this->position = position;
 	model::set_translation(vec3(position.x, position.y, position.z));
+
+	for (auto iterator : *this)
+		iterator->get_value().type_value = block::type::dirt;
 }
 
 void					chunk::start()

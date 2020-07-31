@@ -1,30 +1,29 @@
 #pragma once
 
-class				block
+class					block
 {
-	friend class 	chunk;
+	friend class 		chunk;
+	friend class 		chunk_editor;
 
 public :
 
-	enum class		type
+	enum class			type : char
 	{
 		air,
 		dirt
 	};
 
-	explicit		block(type type = type::air) : type_value(type)
-					{}
-					~block() = default;
+	explicit			block(type type = type::air) : type_value(type)
+						{}
+						~block() = default;
 
 	[[nodiscard]]
-	bool			empty() const
+	bool				empty() const
 	{
 		return (type_value == type::air);
 	}
 
 private :
 
-	type			type_value = type::air;
-
-	int				health = 0;
+	type				type_value = type::air;
 };

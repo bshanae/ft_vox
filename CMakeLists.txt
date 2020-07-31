@@ -60,8 +60,11 @@ set(SOURCE_FILES
 
 	Project/renderer/renderer.cpp
 
-    Project/generation/generator_controller.cpp
-    Project/generation/plain_generator.cpp
+	Project/generator/generator_controller.cpp
+	Project/generator/plain_generator.cpp
+
+	Project/loader/loader.cpp
+	Project/loader/file.cpp
 
 	Project/main.cpp)
 

@@ -18,7 +18,7 @@ class						chunk :
 								public model,
 								private array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>
 {
-	friend class			chunk_generator;
+	friend class			chunk_editor;
 	friend class 			map;
 	friend class 			renderer;
 
@@ -26,10 +26,10 @@ public :
 
 	using					index = array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>::index;
 
-							chunk();
-							~chunk() override = default;
+public :
 
 	explicit				chunk(const vec3 &position);
+							~chunk() override = default;
 
 	template				<typename ...args_type>
 	static

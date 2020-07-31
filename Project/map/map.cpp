@@ -12,7 +12,6 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
 void					map::start()
 {
-	create_chunk_if_needed(vec3(0));
 	create_chunk_if_needed(left);
 	create_chunk_if_needed(right);
 	create_chunk_if_needed(forward);

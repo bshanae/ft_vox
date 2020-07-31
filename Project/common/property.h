@@ -9,20 +9,9 @@ public:
 						property() = default;
 	virtual				~property() = default;
 
-	property(const type &value) : value(value)
-	{}
-
 protected :
 
-	virtual type		&operator = (const int &value)
-	{
-		return (this->value = value);
-	}
+	virtual void		operator = (const int &value) = 0;
 
-	virtual				operator type () const
-	{
-		return (value);
-	}
-
-	type				value;
+	virtual				operator type () const = 0;
 };

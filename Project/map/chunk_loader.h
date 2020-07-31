@@ -4,14 +4,14 @@
 #include "common/global.h"
 
 #include "map/chunk.h"
+#include "map/chunk_editor.h"
 
-class							chunk_loader
+class							chunk_loader : public chunk_editor
 {
 public :
 								chunk_loader() = default;
-	virtual						~chunk_loader() = default;
+								~chunk_loader() override = default;
 
-	[[nodiscard]]
 	static shared_ptr<chunk>	download(const vec3 &position)
 	{
 		assert(pointer != nullptr and "Can't download chunk");

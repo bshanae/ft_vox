@@ -350,11 +350,13 @@ public :
 			return (data != that.data or index != that.index);
 		}
 
+#warning "Use cast"
 		auto					&get_value() const
 		{
 			return ((*data)[index.x][index.y][index.z]);
 		}
 
+#warning "Use cast"
 		const index				&get_index() const
 		{
 			return (index);

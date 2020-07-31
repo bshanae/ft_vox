@@ -31,25 +31,33 @@ using 				std::static_pointer_cast;
 using 				std::dynamic_pointer_cast;
 using 				std::enable_shared_from_this;
 
-// ---------------- Other classes
+// ---------------- IO
 
 #include <string>
 #include <sstream>
 #include <fstream>
 #include <iostream>
-#include <filesystem>
-#include <iterator>
-#include <functional>
-#include <optional>
-#include <limits>
 
 using				std::cerr;
 using				std::cout;
 using				std::endl;
 using				std::string;
-using				std::filesystem::path;
+using				std::istream;
+using				std::ostream;
+using				std::fstream;
 using				std::ifstream;
+using				std::ofstream;
 using				std::stringstream;
+using				std::ios;
+
+// ---------------- Other classes
+
+#include <iterator>
+#include <functional>
+#include <optional>
+#include <limits>
+
+using				std::filesystem::path;
 using				std::input_iterator_tag;
 using				std::function;
 using				std::optional;

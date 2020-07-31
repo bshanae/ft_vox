@@ -9,7 +9,7 @@ class 							object;
 
 struct							application_settings
 {
-	static inline vec3			background = vec3(0.2f);
+	static inline vec3			background = vec3(0.8f);
 };
 
 class 							application final : public global<application>
