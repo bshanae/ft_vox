@@ -12,30 +12,14 @@ int						main()
 
 	texture_atlas::initialize("Project/resources/atlases/default.png");
 	texture_atlas::associate_texture_with_block(block::type::dirt, ivec2(2, 15));
+	texture_atlas::associate_texture_with_block(block::type::stone, ivec2(1, 15));
 
 	renderer::initialize();
 	generator_controller::initialize();
-	loader::initialize();
+	loader::initialize("test.vox");
 
 	camera::create();
 	map::create();
-
-	{
-		auto left = chunk::create(vec3(-5, 10, -20));
-		auto right = chunk::create(vec3(5, 10, -20));
-		auto upper = chunk::create(vec3(5, 20, -20));
-
-		loader::upload(left);
-		loader::upload(right);
-		loader::upload(upper);
-
-		loader::download(vec3(-5, 10, -20));
-		loader::download(vec3(5, 20, -20));
-
-		left->destroy();
-		right->destroy();
-
-	}
 
 	application::execute();
 	return (0);

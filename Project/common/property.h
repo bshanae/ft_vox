@@ -11,7 +11,7 @@ public:
 
 protected :
 
-	virtual void		operator = (const int &value) = 0;
+	virtual void		operator = (const type &value) = 0;
 
 	virtual				operator type () const = 0;
 };

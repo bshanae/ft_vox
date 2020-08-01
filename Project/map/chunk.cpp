@@ -122,7 +122,7 @@ void					chunk::build_model()
 	this->indices.clear();
 
 	for (auto &iterator : *this)
-		build_block(iterator);
+		build_block(iterator.index());
 
 	model = make_shared<::model>(this->vertices, this->texture_coordinates, this->indices);
 }
@@ -200,10 +200,12 @@ void					chunk::build_quad(axis axis, sign sign, const index &index)
 		vertices[i + 2] += (float)index.z;
 	}
 
-	auto				transform_texture_coordinate = [](float &x, float &y)
+	auto				transform_texture_coordinate = [this, index](float &x, float &y)
 	{
+		const auto 		type = at(index).type_value;
+
 		vec2 			size = texture_atlas::get_texture_size();
-		vec2			position = texture_atlas::get_texture_position(block::type::dirt);
+		vec2			position = texture_atlas::get_texture_position(type);
 
 		x = position.x + size.x * x;
 		y = position.y + size.y * y;

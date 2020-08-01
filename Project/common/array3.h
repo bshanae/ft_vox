@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/aliases.h"
+#include "common/property.h"
 
 enum class 						axis : int
 {
@@ -297,12 +298,12 @@ public :
 
 								iterator(const internal_pointer_type &data, const index &index) :
 									data(data),
-									index(index)
+									internal_index(index)
 								{}
 
 								iterator(const iterator &that) :
 									data(that.data),
-									index(that.index)
+									internal_index(that.internal_index)
 								{}
 
 		iterator				&operator = (const iterator& that)
@@ -320,13 +321,13 @@ public :
 		{
 			iterator			previous_state = *this;
 
-			index++;
+			internal_index++;
 			return (previous_state);
 		}
 
 		iterator				operator ++ (int)
 		{
-			index++;
+			internal_index++;
 			return (*this);
 		}
 
@@ -342,116 +343,34 @@ public :
 
 		bool					operator == (const iterator& that)
 		{
-			return (data == that.data and index == that.index);
+			return (data == that.data and internal_index == that.internal_index);
 		}
 
 		bool					operator != (const iterator& that)
 		{
-			return (data != that.data or index != that.index);
+			return (data != that.data or internal_index != that.internal_index);
 		}
 
 		auto					&value()
 		{
-			return ((*data)[index.x][index.y][index.z]);
+			return ((*data)[internal_index.x][internal_index.y][internal_index.z]);
 		}
 
 		const auto				&value() const
 		{
-			return ((*data)[index.x][index.y][index.z]);
+			return ((*data)[internal_index.x][internal_index.y][internal_index.z]);
 		}
 
-								operator index () const
+		index					&index()
 		{
-			return (index);
+			return (internal_index);
 		}
 
 	private:
 
 		internal_pointer_type	data;
-		index					index;
+		struct index			internal_index;
 	};
-
-	class						const_iterator
-	{
-	public:
-
-		using					value_type = iterator;
-		using					reference = iterator &;
-		using					pointer = iterator *;
-		using 					iterator_category = std::input_iterator_tag;
-		using 					difference_type = int;
-
-								const_iterator(const internal_pointer_type &data, const index &index) :
-										data(data),
-										index(index)
-								{}
-
-								const_iterator(const const_iterator &that) :
-										data(that.data),
-										index(that.index)
-								{}
-
-		const_iterator			&operator = (const const_iterator& that)
-		{
-			if (this != &that)
-			{
-				this->data = that.data;
-				this->index = that.index;
-			}
-
-			return (*this);
-		}
-
-		const_iterator			operator ++ ()
-		{
-			const_iterator		previous_state = *this;
-
-			index++;
-			return (previous_state);
-		}
-
-		const_iterator			operator ++ (int)
-		{
-			index++;
-			return (*this);
-		}
-
-		reference				operator * ()
-		{
-			return (*this);
-		}
-
-		pointer					operator -> ()
-		{
-			return (this);
-		}
-
-		bool					operator == (const const_iterator& that)
-		{
-			return (data == that.data and index == that.index);
-		}
-
-		bool					operator != (const const_iterator& that)
-		{
-			return (data != that.data or index != that.index);
-		}
-
-		const auto				&value() const
-		{
-			return ((*data)[index.x][index.y][index.z]);
-		}
-
-		operator index () const
-		{
-			return (index);
-		}
-
-	private:
-
-		internal_pointer_type	data;
-		index					index;
-	};
-
 
 	iterator					begin()
 	{

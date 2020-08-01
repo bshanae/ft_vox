@@ -1,5 +1,8 @@
 #include "map.h"
 
+#include "chunk_loader.h"
+#include "chunk_generator.h"
+
 static const vec3		left = vec3(-chunk_settings::size[0], 0.f, 0.f);
 static const vec3		right = vec3(+chunk_settings::size[0], 0.f, 0.f);
 static const vec3		forward = vec3(0.f, 0.f, chunk_settings::size[2]);
@@ -12,10 +15,17 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
 void					map::start()
 {
-	create_chunk_if_needed(left);
-	create_chunk_if_needed(right);
-	create_chunk_if_needed(forward);
-	create_chunk_if_needed(back);
+	create_chunk(vec3());
+	create_chunk(left);
+	create_chunk(right);
+	create_chunk(forward);
+	create_chunk(back);
+}
+
+void					map::finish()
+{
+	for (auto &iterator : chunks)
+		chunk_loader::upload(iterator.second);
 }
 
 #include "camera/camera.h"
@@ -68,14 +78,36 @@ void					map::create_chunk_if_needed(const vec3 &position)
 	if (auto iterator = chunks.find(position); iterator != chunks.end())
 		return ;
 
-	chunks[position] = chunk::create(position);
+	create_chunk(position);
 }
 
 void					map::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 {
 	if (distance(this->pivot, chunk->position) >= map_settings::cashing_limit)
+		destroy_chunk(chunk);
+}
+
+void					map::create_chunk(const vec3 &position)
+{
+	shared_ptr<chunk>	chunk;
+
+	if (not (chunk = chunk_loader::download(position)))
 	{
-		chunks.erase(chunk->position);
-		chunk->destroy();
+		chunk = chunk::create(position);
+		cout << "Creating new chunk on " << to_string(position) << endl;
 	}
+
+#warning "Generation module needed"
+//	if (not (chunk = chunk_loader::download(position)))
+//		chunk = chunk_generator::generate(position);
+
+	chunks[position] = chunk;
+}
+
+void					map::destroy_chunk(const shared_ptr<chunk> &chunk)
+{
+	cout << "Deleting chunk on " << to_string(chunk->get_position()) << endl;
+	chunk_loader::upload(chunk);
+	chunks.erase(chunk->position);
+	chunk->destroy();
 }

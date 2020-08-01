@@ -6,11 +6,7 @@
 
 struct						loader_settings
 {
-	friend class 			loader;
-
-	static
-	inline
-	path					path_to_profile = "test.vox";
+	friend class			loader;
 
 private :
 
@@ -45,7 +41,7 @@ class						loader :
 								public global<loader>
 {
 public :
-							loader();
+							loader(const path &path_to_profile);
 							~loader() override;
 private :
 

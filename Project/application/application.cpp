@@ -13,14 +13,19 @@ void			application::execute()
 {
 	auto		instance = global<application>::instance();
 
-	while (not window::closed())
+	do
 	{
 		instance->process_input();
+
+		if (window::closed())
+			for (auto &object : instance->objects)
+				object->destroy();
+
 		instance->process_creating();
 		instance->process_destroying();
 		instance->process_updating();
 		instance->process_rendering();
-	}
+	}  while (not window::closed());
 }
 
 void			application::process_input()

@@ -32,6 +32,8 @@ private :
 	chunks_type					chunks;
 
 	void						start() override;
+	void						finish() override;
+
 	void						update() override;
 
 	static
@@ -42,4 +44,7 @@ private :
 
 	void						create_chunk_if_needed(const vec3 &position);
 	void						destroy_chunk_if_needed(const shared_ptr<chunk> &chunk);
+
+	void						create_chunk(const vec3 &position);
+	void						destroy_chunk(const shared_ptr<chunk> &chunk);
 };

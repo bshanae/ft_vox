@@ -10,7 +10,8 @@ public :
 	enum class			type : char
 	{
 		air,
-		dirt
+		dirt,
+		stone
 	};
 
 	explicit			block(type type = type::air) : type_value(type)
