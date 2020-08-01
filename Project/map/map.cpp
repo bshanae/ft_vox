@@ -73,7 +73,7 @@ shared_ptr<chunk>		map::provide_neighbor_chunk(
 
 void					map::create_chunk_if_needed(const vec3 &position)
 {
-	if (distance(this->pivot, position) >= map_settings::cashing_limit)
+	if (distance(this->pivot, position + chunk_settings::size_as_vector / 2.f) >= map_settings::cashing_limit)
 		return ;
 	if (auto iterator = chunks.find(position); iterator != chunks.end())
 		return ;
@@ -83,7 +83,7 @@ void					map::create_chunk_if_needed(const vec3 &position)
 
 void					map::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 {
-	if (distance(this->pivot, chunk->position) >= map_settings::cashing_limit)
+	if (distance(this->pivot, chunk->center()) >= map_settings::cashing_limit)
 		destroy_chunk(chunk);
 }
 

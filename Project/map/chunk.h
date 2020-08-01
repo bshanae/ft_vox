@@ -10,7 +10,11 @@
 
 struct						chunk_settings
 {
-	static constexpr int	size[3] = {4, 4, 4};
+	static
+	constexpr int			size[3] = {4, 4, 4};
+
+	static inline
+	const vec3				size_as_vector = vec3(size[0], size[1], size[2]);
 };
 
 class						chunk :
@@ -45,6 +49,12 @@ public :
 	{
 		return (position);
 	}
+
+	[[nodiscard]] vec3		center()
+	{
+		return (position + chunk_settings::size_as_vector / 2.f);
+	}
+
 
 private :
 
