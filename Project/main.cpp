@@ -11,8 +11,13 @@ int						main()
 	application::initialize();
 
 	texture_atlas::initialize("Project/resources/atlases/default.png");
-	texture_atlas::associate_texture_with_block(block::type::dirt, ivec2(2, 15));
-	texture_atlas::associate_texture_with_block(block::type::stone, ivec2(1, 15));
+	texture_atlas::association_for(block::type::dirt) = ivec2(2, 15);
+	texture_atlas::association_for(block::type::dirt_with_grass).left = ivec2(3, 15);
+	texture_atlas::association_for(block::type::dirt_with_grass).right = ivec2(3, 15);
+	texture_atlas::association_for(block::type::dirt_with_grass).front = ivec2(3, 15);
+	texture_atlas::association_for(block::type::dirt_with_grass).back = ivec2(3, 15);
+	texture_atlas::association_for(block::type::dirt_with_grass).top = ivec2(12, 3);
+	texture_atlas::association_for(block::type::dirt_with_grass).bottom = ivec2(2, 15);
 
 	renderer::initialize();
 	generator_controller::initialize();

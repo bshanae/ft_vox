@@ -266,21 +266,21 @@ public :
 	{
 		if constexpr (validate_indices)
 			index.validate();
-		return (data[index.x][index.y][index.z]);
+		return ((*data)[index.x][index.y][index.z]);
 	}
 
 	auto						&at(int x, int y, int z)
 	{
 		if constexpr (validate_indices)
 			index(x, y, z).validate();
-		return (data[x][y][z]);
+		return ((*data)[x][y][z]);
 	}
 
 	const auto					&at(int x, int y, int z) const
 	{
 		if constexpr (validate_indices)
 			index(x, y, z).validate();
-		return (data[x][y][z]);
+		return ((*data)[x][y][z]);
 	}
 
 	class						iterator

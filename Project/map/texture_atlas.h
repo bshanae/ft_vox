@@ -12,13 +12,27 @@ public :
 	explicit			texture_atlas(const path &source);
 						~texture_atlas() override;
 
-	static
-	void 				associate_texture_with_block(block::type type, ivec2 index);
+	struct				association
+	{
+						association(block::type type);
 
-	[[nodiscard]]
-	static vec2			get_texture_size();
-	[[nodiscard]]
-	static vec2			get_texture_position(block::type type);
+		void			operator = (const ivec2 &value);
+
+		ivec2 			left;
+		ivec2 			right;
+		ivec2 			top;
+		ivec2 			bottom;
+		ivec2 			back;
+		ivec2 			front;
+
+	private :
+
+		block::type		type;
+	};
+
+	static association	&association_for(block::type type);
+
+	static vec2 		texture_size();
 
 private :
 
@@ -27,12 +41,9 @@ private :
 	constexpr int		texture_size_in_pixels[2] = {48, 48};
 
 	ivec2 				number_of_textures = ivec2(0);
-	vec2 				texture_size = vec2(0);
 
 	GLuint				value = -1;
 
-	using 				associations_type = std::map<block::type, ivec2>;
+	using 				associations_type = std::map<block::type, association>;
 	associations_type	associations;
-
-	void				use(bool state);
 };

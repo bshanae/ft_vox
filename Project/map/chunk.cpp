@@ -160,35 +160,43 @@ void					chunk::build_block(const index &index)
 
 void					chunk::build_quad(axis axis, sign sign, const index &index)
 {
+	ivec2 				texture_index = ivec2(0);
+
 	if (axis == axis::x and sign == sign::plus)
 	{
 		append_to_vector(vertices, right_vertices);
 		append_to_vector(texture_coordinates, right_texture_coordinates);
+		texture_index = texture_atlas::association_for(at(index).type_value).right;
 	}
 	else if (axis == axis::x and sign == sign::minus)
 	{
 		append_to_vector(vertices, left_vertices);
 		append_to_vector(texture_coordinates, left_texture_coordinates);
+		texture_index = texture_atlas::association_for(at(index).type_value).left;
 	}
 	else if (axis == axis::y and sign == sign::plus)
 	{
 		append_to_vector(vertices, top_vertices);
 		append_to_vector(texture_coordinates, top_texture_coordinates);
+		texture_index = texture_atlas::association_for(at(index).type_value).top;
 	}
 	else if (axis == axis::y and sign == sign::minus)
 	{
 		append_to_vector(vertices, bottom_vertices);
 		append_to_vector(texture_coordinates, bottom_texture_coordinates);
+		texture_index = texture_atlas::association_for(at(index).type_value).bottom;
 	}
 	else if (axis == axis::z and sign == sign::plus)
 	{
 		append_to_vector(vertices, front_vertices);
 		append_to_vector(texture_coordinates, front_texture_coordinates);
+		texture_index = texture_atlas::association_for(at(index).type_value).front;
 	}
 	else if (axis == axis::z and sign == sign::minus)
 	{
 		append_to_vector(vertices, back_vertices);
 		append_to_vector(texture_coordinates, back_texture_coordinates);
+		texture_index = texture_atlas::association_for(at(index).type_value).back;
 	}
 	else
 		assert(false and "Can't build quad");
@@ -200,15 +208,12 @@ void					chunk::build_quad(axis axis, sign sign, const index &index)
 		vertices[i + 2] += (float)index.z;
 	}
 
-	auto				transform_texture_coordinate = [this, index](float &x, float &y)
+	auto				transform_texture_coordinate = [this, texture_index](float &x, float &y)
 	{
-		const auto 		type = at(index).type_value;
+		static vec2 	size = texture_atlas::texture_size();
 
-		vec2 			size = texture_atlas::get_texture_size();
-		vec2			position = texture_atlas::get_texture_position(type);
-
-		x = position.x + size.x * x;
-		y = position.y + size.y * y;
+		x = size.x *((float)texture_index.x + x);
+		y = size.y *((float)texture_index.y + y);
 	};
 
 	for (int i = (int)texture_coordinates.size() - 8; i < (int)texture_coordinates.size(); i += 2)

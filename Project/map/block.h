@@ -11,6 +11,7 @@ public :
 	{
 		air,
 		dirt,
+		dirt_with_grass,
 		stone
 	};
 
