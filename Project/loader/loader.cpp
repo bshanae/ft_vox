@@ -33,8 +33,6 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
 	chunk_state			test_state;
 	vec3				test_position;
 
-	cout << "Trying to download chunk on " << to_string(position) << endl;
-
 	file.read_pointer = loader_settings::header.size();
 	file.write_pointer = loader_settings::header.size();
 
@@ -60,8 +58,6 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
 		return (nullptr);
 	}
 
-	cout << "Downloading chunk on " << to_string(position) << endl;
-
 	shared_ptr<chunk>	chunk;
 
 	chunk = chunk::create(position);
@@ -84,8 +80,6 @@ void					loader::upload_implementation(const shared_ptr<chunk> &chunk)
 
 	file.read_pointer = loader_settings::header.size();
 	file.write_pointer = loader_settings::header.size();
-
-	cout << "Uploading chunk on " << to_string(chunk->get_position()) << endl;
 
 	while (true)
 	{

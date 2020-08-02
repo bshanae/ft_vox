@@ -99,15 +99,10 @@ static vector<GLuint>	indices =
 						chunk::chunk(const vec3 &position)
 {
 	this->position = position;
-	model::set_translation(vec3(position.x, position.y, position.z));
+	model::set_translation(position);
 
 	for (auto iterator : *this)
 		iterator.value().type_value = block::type::dirt;
-}
-
-void					chunk::start()
-{
-	build_model();
 }
 
 void					chunk::render()
@@ -117,6 +112,8 @@ void					chunk::render()
 
 void					chunk::build_model()
 {
+	assert(not is_built and "Should rebuild chunk model");
+
 	this->vertices.clear();
 	this->texture_coordinates.clear();
 	this->indices.clear();
@@ -125,6 +122,7 @@ void					chunk::build_model()
 		build_block(iterator.index());
 
 	model = make_shared<::model>(this->vertices, this->texture_coordinates, this->indices);
+	is_built = true;
 }
 
 void					chunk::build_block(const index &index)
@@ -132,19 +130,21 @@ void					chunk::build_block(const index &index)
 	auto 				this_pointer = dynamic_pointer_cast<chunk>(shared_from_this());
 	auto 				try_build_quad = [this, this_pointer, index](axis axis, sign sign)
 	{
-		auto			neighbor = index.neighbor((::axis)axis, (::sign)sign);
+		auto			neighbor_index = index.neighbor((::axis)axis, (::sign)sign);
 
-		if (not neighbor)
+		if (not neighbor_index)
 		{
-			auto 		neighbor_chunk = neighbor_provider ? neighbor_provider(this_pointer, axis, sign) : nullptr;
-			auto		reflected = neighbor.reflect();
+			assert(neighbor_provider != nullptr and "Neighbor provider is null");
+
+			auto 		neighbor_chunk = neighbor_provider(this_pointer, axis, sign);
+			auto		reflected = neighbor_index.reflect();
 
 			if (neighbor_chunk and not neighbor_chunk->at(reflected).empty())
 				;
 			else
 				build_quad((::axis)axis, (::sign)sign, index);
 		}
-		else if (at(neighbor).empty())
+		else if (at(neighbor_index).empty())
 			build_quad((::axis)axis, (::sign)sign, index);
 	};
 

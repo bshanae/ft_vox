@@ -66,8 +66,9 @@ private :
 	vector<GLfloat>			texture_coordinates;
 	vector<GLuint>			indices;
 
-	void					start() override;
 	void					render() override;
+
+	bool					is_built = false;
 
 	void					build_model();
 	void					build_block(const index &index);

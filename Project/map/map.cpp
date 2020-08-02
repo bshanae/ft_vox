@@ -45,6 +45,10 @@ void					map::update()
 
 		destroy_chunk_if_needed(chunk);
 	}
+
+	for (auto [position, chunk] : chunks)
+		if (not chunk->is_built)
+			try_build_chunk(chunk);
 }
 
 shared_ptr<chunk>		map::provide_neighbor_chunk(
@@ -59,9 +63,9 @@ shared_ptr<chunk>		map::provide_neighbor_chunk(
 	else if (axis == axis::x and sign == sign::plus)
 		neighbor_position += right;
 	else if (axis == axis::z and sign == sign::minus)
-		neighbor_position += forward;
-	else if (axis == axis::z and sign == sign::plus)
 		neighbor_position += back;
+	else if (axis == axis::z and sign == sign::plus)
+		neighbor_position += forward;
 	else
 		return (nullptr);
 
@@ -92,10 +96,7 @@ void					map::create_chunk(const vec3 &position)
 	shared_ptr<chunk>	chunk;
 
 	if (not (chunk = chunk_loader::download(position)))
-	{
 		chunk = chunk::create(position);
-		cout << "Creating new chunk on " << to_string(position) << endl;
-	}
 
 #warning "Generation module needed"
 //	if (not (chunk = chunk_loader::download(position)))
@@ -106,8 +107,21 @@ void					map::create_chunk(const vec3 &position)
 
 void					map::destroy_chunk(const shared_ptr<chunk> &chunk)
 {
-	cout << "Deleting chunk on " << to_string(chunk->get_position()) << endl;
 	chunk_loader::upload(chunk);
 	chunks.erase(chunk->position);
 	chunk->destroy();
+}
+
+void 					map::try_build_chunk(const shared_ptr<chunk> &chunk)
+{
+	if (auto iterator = chunks.find(chunk->position + left); iterator == chunks.end())
+		return ;
+	if (auto iterator = chunks.find(chunk->position + right); iterator == chunks.end())
+		return ;
+	if (auto iterator = chunks.find(chunk->position + forward); iterator == chunks.end())
+		return ;
+	if (auto iterator = chunks.find(chunk->position + back); iterator == chunks.end())
+		return ;
+
+	chunk->build_model();
 }

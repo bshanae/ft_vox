@@ -49,12 +49,16 @@ public :
 								index() = default;
 								~index() = default;
 
-								index(int x, int y, int z) : x(x), y(y), z(z)
-								{}
+								index(int x, int y, int z) : x(x), y(y), z(z) {}
 
-		ivec3 					to_glm() const
+								operator ivec3() const
 		{
 			return (ivec3(x, y, z));
+		}
+
+								operator vec3() const
+		{
+			return (vec3(x, y, z));
 		}
 
 		index					operator + (const index &that) const
@@ -150,21 +154,14 @@ public :
 			return (true);
 		}
 
+		friend ostream 			&operator << (ostream &stream, const index &index)
+		{
+			stream << "array3::index(" << index.x << ", " << index.y << ", " << index.z << ")";
+			return (stream);
+		}
+
 		index					neighbor(axis axis, sign sign) const
 		{
-			int					sign_value;
-
-			switch (sign)
-			{
-				case (sign::plus) :
-					sign_value = +1;
-					break ;
-
-				case (sign::minus) :
-					sign_value = -1;
-					break ;
-			}
-
 			switch (axis)
 			{
 				case (axis::x) :

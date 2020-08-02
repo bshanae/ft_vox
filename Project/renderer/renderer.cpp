@@ -16,6 +16,9 @@ void					renderer::render(const chunk &chunk)
 	auto 				instance = global<renderer>::instance();
 	const auto			&model = chunk.model;
 
+	if (not chunk.model)
+		return ;
+
 	instance->program->bind(true);
 	model->bind(true);
 
