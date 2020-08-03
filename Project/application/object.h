@@ -9,6 +9,14 @@ class							object : public enable_shared_from_this<object>
 
 public :
 
+	enum class 					state
+	{
+		undefined,
+		just_created,
+		normal,
+		should_be_destroyed
+	};
+
 								object() = default;
 	virtual						~object() = default;
 
@@ -17,22 +25,29 @@ public :
 
 protected :
 
-	static void					create_internal(const shared_ptr<object> &object);
+	bool 						manual_start = false;
 
-	virtual void 				start() {}
+	virtual void 				start()
+	{
+		start_internal();
+	}
+
 	virtual void 				finish() {}
 	virtual void 				render() {}
 	virtual void 				update() {}
 
+	void						create_internal();
+	void						start_internal();
+
+	[[deprecated]]
+	state						get_state() const
+	{
+		return (state);
+	}
+
 private :
 
-	enum class 					state
-	{
-		undefined,
-		just_created,
-		normal,
-		should_be_destroyed
-	}							state = state::undefined;
+	state						state = state::undefined;
 
 	void						connect_to_application();
 };

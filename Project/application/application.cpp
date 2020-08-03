@@ -52,13 +52,11 @@ void			application::process_creating()
 	new_objects.clear();
 
 	for (auto &object : objects)
-	{
-		if (object->state == object::state::just_created)
+		if (object->state == object::state::just_created and not object->manual_start)
 		{
 			object->start();
-			object->state = object::state::normal;
+			assert(object->state == object::state::normal and "Invalid object state after start");
 		}
-	}
 }
 
 void			application::process_destroying()

@@ -7,8 +7,8 @@
 
 struct							map_settings
 {
-	static inline float			visibility_limit = 40.f;
-	static inline float			cashing_limit = 40.f;
+	static inline float			visibility_limit = 10.f;
+	static inline float			cashing_limit = 10.f;
 };
 
 class							map : public unique_object<map>
@@ -48,5 +48,5 @@ private :
 	void						create_chunk(const vec3 &position);
 	void						destroy_chunk(const shared_ptr<chunk> &chunk);
 
-	void 						try_build_chunk(const shared_ptr<chunk> &chunk);
+	void 						try_start_chunk(const shared_ptr<chunk> &chunk);
 };

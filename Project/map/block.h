@@ -1,5 +1,12 @@
 #pragma once
 
+struct					block_settings
+{
+	static
+	inline
+	const char 			light_level_limit = 16;
+};
+
 class					block
 {
 	friend class 		chunk;
@@ -11,21 +18,22 @@ public :
 	{
 		air,
 		dirt,
-		dirt_with_grass,
-		stone
+		dirt_with_grass
 	};
 
-	explicit			block(type type = type::air) : type_value(type)
-						{}
+	explicit			block(type type = type::air) : type_value(type) {}
 						~block() = default;
 
 	[[nodiscard]]
-	bool				empty() const
+	bool				is_empty() const
 	{
 		return (type_value == type::air);
 	}
 
 private :
 
+	[[deprecated]]
 	type				type_value = type::air;
+
+	char				light_level = 0;
 };

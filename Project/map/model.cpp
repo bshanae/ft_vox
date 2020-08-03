@@ -1,31 +1,8 @@
 #include "model.h"
 
-					model::model(
-						const vector<GLfloat> &vertices,
-			 			const vector<GLfloat> &texture_coordinates,
-			 			const vector<GLuint> &indices) :
-						number_of_indices(indices.size())
+					model::model()
 {
 	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	add_vbo(3, vertices);
-	add_vbo(2, texture_coordinates);
-	add_ebo(indices);
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-					model::model(
-						const vector<GLfloat> &vertices,
-	  					const vector<GLuint> &indices) :
-						number_of_indices(indices.size())
-{
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	add_vbo(3, vertices);
-	add_ebo(indices);
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 					model::~model()
@@ -114,6 +91,8 @@ void				model::add_ebo(const vector<GLuint> &indices)
 {
 	GLuint			ebo;
 
+	assert(number_of_indices == 0 and "Can't add EBO more than once");
+
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(
@@ -122,6 +101,8 @@ void				model::add_ebo(const vector<GLuint> &indices)
 		indices.data(),
 		GL_STATIC_DRAW);
 	vbos.push_back(ebo);
+
+	number_of_indices = indices.size();
 }
 
 void 				model::recalculate_transformation()

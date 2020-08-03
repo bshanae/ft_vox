@@ -24,7 +24,7 @@ public :
 
 		global<final_type>::initialize();
 		object = global<final_type>::instance();
-		create_internal(object);
+		object->create_internal();
 		pointer = dynamic_pointer_cast<final_type>(object);
 		return (object);
 	}

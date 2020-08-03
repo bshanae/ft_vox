@@ -15,6 +15,7 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
 void					map::start()
 {
+	start_internal();
 	create_chunk(vec3());
 	create_chunk(left);
 	create_chunk(right);
@@ -47,8 +48,8 @@ void					map::update()
 	}
 
 	for (auto [position, chunk] : chunks)
-		if (not chunk->is_built)
-			try_build_chunk(chunk);
+		if (chunk->get_state() == object::state::just_created)
+			try_start_chunk(chunk);
 }
 
 shared_ptr<chunk>		map::provide_neighbor_chunk(
@@ -112,7 +113,7 @@ void					map::destroy_chunk(const shared_ptr<chunk> &chunk)
 	chunk->destroy();
 }
 
-void 					map::try_build_chunk(const shared_ptr<chunk> &chunk)
+void 					map::try_start_chunk(const shared_ptr<chunk> &chunk)
 {
 	if (auto iterator = chunks.find(chunk->position + left); iterator == chunks.end())
 		return ;
@@ -123,5 +124,5 @@ void 					map::try_build_chunk(const shared_ptr<chunk> &chunk)
 	if (auto iterator = chunks.find(chunk->position + back); iterator == chunks.end())
 		return ;
 
-	chunk->build_model();
+	chunk->start();
 }

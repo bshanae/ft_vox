@@ -6,16 +6,11 @@
 class					model
 {
 public:
-						model(
-							const vector<GLfloat> &vertices,
-							const vector<GLfloat> &texture_coordinates,
-							const vector<GLuint> &indices);
-						model(
-							const vector<GLfloat> &vertices,
-							const vector<GLuint> &indices);
-
-						model() = default;
+						model();
 						~model();
+
+	void				add_vbo(int dimension, const vector<GLfloat> &data);
+	void				add_ebo(const vector<GLuint> &indices);
 
 	void				bind(bool state) const;
 
@@ -31,7 +26,7 @@ public:
 	void				set_translation(const vec3 &value);
 	void				set_rotation(const vec3 &value);
 
-private:
+private :
 
 	GLuint				vao = 0;
 	vector<GLuint>		vbos;
@@ -43,9 +38,6 @@ private:
 	vec3 				scaling = vec3(1.f);
 
 	mat4 				transformation = mat4(1.f);
-
-	void				add_vbo(int dimension, const vector<GLfloat> &data);
-	void				add_ebo(const  vector<GLuint> &indices);
 
 	void 				recalculate_transformation();
 };

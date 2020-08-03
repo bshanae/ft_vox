@@ -79,7 +79,6 @@ texture_atlas::association	&texture_atlas::association_for(block::type type)
 	auto 					instance = texture_atlas::instance();
 	auto 					iterator = instance->associations.find(type);
 
-#warning "Improve this"
 	if (iterator == instance->associations.end())
 		instance->associations.emplace(type, type);
 	return (instance->associations.at(type));

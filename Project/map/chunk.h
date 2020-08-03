@@ -41,7 +41,7 @@ public :
 	{
 		auto				chunk = make_shared<class chunk>(args...);
 
-		create_internal(chunk);
+		chunk->create_internal();
 		return (chunk);
 	}
 
@@ -55,7 +55,6 @@ public :
 		return (position + chunk_settings::size_as_vector / 2.f);
 	}
 
-
 private :
 
 	vec3 					position = vec3(0);
@@ -64,24 +63,21 @@ private :
 
 	vector<GLfloat>			vertices;
 	vector<GLfloat>			texture_coordinates;
+	vector<GLfloat>			light_levels;
 	vector<GLuint>			indices;
-
-	void					render() override;
-
-	bool					is_built = false;
-
-	void					build_model();
-	void					build_block(const index &index);
-	void					build_quad(axis axis, sign sign, const index &index);
-
-	template				<typename type>
-	void					append_to_vector(vector<type> &target, const vector<type> &source)
-	{
-		target.insert(target.end(), source.begin(), source.end());
-	}
 
 	using 					neighbor_provider_type = function<shared_ptr<chunk>(const shared_ptr<chunk> &, axis, sign)>;
 	static
 	inline
 	neighbor_provider_type	neighbor_provider = nullptr;
+
+	void					render() override;
+
+	void					start() override;
+
+	void					build_model();
+	void					build_block(const index &index);
+	void					build_quad(axis axis, sign sign, const index &index, int light_level);
+
+	void 					calculate_lighting();
 };
