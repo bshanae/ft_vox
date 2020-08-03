@@ -3,7 +3,6 @@
 #include "map/texture_atlas.h"
 #include "camera/camera.h"
 #include "renderer/renderer.h"
-#include "generator/generator_controller.h"
 #include "loader/loader.h"
 
 int						main()
@@ -20,7 +19,6 @@ int						main()
 	texture_atlas::association_for(block::type::dirt_with_grass).bottom = ivec2(2, 15);
 
 	renderer::initialize();
-	generator_controller::initialize();
 	loader::initialize("test.vox");
 
 	camera::create();

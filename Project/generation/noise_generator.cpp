@@ -5,7 +5,7 @@
 #include "noise_generator.h"
 
 #include <cmath>
-
+#include "map/chunk.h"
 noise_generator::noise_generator(int seed)
 		: m_seed(seed)
 {
@@ -71,8 +71,8 @@ double noise_generator::noise(double x, double z) const noexcept
 double noise_generator::getHeight(int x, int z, int chunkX, int chunkZ) const
 noexcept
 {
-	auto newX = (x + (chunkX * 100));
-	auto newZ = (z + (chunkZ * 100));
+	auto newX = (x + (chunkX * chunk_settings::size[0]));
+	auto newZ = (z + (chunkZ * chunk_settings::size[2]));
 
 
 	auto totalValue = 0.0;

@@ -57,11 +57,9 @@ set(SOURCE_FILES
     Project/map/model.cpp
 	Project/map/map.cpp
 	Project/map/chunk.cpp
-
+	Project/generation/noise_generator.cpp
 	Project/renderer/renderer.cpp
 
-	Project/generator/generator_controller.cpp
-	Project/generator/plain_generator.cpp
 
 	Project/loader/loader.cpp
 	Project/loader/file.cpp

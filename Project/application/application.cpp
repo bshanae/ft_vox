@@ -2,11 +2,13 @@
 
 #include "application/window.h"
 #include "application/input.h"
+#include "generation/generator.h"
 
-				application::application()
+application::application()
 {
 	window::initialize();
 	input::initialize();
+	generator::initialize();
 }
 
 void			application::execute()
