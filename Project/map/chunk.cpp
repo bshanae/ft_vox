@@ -103,10 +103,11 @@ static vector<GLuint>	indices =
 	model::set_translation(position);
 
 	for (auto iterator : *this)
-		iterator.value().type_value = chunk_generator::get_block(
-				vec3(iterator.index().x + position.x * chunk_settings::size[0],
-						iterator.index().y + position.x * chunk_settings::size[1],
-						iterator.index().z + position.x * chunk_settings::size[2])).type_value;;
+		iterator.value().type_value = block::type::dirt;
+//		iterator.value().type_value = chunk_generator::get_block(
+//				vec3(iterator.index().x + position.x * chunk_settings::size[0],
+//						iterator.index().y + position.x * chunk_settings::size[1],
+//						iterator.index().z + position.x * chunk_settings::size[2])).type_value;
 }
 
 void					chunk::render()

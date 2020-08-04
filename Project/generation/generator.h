@@ -74,9 +74,16 @@ public:
 		//float temp = map(-1, 1, 0, chunk_settings::size[1],noise.getNoise(position.x, position.z));
 		cout << temp << endl;
 		if (temp >= position.y)
-			return block (block::type::dirt);
+			return block (block::type::dirt_with_grass);
 		else
-			return block (block::type::air);
+			return block (block::type::dirt_with_grass);
+	}
+
+
+#warning  dummy... block from generation... but why?
+	 shared_ptr<chunk>	generate_implementation(const vec3 &position)
+	{
+		return make_shared<chunk>(chunk(vec3(0,0,0)));
 	}
 
 	int GenerateHeight(float x, float z)
