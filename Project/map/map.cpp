@@ -48,7 +48,7 @@ void					map::update()
 	}
 
 	for (auto [position, chunk] : chunks)
-		if (chunk->get_state() == object::state::just_created)
+		if (chunk->state == object::state::just_created)
 			try_start_chunk(chunk);
 }
 

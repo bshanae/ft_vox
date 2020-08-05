@@ -1,39 +1,40 @@
 #pragma once
 
-struct					block_settings
+struct						block_settings
 {
 	static
 	inline
-	const char 			light_level_limit = 16;
+	const char 				light_level_limit = 16;
 };
 
-class					block
+class						block
 {
-	friend class 		chunk;
-	friend class 		chunk_editor;
+	friend class 			chunk;
+	friend class 			chunk_editor;
 
 public :
 
-	enum class			type : char
+	enum class				type : char
 	{
 		air,
 		dirt,
 		dirt_with_grass
 	};
 
-	explicit			block(type type = type::air) : type_value(type) {}
-						~block() = default;
+	explicit				block(type type = type::air)
+	{
+		this->type = type;
+	}
 
 	[[nodiscard]]
-	bool				is_empty() const
+	bool					is_empty() const
 	{
-		return (type_value == type::air);
+		return (type == type::air);
 	}
+
+	type					type;
 
 private :
 
-	[[deprecated]]
-	type				type_value = type::air;
-
-	char				light_level = 0;
+	char					light_level = 0;
 };

@@ -2,6 +2,7 @@
 
 #include "common/OpenGL.h"
 #include "common/aliases.h"
+#include "common/property.h"
 
 class							object : public enable_shared_from_this<object>
 {
@@ -23,6 +24,11 @@ public :
 	static shared_ptr<object>	create();
 	void 						destroy();
 
+//	virtual void 				activate();
+//	virtual void 				deactivate();
+
+	property<read_only, state, object> state;
+
 protected :
 
 	bool 						manual_start = false;
@@ -33,21 +39,17 @@ protected :
 	}
 
 	virtual void 				finish() {}
+
 	virtual void 				render() {}
 	virtual void 				update() {}
 
 	void						create_internal();
 	void						start_internal();
 
-	[[deprecated]]
-	state						get_state() const
-	{
-		return (state);
-	}
+//	void						activate_internal();
+//	void						deactivate_internal();
 
 private :
-
-	state						state = state::undefined;
 
 	void						connect_to_application();
 };

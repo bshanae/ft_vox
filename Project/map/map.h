@@ -7,8 +7,8 @@
 
 struct							map_settings
 {
-	static inline float			visibility_limit = 10.f;
-	static inline float			cashing_limit = 10.f;
+	static inline float			visibility_limit = 50.f;
+	static inline float			cashing_limit = 50.f;
 };
 
 class							map : public unique_object<map>

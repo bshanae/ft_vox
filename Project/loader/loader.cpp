@@ -21,7 +21,7 @@
 
 void					loader::initializer(shared_ptr<loader> loader)
 {
-	static_assert(sizeof(block::type) == 1u and "Block type should be size of byte");
+	static_assert(sizeof(enum block::type) == 1u and "Block type should be size of byte");
 	chunk_loader::pointer = static_pointer_cast<chunk_loader>(loader);
 }
 
@@ -103,12 +103,12 @@ void					loader::upload_implementation(const shared_ptr<chunk> &chunk)
 	if (have_found_place_for_writing)
 		file.write_pointer = pointer;
 	else
-		file.write_pointer = file::label::end;
+		file.write_pointer = file::mark::end;
 
 	file << (char)chunk_state::valid;
 	file << chunk->get_position();
 
 	chunk_editor::use(chunk);
 	for (auto iterator = chunk_editor::begin(); iterator != chunk_editor::end(); iterator++)
-		file << (char)chunk_editor::at(iterator);
+		file << (char)chunk_editor::at(iterator).type;
 }

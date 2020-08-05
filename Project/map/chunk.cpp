@@ -110,9 +110,10 @@ static vector<GLuint>	indices =
 	i.y = chunk_settings::size[1] - 2;
 	for (i.x = 0; i.x < chunk_settings::size[0]; i.x++)
 		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
-			at(i).type_value = block::type::dirt;
+			at(i).type = block::type::dirt;
 
-	at(0, chunk_settings::size[1] - 1, 0).light_level = 15;
+	at(0, chunk_settings::size[1] - 1, 0).type = block::type::dirt_with_grass;
+	at(1, chunk_settings::size[1] - 1, 0).light_level = 12;
 }
 
 void					chunk::render()
@@ -162,7 +163,12 @@ void					chunk::build_block(const index &index)
 
 			auto 		neighbor_chunk = neighbor_provider(dynamic_pointer_cast<chunk>(shared_from_this()), axis, sign);
 
-			assert(neighbor_chunk != nullptr and "Neighbor chunk is null");
+			if (not neighbor_chunk)
+			{
+#warning "Set light level"
+				build_quad((::axis)axis, (::sign)sign, index, 0);
+				return ;
+			}
 
 			auto		reflected = neighbor_index.reflect();
 			auto 		reflected_block = neighbor_chunk->at(reflected);
@@ -198,37 +204,37 @@ void					chunk::build_quad(axis axis, sign sign, const index &index, int light_l
 	{
 		append_to_vector(vertices, right_vertices);
 		append_to_vector(texture_coordinates, right_texture_coordinates);
-		texture_index = texture_atlas::association_for(at(index).type_value).right;
+		texture_index = texture_atlas::association_for(at(index).type).right;
 	}
 	else if (axis == axis::x and sign == sign::minus)
 	{
 		append_to_vector(vertices, left_vertices);
 		append_to_vector(texture_coordinates, left_texture_coordinates);
-		texture_index = texture_atlas::association_for(at(index).type_value).left;
+		texture_index = texture_atlas::association_for(at(index).type).left;
 	}
 	else if (axis == axis::y and sign == sign::plus)
 	{
 		append_to_vector(vertices, top_vertices);
 		append_to_vector(texture_coordinates, top_texture_coordinates);
-		texture_index = texture_atlas::association_for(at(index).type_value).top;
+		texture_index = texture_atlas::association_for(at(index).type).top;
 	}
 	else if (axis == axis::y and sign == sign::minus)
 	{
 		append_to_vector(vertices, bottom_vertices);
 		append_to_vector(texture_coordinates, bottom_texture_coordinates);
-		texture_index = texture_atlas::association_for(at(index).type_value).bottom;
+		texture_index = texture_atlas::association_for(at(index).type).bottom;
 	}
 	else if (axis == axis::z and sign == sign::plus)
 	{
 		append_to_vector(vertices, front_vertices);
 		append_to_vector(texture_coordinates, front_texture_coordinates);
-		texture_index = texture_atlas::association_for(at(index).type_value).front;
+		texture_index = texture_atlas::association_for(at(index).type).front;
 	}
 	else if (axis == axis::z and sign == sign::minus)
 	{
 		append_to_vector(vertices, back_vertices);
 		append_to_vector(texture_coordinates, back_texture_coordinates);
-		texture_index = texture_atlas::association_for(at(index).type_value).back;
+		texture_index = texture_atlas::association_for(at(index).type).back;
 	}
 	else
 		assert(false and "Can't build quad");

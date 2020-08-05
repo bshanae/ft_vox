@@ -25,14 +25,14 @@ protected :
 		return (target->end());
 	}
 
-	block::type			&at(chunk::iterator &iterator) const
+	block				&at(chunk::iterator &iterator) const
 	{
-		return (iterator.value().type_value);
+		return (iterator.value());
 	}
 
-	block::type			&at(chunk::index &index) const
+	block				&at(chunk::index &index) const
 	{
-		return (target->at(index).type_value);
+		return (target->at(index));
 	}
 
 private :

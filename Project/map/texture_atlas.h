@@ -5,45 +5,45 @@
 #include "common/aliases.h"
 #include "map/block.h"
 
-class					texture_atlas : public global<texture_atlas>
+class						texture_atlas : public global<texture_atlas>
 {
 public :
 
-	explicit			texture_atlas(const path &source);
-						~texture_atlas() override;
+	explicit				texture_atlas(const path &source);
+							~texture_atlas() override;
 
-	struct				association
+	struct					association
 	{
-						association(block::type type);
+		explicit			association(enum block::type type);
 
-		void			operator = (const ivec2 &value);
+		association			&operator = (const ivec2 &value);
 
-		ivec2 			left;
-		ivec2 			right;
-		ivec2 			top;
-		ivec2 			bottom;
-		ivec2 			back;
-		ivec2 			front;
+		ivec2 				left;
+		ivec2 				right;
+		ivec2 				top;
+		ivec2 				bottom;
+		ivec2 				back;
+		ivec2 				front;
 
 	private :
 
-		block::type		type;
+		enum block::type	type;
 	};
 
-	static association	&association_for(block::type type);
+	static association		&association_for(enum block::type type);
 
-	static vec2 		texture_size();
+	static vec2 			texture_size();
 
 private :
 
 	static
 	inline
-	constexpr int		texture_size_in_pixels[2] = {48, 48};
+	constexpr int			texture_size_in_pixels[2] = {48, 48};
 
-	ivec2 				number_of_textures = ivec2(0);
+	ivec2 					number_of_textures = ivec2(0);
 
-	GLuint				value = -1;
+	GLuint					value = -1;
 
-	using 				associations_type = std::map<block::type, association>;
-	associations_type	associations;
+	using 					associations_type = std::map<enum block::type, association>;
+	associations_type		associations;
 };

@@ -61,10 +61,10 @@
 	glDeleteTextures(1, &value);
 }
 
-							texture_atlas::association::association(block::type type) : type(type)
+							texture_atlas::association::association(enum block::type type) : type(type)
 {}
 
-void						texture_atlas::association::operator = (const ivec2 &value)
+texture_atlas::association	&texture_atlas::association::operator = (const ivec2 &value)
 {
 	left = value;
 	right = value;
@@ -72,9 +72,11 @@ void						texture_atlas::association::operator = (const ivec2 &value)
 	bottom = value;
 	back = value;
 	front = value;
+
+	return (*this);
 }
 
-texture_atlas::association	&texture_atlas::association_for(block::type type)
+texture_atlas::association	&texture_atlas::association_for(enum block::type type)
 {
 	auto 					instance = texture_atlas::instance();
 	auto 					iterator = instance->associations.find(type);

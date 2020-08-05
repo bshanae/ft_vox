@@ -82,39 +82,36 @@ public :
 
 	friend file				&operator >> (file &file, string &value);
 
-	enum class				label
+	enum class 				mark
 	{
 		begin = ios::beg,
 		end = ios::end
 	};
 
-	class					read_pointer : public property<int>
+	class					pointer : public property<read_write, int, pointer>
 	{
-	public:
-							read_pointer(fstream &stream) : stream(stream) {}
+		friend class 		file;
 
-		void				operator = (const int &value) override;
-		void				operator = (label label);
+	public :
 
-							operator int () const override;
+		using				property<read_write, int, pointer>::operator =;
+		using				property<read_write, int, pointer>::operator int;
+		using				property<read_write, int, pointer>::operator ->;
+
+		void				operator = (mark mark)
+		{
+			assert(mark_setter != nullptr and "Mark setter is nullptr");
+			mark_setter(mark);
+		}
+
 	private :
 
-		fstream				&stream;
-	}						read_pointer;
+		using				mark_setter_type = function<void(mark)>;
+		mark_setter_type	mark_setter = nullptr;
+	};
 
-	class					write_pointer : public property<int>
-	{
-	public:
-							write_pointer(fstream &stream) : stream(stream) {}
-
-		void				operator = (const int &value) override;
-		void				operator = (label label);
-
-							operator int () const override;
-	private :
-
-		fstream				&stream;
-	}						write_pointer;
+	pointer					read_pointer;
+	pointer					write_pointer;
 
 private :
 
