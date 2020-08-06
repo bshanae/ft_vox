@@ -9,23 +9,23 @@
 		translation.value = value;
 		recalculate_transformation();
 	};
-	translation.prohibit_arrow_operator();
+	translation.prohibit_direct_access();
 
 	rotation.setter = [this](const vec3 &value)
 	{
 		rotation.value = value;
 		recalculate_transformation();
 	};
-	rotation.prohibit_arrow_operator();
+	rotation.prohibit_direct_access();
 
 	scaling.setter = [this](const vec3 &value)
 	{
 		scaling.value = value;
 		recalculate_transformation();
 	};
-	scaling.prohibit_arrow_operator();
+	scaling.prohibit_direct_access();
 
-	transformation.prohibit_arrow_operator();
+	transformation.prohibit_direct_access();
 
 	translation = vec3(0.f);
 	rotation = vec3(0.f);
@@ -94,7 +94,7 @@ void 				model::recalculate_transformation()
 	rotation.z = radians(this->rotation.value.z);
 
 	transformation = mat4(1.f);
-	transformation.value *= translate(*translation);
+	transformation.value *= translate(translation.value);
 	transformation.value *= eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
-	transformation.value *= scale(*scaling);
+	transformation.value *= scale(scaling.value);
 }

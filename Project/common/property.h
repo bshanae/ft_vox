@@ -24,12 +24,13 @@ protected :
 
 	const type			&operator * () const
 	{
+		assert(is_direct_access_allowed and "Direct access is prohibited");
 		return (target);
 	}
 
 	const type			*operator -> () const
 	{
-		assert(not is_arrow_operator_prohibited and "Can't use arrow operator");
+		assert(is_direct_access_allowed and "Direct access is prohibited");
 		return (addressof(target));
 	}
 
@@ -38,7 +39,7 @@ protected :
 	using 				getter_type = function<type()>;
 	getter_type			getter = nullptr;
 
-	bool 				is_arrow_operator_prohibited = false;
+	bool 				is_direct_access_allowed = true;
 
 private :
 
@@ -66,12 +67,13 @@ protected :
 
 	type				&operator * ()
 	{
+		assert(is_direct_access_allowed and "Direct access is prohibited");
 		return (target);
 	}
 
 	type				*operator -> ()
 	{
-		assert(not is_arrow_operator_prohibited and "Can't use arrow operator");
+		assert(is_direct_access_allowed and "Direct access is prohibited");
 		return (addressof(target));
 	}
 
@@ -80,7 +82,7 @@ protected :
 	using 				setter_type = function<void(const type &)>;
 	setter_type			setter = nullptr;
 
-	bool 				is_arrow_operator_prohibited = false;
+	bool 				is_direct_access_allowed = true;
 
 private :
 
@@ -105,10 +107,10 @@ protected :
 
 	type				value;
 
-	void 				prohibit_arrow_operator()
+	void 				prohibit_direct_access()
 	{
-		property_read_functionality<type>::is_arrow_operator_prohibited = true;
-		property_write_functionality<type>::is_arrow_operator_prohibited = true;
+		property_read_functionality<type>::is_direct_access_allowed = false;
+		property_write_functionality<type>::is_direct_access_allowed = false;
 	}
 };
 

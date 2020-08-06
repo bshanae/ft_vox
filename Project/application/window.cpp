@@ -28,7 +28,7 @@
 	glCullFace(GL_BACK);
 
 	mouse_position.getter = mouse_position_getter;
-	mouse_position.prohibit_arrow_operator();
+	mouse_position.prohibit_direct_access();
 }
 
 					window::~window()
