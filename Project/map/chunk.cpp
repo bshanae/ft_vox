@@ -99,9 +99,8 @@ static vector<GLuint>	indices =
 						chunk::chunk(const vec3 &position)
 {
 	manual_start = true;
-
 	this->position = position;
-	model::set_translation(position);
+	this->center.getter = [this](){ return (*this->position + chunk_settings::size_as_vector / 2.f); };
 
 //	for (auto iterator : *this)
 //		iterator.value().type_value = block::type::dirt;
@@ -141,6 +140,8 @@ void					chunk::build_model()
 		build_block(iterator.index());
 
 	model = make_shared<::model>();
+
+	model->translation = *position;
 	model->bind(true);
 
 	model->add_vbo(3, this->vertices);

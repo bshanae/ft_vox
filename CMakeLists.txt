@@ -1,35 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
-#set(CMAKE_CXX_COMPILER  "/usr/bin/clang++")
-#set(CMAKE_C_COMPILER  "/usr/bin/clang")
 
 set(CMAKE_CXX_STANDARD 17)
 set(PROJECT_NAME Vox)
 project(${PROJECT_NAME})
 
-add_compile_options(
-#    -g
-#    -Wall
-#    -Wextra
-
-    # -Wpedantic
-    # -Wcast-align
-    # -Wcast-qual
-    # -Wconversion
-    # -Wctor-dtor-privacy
-    # -Wenum-compare
-    # -Wfloat-equal
-    # -Wnon-virtual-dtor
-    # -Wold-style-cast
-    # -Woverloaded-virtual
-    # -Wredundant-decls
-    # -Wsign-conversion
-    # -Wsign-promo
-)
-
-# target_compile_features(${PROJECT_NAME} cxx_std_17)
-
-# add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/glfw)
-# add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/glm)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Project/libraries/glfw/)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

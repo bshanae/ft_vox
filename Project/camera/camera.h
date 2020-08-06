@@ -3,6 +3,7 @@
 #include "common/OpenGL.h"
 #include "common/aliases.h"
 #include "common/global.h"
+#include "common/property.h"
 #include "application/unique_object.h"
 
 struct						camera_settings
@@ -21,27 +22,21 @@ class						camera : public unique_object<camera>
 {
 	friend class			application;
 
+	using					position_type = property<read_write, vec3, camera>;
+	using					projection_matrix_type = property<read_only, mat4, camera>;
+	using					view_matrix_type = property<read_only, mat4, camera>;
+
 public :
 							camera();
 							~camera() override = default;
 
-	[[nodiscard]]
-	static vec3				get_position()
-	{
-		return(instance()->position);
-	}
+	static inline
+	position_type			position;
 
-	[[nodiscard]]
-	static mat4				get_projection_matrix()
-	{
-		return(instance()->projection_matrix);
-	}
-
-	[[nodiscard]]
-	static mat4				get_view_matrix()
-	{
-		return (instance()->view_matrix);
-	}
+	static inline
+	projection_matrix_type	projection_matrix;
+	static inline
+	view_matrix_type		view_matrix;
 
 private :
 
@@ -51,13 +46,8 @@ private :
 	vec3					up = up_const;
 	vec3					right = vec3(1.f, 0.f, 0.f);
 
-	vec3					position = camera_settings::initial_position;
-
 	float					yaw = -90.f;
 	float					pitch = 0.f;
-
-	mat4					projection_matrix = mat4(0.f);
-	mat4					view_matrix = mat4(0.f);
 
 	void					update() override;
 

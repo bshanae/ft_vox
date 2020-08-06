@@ -8,76 +8,66 @@
 
 #include "map/block.h"
 
-struct						chunk_settings
+struct									chunk_settings
 {
 	static
-	constexpr int			size[3] = {4, 4, 4};
+	constexpr int						size[3] = {4, 4, 4};
 
 	static inline
-	const vec3				size_as_vector = vec3(size[0], size[1], size[2]);
+	const vec3							size_as_vector = vec3(size[0], size[1], size[2]);
 };
 
-class						chunk :
-								public object,
-								public model,
-								private array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>
+class									chunk :
+											public object,
+											private array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>
 {
-	friend class			chunk_editor;
-	friend class 			map;
-	friend class 			renderer;
+	friend class						chunk_editor;
+	friend class 						map;
+	friend class 						renderer;
 
 public :
 
-	using					index = array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>::index;
+	using								index = array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>::index;
 
 public :
 
-	explicit				chunk(const vec3 &position);
-							~chunk() override = default;
+	explicit							chunk(const vec3 &position);
+										~chunk() override = default;
 
 	template				<typename ...args_type>
 	static
-	shared_ptr<chunk>		create(args_type &&...args)
+	shared_ptr<chunk>					create(args_type &&...args)
 	{
-		auto				chunk = make_shared<class chunk>(args...);
+		auto							chunk = make_shared<class chunk>(args...);
 
 		chunk->create_internal();
 		return (chunk);
 	}
 
-	[[nodiscard]] vec3		get_position()
-	{
-		return (position);
-	}
-
-	[[nodiscard]] vec3		center()
-	{
-		return (position + chunk_settings::size_as_vector / 2.f);
-	}
+	property<read_only, vec3, chunk>	position;
+	property<read_only, vec3, chunk>	center;
 
 private :
 
-	vec3 					position = vec3(0);
+	shared_ptr<model>					model;
 
-	shared_ptr<model>		model;
+	vector<GLfloat>						vertices;
+	vector<GLfloat>						texture_coordinates;
+	vector<GLfloat>						light_levels;
+	vector<GLuint>						indices;
 
-	vector<GLfloat>			vertices;
-	vector<GLfloat>			texture_coordinates;
-	vector<GLfloat>			light_levels;
-	vector<GLuint>			indices;
-
-	using 					neighbor_provider_type = function<shared_ptr<chunk>(const shared_ptr<chunk> &, axis, sign)>;
+	using 								neighbor_provider_type = function<shared_ptr<chunk>(const shared_ptr<chunk> &, axis, sign)>;
 	static
 	inline
-	neighbor_provider_type	neighbor_provider = nullptr;
+	neighbor_provider_type				neighbor_provider = nullptr;
 
-	void					render() override;
+	void								render() override;
 
-	void					start() override;
+	void								start() override;
 
-	void					build_model();
-	void					build_block(const index &index);
-	void					build_quad(axis axis, sign sign, const index &index, int light_level);
+	void								build_model();
+	void								build_block(const index &index);
+	void								build_quad(axis axis, sign sign, const index &index, int light_level);
 
-	void 					calculate_lighting();
+	void 								calculate_lighting();
 };

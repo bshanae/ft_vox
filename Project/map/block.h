@@ -21,7 +21,10 @@ public :
 		dirt_with_grass
 	};
 
-	explicit				block(type type = type::air)
+	type					type;
+	char					light_level = 0;
+
+	explicit				block(enum type type = type::air)
 	{
 		this->type = type;
 	}
@@ -31,10 +34,4 @@ public :
 	{
 		return (type == type::air);
 	}
-
-	type					type;
-
-private :
-
-	char					light_level = 0;
 };

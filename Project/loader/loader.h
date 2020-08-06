@@ -41,7 +41,8 @@ class						loader :
 								public global<loader>
 {
 public :
-							loader(const path &path_to_profile);
+
+	explicit				loader(const path &path_to_profile);
 							~loader() override;
 private :
 

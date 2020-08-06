@@ -26,6 +26,9 @@
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+
+	mouse_position.getter = mouse_position_getter;
+	mouse_position.prohibit_arrow_operator();
 }
 
 					window::~window()
@@ -49,7 +52,7 @@ void				window::swap_buffers()
 	glfwSwapBuffers(instance()->glfw_window);
 }
 
-vec2				window::get_mouse_position()
+vec2				window::mouse_position_getter()
 {
 	double			x;
 	double			y;

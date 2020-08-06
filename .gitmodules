@@ -1,9 +1,9 @@
-[submodule "Project/Libraries/glfw"]
+[submodule "Project/libraries/glfw"]
 	path = Project/libraries/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "Project/libraries/FastNoise"]
+	path = Project/libraries/FastNoise
+	url = https://github.com/Auburn/FastNoise.git
 [submodule "Project/libraries/glm"]
 	path = Project/libraries/glm
 	url = https://github.com/g-truc/glm.git
-[submodule "Project/libraries/FastNoise"]
-	path = Project/libraries/FastNoise
-	url = https://github.com/Auburns/FastNoise.git

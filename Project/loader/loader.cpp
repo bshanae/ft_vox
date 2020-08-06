@@ -106,7 +106,7 @@ void					loader::upload_implementation(const shared_ptr<chunk> &chunk)
 		file.write_pointer = file::mark::end;
 
 	file << (char)chunk_state::valid;
-	file << chunk->get_position();
+	file << *chunk->position;
 
 	chunk_editor::use(chunk);
 	for (auto iterator = chunk_editor::begin(); iterator != chunk_editor::end(); iterator++)

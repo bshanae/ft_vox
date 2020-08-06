@@ -32,8 +32,8 @@ void			application::process_input()
 {
 	static bool	empty_polygons = false;
 
-	input::instance()->reset_keys();
-	input::instance()->update_mouse();
+	input::reset_keys();
+	input::update_mouse();
 
 	glfwPollEvents();
 

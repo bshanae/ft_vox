@@ -2,42 +2,31 @@
 
 #include "common/OpenGL.h"
 #include "common/aliases.h"
+#include "common/property.h"
 
-class					model
+class									model
 {
 public:
-						model();
-						~model();
 
-	void				add_vbo(int dimension, const vector<GLfloat> &data);
-	void				add_ebo(const vector<GLuint> &indices);
+	property<read_only, int, model>		number_of_indices;
 
-	void				bind(bool state) const;
+	property<read_write, vec3, model>	scaling;
+	property<read_write, vec3, model>	translation;
+	property<read_write, vec3, model>	rotation;
+	property<read_only, mat4, model>	transformation;
 
-	[[nodiscard]] int	get_number_of_indices() const;
+										model();
+										~model();
 
-	[[nodiscard]] vec3	get_scaling() const;
-	[[nodiscard]] vec3	get_translation() const;
-	[[nodiscard]] vec3	get_rotation() const;
-	[[nodiscard]] mat4	get_transformation() const;
+	void								add_vbo(int dimension, const vector<GLfloat> &data);
+	void								add_ebo(const vector<GLuint> &indices);
 
-	void				set_scaling(float value);
-	void				set_scaling(const vec3 &value);
-	void				set_translation(const vec3 &value);
-	void				set_rotation(const vec3 &value);
+	void								bind(bool state) const;
 
 private :
 
-	GLuint				vao = 0;
-	vector<GLuint>		vbos;
+	GLuint								vao = 0;
+	vector<GLuint>						vbos;
 
-	int					number_of_indices = 0;
-
-	vec3 				translation = vec3(0.f);
-	vec3 				rotation = vec3(0.f);
-	vec3 				scaling = vec3(1.f);
-
-	mat4 				transformation = mat4(1.f);
-
-	void 				recalculate_transformation();
+	void 								recalculate_transformation();
 };

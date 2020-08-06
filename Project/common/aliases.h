@@ -30,6 +30,7 @@ using 				std::make_unique;
 using 				std::static_pointer_cast;
 using 				std::dynamic_pointer_cast;
 using 				std::enable_shared_from_this;
+using 				std::addressof;
 
 // ---------------- IO
 

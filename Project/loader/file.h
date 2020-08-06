@@ -19,7 +19,7 @@ public :
 	bool					is_fail() const;
 	bool					is_eof() const;
 
-							operator bool () const;
+	explicit				operator bool () const;
 
 	void 					clear();
 

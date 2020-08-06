@@ -22,11 +22,12 @@ void					renderer::render(const chunk &chunk)
 	instance->program->bind(true);
 	model->bind(true);
 
-	instance->uniform_projection.upload(camera::get_projection_matrix());
-	instance->uniform_view.upload(camera::get_view_matrix());
-	instance->uniform_transformation.upload(chunk.get_transformation());
+#warning "Upload when changed"
+	instance->uniform_projection.upload(camera::projection_matrix);
+	instance->uniform_view.upload(camera::view_matrix);
+	instance->uniform_transformation.upload(model->transformation);
 
-	glDrawElements(GL_TRIANGLES, model->get_number_of_indices(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, model->number_of_indices, GL_UNSIGNED_INT, nullptr);
 
 	model->bind(false);
 	instance->program->bind(false);

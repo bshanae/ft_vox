@@ -34,8 +34,8 @@ void					map::finish()
 void					map::update()
 {
 #warning "This should be done by player"
-	pivot.x = camera::get_position().x;
-	pivot.z = camera::get_position().z;
+	pivot.x = camera::position->x;
+	pivot.z = camera::position->z;
 
 	for (auto [position, chunk] : chunks)
 	{
@@ -88,7 +88,7 @@ void					map::create_chunk_if_needed(const vec3 &position)
 
 void					map::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 {
-	if (distance(this->pivot, chunk->center()) >= map_settings::cashing_limit)
+	if (distance(this->pivot, (vec3)chunk->center) >= map_settings::cashing_limit)
 		destroy_chunk(chunk);
 }
 
@@ -115,13 +115,13 @@ void					map::destroy_chunk(const shared_ptr<chunk> &chunk)
 
 void 					map::try_start_chunk(const shared_ptr<chunk> &chunk)
 {
-	if (auto iterator = chunks.find(chunk->position + left); iterator == chunks.end())
+	if (auto iterator = chunks.find(*chunk->position + left); iterator == chunks.end())
 		return ;
-	if (auto iterator = chunks.find(chunk->position + right); iterator == chunks.end())
+	if (auto iterator = chunks.find(*chunk->position + right); iterator == chunks.end())
 		return ;
-	if (auto iterator = chunks.find(chunk->position + forward); iterator == chunks.end())
+	if (auto iterator = chunks.find(*chunk->position + forward); iterator == chunks.end())
 		return ;
-	if (auto iterator = chunks.find(chunk->position + back); iterator == chunks.end())
+	if (auto iterator = chunks.find(*chunk->position + back); iterator == chunks.end())
 		return ;
 
 	chunk->start();

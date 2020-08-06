@@ -15,7 +15,7 @@ void				input::callback_key(GLFWwindow *window, int key, int code, int action, i
 
 void				input::reset_keys()
 {
-	for (auto &iterator : keys)
+	for (auto &iterator : instance()->keys)
 		if (iterator.second == key_state::pressed)
 			iterator.second = key_state::held;
 		else if (iterator.second == key_state::released)
@@ -27,18 +27,18 @@ void				input::update_mouse()
 	static bool 	first_call = true;
 
 	auto			instance = global<input>::instance();
-	vec2 			position = window::get_mouse_position();
+	vec2 			position = window::mouse_position;
 
 	if (first_call)
 	{
 		first_call = false;
-		instance->mouse_last_position = position;
-		instance->mouse_offset = ivec2(0);
+		mouse_last_position = position;
+		mouse_offset = ivec2(0);
 	}
 	else
-		instance->mouse_last_position = instance->mouse_current_position;
+		mouse_last_position = *mouse_current_position;
 
-	instance->mouse_current_position = position;
-	instance->mouse_offset.x = instance->mouse_current_position.x - instance->mouse_last_position.x;
-	instance->mouse_offset.y = instance->mouse_last_position.y - instance->mouse_current_position.y;
+	mouse_current_position = position;
+	mouse_offset.value.x = mouse_current_position->x - mouse_last_position->x;
+	mouse_offset.value.y = mouse_last_position->y - mouse_current_position->y;
 }

@@ -4,10 +4,13 @@
 {
 	read_pointer.getter = [this](){ return (stream.tellg()); };
 	read_pointer.setter = [this](const int &){ return (stream.tellg()); };
+	read_pointer.mark_setter = [this](mark mark){ stream.seekg(0, (ios::seekdir)mark); };
+	read_pointer.prohibit_arrow_operator();
+
 	write_pointer.getter = [this](){ return (stream.tellp()); };
 	write_pointer.setter = [this](const int &){ return (stream.tellp()); };
-	read_pointer.mark_setter = [this](mark mark){ stream.seekg(0, (ios::seekdir)mark); };
 	write_pointer.mark_setter = [this](mark mark){ stream.seekp(0, (ios::seekdir)mark); };
+	write_pointer.prohibit_arrow_operator();
 }
 
 void				file::open()
