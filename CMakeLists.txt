@@ -19,8 +19,8 @@ set(SOURCE_FILES
 
     Project/application/window.cpp
     Project/application/application.cpp
-	Project/application/input.cpp
 	Project/application/object.cpp
+	Project/application/input.cpp
 
     Project/program/shader.cpp
     Project/program/program.cpp

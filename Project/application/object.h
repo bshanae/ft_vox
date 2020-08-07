@@ -4,52 +4,51 @@
 #include "common/aliases.h"
 #include "common/property.h"
 
-class							object : public enable_shared_from_this<object>
+class						object : public enable_shared_from_this<object>
 {
-	friend class 				application;
+	friend class 			application;
 
-public :
-
-	enum class 					state
-	{
-		undefined,
-		just_created,
-		normal,
-		should_be_destroyed
-	};
-
-								object() = default;
-	virtual						~object() = default;
-
-	static shared_ptr<object>	create();
-	void 						destroy();
-
-//	virtual void 				activate();
-//	virtual void 				deactivate();
-
-	property<read_only, state, object> state;
+	template				<typename>
+	friend class 			object_template;
 
 protected :
 
-	bool 						manual_start = false;
-
-	virtual void 				start()
+	enum class 				state
 	{
-		start_internal();
+		undefined,
+		active,
+		inactive,
+		initialized,
+		uninitialized
+	};
+
+							object()
+	{
+		state.value = state::undefined;
 	}
 
-	virtual void 				finish() {}
+	virtual					~object() = default;
 
-	virtual void 				render() {}
-	virtual void 				update() {}
+	virtual void			destroy() = 0;
 
-	void						create_internal();
-	void						start_internal();
+	virtual void			activate() = 0;
+	virtual void			deactivate() = 0;
 
-//	void						activate_internal();
-//	void						deactivate_internal();
+	class					state_property : public property<read_only, state, object>
+	{
+		template			<typename>
+		friend class 		object_template;
+	}						state;
+
+	virtual void 			render() = 0;
+	virtual void 			update() = 0;
 
 private :
 
-	void						connect_to_application();
+	bool					should_be_destroyed = false;
+
+	virtual void			initialize() = 0;
+	virtual void			deinitialize() = 0;
+
+	void					connect_to_application();
 };

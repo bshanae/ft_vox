@@ -31,8 +31,8 @@ private :
 	using 						chunks_type = std::map<vec3, shared_ptr<chunk>, vec3_comparator>;
 	chunks_type					chunks;
 
-	void						start() override;
-	void						finish() override;
+	void						initialize_implementation() override;
+	void						deinitialize_implementation() override;
 
 	void						update() override;
 

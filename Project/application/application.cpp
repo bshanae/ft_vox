@@ -52,19 +52,16 @@ void			application::process_creating()
 	new_objects.clear();
 
 	for (auto &object : objects)
-		if (object->state == object::state::just_created and not object->manual_start)
-		{
-			object->start();
-			assert(object->state == object::state::normal and "Invalid object state after start");
-		}
+		if (object->state == object::state::uninitialized)
+			object->initialize();
 }
 
 void			application::process_destroying()
 {
 	for (auto iterator = objects.begin(); iterator != objects.end(); )
-		if ((*iterator)->state == object::state::should_be_destroyed)
+		if ((*iterator)->should_be_destroyed)
 		{
-			(*iterator)->finish();
+			(*iterator)->destroy();
 			iterator = objects.erase(iterator);
 		}
 		else

@@ -22,8 +22,10 @@ public :
 
 private :
 
-	vector<shared_ptr<object>>	objects;
-	vector<shared_ptr<object>>	new_objects;
+	using						objects_container_type = vector<shared_ptr<object>>;
+
+	objects_container_type		objects;
+	objects_container_type		new_objects;
 
 	void						process_input();
 

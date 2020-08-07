@@ -35,5 +35,5 @@ private :
 
 	static
 	inline
-	shared_ptr<final_type>	pointer;
+	shared_ptr<final_type>		pointer;
 };

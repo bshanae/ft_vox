@@ -3,7 +3,7 @@
 #include "common/OpenGL.h"
 #include "common/aliases.h"
 #include "common/array3.h"
-#include "application/object.h"
+#include "application/object_template.h"
 #include "map/model.h"
 
 #include "map/block.h"
@@ -18,7 +18,7 @@ struct									chunk_settings
 };
 
 class									chunk :
-											public object,
+											public object_template<chunk>,
 											private array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>
 {
 	friend class						chunk_editor;
@@ -33,16 +33,6 @@ public :
 
 	explicit							chunk(const vec3 &position);
 										~chunk() override = default;
-
-	template				<typename ...args_type>
-	static
-	shared_ptr<chunk>					create(args_type &&...args)
-	{
-		auto							chunk = make_shared<class chunk>(args...);
-
-		chunk->create_internal();
-		return (chunk);
-	}
 
 	property<read_only, vec3, chunk>	position;
 	property<read_only, vec3, chunk>	center;
@@ -63,7 +53,7 @@ private :
 
 	void								render() override;
 
-	void								start() override;
+	void								build();
 
 	void								build_model();
 	void								build_block(const index &index);

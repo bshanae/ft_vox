@@ -98,7 +98,6 @@ static vector<GLuint>	indices =
 
 						chunk::chunk(const vec3 &position)
 {
-	manual_start = true;
 	this->position = position;
 	this->center.getter = [this](){ return (*this->position + chunk_settings::size_as_vector / 2.f); };
 
@@ -120,9 +119,8 @@ void					chunk::render()
 	renderer::render(*this);
 }
 
-void					chunk::start()
+void					chunk::build()
 {
-	object::start_internal();
 	calculate_lighting();
 	build_model();
 }

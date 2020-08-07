@@ -3,37 +3,28 @@
 #include "common/OpenGL.h"
 #include "common/aliases.h"
 #include "common/global.h"
-#include "application/object.h"
+#include "application/object_template.h"
 
 template 							<typename final_type>
-class								unique_object :
-										public object,
-										public global<final_type>
+class								unique_object : public object_template<final_type>
 {
 public :
 									unique_object() = default;
 									~unique_object() override = default;
-
-	static
-	shared_ptr<unique_object>		create()
-	{
-		if constexpr (not is_base_of<unique_object<final_type>, final_type>::value)
-			assert(false and "Bad usage of unique object");
-
-		shared_ptr<unique_object>	object;
-
-		global<final_type>::initialize();
-		object = global<final_type>::instance();
-		object->create_internal();
-		pointer = dynamic_pointer_cast<final_type>(object);
-		return (object);
-	}
-
 protected :
 
 	static shared_ptr<final_type>	instance()
 	{
 		return (pointer);
+	}
+
+	void 							create_implementation() override
+	{
+		if constexpr (not is_base_of<unique_object<final_type>, final_type>::value)
+			assert(false and "Bad usage of unique object");
+
+		assert(pointer == nullptr and "Unique object instance is already initialized");
+		pointer = dynamic_pointer_cast<final_type>(object::shared_from_this());
 	}
 
 private :
