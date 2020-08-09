@@ -27,4 +27,7 @@ private :
 	uniform<mat4>				uniform_projection;
 	uniform<mat4>				uniform_view;
 	uniform<mat4>				uniform_transformation;
+	uniform<vec3>				uniform_background;
+	uniform<float>				uniform_fog_density;
+	uniform<float>				uniform_fog_gradient;
 };

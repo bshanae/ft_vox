@@ -85,7 +85,7 @@ void			application::process_updating()
 {
 	for (auto &layout : layouts)
 		for (auto &object : layout.second)
-			if (object->should_be_updated)
+			if (object->should_be_updated and object->state == object::state::active)
 				object->update();
 }
 
@@ -99,7 +99,7 @@ void			application::process_rendering()
 
 	for (auto &layout : layouts)
 		for (auto &object : layout.second)
-			if (object->should_be_rendered)
+			if (object->should_be_rendered and object->state == object::state::active)
 				object->render();
 
 	window::swap_buffers();

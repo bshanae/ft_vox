@@ -14,16 +14,6 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 	object_template::should_be_rendered = false;
 }
 
-shared_ptr<chunk>		map::find_chunk(const vec3 &position)
-{
-	auto				iterator = instance()->chunks.find(position);
-
-	if (iterator != instance()->chunks.end())
-		return (iterator->second);
-	else
-		return (nullptr);
-}
-
 optional<block_id>		map::find_block(const vec3 &position)
 {
 	chunk::index		index;
@@ -57,7 +47,7 @@ void					map::remove_block(const vec3 &position)
 
 }
 
-shared_ptr<chunk>		map::neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
+shared_ptr<chunk>		map::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
 {
 	vec3				neighbor_position = main->position;
 
@@ -76,6 +66,38 @@ shared_ptr<chunk>		map::neighbor_chunk(const shared_ptr<chunk> &main, axis axis,
 		return (iterator->second);
 	else
 		return (nullptr);
+}
+
+shared_ptr<chunk>		map::find_chunk(const vec3 &position)
+{
+	auto				iterator = instance()->chunks.find(position);
+
+	if (iterator != instance()->chunks.end())
+		return (iterator->second);
+	else
+		return (nullptr);
+}
+
+shared_ptr<chunk>		map::find_new_chunk(const vec3 &position)
+{
+	auto				iterator = instance()->new_chunks.find(position);
+
+	if (iterator != instance()->new_chunks.end())
+		return (iterator->second);
+	else
+		return (nullptr);
+}
+
+// --------------------	Pivot
+
+float					map::distance(const vec3 &position)
+{
+	return (glm::distance(pivot, position + chunk_settings::size_as_vector / 2.f));
+}
+
+float					map::distance(const shared_ptr<chunk> &chunk)
+{
+	return (glm::distance(pivot, (vec3)chunk->center));
 }
 
 // --------------------	Object methods
@@ -100,8 +122,8 @@ void					map::deinitialize_implementation()
 void					map::update()
 {
 #warning "This should be done by player"
-//	pivot.x = camera::position->x;
-//	pivot.z = camera::position->z;
+	pivot.x = camera::position->x;
+	pivot.z = camera::position->z;
 
 	for (auto [position, chunk] : chunks)
 	{
@@ -111,28 +133,42 @@ void					map::update()
 		create_chunk_if_needed(position + back);
 
 		destroy_chunk_if_needed(chunk);
-	}
 
-	for (auto [position, chunk] : chunks)
 		if (chunk->build_phase != chunk::build_phase::model_done)
 			try_build_chunk(chunk);
+
+		if (distance(chunk) < map_settings::visibility_limit)
+			chunk->show();
+		else
+			chunk->hide();
+	}
+
+	for (auto [position, chunk] : new_chunks)
+		chunks[position] = chunk;
+	new_chunks.clear();
+
+	for (auto &chunk : old_chunks)
+		chunks.erase(chunk->position);
+	old_chunks.clear();
 }
 
 // -------------------- Additional methods
 
 void					map::create_chunk_if_needed(const vec3 &position)
 {
-	if (distance(this->pivot, position + chunk_settings::size_as_vector / 2.f) >= map_settings::cashing_limit)
+	if (distance(position) >= map_settings::cashing_limit)
 		return ;
 	if (find_chunk(position) != nullptr)
+		return ;
+	if (find_new_chunk(position) != nullptr)
 		return ;
 
 	create_chunk(position);
 }
 
-void					map::destroy_chunk_if_needed(shared_ptr<chunk> &chunk)
+void					map::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 {
-	if (distance(this->pivot, (vec3)chunk->center) >= map_settings::cashing_limit)
+	if (distance(chunk->center) >= map_settings::cashing_limit)
 		destroy_chunk(chunk);
 }
 
@@ -147,14 +183,13 @@ void					map::create_chunk(const vec3 &position)
 //	if (not (chunk = chunk_loader::download(position)))
 //		chunk = chunk_generator::generate(position);
 
-	chunks[position] = chunk;
+	new_chunks.emplace(position, chunk);
 }
 
-void					map::destroy_chunk(shared_ptr<chunk> &chunk)
+void					map::destroy_chunk(const shared_ptr<chunk> &chunk)
 {
 	chunk_loader::upload(chunk);
-	chunks.erase(chunk->position);
-	chunk.reset();
+	old_chunks.push_back(chunk);
 }
 
 void 					map::try_build_chunk(const shared_ptr<chunk> &chunk)

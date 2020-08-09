@@ -101,7 +101,10 @@ static vector<GLuint>	indices =
 						chunk::chunk(const vec3 &position)
 {
 	this->position = position;
-	this->center.getter = [this](){ return (*this->position + chunk_settings::size_as_vector / 2.f); };
+	center.getter = [this](){ return (*this->position + chunk_settings::size_as_vector / 2.f); };
+	center.prohibit_direct_access();
+
+//	cerr << to_string(position) << " : " << to_string(*this->position) << endl;
 
 	main_workspace = make_shared<model_workspace>();
 	main_workspace->predicate = [](enum block::type type){ return (type != block::type::water); };
@@ -160,6 +163,22 @@ void					chunk::build(build_request request)
 			build_phase = build_phase::model_done;
 			break ;
 	}
+}
+
+void					chunk::show()
+{
+	if (main_workspace and main_workspace->model)
+		main_workspace->model->activate();
+	if (water_workspace and water_workspace->model)
+		water_workspace->model->activate();
+}
+
+void					chunk::hide()
+{
+	if (main_workspace and main_workspace->model)
+		main_workspace->model->deactivate();
+	if (water_workspace and water_workspace->model)
+		water_workspace->model->deactivate();
 }
 
 void					chunk::calculate_light()

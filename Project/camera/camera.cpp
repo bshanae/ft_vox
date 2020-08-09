@@ -37,6 +37,7 @@ void				camera::update()
 		position = (vec3)position + camera_settings::movement_speed * front;
 	else if (input::is_pressed_or_held(GLFW_KEY_S))
 		position = (vec3)position - camera_settings::movement_speed * front;
+
 	recalculate();
 }
 

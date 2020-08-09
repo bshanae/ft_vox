@@ -64,6 +64,9 @@ private :
 
 	void									build(build_request request);
 
+	void									show();
+	void									hide();
+
 	void									calculate_light();
 	float									calculate_ao(const index &index, axis axis, sign sign);
 	static char								apply_ao(char light_level, float ao);
