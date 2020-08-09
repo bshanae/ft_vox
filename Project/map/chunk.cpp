@@ -6,6 +6,8 @@
 #include "map/block_settings.h"
 #include "map/texture_atlas.h"
 
+static const float		epsilon = 0.005f;
+
 static vector<GLfloat>	front_vertices = {
 	+0.5f, +0.5f, +0.5f,
 	-0.5f, +0.5f, +0.5f,
@@ -14,10 +16,10 @@ static vector<GLfloat>	front_vertices = {
 };
 
 static vector<GLfloat>	front_texture_coordinates = {
-	1.f, 1.f,
-	0.f, 1.f,
-	0.f, 0.f,
-	1.f, 0.f,
+	1.f - epsilon, 1.f - epsilon,
+	0.f + epsilon, 1.f - epsilon,
+	0.f + epsilon, 0.f + epsilon,
+	1.f - epsilon, 0.f + epsilon,
 };
 
 static vector<GLfloat>	back_vertices = {
@@ -28,10 +30,10 @@ static vector<GLfloat>	back_vertices = {
 };
 
 static vector<GLfloat>	back_texture_coordinates = {
-	0.f, 1.f,
-	0.f, 0.f,
-	1.f, 0.f,
-	1.f, 1.f,
+	0.f + epsilon, 1.f - epsilon,
+	0.f + epsilon, 0.f + epsilon,
+	1.f - epsilon, 0.f + epsilon,
+	1.f - epsilon, 1.f - epsilon,
 };
 
 static vector<GLfloat>	top_vertices = {
@@ -42,10 +44,10 @@ static vector<GLfloat>	top_vertices = {
 };
 
 static vector<GLfloat>	top_texture_coordinates = {
-	0.f, 0.f,
-	1.f, 0.f,
-	1.f, 1.f,
-	0.f, 1.f,
+	0.f + epsilon, 0.f + epsilon,
+	1.f - epsilon, 0.f + epsilon,
+	1.f - epsilon, 1.f - epsilon,
+	0.f + epsilon, 1.f - epsilon,
 };
 
 static vector<GLfloat>	bottom_vertices = {
@@ -56,10 +58,10 @@ static vector<GLfloat>	bottom_vertices = {
 };
 
 static vector<GLfloat>	bottom_texture_coordinates = {
-	0.f, 0.f,
-	0.f, 1.f,
-	1.f, 1.f,
-	1.f, 0.f,
+	0.f + epsilon, 0.f + epsilon,
+	0.f + epsilon, 1.f - epsilon,
+	1.f - epsilon, 1.f - epsilon,
+	1.f - epsilon, 0.f + epsilon,
 };
 
 static vector<GLfloat>	right_vertices = {
@@ -70,10 +72,10 @@ static vector<GLfloat>	right_vertices = {
 };
 
 static vector<GLfloat>	right_texture_coordinates = {
-	0.f, 1.f,
-	0.f, 0.f,
-	1.f, 0.f,
-	1.f, 1.f,
+	0.f + epsilon, 1.f - epsilon,
+	0.f + epsilon, 0.f + epsilon,
+	1.f - epsilon, 0.f + epsilon,
+	1.f - epsilon, 1.f - epsilon,
 };
 
 static vector<GLfloat>	left_vertices = {
@@ -84,10 +86,10 @@ static vector<GLfloat>	left_vertices = {
 };
 
 static vector<GLfloat>	left_texture_coordinates = {
-	0.f, 0.f,
-	1.f, 0.f,
-	1.f, 1.f,
-	0.f, 1.f
+	0.f + epsilon, 0.f + epsilon,
+	1.f - epsilon, 0.f + epsilon,
+	1.f - epsilon, 1.f - epsilon,
+	0.f + epsilon, 1.f - epsilon
 };
 
 
@@ -257,14 +259,14 @@ void					chunk::build_block(const index &index)
 		auto			this_block = block_id(static_pointer_cast<chunk>(shared_from_this()), index);
 		auto 			neighbor_block = this_block.neighbor(axis, sign);
 
-		if (neighbor_block)
+		if (neighbor_block and (*neighbor_block)().is_empty())
 		{
 			auto		ao = calculate_ao(index, axis, sign);
 			auto		light_level = apply_ao((*neighbor_block)().light_level, ao);
 
 			build_quad(index, (::axis)axis, (::sign)sign, light_level);
 		}
-		else
+		else if (not neighbor_block)
 			build_quad(index, (::axis)axis, (::sign)sign, block_settings::default_light_level);
 	};
 
