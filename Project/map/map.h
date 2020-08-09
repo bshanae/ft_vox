@@ -3,18 +3,13 @@
 #include "common/aliases.h"
 #include "common/global.h"
 #include "application/unique_object.h"
-#include "map/chunk.h"
 #include "map/block_id.h"
-
-struct							map_settings
-{
-	static inline float			visibility_limit = 50.f;
-	static inline float			cashing_limit = 50.f;
-};
+#include "map/chunk.h"
+#include "map/map_settings.h"
 
 class							map : public unique_object<map>
 {
-	friend class 				chunk;
+	friend class 				block_id;
 
 public :
 								map();

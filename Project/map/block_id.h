@@ -1,6 +1,8 @@
 #pragma once
 
-#include "chunk.h"
+#include "chunk_settings.h"
+
+class					chunk;
 
 struct					block_id
 {
@@ -9,36 +11,18 @@ struct					block_id
 	friend class		map;
 
 	[[nodiscard]]
-	block				&operator () () const
-	{
-		return (chunk->at(index));
-	}
+	block				&operator () () const;
 
 	[[nodiscard]]
-	block_id			neighbor(axis axis, sign sign) const
-	{
-		auto			neighbor_index = index.neighbor((::axis)axis, (::sign)sign);
-
-		if (neighbor_index)
-			return (block_id(chunk, neighbor_index));
-		else
-			return (block_id(chunk->neighbor_block_from_another_chunk(index, axis, sign)));
-	}
+	optional<block_id>	neighbor(axis axis, sign sign) const;
 
 private :
 
-						block_id(const shared_ptr<::chunk> &chunk, const chunk::index &index)
-	{
-		this->chunk = chunk;
-		this->index = index;
-	}
+	using				chunk_type = shared_ptr<chunk>;
+	using				index_type = chunk_settings::underlying_array::index;
 
-	explicit			block_id(const pair<shared_ptr<::chunk>, chunk::index> &source)
-	{
-		chunk = source.first;
-		index = source.second;
-	}
+						block_id(const shared_ptr<::chunk> &chunk, const index_type &index);
 
-	shared_ptr<chunk>	chunk;
-	chunk::index		index;
+	chunk_type			chunk;
+	index_type			index;
 };

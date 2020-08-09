@@ -31,6 +31,7 @@ set(SOURCE_FILES
     Project/map/model.cpp
 	Project/map/map.cpp
 	Project/map/chunk.cpp
+	Project/map/block_id.cpp
 
 	Project/renderer/renderer.cpp
 

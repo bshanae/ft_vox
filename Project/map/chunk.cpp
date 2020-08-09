@@ -3,8 +3,8 @@
 #include "common/aliases.h"
 #include "map/model.h"
 #include "renderer/renderer.h"
+#include "map/block_settings.h"
 #include "map/texture_atlas.h"
-#include "map/map.h"
 
 static vector<GLfloat>	front_vertices = {
 	+0.5f, +0.5f, +0.5f,
@@ -106,7 +106,7 @@ static vector<GLuint>	indices =
 //		iterator.value().type_value = block::type::dirt;
 
 	index i;
-	i.y = chunk_settings::size[1] - 4;
+	i.y = chunk_settings::size[1] - 3;
 	for (i.x = 0; i.x < chunk_settings::size[0]; i.x++)
 		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
 			at(i).type = block::type::dirt;
@@ -114,49 +114,9 @@ static vector<GLuint>	indices =
 	at(0, chunk_settings::size[1] - 2 , 0).type = block::type::dirt_with_grass;
 }
 
-						pair<shared_ptr<chunk>, chunk::index>
-						chunk::neighbor_block_from_another_chunk(const index &index, axis axis, sign sign)
-{
-	chunk::index		neighbor_index;
-	chunk::index		reflected_index;
-	shared_ptr<chunk>	neighbor_chunk;
-
-	neighbor_chunk = map::neighbor_chunk(dynamic_pointer_cast<chunk>(shared_from_this()), axis, sign);
-	if (neighbor_chunk == nullptr)
-		return {nullptr, chunk::index(-1, -1, -1)};
-
-	neighbor_index = index.neighbor(axis, sign);
-	reflected_index = neighbor_index.reflect();
-
-	return {neighbor_chunk, reflected_index};
-}
-
 void					chunk::render()
 {
 	renderer::render(*this);
-}
-
-void					chunk::build_model()
-{
-	this->vertices.clear();
-	this->texture_coordinates.clear();
-	this->light_levels.clear();
-	this->indices.clear();
-
-	for (auto &iterator : *this)
-		build_block(iterator.index());
-
-	model = make_shared<::model>();
-
-	model->translation = *position;
-	model->bind(true);
-
-	model->add_vbo(3, this->vertices);
-	model->add_vbo(2, this->texture_coordinates);
-	model->add_vbo(1, this->light_levels);
-	model->add_ebo(this->indices);
-
-	model->bind(false);
 }
 
 void					chunk::build(build_request request)
@@ -214,23 +174,98 @@ void					chunk::calculate_light()
 	}
 }
 
+float					chunk::calculate_ao(const index &index, axis axis, sign sign)
+{
+	optional<block_id>	central_neighbor;
+
+	central_neighbor = block_id(static_pointer_cast<chunk>(shared_from_this()), index).neighbor(axis, sign);
+	if (not central_neighbor)
+		return (0.f);
+
+	int					occluders_count = 0;
+	const int 			occluders_max_count = 8;
+
+	optional<block_id>	occluder;
+	for (int first_axis = (int)axis::x; first_axis <= (int)axis::z; first_axis++)
+	{
+		if ((::axis)first_axis == axis)
+			continue ;
+
+		for (int second_axis = (int)axis::x; second_axis <= (int)axis::z; second_axis++)
+		{
+			if ((::axis)second_axis == axis)
+				continue ;
+
+			for (int first_sign = -1; first_sign <= 1; first_sign++)
+				for (int second_sign = -1; second_sign <= 1; second_sign++)
+				{
+					if (first_sign == 0 and second_sign == 0)
+						continue ;
+
+					occluder = central_neighbor;
+					if (first_sign != 0)
+						occluder = occluder->neighbor((::axis)first_axis, (::sign)first_sign);
+					if (second_sign != 0 and occluder)
+						occluder = occluder->neighbor((::axis)second_axis, (::sign)second_sign);
+
+					if (occluder and not (*occluder)().is_empty())
+						occluders_count++;
+				}
+		}
+	}
+
+	return ((float)occluders_count / occluders_max_count);
+}
+
+char					chunk::apply_ao(char light_level, float ao)
+{
+	const char			dynamic_part = (float)light_level * 0.4f;
+	const char			static_part = light_level - dynamic_part;
+
+	const char			ao_result = (float)dynamic_part * (1.f - ao);
+
+	return (static_part + ao_result);
+}
+
+void					chunk::build_model()
+{
+	this->vertices.clear();
+	this->texture_coordinates.clear();
+	this->light_levels.clear();
+	this->indices.clear();
+
+	for (auto &iterator : *this)
+		build_block(iterator.index());
+
+	model = make_shared<::model>();
+
+	model->translation = *position;
+	model->bind(true);
+
+	model->add_vbo(3, this->vertices);
+	model->add_vbo(2, this->texture_coordinates);
+	model->add_vbo(1, this->light_levels);
+	model->add_ebo(this->indices);
+
+	model->bind(false);
+}
+
 void					chunk::build_block(const index &index)
 {
 	auto 				try_build_quad = [this, index](axis axis, sign sign)
 	{
-		auto			neighbor_index = index.neighbor((::axis)axis, (::sign)sign);
+		auto			this_block = block_id(static_pointer_cast<chunk>(shared_from_this()), index);
+		auto 			neighbor_block = this_block.neighbor(axis, sign);
 
-		if (not neighbor_index)
+		if (neighbor_block)
 		{
-			auto		neighbor_data = neighbor_block_from_another_chunk(index, axis, sign);
+			auto		ao = calculate_ao(index, axis, sign);
+			auto		light_level = apply_ao((*neighbor_block)().light_level, ao);
 
-			if (neighbor_data.first == nullptr)
-				build_quad(index, (::axis)axis, (::sign)sign, block_settings::default_light_level);
-			else if (auto neighbor_block = neighbor_data.first->at(neighbor_data.second); neighbor_block.is_empty())
-				build_quad(index, (::axis)axis, (::sign)sign, neighbor_block.light_level);
+			build_quad(index, (::axis)axis, (::sign)sign, light_level);
 		}
-		else if (auto neighbor_block = at(neighbor_index); neighbor_block.is_empty())
-			build_quad(index, (::axis)axis, (::sign)sign, neighbor_block.light_level);
+		else
+			build_quad(index, (::axis)axis, (::sign)sign, block_settings::default_light_level);
 	};
 
 	if (at(index).is_empty())
@@ -251,7 +286,7 @@ void					append_to_vector(vector<type> &target, const vector<type> &source)
 
 void					chunk::build_quad(const index &index, axis axis, sign sign, char light_level)
 {
-	ivec2 				texture_index = ivec2(0);
+	auto				texture_index = ivec2(0);
 
 	light_level = max(block_settings::light_level_min, light_level);
 	if (axis == axis::x and sign == sign::plus)
