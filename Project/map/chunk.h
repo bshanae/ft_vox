@@ -19,8 +19,9 @@ struct									chunk_settings
 
 class									chunk :
 											public object_template<chunk>,
-											private array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>
+											public array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>
 {
+	friend class						block_id;
 	friend class						chunk_editor;
 	friend class 						map;
 	friend class 						renderer;
@@ -46,18 +47,29 @@ private :
 	vector<GLfloat>						light_levels;
 	vector<GLuint>						indices;
 
-	using 								neighbor_provider_type = function<shared_ptr<chunk>(const shared_ptr<chunk> &, axis, sign)>;
-	static
-	inline
-	neighbor_provider_type				neighbor_provider = nullptr;
+	pair<shared_ptr<chunk>, index>		neighbor_block_from_another_chunk(const index &index, axis axis, sign sign);
 
 	void								render() override;
 
-	void								build();
+	enum class 							build_request
+	{
+		reset,
+		light,
+		model
+	};
+
+	enum class							build_phase
+	{
+		nothing_done,
+		light_done,
+		model_done
+	}									build_phase = build_phase::nothing_done;
+
+	void								build(build_request request);
+
+	void								calculate_light();
 
 	void								build_model();
 	void								build_block(const index &index);
-	void								build_quad(axis axis, sign sign, const index &index, int light_level);
-
-	void 								calculate_lighting();
+	void								build_quad(const index &index, axis axis, sign sign, char light_level);
 };

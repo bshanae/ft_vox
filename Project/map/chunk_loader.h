@@ -2,15 +2,13 @@
 
 #include "common/OpenGL.h"
 #include "common/global.h"
-
 #include "map/chunk.h"
-#include "map/chunk_editor.h"
 
-class							chunk_loader : public chunk_editor
+class							chunk_loader
 {
 public :
 								chunk_loader() = default;
-								~chunk_loader() override = default;
+	virtual						~chunk_loader() = default;
 
 	static shared_ptr<chunk>	download(const vec3 &position)
 	{

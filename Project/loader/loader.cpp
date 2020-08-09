@@ -61,9 +61,8 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
 	shared_ptr<chunk>	chunk;
 
 	chunk = chunk::create(position);
-	chunk_editor::use(chunk);
-	for (auto iterator = chunk_editor::begin(); iterator != chunk_editor::end(); iterator++)
-		file >> (char &)chunk_editor::at(iterator);
+	for (auto iterator = chunk->begin(); iterator != chunk->end(); iterator++)
+		file >> (char &)iterator->value().type;
 
 	file.write_pointer = pointer;
 	file << (char)(chunk_state::invalid);
@@ -108,7 +107,6 @@ void					loader::upload_implementation(const shared_ptr<chunk> &chunk)
 	file << (char)chunk_state::valid;
 	file << *chunk->position;
 
-	chunk_editor::use(chunk);
-	for (auto iterator = chunk_editor::begin(); iterator != chunk_editor::end(); iterator++)
-		file << (char)chunk_editor::at(iterator).type;
+	for (auto iterator = chunk->begin(); iterator != chunk->end(); iterator++)
+		file << (char)iterator->value().type;
 }

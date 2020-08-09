@@ -23,8 +23,8 @@ int						main()
 	generator_controller::initialize();
 	loader::initialize("test.vox");
 
-	camera::create();
 	map::create();
+	camera::create();
 
 	application::execute();
 	return (0);

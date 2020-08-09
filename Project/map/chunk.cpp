@@ -4,6 +4,7 @@
 #include "map/model.h"
 #include "renderer/renderer.h"
 #include "map/texture_atlas.h"
+#include "map/map.h"
 
 static vector<GLfloat>	front_vertices = {
 	+0.5f, +0.5f, +0.5f,
@@ -105,24 +106,34 @@ static vector<GLuint>	indices =
 //		iterator.value().type_value = block::type::dirt;
 
 	index i;
-	i.y = chunk_settings::size[1] - 2;
+	i.y = chunk_settings::size[1] - 4;
 	for (i.x = 0; i.x < chunk_settings::size[0]; i.x++)
 		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
 			at(i).type = block::type::dirt;
 
-	at(0, chunk_settings::size[1] - 1, 0).type = block::type::dirt_with_grass;
-	at(1, chunk_settings::size[1] - 1, 0).light_level = 12;
+	at(0, chunk_settings::size[1] - 2 , 0).type = block::type::dirt_with_grass;
+}
+
+						pair<shared_ptr<chunk>, chunk::index>
+						chunk::neighbor_block_from_another_chunk(const index &index, axis axis, sign sign)
+{
+	chunk::index		neighbor_index;
+	chunk::index		reflected_index;
+	shared_ptr<chunk>	neighbor_chunk;
+
+	neighbor_chunk = map::neighbor_chunk(dynamic_pointer_cast<chunk>(shared_from_this()), axis, sign);
+	if (neighbor_chunk == nullptr)
+		return {nullptr, chunk::index(-1, -1, -1)};
+
+	neighbor_index = index.neighbor(axis, sign);
+	reflected_index = neighbor_index.reflect();
+
+	return {neighbor_chunk, reflected_index};
 }
 
 void					chunk::render()
 {
 	renderer::render(*this);
-}
-
-void					chunk::build()
-{
-	calculate_lighting();
-	build_model();
 }
 
 void					chunk::build_model()
@@ -131,8 +142,6 @@ void					chunk::build_model()
 	this->texture_coordinates.clear();
 	this->light_levels.clear();
 	this->indices.clear();
-
-	calculate_lighting();
 
 	for (auto &iterator : *this)
 		build_block(iterator.index());
@@ -150,6 +159,61 @@ void					chunk::build_model()
 	model->bind(false);
 }
 
+void					chunk::build(build_request request)
+{
+	switch (request)
+	{
+		case (build_request::reset) :
+			build_phase = build_phase::nothing_done;
+			model = nullptr;
+			break ;
+
+		case (build_request::light) :
+			assert(build_phase == build_phase::nothing_done and "Unexpected build phase");
+			calculate_light();
+			build_phase = build_phase::light_done;
+			break ;
+
+		case (build_request::model) :
+			assert(build_phase == build_phase::light_done and "Unexpected build phase");
+			build_model();
+			build_phase = build_phase::model_done;
+			break ;
+	}
+}
+
+void					chunk::calculate_light()
+{
+	queue<index>		queue;
+
+	chunk::index		index;
+	chunk::index		neighbor_index;
+
+	index.y = chunk_settings::size[1] - 1;
+	for (index.x = 0; index.x < chunk_settings::size[0]; index.x++)
+		for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
+		{
+			at(index).light_level = block_settings::sun_light_level;
+			queue.push(index);
+		}
+
+	while (not queue.empty())
+	{
+		index = queue.front();
+		queue.pop();
+
+		if (neighbor_index = index.neighbor(axis::y, sign::minus); not neighbor_index)
+			continue ;
+		if (not at(neighbor_index).is_empty())
+			continue ;
+		if (at(index).light_level - at(neighbor_index).light_level >= 2)
+		{
+			at(neighbor_index).light_level = (char)(at(index).light_level);
+			queue.push(neighbor_index);
+		}
+	}
+}
+
 void					chunk::build_block(const index &index)
 {
 	auto 				try_build_quad = [this, index](axis axis, sign sign)
@@ -158,25 +222,15 @@ void					chunk::build_block(const index &index)
 
 		if (not neighbor_index)
 		{
-			assert(neighbor_provider != nullptr and "Neighbor provider is null");
+			auto		neighbor_data = neighbor_block_from_another_chunk(index, axis, sign);
 
-			auto 		neighbor_chunk = neighbor_provider(dynamic_pointer_cast<chunk>(shared_from_this()), axis, sign);
-
-			if (not neighbor_chunk)
-			{
-#warning "Set light level"
-				build_quad((::axis)axis, (::sign)sign, index, 0);
-				return ;
-			}
-
-			auto		reflected = neighbor_index.reflect();
-			auto 		reflected_block = neighbor_chunk->at(reflected);
-
-			if (reflected_block.is_empty())
-				build_quad((::axis)axis, (::sign)sign, index, reflected_block.light_level);
+			if (neighbor_data.first == nullptr)
+				build_quad(index, (::axis)axis, (::sign)sign, block_settings::default_light_level);
+			else if (auto neighbor_block = neighbor_data.first->at(neighbor_data.second); neighbor_block.is_empty())
+				build_quad(index, (::axis)axis, (::sign)sign, neighbor_block.light_level);
 		}
 		else if (auto neighbor_block = at(neighbor_index); neighbor_block.is_empty())
-			build_quad((::axis)axis, (::sign)sign, index, neighbor_block.light_level);
+			build_quad(index, (::axis)axis, (::sign)sign, neighbor_block.light_level);
 	};
 
 	if (at(index).is_empty())
@@ -195,10 +249,11 @@ void					append_to_vector(vector<type> &target, const vector<type> &source)
 	target.insert(target.end(), source.begin(), source.end());
 }
 
-void					chunk::build_quad(axis axis, sign sign, const index &index, int light_level)
+void					chunk::build_quad(const index &index, axis axis, sign sign, char light_level)
 {
 	ivec2 				texture_index = ivec2(0);
 
+	light_level = max(block_settings::light_level_min, light_level);
 	if (axis == axis::x and sign == sign::plus)
 	{
 		append_to_vector(vertices, right_vertices);
@@ -262,48 +317,8 @@ void					chunk::build_quad(axis axis, sign sign, const index &index, int light_l
 	for (int i = (int)this->indices.size() - 6; i < (int)this->indices.size(); i++)
 		this->indices[i] += offset;
 
-	auto 				normalized_light_level = (float)light_level / block_settings::light_level_limit;
+	auto 				normalized_light_level = (float)light_level / block_settings::light_level_max;
 
 	for (int i = 0; i < 4; i++)
 		light_levels.push_back(normalized_light_level);
-}
-
-void 					chunk::calculate_lighting()
-{
-	queue<index>		queue;
-
-	auto 				process_neighbor = [this, &queue](index &index, axis axis, sign sign)
-	{
-		auto 			&block = at(index);
-		auto			neighbor_index = index.neighbor((::axis)axis, (::sign)sign);
-
-		if (neighbor_index)
-		{
-			auto	 	&neighbor_block = at(neighbor_index);
-
-			if (block.light_level - neighbor_block.light_level >= 2)
-			{
-				neighbor_block.light_level = block.light_level - 1;
-
-				if (neighbor_block.is_empty())
-					queue.push(neighbor_index);
-			}
-		}
-	};
-
-	for (auto iterator : *this)
-		if (iterator.value().light_level > 0)
-			queue.push(iterator.index());
-
-	while (not queue.empty())
-	{
-		auto 			index = queue.front();
-
-		queue.pop();
-		for (int axis = (int)axis::x; axis <= (int)axis::z; axis++)
-		{
-			process_neighbor(index, (::axis)axis, sign::minus);
-			process_neighbor(index, (::axis)axis, sign::plus);
-		}
-	}
 }

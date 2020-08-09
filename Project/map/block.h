@@ -1,16 +1,31 @@
 #pragma once
 
+class						chunk;
+
 struct						block_settings
 {
 	static
 	inline
-	const char 				light_level_limit = 16;
+	const char 				light_level_min = 4;
+
+	static
+	inline
+	const char 				light_level_max = 16;
+
+	static
+	inline
+	const char 				default_light_level = 10;
+
+	static
+	inline
+	const char 				sun_light_level = 15;
 };
 
 class						block
 {
 	friend class 			chunk;
 	friend class 			chunk_editor;
+	friend class 			map;
 
 public :
 
@@ -18,11 +33,9 @@ public :
 	{
 		air,
 		dirt,
-		dirt_with_grass
+		dirt_with_grass,
+		torch
 	};
-
-	type					type;
-	char					light_level = 0;
 
 	explicit				block(enum type type = type::air)
 	{
@@ -34,4 +47,7 @@ public :
 	{
 		return (type == type::air);
 	}
+
+	type					type;
+	char					light_level = 0;
 };

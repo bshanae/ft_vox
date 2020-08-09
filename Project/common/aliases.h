@@ -18,6 +18,7 @@ using				std::is_base_of;
 using				std::vector;
 using				std::array;
 using				std::queue;
+using				std::pair;
 
 // ---------------- Pointers
 
@@ -68,3 +69,5 @@ using				std::numeric_limits;
 
 using				std::to_string;
 using				std::filesystem::exists;
+using				std::min;
+using				std::max;

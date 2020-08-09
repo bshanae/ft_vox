@@ -4,9 +4,8 @@
 #include "common/global.h"
 
 #include "map/chunk.h"
-#include "map/chunk_editor.h"
 
-class							chunk_generator : public chunk_editor
+class							chunk_generator
 {
 public :
 								chunk_generator() = default;
