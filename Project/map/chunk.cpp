@@ -2,7 +2,6 @@
 
 #include "common/aliases.h"
 #include "map/model.h"
-#include "renderer/renderer.h"
 #include "map/block_settings.h"
 #include "map/texture_atlas.h"
 
@@ -104,6 +103,14 @@ static vector<GLuint>	indices =
 	this->position = position;
 	this->center.getter = [this](){ return (*this->position + chunk_settings::size_as_vector / 2.f); };
 
+	main_workspace = make_shared<model_workspace>();
+	main_workspace->predicate = [](enum block::type type){ return (type != block::type::water); };
+	main_workspace->layout = "main";
+
+	water_workspace = make_shared<model_workspace>();
+	water_workspace->predicate = [](enum block::type type){ return (type == block::type::water); };
+	water_workspace->layout = "water";
+
 //	for (auto iterator : *this)
 //		iterator.value().type_value = block::type::dirt;
 
@@ -114,11 +121,7 @@ static vector<GLuint>	indices =
 			at(i).type = block::type::dirt;
 
 	at(0, chunk_settings::size[1] - 2 , 0).type = block::type::dirt_with_grass;
-}
-
-void					chunk::render()
-{
-	renderer::render(*this);
+	at(1, chunk_settings::size[1] - 2 , 0).type = block::type::water;
 }
 
 void					chunk::build(build_request request)
@@ -127,7 +130,19 @@ void					chunk::build(build_request request)
 	{
 		case (build_request::reset) :
 			build_phase = build_phase::nothing_done;
-			model = nullptr;
+
+			main_workspace->vertices.clear();
+			main_workspace->texture_coordinates.clear();
+			main_workspace->light_levels.clear();
+			main_workspace->indices.clear();
+			main_workspace->model->destroy();
+
+			water_workspace->vertices.clear();
+			water_workspace->texture_coordinates.clear();
+			water_workspace->light_levels.clear();
+			water_workspace->indices.clear();
+			water_workspace->model->destroy();
+
 			break ;
 
 		case (build_request::light) :
@@ -138,6 +153,9 @@ void					chunk::build(build_request request)
 
 		case (build_request::model) :
 			assert(build_phase == build_phase::light_done and "Unexpected build phase");
+			workspace = main_workspace;
+			build_model();
+			workspace = water_workspace;
 			build_model();
 			build_phase = build_phase::model_done;
 			break ;
@@ -180,7 +198,7 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 {
 	optional<block_id>	central_neighbor;
 
-	central_neighbor = block_id(static_pointer_cast<chunk>(shared_from_this()), index).neighbor(axis, sign);
+	central_neighbor = block_id(shared_from_this(), index).neighbor(axis, sign);
 	if (not central_neighbor)
 		return (0.f);
 
@@ -221,7 +239,7 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 
 char					chunk::apply_ao(char light_level, float ao)
 {
-	const char			dynamic_part = (float)light_level * 0.4f;
+	const char			dynamic_part = (float)light_level * 0.65f;
 	const char			static_part = light_level - dynamic_part;
 
 	const char			ao_result = (float)dynamic_part * (1.f - ao);
@@ -231,35 +249,36 @@ char					chunk::apply_ao(char light_level, float ao)
 
 void					chunk::build_model()
 {
-	this->vertices.clear();
-	this->texture_coordinates.clear();
-	this->light_levels.clear();
-	this->indices.clear();
+	workspace->vertices.clear();
+	workspace->texture_coordinates.clear();
+	workspace->light_levels.clear();
+	workspace->indices.clear();
 
 	for (auto &iterator : *this)
-		build_block(iterator.index());
+		if (workspace->predicate(iterator->value().type))
+			build_block(iterator.index());
 
-	model = make_shared<::model>();
+	workspace->model = model::create(workspace->layout);
 
-	model->translation = *position;
-	model->bind(true);
+	workspace->model->translation = *position;
+	workspace->model->bind(true);
 
-	model->add_vbo(3, this->vertices);
-	model->add_vbo(2, this->texture_coordinates);
-	model->add_vbo(1, this->light_levels);
-	model->add_ebo(this->indices);
+	workspace->model->add_vbo(3, workspace->vertices);
+	workspace->model->add_vbo(2, workspace->texture_coordinates);
+	workspace->model->add_vbo(1, workspace->light_levels);
+	workspace->model->add_ebo(workspace->indices);
 
-	model->bind(false);
+	workspace->model->bind(false);
 }
 
 void					chunk::build_block(const index &index)
 {
 	auto 				try_build_quad = [this, index](axis axis, sign sign)
 	{
-		auto			this_block = block_id(static_pointer_cast<chunk>(shared_from_this()), index);
+		auto			this_block = block_id(shared_from_this(), index);
 		auto 			neighbor_block = this_block.neighbor(axis, sign);
 
-		if (neighbor_block and (*neighbor_block)().is_empty())
+		if (neighbor_block and (*neighbor_block)().is_transparent())
 		{
 			auto		ao = calculate_ao(index, axis, sign);
 			auto		light_level = apply_ao((*neighbor_block)().light_level, ao);
@@ -293,48 +312,48 @@ void					chunk::build_quad(const index &index, axis axis, sign sign, char light_
 	light_level = max(block_settings::light_level_min, light_level);
 	if (axis == axis::x and sign == sign::plus)
 	{
-		append_to_vector(vertices, right_vertices);
-		append_to_vector(texture_coordinates, right_texture_coordinates);
+		append_to_vector(workspace->vertices, right_vertices);
+		append_to_vector(workspace->texture_coordinates, right_texture_coordinates);
 		texture_index = texture_atlas::association_for(at(index).type).right;
 	}
 	else if (axis == axis::x and sign == sign::minus)
 	{
-		append_to_vector(vertices, left_vertices);
-		append_to_vector(texture_coordinates, left_texture_coordinates);
+		append_to_vector(workspace->vertices, left_vertices);
+		append_to_vector(workspace->texture_coordinates, left_texture_coordinates);
 		texture_index = texture_atlas::association_for(at(index).type).left;
 	}
 	else if (axis == axis::y and sign == sign::plus)
 	{
-		append_to_vector(vertices, top_vertices);
-		append_to_vector(texture_coordinates, top_texture_coordinates);
+		append_to_vector(workspace->vertices, top_vertices);
+		append_to_vector(workspace->texture_coordinates, top_texture_coordinates);
 		texture_index = texture_atlas::association_for(at(index).type).top;
 	}
 	else if (axis == axis::y and sign == sign::minus)
 	{
-		append_to_vector(vertices, bottom_vertices);
-		append_to_vector(texture_coordinates, bottom_texture_coordinates);
+		append_to_vector(workspace->vertices, bottom_vertices);
+		append_to_vector(workspace->texture_coordinates, bottom_texture_coordinates);
 		texture_index = texture_atlas::association_for(at(index).type).bottom;
 	}
 	else if (axis == axis::z and sign == sign::plus)
 	{
-		append_to_vector(vertices, front_vertices);
-		append_to_vector(texture_coordinates, front_texture_coordinates);
+		append_to_vector(workspace->vertices, front_vertices);
+		append_to_vector(workspace->texture_coordinates, front_texture_coordinates);
 		texture_index = texture_atlas::association_for(at(index).type).front;
 	}
 	else if (axis == axis::z and sign == sign::minus)
 	{
-		append_to_vector(vertices, back_vertices);
-		append_to_vector(texture_coordinates, back_texture_coordinates);
+		append_to_vector(workspace->vertices, back_vertices);
+		append_to_vector(workspace->texture_coordinates, back_texture_coordinates);
 		texture_index = texture_atlas::association_for(at(index).type).back;
 	}
 	else
 		assert(false and "Can't build quad");
 
-	for (int i = (int)vertices.size() - 12; i < (int)vertices.size(); i += 3)
+	for (int i = (int)workspace->vertices.size() - 12; i < (int)workspace->vertices.size(); i += 3)
 	{
-		vertices[i + 0] += (float)index.x;
-		vertices[i + 1] += (float)index.y;
-		vertices[i + 2] += (float)index.z;
+		workspace->vertices[i + 0] += (float)index.x;
+		workspace->vertices[i + 1] += (float)index.y;
+		workspace->vertices[i + 2] += (float)index.z;
 	}
 
 	auto				transform_texture_coordinate = [this, texture_index](float &x, float &y)
@@ -345,17 +364,17 @@ void					chunk::build_quad(const index &index, axis axis, sign sign, char light_
 		y = size.y *((float)texture_index.y + y);
 	};
 
-	for (int i = (int)texture_coordinates.size() - 8; i < (int)texture_coordinates.size(); i += 2)
-		transform_texture_coordinate(texture_coordinates[i + 0], texture_coordinates[i + 1]);
+	for (int i = (int)workspace->texture_coordinates.size() - 8; i < (int)workspace->texture_coordinates.size(); i += 2)
+		transform_texture_coordinate(workspace->texture_coordinates[i + 0], workspace->texture_coordinates[i + 1]);
 
-	const int			offset = (int)this->indices.size() / 6 * 4;
+	const int			offset = (int)workspace->indices.size() / 6 * 4;
 
-	append_to_vector(indices, ::indices);
-	for (int i = (int)this->indices.size() - 6; i < (int)this->indices.size(); i++)
-		this->indices[i] += offset;
+	append_to_vector(workspace->indices, indices);
+	for (int i = (int)workspace->indices.size() - 6; i < (int)workspace->indices.size(); i++)
+		workspace->indices[i] += offset;
 
 	auto 				normalized_light_level = (float)light_level / block_settings::light_level_max;
 
 	for (int i = 0; i < 4; i++)
-		light_levels.push_back(normalized_light_level);
+		workspace->light_levels.push_back(normalized_light_level);
 }

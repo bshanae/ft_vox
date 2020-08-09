@@ -11,24 +11,20 @@
 	uniform_transformation = program->create_uniform<mat4>("uniform_transformation");
 }
 
-void					renderer::render(const chunk &chunk)
+void					renderer::render(const shared_ptr<model> &model)
 {
 	auto 				instance = global<renderer>::instance();
-	const auto			&model = chunk.model;
-
-	if (not chunk.model)
-		return ;
 
 	instance->program->bind(true);
-	model->bind(true);
 
 #warning "Upload when changed"
 	instance->uniform_projection.upload(camera::projection_matrix);
 	instance->uniform_view.upload(camera::view_matrix);
+
+	model->bind(true);
 	instance->uniform_transformation.upload(model->transformation);
-
 	glDrawElements(GL_TRIANGLES, model->number_of_indices, GL_UNSIGNED_INT, nullptr);
-
 	model->bind(false);
+
 	instance->program->bind(false);
 }

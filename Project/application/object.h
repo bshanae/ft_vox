@@ -22,6 +22,11 @@ protected :
 		uninitialized
 	};
 
+	string 					layout;
+
+	bool 					should_be_rendered = true;
+	bool 					should_be_updated = true;
+
 							object()
 	{
 		state.value = state::undefined;

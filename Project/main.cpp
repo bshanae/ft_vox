@@ -9,6 +9,11 @@
 int						main()
 {
 	application::initialize();
+	application::register_layout("main");
+	application::register_layout("water");
+
+	map::create();
+	camera::create();
 
 	texture_atlas::initialize("Project/resources/atlases/default.png");
 	texture_atlas::association_for(block::type::dirt) = ivec2(2, 15);
@@ -18,13 +23,11 @@ int						main()
 	texture_atlas::association_for(block::type::dirt_with_grass).back = ivec2(3, 15);
 	texture_atlas::association_for(block::type::dirt_with_grass).top = ivec2(12, 3);
 	texture_atlas::association_for(block::type::dirt_with_grass).bottom = ivec2(2, 15);
+	texture_atlas::association_for(block::type::water) = ivec2(13, 3);
 
 	renderer::initialize();
 	generator_controller::initialize();
 	loader::initialize("test.vox");
-
-	map::create();
-	camera::create();
 
 	application::execute();
 	return (0);

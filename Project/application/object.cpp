@@ -4,5 +4,5 @@
 
 void				object::connect_to_application()
 {
-	application::instance()->new_objects.push_back(shared_from_this());
+	application::instance()->new_objects.emplace_back(layout, shared_from_this());
 }

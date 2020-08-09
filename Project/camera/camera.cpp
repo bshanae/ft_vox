@@ -6,6 +6,9 @@
 
 					camera::camera()
 {
+	object_template::layout = "main";
+	object_template::should_be_rendered = false;
+
 	position.setter = [this](const vec3 &value)
 	{
 		position.value = value;

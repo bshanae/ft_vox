@@ -9,6 +9,11 @@
 	input::initialize();
 }
 
+void			application::register_layout(const string &key)
+{
+	instance()->layouts[key] = {};
+}
+
 void			application::execute()
 {
 	auto		instance = global<application>::instance();
@@ -18,8 +23,9 @@ void			application::execute()
 		instance->process_input();
 
 		if (window::closed())
-			for (auto &object : instance->objects)
-				object->destroy();
+			for (auto &layout : instance->layouts)
+				for (auto &object : layout.second)
+					object->destroy();
 
 		instance->process_creating();
 		instance->process_destroying();
@@ -48,30 +54,39 @@ void			application::process_input()
 
 void			application::process_creating()
 {
-	objects.insert(objects.end(), new_objects.begin(), new_objects.end());
-	new_objects.clear();
+	for (auto &new_object : new_objects)
+		if (auto iterator = layouts.find(new_object.first); iterator != layouts.end())
+			iterator->second.push_back(new_object.second);
+		else
+			assert(false and "Unknown layout");
 
-	for (auto &object : objects)
-		if (object->state == object::state::uninitialized)
-			object->initialize();
+	for (auto &layout : layouts)
+		for (auto &object : layout.second)
+			if (object->state == object::state::uninitialized)
+				object->initialize();
+
+	new_objects.clear();
 }
 
 void			application::process_destroying()
 {
-	for (auto iterator = objects.begin(); iterator != objects.end(); )
-		if ((*iterator)->should_be_destroyed)
-		{
-			(*iterator)->destroy();
-			iterator = objects.erase(iterator);
-		}
-		else
-			++iterator;
+	for (auto &layout : layouts)
+		for (auto iterator = layout.second.begin(); iterator != layout.second.end();)
+			if ((*iterator)->should_be_destroyed)
+			{
+				(*iterator)->destroy();
+				iterator = layout.second.erase(iterator);
+			}
+			else
+				++iterator;
 }
 
 void			application::process_updating()
 {
-	for (auto &object : objects)
-		object->update();
+	for (auto &layout : layouts)
+		for (auto &object : layout.second)
+			if (object->should_be_updated)
+				object->update();
 }
 
 void			application::process_rendering()
@@ -82,8 +97,10 @@ void			application::process_rendering()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	for (auto &object : objects)
-		object->render();
+	for (auto &layout : layouts)
+		for (auto &object : layout.second)
+			if (object->should_be_rendered)
+				object->render();
 
 	window::swap_buffers();
 }

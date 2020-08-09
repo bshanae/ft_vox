@@ -34,7 +34,7 @@ public :
 	{
 		data = make_shared<internal_type>();
 	}
-								~array3() = default;
+	virtual						~array3() = default;
 
 	struct						index
 	{

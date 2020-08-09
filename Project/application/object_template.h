@@ -47,6 +47,8 @@ public :
 		state.value = state::inactive;
 	}
 
+protected :
+
 	bool 					automatic_activation = true;
 
 	void 					render() override {}

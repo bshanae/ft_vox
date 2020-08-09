@@ -60,7 +60,7 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
 
 	shared_ptr<chunk>	chunk;
 
-	chunk = chunk::create(position);
+	chunk = make_shared<::chunk>(position);
 	for (auto iterator = chunk->begin(); iterator != chunk->end(); iterator++)
 		file >> (char &)iterator->value().type;
 

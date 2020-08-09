@@ -13,7 +13,7 @@ public :
 		air,
 		dirt,
 		dirt_with_grass,
-		torch
+		water
 	};
 
 	explicit				block(enum type type = type::air)
@@ -25,6 +25,12 @@ public :
 	bool					is_empty() const
 	{
 		return (type == type::air);
+	}
+
+	[[nodiscard]]
+	bool					is_transparent() const
+	{
+		return (type == type::air or type == type::water);
 	}
 
 	type					type;

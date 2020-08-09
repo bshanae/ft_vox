@@ -6,26 +6,25 @@
 #include "program/program.h"
 #include "program/uniform.h"
 
-class 						chunk;
+class 							chunk;
+class 							model;
 
-class						renderer : public global<renderer>
+class							renderer : public global<renderer>
 {
 public :
-							renderer();
-							~renderer() override = default;
+								renderer();
+								~renderer() override = default;
 
-	static void				render(const chunk &chunk);
+	static void					render(const shared_ptr<model> &model);
 
 private :
 
-	inline static const
-	path					path_to_vertex_shader = "Project/resources/shaders/vertex.glsl";
-	inline static const
-	path					path_to_fragment_shader = "Project/resources/shaders/fragment.glsl";
+	inline static const path	path_to_vertex_shader = "Project/resources/shaders/vertex.glsl";
+	inline static const path	path_to_fragment_shader = "Project/resources/shaders/fragment.glsl";
 
-	unique_ptr<program>		program;
+	unique_ptr<program>			program;
 
-	uniform<mat4>			uniform_projection;
-	uniform<mat4>			uniform_view;
-	uniform<mat4>			uniform_transformation;
+	uniform<mat4>				uniform_projection;
+	uniform<mat4>				uniform_view;
+	uniform<mat4>				uniform_transformation;
 };

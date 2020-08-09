@@ -52,10 +52,10 @@ private :
 // ----------------------------	Additional methods
 
 	void						create_chunk_if_needed(const vec3 &position);
-	void						destroy_chunk_if_needed(const shared_ptr<chunk> &chunk);
+	void						destroy_chunk_if_needed(shared_ptr<chunk> &chunk);
 
 	void						create_chunk(const vec3 &position);
-	void						destroy_chunk(const shared_ptr<chunk> &chunk);
+	void						destroy_chunk(shared_ptr<chunk> &chunk);
 
 	void 						try_build_chunk(const shared_ptr<chunk> &chunk);
 };

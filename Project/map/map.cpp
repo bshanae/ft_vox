@@ -8,7 +8,11 @@ static const vec3		right = vec3(+chunk_settings::size[0], 0.f, 0.f);
 static const vec3		forward = vec3(0.f, 0.f, chunk_settings::size[2]);
 static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
-						map::map() {}
+						map::map()
+{
+	object_template::layout = "main";
+	object_template::should_be_rendered = false;
+}
 
 shared_ptr<chunk>		map::find_chunk(const vec3 &position)
 {
@@ -126,7 +130,7 @@ void					map::create_chunk_if_needed(const vec3 &position)
 	create_chunk(position);
 }
 
-void					map::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
+void					map::destroy_chunk_if_needed(shared_ptr<chunk> &chunk)
 {
 	if (distance(this->pivot, (vec3)chunk->center) >= map_settings::cashing_limit)
 		destroy_chunk(chunk);
@@ -137,7 +141,7 @@ void					map::create_chunk(const vec3 &position)
 	shared_ptr<chunk>	chunk;
 
 	if (not (chunk = chunk_loader::download(position)))
-		chunk = chunk::create(position);
+		chunk = make_shared<::chunk>(position);
 
 #warning "Generation module needed"
 //	if (not (chunk = chunk_loader::download(position)))
@@ -146,11 +150,11 @@ void					map::create_chunk(const vec3 &position)
 	chunks[position] = chunk;
 }
 
-void					map::destroy_chunk(const shared_ptr<chunk> &chunk)
+void					map::destroy_chunk(shared_ptr<chunk> &chunk)
 {
 	chunk_loader::upload(chunk);
 	chunks.erase(chunk->position);
-	chunk->destroy();
+	chunk.reset();
 }
 
 void 					map::try_build_chunk(const shared_ptr<chunk> &chunk)
