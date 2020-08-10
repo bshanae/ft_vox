@@ -104,8 +104,6 @@ static vector<GLuint>	indices =
 	center.getter = [this](){ return (*this->position + chunk_settings::size_as_vector / 2.f); };
 	center.prohibit_direct_access();
 
-//	cerr << to_string(position) << " : " << to_string(*this->position) << endl;
-
 	main_workspace = make_shared<model_workspace>();
 	main_workspace->predicate = [](enum block::type type){ return (type != block::type::water); };
 	main_workspace->layout = "main";
@@ -113,9 +111,6 @@ static vector<GLuint>	indices =
 	water_workspace = make_shared<model_workspace>();
 	water_workspace->predicate = [](enum block::type type){ return (type == block::type::water); };
 	water_workspace->layout = "water";
-
-//	for (auto iterator : *this)
-//		iterator.value().type_value = block::type::dirt;
 
 	index i;
 	i.y = chunk_settings::size[1] - 3;
@@ -222,7 +217,7 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 		return (0.f);
 
 	int					occluders_count = 0;
-	const int 			occluders_max_count = 8;
+	const int 			occluders_max_count = 8 * 2;
 
 	optional<block_id>	occluder;
 	for (int first_axis = (int)axis::x; first_axis <= (int)axis::z; first_axis++)
@@ -233,6 +228,8 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 		for (int second_axis = (int)axis::x; second_axis <= (int)axis::z; second_axis++)
 		{
 			if ((::axis)second_axis == axis)
+				continue ;
+			if (first_axis == second_axis)
 				continue ;
 
 			for (int first_sign = -1; first_sign <= 1; first_sign++)
@@ -248,7 +245,12 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 						occluder = occluder->neighbor((::axis)second_axis, (::sign)second_sign);
 
 					if (occluder and not (*occluder)().is_empty())
-						occluders_count++;
+					{
+						if (first_sign == 0 or second_sign == 0)
+							occluders_count += 2;
+						else
+							occluders_count += 1;
+					}
 				}
 		}
 	}
@@ -258,7 +260,7 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 
 char					chunk::apply_ao(char light_level, float ao)
 {
-	const char			dynamic_part = (float)light_level * 0.65f;
+	const char			dynamic_part = (float)light_level * 0.8f;
 	const char			static_part = light_level - dynamic_part;
 
 	const char			ao_result = (float)dynamic_part * (1.f - ao);
