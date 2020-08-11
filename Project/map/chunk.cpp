@@ -133,13 +133,15 @@ void					chunk::build(build_request request)
 			main_workspace->texture_coordinates.clear();
 			main_workspace->light_levels.clear();
 			main_workspace->indices.clear();
-			main_workspace->model->destroy();
+			if (main_workspace->model)
+				main_workspace->model->destroy();
 
 			water_workspace->vertices.clear();
 			water_workspace->texture_coordinates.clear();
 			water_workspace->light_levels.clear();
 			water_workspace->indices.clear();
-			water_workspace->model->destroy();
+			if (water_workspace->model)
+				water_workspace->model->destroy();
 
 			break ;
 

@@ -5,6 +5,7 @@
 #include "common/global.h"
 #include "common/property.h"
 #include "application/unique_object.h"
+#include "map/block_id.h"
 
 struct						camera_settings
 {
@@ -16,6 +17,8 @@ struct						camera_settings
 	static inline float 	fov = 30.f;
 
 	static inline vec3		initial_position = vec3(0.f, 5.0f, 0.f);
+
+	static inline float		ray_cast_limit = 10.f;
 };
 
 class						camera : public unique_object<camera>
@@ -38,6 +41,8 @@ public :
 	static inline
 	view_matrix_type		view_matrix;
 
+	optional<block_id>		cast_ray() const;
+
 private :
 
 	const vec3				up_const = vec3(0.f, 1.f, 0.f);
@@ -52,4 +57,6 @@ private :
 	void					update() override;
 
 	void					recalculate();
+
+	static float			intbound(float s, float ds);
 };

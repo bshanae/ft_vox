@@ -20,15 +20,23 @@ optional<block_id>		map::find_block(const vec3 &position)
 	vec3				chunk_position;
 	shared_ptr<chunk>	chunk;
 
-	index.x = (int)position.x % chunk_settings::size[0];
-	index.y = (int)position.y % chunk_settings::size[1];
-	index.z = (int)position.z % chunk_settings::size[2];
+	chunk_position.x = (int)position.x / chunk_settings::size[0];
+	chunk_position.y = (int)position.y / chunk_settings::size[1];
+	chunk_position.z = (int)position.z / chunk_settings::size[2];
 
-	chunk_position.x = (int)position.x - index.x;
-	chunk_position.y = (int)position.y - index.y;
-	chunk_position.z = (int)position.z - index.z;
+	if (position.x < 0) chunk_position.x -= 1;
+	if (position.y < 0) chunk_position.y -= 1;
+	if (position.z < 0) chunk_position.z -= 1;
 
-	if (chunk = find_chunk(chunk_position); not chunk)
+	chunk_position.x *= chunk_settings::size[0];
+	chunk_position.y *= chunk_settings::size[1];
+	chunk_position.z *= chunk_settings::size[2];
+
+	index.x = position.x - chunk_position.x;
+	index.y = position.y - chunk_position.y;
+	index.z = position.z - chunk_position.z;
+
+	if (chunk = find_chunk(chunk_position); not chunk or not index)
 		return {};
 	else
 		return (block_id(chunk, index));
@@ -127,12 +135,12 @@ void					map::update()
 
 	for (auto [position, chunk] : chunks)
 	{
-		create_chunk_if_needed(position + left);
-		create_chunk_if_needed(position + right);
-		create_chunk_if_needed(position + forward);
-		create_chunk_if_needed(position + back);
-
-		destroy_chunk_if_needed(chunk);
+//		create_chunk_if_needed(position + left);
+//		create_chunk_if_needed(position + right);
+//		create_chunk_if_needed(position + forward);
+//		create_chunk_if_needed(position + back);
+//
+//		destroy_chunk_if_needed(chunk);
 
 		if (chunk->build_phase != chunk::build_phase::model_done)
 			try_build_chunk(chunk);
@@ -176,6 +184,7 @@ void					map::create_chunk(const vec3 &position)
 {
 	shared_ptr<chunk>	chunk;
 
+	cerr << "New chunk on " << to_string(position) << endl;
 	if (not (chunk = chunk_loader::download(position)))
 		chunk = make_shared<::chunk>(position);
 
@@ -211,6 +220,7 @@ void 					map::try_build_chunk(const shared_ptr<chunk> &chunk)
 				return;
 
 			chunk->build(chunk::build_request::model);
+			cerr << "Building chunk on " << to_string(*chunk->position) << endl;
 			break ;
 
 		default :
