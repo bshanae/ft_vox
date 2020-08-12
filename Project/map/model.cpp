@@ -2,11 +2,8 @@
 
 #include "renderer/renderer.h"
 
-					model::model(const string &layout)
+					model::model()
 {
-	object_template::layout = layout;
-	object_template::should_be_updated = false;
-
 	glGenVertexArrays(1, &vao);
 
 	translation.setter = [this](const vec3 &value)
@@ -88,11 +85,6 @@ void				model::add_ebo(const vector<GLuint> &indices)
 	vbos.push_back(ebo);
 
 	number_of_indices = indices.size();
-}
-
-void 				model::render()
-{
-	renderer::render(static_pointer_cast<model>(shared_from_this()));
 }
 
 void 				model::recalculate_transformation()

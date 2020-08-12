@@ -22,8 +22,6 @@ public :
 
 private :
 
-// ----------------------------	Chunks
-
 	struct						vec3_comparator
 	{
 		bool					operator () (const vec3& left, const vec3 &right) const
@@ -32,11 +30,18 @@ private :
 		}
 	};
 
+// ----------------------------	Attributes
+
 	using 						chunks_type = std::map<vec3, shared_ptr<chunk>, vec3_comparator>;
 
 	chunks_type					chunks;
 	chunks_type					new_chunks;
 	vector<shared_ptr<chunk>>	old_chunks;
+
+	using						sorted_models_type = std::multimap<float, shared_ptr<model>>;
+	sorted_models_type			sorted_models;
+
+// ----------------------------	Chunks
 
 	static shared_ptr<chunk>	find_chunk(const vec3 &position);
 	static shared_ptr<chunk>	find_new_chunk(const vec3 &position);
@@ -56,6 +61,7 @@ private :
 	void						deinitialize_implementation() override;
 
 	void						update() override;
+	void						render() override;
 
 // ----------------------------	Additional methods
 

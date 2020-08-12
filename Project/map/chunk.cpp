@@ -106,20 +106,22 @@ static vector<GLuint>	indices =
 
 	main_workspace = make_shared<model_workspace>();
 	main_workspace->predicate = [](enum block::type type){ return (type != block::type::water); };
-	main_workspace->layout = "main";
 
 	water_workspace = make_shared<model_workspace>();
 	water_workspace->predicate = [](enum block::type type){ return (type == block::type::water); };
-	water_workspace->layout = "water";
 
 	index i;
-	i.y = chunk_settings::size[1] - 3;
+	i.y = chunk_settings::size[1] - 1;
+	for (i.x = 0; i.x < chunk_settings::size[0]; i.x++)
+		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
+			at(i).type = block::type::dirt;
+	i.y = chunk_settings::size[1] - 2;
 	for (i.x = 0; i.x < chunk_settings::size[0]; i.x++)
 		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
 			at(i).type = block::type::dirt;
 
-	at(0, chunk_settings::size[1] - 2 , 0).type = block::type::dirt_with_grass;
-	at(1, chunk_settings::size[1] - 2 , 0).type = block::type::water;
+	at(1, chunk_settings::size[1] - 1 , 0).type = block::type::water;
+	at(2, chunk_settings::size[1] - 1 , 0).type = block::type::water;
 }
 
 void					chunk::build(build_request request)
@@ -133,15 +135,13 @@ void					chunk::build(build_request request)
 			main_workspace->texture_coordinates.clear();
 			main_workspace->light_levels.clear();
 			main_workspace->indices.clear();
-			if (main_workspace->model)
-				main_workspace->model->destroy();
+			main_workspace->model.reset();
 
 			water_workspace->vertices.clear();
 			water_workspace->texture_coordinates.clear();
 			water_workspace->light_levels.clear();
 			water_workspace->indices.clear();
-			if (water_workspace->model)
-				water_workspace->model->destroy();
+			water_workspace->model.reset();
 
 			break ;
 
@@ -164,18 +164,18 @@ void					chunk::build(build_request request)
 
 void					chunk::show()
 {
-	if (main_workspace and main_workspace->model)
-		main_workspace->model->activate();
-	if (water_workspace and water_workspace->model)
-		water_workspace->model->activate();
+//	if (main_workspace and main_workspace->model)
+//		main_workspace->model->activate();
+//	if (water_workspace and water_workspace->model)
+//		water_workspace->model->activate();
 }
 
 void					chunk::hide()
 {
-	if (main_workspace and main_workspace->model)
-		main_workspace->model->deactivate();
-	if (water_workspace and water_workspace->model)
-		water_workspace->model->deactivate();
+//	if (main_workspace and main_workspace->model)
+//		main_workspace->model->deactivate();
+//	if (water_workspace and water_workspace->model)
+//		water_workspace->model->deactivate();
 }
 
 void					chunk::calculate_light()
@@ -281,9 +281,10 @@ void					chunk::build_model()
 		if (workspace->predicate(iterator->value().type))
 			build_block(iterator.index());
 
-	workspace->model = model::create(workspace->layout);
+	workspace->model = make_shared<model>();
 
-	workspace->model->translation = *position;
+//	vec3(0.5f) is block offset, so first block is on vec3(0, 0, 0)
+	workspace->model->translation = (vec3)position + vec3(0.5f);
 	workspace->model->bind(true);
 
 	workspace->model->add_vbo(3, workspace->vertices);
@@ -298,17 +299,25 @@ void					chunk::build_block(const index &index)
 {
 	auto 				try_build_quad = [this, index](axis axis, sign sign)
 	{
-		auto			this_block = block_id(shared_from_this(), index);
-		auto 			neighbor_block = this_block.neighbor(axis, sign);
+		auto			this_block_id = block_id(shared_from_this(), index);
+		auto 			neighbor_block_id = this_block_id.neighbor(axis, sign);
 
-		if (neighbor_block and (*neighbor_block)().is_transparent())
+		if (neighbor_block_id)
 		{
+			auto 		this_block = this_block_id();
+			auto 		neighbor_block = (*neighbor_block_id)();
+
+			if (not this_block.is_transparent() and neighbor_block.is_transparent());
+			else if (neighbor_block.is_empty());
+			else
+				return ;
+
 			auto		ao = calculate_ao(index, axis, sign);
-			auto		light_level = apply_ao((*neighbor_block)().light_level, ao);
+			auto		light_level = apply_ao(neighbor_block.light_level, ao);
 
 			build_quad(index, (::axis)axis, (::sign)sign, light_level);
 		}
-		else if (not neighbor_block)
+		else if (not neighbor_block_id)
 			build_quad(index, (::axis)axis, (::sign)sign, block_settings::default_light_level);
 	};
 

@@ -2,6 +2,7 @@
 
 #include "chunk_loader.h"
 #include "chunk_generator.h"
+#include "renderer/renderer.h"
 
 static const vec3		left = vec3(-chunk_settings::size[0], 0.f, 0.f);
 static const vec3		right = vec3(+chunk_settings::size[0], 0.f, 0.f);
@@ -11,7 +12,6 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 						map::map()
 {
 	object_template::layout = "main";
-	object_template::should_be_rendered = false;
 }
 
 optional<block_id>		map::find_block(const vec3 &position)
@@ -135,12 +135,12 @@ void					map::update()
 
 	for (auto [position, chunk] : chunks)
 	{
-//		create_chunk_if_needed(position + left);
-//		create_chunk_if_needed(position + right);
-//		create_chunk_if_needed(position + forward);
-//		create_chunk_if_needed(position + back);
-//
-//		destroy_chunk_if_needed(chunk);
+		create_chunk_if_needed(position + left);
+		create_chunk_if_needed(position + right);
+		create_chunk_if_needed(position + forward);
+		create_chunk_if_needed(position + back);
+
+		destroy_chunk_if_needed(chunk);
 
 		if (chunk->build_phase != chunk::build_phase::model_done)
 			try_build_chunk(chunk);
@@ -160,6 +160,21 @@ void					map::update()
 	old_chunks.clear();
 }
 
+void					map::render()
+{
+	for (auto [position, chunk] : chunks)
+		if (chunk->main_workspace and chunk->main_workspace->model)
+			renderer::render(chunk->main_workspace->model);
+
+	for (auto [position, chunk] : chunks)
+		if (chunk->water_workspace and chunk->water_workspace->model)
+			sorted_models.emplace( distance(chunk), chunk->water_workspace->model);
+
+	for (auto iterator = sorted_models.rbegin(); iterator != sorted_models.rend(); ++iterator)
+		renderer::render(iterator->second);
+	sorted_models.clear();
+}
+
 // -------------------- Additional methods
 
 void					map::create_chunk_if_needed(const vec3 &position)
@@ -171,12 +186,13 @@ void					map::create_chunk_if_needed(const vec3 &position)
 	if (find_new_chunk(position) != nullptr)
 		return ;
 
+	find_chunk(position);
 	create_chunk(position);
 }
 
 void					map::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 {
-	if (distance(chunk->center) >= map_settings::cashing_limit)
+	if (distance(chunk) >= map_settings::cashing_limit)
 		destroy_chunk(chunk);
 }
 
@@ -184,7 +200,6 @@ void					map::create_chunk(const vec3 &position)
 {
 	shared_ptr<chunk>	chunk;
 
-	cerr << "New chunk on " << to_string(position) << endl;
 	if (not (chunk = chunk_loader::download(position)))
 		chunk = make_shared<::chunk>(position);
 
@@ -220,7 +235,6 @@ void 					map::try_build_chunk(const shared_ptr<chunk> &chunk)
 				return;
 
 			chunk->build(chunk::build_request::model);
-			cerr << "Building chunk on " << to_string(*chunk->position) << endl;
 			break ;
 
 		default :

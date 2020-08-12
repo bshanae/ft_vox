@@ -35,7 +35,6 @@ private :
 	struct									model_workspace
 	{
 		function<bool(enum block::type)>	predicate;
-		string 								layout;
 
 		vector<GLfloat>						vertices;
 		vector<GLfloat>						texture_coordinates;

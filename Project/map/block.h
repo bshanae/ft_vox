@@ -22,15 +22,15 @@ public :
 	}
 
 	[[nodiscard]]
-	bool					is_empty() const
+	inline bool				is_empty() const
 	{
 		return (type == type::air);
 	}
 
 	[[nodiscard]]
-	bool					is_transparent() const
+	inline bool				is_transparent() const
 	{
-		return (type == type::air or type == type::water);
+		return (type == type::water);
 	}
 
 	type					type;
