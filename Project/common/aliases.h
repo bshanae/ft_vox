@@ -14,9 +14,12 @@ using				std::is_base_of;
 #include <array>
 #include <vector>
 #include <queue>
+#include <unordered_map>
 
 using				std::vector;
 using				std::array;
+using				std::unordered_map;
+using				std::multimap;
 using				std::queue;
 using				std::pair;
 
@@ -71,3 +74,4 @@ using				std::to_string;
 using				std::filesystem::exists;
 using				std::min;
 using				std::max;
+using				std::hash;

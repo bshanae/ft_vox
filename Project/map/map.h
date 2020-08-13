@@ -22,23 +22,27 @@ public :
 
 private :
 
-	struct						vec3_comparator
+	struct						vec3_hasher
 	{
-		bool					operator () (const vec3& left, const vec3 &right) const
+		size_t					operator() (const vec3 &vector) const
 		{
-			return (left.x < right.x or (left.x == right.x and (left.y < right.y or (left.y == right.y and left.z < right.z))));
+			size_t				h1 = hash<float>()(vector.x);
+			size_t				h2 = hash<float>()(vector.y);
+			size_t				h3 = hash<float>()(vector.z);
+
+			return (h1 ^ (h2 << 1u)) ^ h3;
 		}
 	};
 
 // ----------------------------	Attributes
 
-	using 						chunks_type = std::map<vec3, shared_ptr<chunk>, vec3_comparator>;
+	using						chunks_type = std::unordered_map<vec3, shared_ptr<chunk>, vec3_hasher>;
 
 	chunks_type					chunks;
 	chunks_type					new_chunks;
 	vector<shared_ptr<chunk>>	old_chunks;
 
-	using						sorted_models_type = std::multimap<float, shared_ptr<model>>;
+	using						sorted_models_type = multimap<float, shared_ptr<model>>;
 	sorted_models_type			sorted_models;
 
 // ----------------------------	Chunks
