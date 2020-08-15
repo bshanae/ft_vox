@@ -3,6 +3,7 @@
 #include "common/aliases.h"
 #include "common/global.h"
 #include "application/object.h"
+#include "application/timer.h"
 
 class 							window;
 class 							object;
@@ -20,14 +21,16 @@ public :
 
 	static void 				register_layout(const string &key);
 
+
+
 	static void					execute();
 
 private :
 
-	using						pool_type = vector<pair<string, shared_ptr<object>>>;
+	using						new_objects_type = vector<pair<string, shared_ptr<object>>>;
 	using						layouts_type = std::map<string, vector<shared_ptr<object>>>;
 
-	pool_type					new_objects;
+	new_objects_type			new_objects;
 	layouts_type				layouts;
 
 	void						process_input();

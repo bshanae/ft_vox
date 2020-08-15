@@ -10,10 +10,10 @@ class					property_read_functionality
 
 protected :
 
-	explicit			property_read_functionality(const type &target) :
-							target(target)
+	explicit			property_read_functionality(const type *pointer) :
+							pointer(pointer)
 	{
-		getter = [this](){ return (this->target); };
+		getter = [this](){ return (*this->pointer); };
 	}
 
 						operator type () const
@@ -25,13 +25,13 @@ protected :
 	const type			&operator * () const
 	{
 		assert(is_direct_access_allowed and "Direct access is prohibited");
-		return (target);
+		return (*pointer);
 	}
 
 	const type			*operator -> () const
 	{
 		assert(is_direct_access_allowed and "Direct access is prohibited");
-		return (addressof(target));
+		return (pointer);
 	}
 
 protected :
@@ -43,7 +43,7 @@ protected :
 
 private :
 
-	const type			&target;
+	const type			*pointer;
 };
 
 template 				<typename type>
@@ -54,9 +54,9 @@ class					property_write_functionality
 
 protected :
 
-	explicit			property_write_functionality(type &target) : target(target)
+	explicit			property_write_functionality(type *pointer) : pointer(pointer)
 	{
-		setter = [this](const type &value){ this->target = value; };
+		setter = [this](const type &value){ *this->pointer = value; };
 	}
 
 	void				operator = (const type &value)
@@ -68,13 +68,13 @@ protected :
 	type				&operator * ()
 	{
 		assert(is_direct_access_allowed and "Direct access is prohibited");
-		return (target);
+		return (*pointer);
 	}
 
 	type				*operator -> ()
 	{
 		assert(is_direct_access_allowed and "Direct access is prohibited");
-		return (addressof(target));
+		return (pointer);
 	}
 
 protected :
@@ -86,7 +86,7 @@ protected :
 
 private :
 
-	type				&target;
+	type				*pointer;
 };
 
 template 				<typename type, typename owner_type>
@@ -99,9 +99,24 @@ class 					property_complete_functionality :
 
 public :
 						property_complete_functionality() :
-							property_read_functionality<type>(value),
-							property_write_functionality<type>(value)
+							property_read_functionality<type>(&value),
+							property_write_functionality<type>(&value)
 						{}
+
+						property_complete_functionality(property_complete_functionality &that) :
+							property_read_functionality<type>(&value),
+							property_write_functionality<type>(&value)
+	{
+		this->value = that.value;
+	}
+
+						property_complete_functionality	&
+						operator = (const property_complete_functionality &that)
+	{
+		if (*this != that)
+			this->value = that.value;
+		return (*this);
+	}
 
 protected :
 

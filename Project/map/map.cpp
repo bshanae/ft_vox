@@ -1,5 +1,6 @@
 #include "map.h"
 
+#include "application/timestamp.h"
 #include "chunk_loader.h"
 #include "chunk_generator.h"
 #include "renderer/renderer.h"
@@ -12,6 +13,7 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 						map::map()
 {
 	object_template::layout = "main";
+	initial_procedure();
 }
 
 optional<block_id>		map::find_block(const vec3 &position)
@@ -129,9 +131,36 @@ void					map::deinitialize_implementation()
 
 void					map::update()
 {
+	auto 				try_build_chunk_if_needed = [this](const shared_ptr<chunk> &chunk)
+	{
+		if (chunk->build_phase != chunk::build_phase::model_done)
+			try_build_chunk(chunk);
+	};
+
+	timestamp			start_timestamp;
+	bool				should_postpone_build = false;
+
+	auto				update_postpone_tasking = [start_timestamp, &should_postpone_build]()
+	{
+		if (timestamp() - start_timestamp > map_settings::chunk_generation_time_limit)
+			should_postpone_build = true;
+	};
+
 #warning "This should be done by player"
 	pivot.x = camera::position->x;
 	pivot.z = camera::position->z;
+
+	while (not chunks_with_postponed_build.empty())
+	{
+		auto			chunk = chunks_with_postponed_build.front();
+
+		chunks_with_postponed_build.pop();
+		try_build_chunk_if_needed(chunk);
+
+		update_postpone_tasking();
+		if (should_postpone_build)
+			break ;
+	}
 
 	for (auto [position, chunk] : chunks)
 	{
@@ -142,14 +171,25 @@ void					map::update()
 
 		destroy_chunk_if_needed(chunk);
 
-		if (chunk->build_phase != chunk::build_phase::model_done)
-			try_build_chunk(chunk);
+		if (not should_postpone_build)
+		{
+			update_postpone_tasking();
+			try_build_chunk_if_needed(chunk);
+		}
+		else
+			chunks_with_postponed_build.push(chunk);
+
+		if (chunk->build_phase == chunk::build_phase::model_done)
+			initial_procedure_context.current_visibility = max(initial_procedure_context.current_visibility, distance(chunk));
 
 		if (distance(chunk) < map_settings::visibility_limit)
 			chunk->show();
 		else
 			chunk->hide();
 	}
+
+	if (initial_procedure_context.working)
+		initial_procedure();
 
 	for (auto [position, chunk] : new_chunks)
 		chunks[position] = chunk;
@@ -173,6 +213,31 @@ void					map::render()
 	for (auto iterator = sorted_models.rbegin(); iterator != sorted_models.rend(); ++iterator)
 		renderer::render(iterator->second);
 	sorted_models.clear();
+}
+
+// -------------------- Initial procedure
+
+void					map::initial_procedure()
+{
+	if (initial_procedure_context.first_call)
+	{
+		initial_procedure_context.first_call = false;
+		initial_procedure_context.working = true;
+		initial_procedure_context.target_visibility = map_settings::visibility_limit;
+		map_settings::visibility_limit = initial_procedure_settings::start_visibility;
+	}
+	else
+	{
+		assert(initial_procedure_context.working);
+
+		if (initial_procedure_context.current_visibility > map_settings::visibility_limit)
+			map_settings::visibility_limit = initial_procedure_context.current_visibility;
+		if (map_settings::visibility_limit >= initial_procedure_context.target_visibility)
+		{
+			initial_procedure_context.working = false;
+			map_settings::visibility_limit = initial_procedure_context.target_visibility;
+		}
+	}
 }
 
 // -------------------- Additional methods
@@ -238,6 +303,6 @@ void 					map::try_build_chunk(const shared_ptr<chunk> &chunk)
 			break ;
 
 		default :
-			assert(false and "Unexpected chunk build circumstance");
+			assert(false and "Unexpected chunk build circumstances");
 	}
 }

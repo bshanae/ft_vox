@@ -9,7 +9,7 @@
 
 struct						camera_settings
 {
-	static constexpr float	movement_speed = 0.05f;
+	static constexpr float	movement_speed = 0.2f;
 	static constexpr float	rotation_speed = 0.05f;
 
 	static inline float		near_plane = 0.01f;

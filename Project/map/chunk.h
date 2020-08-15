@@ -61,16 +61,20 @@ private :
 		model_done
 	}										build_phase = build_phase::nothing_done;
 
+	shared_ptr<model_workspace>				workspace;
+
 	void									build(build_request request);
 
 	void									show();
 	void									hide();
 
+// ---------------------------------------- Light
+
 	void									calculate_light();
 	float									calculate_ao(const index &index, axis axis, sign sign);
 	static char								apply_ao(char light_level, float ao);
 
-	shared_ptr<model_workspace>				workspace;
+// ---------------------------------------- Model
 
 	void									build_model();
 	void									build_block(const index &index);

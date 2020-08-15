@@ -16,7 +16,6 @@
 
 	program->bind(true);
 	uniform_background.upload(application_settings::background);
-	uniform_fog_density.upload(1.f / (map_settings::visibility_limit * 0.95f));
 	uniform_fog_gradient.upload(15.f);
 	program->bind(false);
 }
@@ -29,6 +28,7 @@ void					renderer::render(const shared_ptr<model> &model)
 
 	instance->uniform_projection.upload(camera::projection_matrix);
 	instance->uniform_view.upload(camera::view_matrix);
+	instance->uniform_fog_density.upload(1.f / (map_settings::visibility_limit * 0.95f));
 
 	model->bind(true);
 	instance->uniform_transformation.upload(model->transformation);

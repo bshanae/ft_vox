@@ -63,7 +63,6 @@ using				std::ios;
 #include <limits>
 
 using				std::filesystem::path;
-using				std::input_iterator_tag;
 using				std::function;
 using				std::optional;
 using				std::numeric_limits;

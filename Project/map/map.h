@@ -39,8 +39,11 @@ private :
 	using						chunks_type = std::unordered_map<vec3, shared_ptr<chunk>, vec3_hasher>;
 
 	chunks_type					chunks;
+
 	chunks_type					new_chunks;
 	vector<shared_ptr<chunk>>	old_chunks;
+
+	queue<shared_ptr<chunk>>	chunks_with_postponed_build;
 
 	using						sorted_models_type = multimap<float, shared_ptr<model>>;
 	sorted_models_type			sorted_models;
@@ -66,6 +69,28 @@ private :
 
 	void						update() override;
 	void						render() override;
+
+// ----------------------------	Initial procedure
+
+	struct						initial_procedure_settings
+	{
+		static inline
+		const float				start_visibility = 5.f;
+
+		static inline
+		const float				visibility_progress = 1.f;
+	};
+
+	struct						initial_procedure_context
+	{
+		bool					first_call = true;
+		bool					working = false;
+
+		float					current_visibility = 0.f;
+		float 					target_visibility = 0.f;
+	}							initial_procedure_context;
+
+	void						initial_procedure();
 
 // ----------------------------	Additional methods
 
