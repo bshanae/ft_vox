@@ -3,7 +3,7 @@
 #include "common/OpenGL.h"
 #include "common/global.h"
 #include "common/aliases.h"
-#include "map/block.h"
+#include "world/block/block.h"
 
 class						texture_atlas : public global<texture_atlas>
 {
@@ -44,6 +44,6 @@ private :
 
 	GLuint					value = -1;
 
-	using 					associations_type = std::map<enum block::type, association>;
+	using 					associations_type = map<enum block::type, association>;
 	associations_type		associations;
 };

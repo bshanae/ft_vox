@@ -1,10 +1,10 @@
 #include "application/application.h"
-#include "map/map.h"
-#include "map/texture_atlas.h"
-#include "camera/camera.h"
-#include "renderer/renderer.h"
-#include "generator/generator_controller.h"
-#include "loader/loader.h"
+#include "world/block/texture_atlas.h"
+#include "world/world/world.h"
+#include "world/renderer/renderer.h"
+#include "world/generator/generator_controller.h"
+#include "world/loader/loader.h"
+#include "player/camera/camera.h"
 
 int						main()
 {
@@ -12,7 +12,7 @@ int						main()
 	application::register_layout("main");
 	application::register_layout("water");
 
-	map::create();
+	world::create();
 	camera::create();
 
 	texture_atlas::initialize("Project/resources/atlases/default.png");

@@ -2,8 +2,7 @@
 
 #include "common/OpenGL.h"
 #include "common/global.h"
-
-#include "map/chunk.h"
+#include "world/chunk/chunk.h"
 
 class							chunk_generator
 {

@@ -1,8 +1,9 @@
 #include "renderer.h"
 
-#include "map/model.h"
-#include "map/map_settings.h"
-#include "camera/camera.h"
+#include "world/chunk/model.h"
+#include "world/world/world_settings.h"
+#warning "Receive matrices directly from player"
+#include "player/camera/camera.h"
 
 						renderer::renderer()
 {
@@ -28,7 +29,7 @@ void					renderer::render(const shared_ptr<model> &model)
 
 	instance->uniform_projection.upload(camera::projection_matrix);
 	instance->uniform_view.upload(camera::view_matrix);
-	instance->uniform_fog_density.upload(1.f / (map_settings::visibility_limit * 0.95f));
+	instance->uniform_fog_density.upload(1.f / (world_settings::visibility_limit * 0.95f));
 
 	model->bind(true);
 	instance->uniform_transformation.upload(model->transformation);

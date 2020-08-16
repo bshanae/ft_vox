@@ -21,27 +21,22 @@ set(SOURCE_FILES
     Project/application/application.cpp
 	Project/application/object.cpp
 	Project/application/input.cpp
+	Project/application/main.cpp
 
-    Project/program/shader.cpp
-    Project/program/program.cpp
+	Project/world/block/texture_atlas.cpp
+	Project/world/block/block_id.cpp
+	Project/world/chunk/chunk.cpp
+	Project/world/chunk/model.cpp
+	Project/world/world/world.cpp
+	Project/world/renderer/shader.cpp
+	Project/world/renderer/program.cpp
+	Project/world/renderer/renderer.cpp
+	Project/world/generator/generator_controller.cpp
+	Project/world/generator/plain_generator.cpp
+	Project/world/loader/loader.cpp
+	Project/world/loader/file.cpp
 
-	Project/camera/camera.cpp
-
-	Project/map/texture_atlas.cpp
-    Project/map/model.cpp
-	Project/map/map.cpp
-	Project/map/chunk.cpp
-	Project/map/block_id.cpp
-
-	Project/renderer/renderer.cpp
-
-	Project/generator/generator_controller.cpp
-	Project/generator/plain_generator.cpp
-
-	Project/loader/loader.cpp
-	Project/loader/file.cpp
-
-	Project/main.cpp)
+	Project/player/camera/camera.cpp)
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)
 include_directories(

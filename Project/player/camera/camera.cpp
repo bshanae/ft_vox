@@ -3,7 +3,7 @@
 #include "common/debug.h"
 #include "application/window.h"
 #include "application/input.h"
-#include "map/map.h"
+#include "world/world/world.h"
 
 					camera::camera()
 {
@@ -77,7 +77,7 @@ optional<block_id>	camera::cast_ray() const
 			t_max_z += t_delta_z;
 		}
 
-		if (auto block = map::find_block(vec3(x, y, z)))
+		if (auto block = world::find_block(vec3(x, y, z)))
 		{
 			assert(block);
 			if (not (*block)().is_empty())

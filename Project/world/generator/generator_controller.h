@@ -2,8 +2,8 @@
 
 #include "common/aliases.h"
 #include "common/global.h"
-#include "generator/generator.h"
-#include "generator/plain_generator.h"
+#include "world/generator/generator.h"
+#include "world/generator/plain_generator.h"
 
 class						generator_controller : public global<generator_controller>
 {
@@ -21,7 +21,7 @@ public :
 
 private :
 
-	using 					generators_type = std::map<generator_type, shared_ptr<generator>>;
+	using 					generators_type = map<generator_type, shared_ptr<generator>>;
 	generators_type			generators;
 
 	void					initializer(std::shared_ptr<generator_controller> pointer) override

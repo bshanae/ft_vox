@@ -3,8 +3,8 @@
 #include "common/OpenGL.h"
 #include "common/aliases.h"
 #include "common/global.h"
-#include "program/program.h"
-#include "program/uniform.h"
+#include "world/renderer/program.h"
+#include "world/renderer/uniform.h"
 
 class 							chunk;
 class 							model;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "generator/generator.h"
+#include "world/generator/generator.h"
 
 class				plain_generator : public generator
 {

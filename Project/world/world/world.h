@@ -3,17 +3,17 @@
 #include "common/aliases.h"
 #include "common/global.h"
 #include "application/unique_object.h"
-#include "map/block_id.h"
-#include "map/chunk.h"
-#include "map/map_settings.h"
+#include "world/block/block_id.h"
+#include "world/chunk/chunk.h"
+#include "world/world/world_settings.h"
 
-class							map : public unique_object<map>
+class							world : public unique_object<world>
 {
 	friend class 				block_id;
 
 public :
-								map();
-								~map() override = default;
+								world();
+								~world() override = default;
 
 	static optional<block_id>	find_block(const vec3 &position);
 

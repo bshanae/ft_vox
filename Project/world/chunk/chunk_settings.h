@@ -3,7 +3,7 @@
 #include "common/OpenGL.h"
 #include "common/array3.h"
 
-#include "map/block.h"
+#include "world/block/block.h"
 
 struct							chunk_settings
 {

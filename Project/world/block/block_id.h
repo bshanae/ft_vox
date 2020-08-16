@@ -1,6 +1,6 @@
 #pragma once
 
-#include "chunk_settings.h"
+#include "world/chunk/chunk_settings.h"
 
 class					chunk;
 
@@ -8,7 +8,7 @@ struct					block_id
 {
 	friend class		block;
 	friend class		chunk;
-	friend class		map;
+	friend class		world;
 
 	[[nodiscard]]
 	block				&operator () () const;

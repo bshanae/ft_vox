@@ -1,6 +1,6 @@
 #include "model.h"
 
-#include "renderer/renderer.h"
+#include "world/renderer/renderer.h"
 
 					model::model()
 {

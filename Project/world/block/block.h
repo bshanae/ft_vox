@@ -4,7 +4,7 @@ class						block
 {
 	friend class 			chunk;
 	friend class 			chunk_editor;
-	friend class 			map;
+	friend class 			world;
 
 public :
 

@@ -5,7 +5,7 @@
 #include "common/global.h"
 #include "common/property.h"
 #include "application/unique_object.h"
-#include "map/block_id.h"
+#include "world/block/block_id.h"
 
 struct						camera_settings
 {

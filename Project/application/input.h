@@ -5,7 +5,6 @@
 #include "common/global.h"
 #include "common/OpenGL.h"
 #include "application/application.h"
-#include "camera/camera.h"
 
 class									input : public global<input>
 {
@@ -52,7 +51,7 @@ public :
 
  private :
 
-	std::map<int, key_state>			keys;
+	map<int, key_state>			keys;
 
 	static void 						callback_key(GLFWwindow *window, int key, int code, int action, int mode);
 

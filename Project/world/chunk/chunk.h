@@ -4,10 +4,10 @@
 #include "common/aliases.h"
 #include "common/array3.h"
 #include "application/object_template.h"
-#include "map/model.h"
-#include "map/block.h"
-#include "map/block_id.h"
-#include "map/chunk_settings.h"
+#include "world/block/block.h"
+#include "world/block/block_id.h"
+#include "world/chunk/model.h"
+#include "world/chunk/chunk_settings.h"
 
 class										chunk :
 												public chunk_settings::underlying_array,
@@ -15,7 +15,7 @@ class										chunk :
 {
 	friend class							block_id;
 	friend class							chunk_editor;
-	friend class 							map;
+	friend class 							world;
 	friend class 							renderer;
 
 public :

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "map/chunk_loader.h"
-#include "loader/file.h"
+#include "world/chunk/chunk_loader.h"
+#include "world/loader/file.h"
 
 struct						loader_settings
 {

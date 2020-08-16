@@ -1,22 +1,22 @@
-#include "map.h"
+#include "world.h"
 
 #include "application/timestamp.h"
-#include "chunk_loader.h"
-#include "chunk_generator.h"
-#include "renderer/renderer.h"
+#include "world/chunk/chunk_loader.h"
+#include "world/chunk/chunk_generator.h"
+#include "world/renderer/renderer.h"
 
 static const vec3		left = vec3(-chunk_settings::size[0], 0.f, 0.f);
 static const vec3		right = vec3(+chunk_settings::size[0], 0.f, 0.f);
 static const vec3		forward = vec3(0.f, 0.f, chunk_settings::size[2]);
 static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
-						map::map()
+						world::world()
 {
 	object_template::layout = "main";
 	initial_procedure();
 }
 
-optional<block_id>		map::find_block(const vec3 &position)
+optional<block_id>		world::find_block(const vec3 &position)
 {
 	chunk::index		index;
 	vec3				chunk_position;
@@ -44,7 +44,7 @@ optional<block_id>		map::find_block(const vec3 &position)
 		return (block_id(chunk, index));
 }
 
-void					map::insert_block(const vec3 &position, enum block::type type)
+void					world::insert_block(const vec3 &position, enum block::type type)
 {
 	auto 				block = find_block(position);
 
@@ -52,12 +52,12 @@ void					map::insert_block(const vec3 &position, enum block::type type)
 
 }
 
-void					map::remove_block(const vec3 &position)
+void					world::remove_block(const vec3 &position)
 {
 
 }
 
-shared_ptr<chunk>		map::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
+shared_ptr<chunk>		world::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
 {
 	vec3				neighbor_position = main->position;
 
@@ -78,7 +78,7 @@ shared_ptr<chunk>		map::find_neighbor_chunk(const shared_ptr<chunk> &main, axis 
 		return (nullptr);
 }
 
-shared_ptr<chunk>		map::find_chunk(const vec3 &position)
+shared_ptr<chunk>		world::find_chunk(const vec3 &position)
 {
 	auto				iterator = instance()->chunks.find(position);
 
@@ -88,7 +88,7 @@ shared_ptr<chunk>		map::find_chunk(const vec3 &position)
 		return (nullptr);
 }
 
-shared_ptr<chunk>		map::find_new_chunk(const vec3 &position)
+shared_ptr<chunk>		world::find_new_chunk(const vec3 &position)
 {
 	auto				iterator = instance()->new_chunks.find(position);
 
@@ -100,19 +100,19 @@ shared_ptr<chunk>		map::find_new_chunk(const vec3 &position)
 
 // --------------------	Pivot
 
-float					map::distance(const vec3 &position)
+float					world::distance(const vec3 &position)
 {
 	return (glm::distance(pivot, position + chunk_settings::size_as_vector / 2.f));
 }
 
-float					map::distance(const shared_ptr<chunk> &chunk)
+float					world::distance(const shared_ptr<chunk> &chunk)
 {
 	return (glm::distance(pivot, (vec3)chunk->center));
 }
 
 // --------------------	Object methods
 
-void					map::initialize_implementation()
+void					world::initialize_implementation()
 {
 	create_chunk(vec3());
 	create_chunk(left);
@@ -121,15 +121,15 @@ void					map::initialize_implementation()
 	create_chunk(back);
 }
 
-void					map::deinitialize_implementation()
+void					world::deinitialize_implementation()
 {
 	for (auto &iterator : chunks)
 		chunk_loader::upload(iterator.second);
 }
 
-#include "camera/camera.h"
+#include "player/camera/camera.h"
 
-void					map::update()
+void					world::update()
 {
 	auto 				try_build_chunk_if_needed = [this](const shared_ptr<chunk> &chunk)
 	{
@@ -142,7 +142,7 @@ void					map::update()
 
 	auto				update_postpone_tasking = [start_timestamp, &should_postpone_build]()
 	{
-		if (timestamp() - start_timestamp > map_settings::chunk_generation_time_limit)
+		if (timestamp() - start_timestamp > world_settings::chunk_generation_time_limit)
 			should_postpone_build = true;
 	};
 
@@ -182,7 +182,7 @@ void					map::update()
 		if (chunk->build_phase == chunk::build_phase::model_done)
 			initial_procedure_context.current_visibility = max(initial_procedure_context.current_visibility, distance(chunk));
 
-		if (distance(chunk) < map_settings::visibility_limit)
+		if (distance(chunk) < world_settings::visibility_limit)
 			chunk->show();
 		else
 			chunk->hide();
@@ -200,7 +200,7 @@ void					map::update()
 	old_chunks.clear();
 }
 
-void					map::render()
+void					world::render()
 {
 	for (auto [position, chunk] : chunks)
 		if (chunk->main_workspace and chunk->main_workspace->model)
@@ -217,34 +217,34 @@ void					map::render()
 
 // -------------------- Initial procedure
 
-void					map::initial_procedure()
+void					world::initial_procedure()
 {
 	if (initial_procedure_context.first_call)
 	{
 		initial_procedure_context.first_call = false;
 		initial_procedure_context.working = true;
-		initial_procedure_context.target_visibility = map_settings::visibility_limit;
-		map_settings::visibility_limit = initial_procedure_settings::start_visibility;
+		initial_procedure_context.target_visibility = world_settings::visibility_limit;
+		world_settings::visibility_limit = initial_procedure_settings::start_visibility;
 	}
 	else
 	{
 		assert(initial_procedure_context.working);
 
-		if (initial_procedure_context.current_visibility > map_settings::visibility_limit)
-			map_settings::visibility_limit = initial_procedure_context.current_visibility;
-		if (map_settings::visibility_limit >= initial_procedure_context.target_visibility)
+		if (initial_procedure_context.current_visibility > world_settings::visibility_limit)
+			world_settings::visibility_limit = initial_procedure_context.current_visibility;
+		if (world_settings::visibility_limit >= initial_procedure_context.target_visibility)
 		{
 			initial_procedure_context.working = false;
-			map_settings::visibility_limit = initial_procedure_context.target_visibility;
+			world_settings::visibility_limit = initial_procedure_context.target_visibility;
 		}
 	}
 }
 
 // -------------------- Additional methods
 
-void					map::create_chunk_if_needed(const vec3 &position)
+void					world::create_chunk_if_needed(const vec3 &position)
 {
-	if (distance(position) >= map_settings::cashing_limit)
+	if (distance(position) >= world_settings::cashing_limit)
 		return ;
 	if (find_chunk(position) != nullptr)
 		return ;
@@ -255,13 +255,13 @@ void					map::create_chunk_if_needed(const vec3 &position)
 	create_chunk(position);
 }
 
-void					map::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
+void					world::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 {
-	if (distance(chunk) >= map_settings::cashing_limit)
+	if (distance(chunk) >= world_settings::cashing_limit)
 		destroy_chunk(chunk);
 }
 
-void					map::create_chunk(const vec3 &position)
+void					world::create_chunk(const vec3 &position)
 {
 	shared_ptr<chunk>	chunk;
 
@@ -275,13 +275,13 @@ void					map::create_chunk(const vec3 &position)
 	new_chunks.emplace(position, chunk);
 }
 
-void					map::destroy_chunk(const shared_ptr<chunk> &chunk)
+void					world::destroy_chunk(const shared_ptr<chunk> &chunk)
 {
 	chunk_loader::upload(chunk);
 	old_chunks.push_back(chunk);
 }
 
-void 					map::try_build_chunk(const shared_ptr<chunk> &chunk)
+void 					world::try_build_chunk(const shared_ptr<chunk> &chunk)
 {
 	switch (chunk->build_phase)
 	{

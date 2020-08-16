@@ -28,7 +28,7 @@ public :
 private :
 
 	using						new_objects_type = vector<pair<string, shared_ptr<object>>>;
-	using						layouts_type = std::map<string, vector<shared_ptr<object>>>;
+	using						layouts_type = map<string, vector<shared_ptr<object>>>;
 
 	new_objects_type			new_objects;
 	layouts_type				layouts;
