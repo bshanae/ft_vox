@@ -210,12 +210,12 @@ void					world::update()
 void					world::render()
 {
 	for (auto [position, chunk] : chunks)
-		if (chunk->main_workspace and chunk->main_workspace->model)
-			renderer::render(chunk->main_workspace->model);
+		if (chunk->main_workspace.model)
+			renderer::render(chunk->main_workspace.model);
 
 	for (auto [position, chunk] : chunks)
-		if (chunk->water_workspace and chunk->water_workspace->model)
-			sorted_models.emplace( distance(chunk), chunk->water_workspace->model);
+		if (chunk->water_workspace.model)
+			sorted_models.emplace( distance(chunk), chunk->water_workspace.model);
 
 	for (auto iterator = sorted_models.rbegin(); iterator != sorted_models.rend(); ++iterator)
 		renderer::render(iterator->second);

@@ -14,7 +14,6 @@ class										chunk :
 												public enable_shared_from_this<chunk>
 {
 	friend class							block_id;
-	friend class							chunk_editor;
 	friend class 							world;
 	friend class 							renderer;
 
@@ -41,11 +40,11 @@ private :
 		vector<GLfloat>						light_levels;
 		vector<GLuint>						indices;
 
-		shared_ptr<model>					model;
+		shared_ptr<::model>					model;
 	};
 
-	shared_ptr<model_workspace>				main_workspace;
-	shared_ptr<model_workspace>				water_workspace;
+	model_workspace							main_workspace;
+	model_workspace							water_workspace;
 
 	enum class 								build_request
 	{
@@ -61,8 +60,6 @@ private :
 		model_done
 	}										build_phase = build_phase::nothing_done;
 
-	shared_ptr<model_workspace>				workspace;
-
 	void									build(build_request request);
 
 	void									show();
@@ -76,7 +73,12 @@ private :
 
 // ---------------------------------------- Model
 
-	void									build_model();
-	void									build_block(const index &index);
-	void									build_quad(const index &index, axis axis, sign sign, char light_level);
+	void									build_model(model_workspace &workspace);
+	void									build_block(model_workspace &workspace, const index &index);
+	void									build_quad(
+												model_workspace &workspace,
+												const index &index,
+												axis axis,
+												sign sign,
+												char light_level);
 };
