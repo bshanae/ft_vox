@@ -38,7 +38,7 @@
 	glfwTerminate();
 }
 
-bool				window::closed()
+bool				window::is_closed()
 {
 	return (glfwWindowShouldClose(instance()->glfw_window));
 }

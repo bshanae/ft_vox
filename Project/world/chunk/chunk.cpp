@@ -110,18 +110,19 @@ static vector<GLuint>	indices =
 	water_workspace = make_shared<model_workspace>();
 	water_workspace->predicate = [](enum block::type type){ return (type == block::type::water); };
 
-	index i;
-	i.y = chunk_settings::size[1] - 1;
+	index				i;
+
+	i.y = 1;
 	for (i.x = 0; i.x < chunk_settings::size[0]; i.x++)
 		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
 			at(i).type = block::type::dirt;
-	i.y = chunk_settings::size[1] - 2;
+	i.y = 1;
 	for (i.x = 0; i.x < chunk_settings::size[0]; i.x++)
 		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
 			at(i).type = block::type::dirt;
 
-	at(1, chunk_settings::size[1] - 1 , 0).type = block::type::water;
-	at(2, chunk_settings::size[1] - 1 , 0).type = block::type::water;
+	at(0, 1 , 0).type = block::type::water;
+	at(1, 1 , 0).type = block::type::water;
 }
 
 void					chunk::build(build_request request)
@@ -142,7 +143,6 @@ void					chunk::build(build_request request)
 			water_workspace->light_levels.clear();
 			water_workspace->indices.clear();
 			water_workspace->model.reset();
-
 			break ;
 
 		case (build_request::light) :

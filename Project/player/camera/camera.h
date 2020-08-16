@@ -9,7 +9,7 @@
 
 struct						camera_settings
 {
-	static constexpr float	movement_speed = 0.2f;
+	static constexpr float	movement_speed = 0.05f;
 	static constexpr float	rotation_speed = 0.05f;
 
 	static inline float		near_plane = 0.01f;
@@ -18,7 +18,7 @@ struct						camera_settings
 
 	static inline vec3		initial_position = vec3(0.f, 5.0f, 0.f);
 
-	static inline float		ray_cast_limit = 10.f;
+	static inline int		ray_cast_limit = 15;
 };
 
 class						camera : public unique_object<camera>
@@ -41,7 +41,13 @@ public :
 	static inline
 	view_matrix_type		view_matrix;
 
-	optional<block_id>		cast_ray() const;
+	struct					hit
+	{
+		block_id			block;
+		block::face			face;
+	};
+
+	static optional<hit>	cast_ray();
 
 private :
 

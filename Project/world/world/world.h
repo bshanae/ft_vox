@@ -17,8 +17,8 @@ public :
 
 	static optional<block_id>	find_block(const vec3 &position);
 
-	static void 				insert_block(const vec3 &position, enum block::type type);
-	static void 				remove_block(const vec3 &position);
+	static void 				insert_block(const block_id &id, enum block::type type);
+	static void 				remove_block(const block_id &id);
 
 private :
 
@@ -72,21 +72,12 @@ private :
 
 // ----------------------------	Initial procedure
 
-	struct						initial_procedure_settings
-	{
-		static inline
-		const float				start_visibility = 5.f;
-
-		static inline
-		const float				visibility_progress = 1.f;
-	};
-
 	struct						initial_procedure_context
 	{
 		bool					first_call = true;
 		bool					working = false;
 
-		float					current_visibility = 0.f;
+		float					current_visibility = 5.f;
 		float 					target_visibility = 0.f;
 	}							initial_procedure_context;
 
@@ -101,4 +92,6 @@ private :
 	void						destroy_chunk(const shared_ptr<chunk> &chunk);
 
 	void 						try_build_chunk(const shared_ptr<chunk> &chunk);
+
+	void						rebuild_chunk(const shared_ptr<chunk> &chunk, const chunk::index &changed_block);
 };

@@ -36,6 +36,7 @@ set(SOURCE_FILES
 	Project/world/loader/loader.cpp
 	Project/world/loader/file.cpp
 
+	Project/player/player/player.cpp
 	Project/player/camera/camera.cpp)
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)

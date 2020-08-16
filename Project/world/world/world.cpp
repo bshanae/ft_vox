@@ -18,17 +18,22 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
 optional<block_id>		world::find_block(const vec3 &position)
 {
+	const ivec3			int_position = position;
+
 	chunk::index		index;
 	vec3				chunk_position;
 	shared_ptr<chunk>	chunk;
 
-	chunk_position.x = (int)position.x / chunk_settings::size[0];
-	chunk_position.y = (int)position.y / chunk_settings::size[1];
-	chunk_position.z = (int)position.z / chunk_settings::size[2];
+	chunk_position.x = int_position.x / chunk_settings::size[0];
+	chunk_position.y = int_position.y / chunk_settings::size[1];
+	chunk_position.z = int_position.z / chunk_settings::size[2];
 
-	if (position.x < 0) chunk_position.x -= 1;
-	if (position.y < 0) chunk_position.y -= 1;
-	if (position.z < 0) chunk_position.z -= 1;
+	if (position.x < 0 and int_position.x % chunk_settings::size[0] != 0)
+		chunk_position.x -= 1;
+	if (position.y < 0 and int_position.y % chunk_settings::size[1] != 0)
+		chunk_position.y -= 1;
+	if (position.z < 0 and int_position.z % chunk_settings::size[2] != 0)
+		chunk_position.z -= 1;
 
 	chunk_position.x *= chunk_settings::size[0];
 	chunk_position.y *= chunk_settings::size[1];
@@ -38,23 +43,25 @@ optional<block_id>		world::find_block(const vec3 &position)
 	index.y = position.y - chunk_position.y;
 	index.z = position.z - chunk_position.z;
 
+	auto chunk_ = find_chunk(chunk_position);
+	auto index_ = (bool)index;
+
 	if (chunk = find_chunk(chunk_position); not chunk or not index)
 		return {};
 	else
 		return (block_id(chunk, index));
 }
 
-void					world::insert_block(const vec3 &position, enum block::type type)
+void					world::insert_block(const block_id &id, enum block::type type)
 {
-	auto 				block = find_block(position);
-
-	assert(block and (*block)().is_empty() and "Chunk for the block doesn't exist or block is not empty");
-
+	id().type = type;
+	instance()->rebuild_chunk(id.chunk, id.index);
 }
 
-void					world::remove_block(const vec3 &position)
+void					world::remove_block(const block_id &id)
 {
-
+	id().type = block::type::air;
+	instance()->rebuild_chunk(id.chunk, id.index);
 }
 
 shared_ptr<chunk>		world::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
@@ -224,7 +231,7 @@ void					world::initial_procedure()
 		initial_procedure_context.first_call = false;
 		initial_procedure_context.working = true;
 		initial_procedure_context.target_visibility = world_settings::visibility_limit;
-		world_settings::visibility_limit = initial_procedure_settings::start_visibility;
+		world_settings::visibility_limit = initial_procedure_context.current_visibility;
 	}
 	else
 	{
@@ -305,4 +312,27 @@ void 					world::try_build_chunk(const shared_ptr<chunk> &chunk)
 		default :
 			assert(false and "Unexpected chunk build circumstances");
 	}
+}
+
+void					world::rebuild_chunk(const shared_ptr<chunk> &chunk, const chunk::index &changed_block)
+{
+	static auto			find_and_rebuild = [this](const vec3 &position)
+	{
+		auto			chunk = find_chunk(position);
+
+		assert(chunk);
+		chunk->build(chunk::build_request::reset);
+	};
+
+	if (changed_block.x == 0)
+		find_and_rebuild(*chunk->position + left);
+	else if (changed_block.x == chunk_settings::size[0] - 1)
+		find_and_rebuild(*chunk->position + right);
+
+	if (changed_block.z == 0)
+		find_and_rebuild(*chunk->position + back);
+	else if (changed_block.z == chunk_settings::size[2] - 1)
+		find_and_rebuild(*chunk->position + forward);
+
+	chunk->build(chunk::build_request::reset);
 }

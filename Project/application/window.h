@@ -14,9 +14,8 @@ public :
 	static inline string				title = "";
 	static inline ivec2					size = ivec2(1280, 720);
 
-	[[nodiscard]]
-	static bool 						closed();
 	static void 						close();
+	[[nodiscard]] static bool 			is_closed();
 
 	static void 						swap_buffers();
 

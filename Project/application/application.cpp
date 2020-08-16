@@ -22,7 +22,7 @@ void			application::execute()
 	{
 		instance->process_input();
 
-		if (window::closed())
+		if (window::is_closed())
 			for (auto &layout : instance->layouts)
 				for (auto &object : layout.second)
 					object->destroy();
@@ -31,7 +31,7 @@ void			application::execute()
 		instance->process_destroying();
 		instance->process_updating();
 		instance->process_rendering();
-	}  while (not window::closed());
+	}  while (not window::is_closed());
 }
 
 void			application::process_input()

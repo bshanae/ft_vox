@@ -143,7 +143,7 @@ public :
 			return (this->x != that.x or this->y != that.y or this->z != that.z);
 		}
 
-								operator bool () const
+		explicit				operator bool () const
 		{
 			if (x < 0 or x >= size_x)
 				return (false);

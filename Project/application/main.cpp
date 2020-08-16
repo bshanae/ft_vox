@@ -5,6 +5,7 @@
 #include "world/generator/generator_controller.h"
 #include "world/loader/loader.h"
 #include "player/camera/camera.h"
+#include "player/player/player.h"
 
 int						main()
 {
@@ -14,6 +15,7 @@ int						main()
 
 	world::create();
 	camera::create();
+	player::create();
 
 	texture_atlas::initialize("Project/resources/atlases/default.png");
 	texture_atlas::association_for(block::type::dirt) = ivec2(2, 15);
