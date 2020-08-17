@@ -27,6 +27,9 @@ void					chunk_renderer::render(const shared_ptr<chunk> &chunk, mod mod)
 	auto 				instance = global<chunk_renderer>::instance();
 	shared_ptr<model>	model;
 
+	if (not chunk->is_visible)
+		return ;
+
 	switch (mod)
 	{
 		case (mod::main) :
@@ -37,6 +40,9 @@ void					chunk_renderer::render(const shared_ptr<chunk> &chunk, mod mod)
 			model = chunk->water_workspace.model;
 			break ;
 	}
+
+	if (not model)
+		return ;
 
 	instance->program->bind(true);
 

@@ -128,8 +128,6 @@ void					chunk::build(build_request request)
 	{
 		case (build_request::reset) :
 			build_phase = build_phase::nothing_done;
-//			main_workspace.model.reset();
-//			water_workspace.model.reset();
 			break ;
 
 		case (build_request::light) :
@@ -145,22 +143,6 @@ void					chunk::build(build_request request)
 			build_phase = build_phase::model_done;
 			break ;
 	}
-}
-
-void					chunk::show()
-{
-//	if (main_workspace and main_workspace->model)
-//		main_workspace->model->activate();
-//	if (water_workspace and water_workspace->model)
-//		water_workspace->model->activate();
-}
-
-void					chunk::hide()
-{
-//	if (main_workspace and main_workspace->model)
-//		main_workspace->model->deactivate();
-//	if (water_workspace and water_workspace->model)
-//		water_workspace->model->deactivate();
 }
 
 void					chunk::calculate_light()

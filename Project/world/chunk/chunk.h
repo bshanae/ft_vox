@@ -46,6 +46,8 @@ private :
 	model_workspace							main_workspace;
 	model_workspace							water_workspace;
 
+	bool									is_visible = true;
+
 	enum class 								build_request
 	{
 		reset,
@@ -61,9 +63,6 @@ private :
 	}										build_phase = build_phase::nothing_done;
 
 	void									build(build_request request);
-
-	void									show();
-	void									hide();
 
 // ---------------------------------------- Light
 

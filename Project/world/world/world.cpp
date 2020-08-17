@@ -201,10 +201,7 @@ void					world::update()
 		if (chunk->build_phase == chunk::build_phase::model_done)
 			initial_procedure_context.current_visibility = max(initial_procedure_context.current_visibility, distance(chunk));
 
-		if (distance(chunk) < world_settings::visibility_limit)
-			chunk->show();
-		else
-			chunk->hide();
+		chunk->is_visible = distance(chunk) < world_settings::visibility_limit;
 	}
 
 	if (initial_procedure_context.working)
@@ -222,11 +219,9 @@ void					world::update()
 void					world::render()
 {
 	for (auto [position, chunk] : chunks)
-		if (chunk->main_workspace.model)
 			chunk_renderer::render(chunk, chunk_renderer::mod::main);
 
 	for (auto [position, chunk] : chunks)
-		if (chunk->water_workspace.model)
 			sorted_chunks.emplace(distance(chunk), chunk);
 
 	for (auto iterator = sorted_chunks.rbegin(); iterator != sorted_chunks.rend(); ++iterator)
