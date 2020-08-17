@@ -1,7 +1,5 @@
 #include "model.h"
 
-#include "world/renderer/renderer.h"
-
 					model::model()
 {
 	glGenVertexArrays(1, &vao);

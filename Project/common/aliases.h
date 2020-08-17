@@ -66,6 +66,7 @@ using				std::ios;
 using				std::filesystem::path;
 using				std::function;
 using				std::optional;
+using				std::nullopt;
 using				std::numeric_limits;
 
 // ---------------- Other functions

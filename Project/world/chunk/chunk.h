@@ -15,7 +15,7 @@ class										chunk :
 {
 	friend class							block_id;
 	friend class 							world;
-	friend class 							renderer;
+	friend class 							chunk_renderer;
 
 public :
 

@@ -42,6 +42,11 @@ public :
 		return (instance()->keys[key] == key_state::pressed or instance()->keys[key] == key_state::held);
 	}
 
+	[[nodiscard]] static bool			have_mouse_moved()
+	{
+		return (mouse_offset->x != 0 or mouse_offset->y != 0);
+	}
+
 	static inline
 	property<read_only, ivec2, input>	mouse_offset;
 	static inline

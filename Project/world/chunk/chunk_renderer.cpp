@@ -1,11 +1,12 @@
-#include "renderer.h"
+#include "chunk_renderer.h"
 
 #include "world/chunk/model.h"
+#include "world/chunk/chunk.h"
 #include "world/world/world_settings.h"
 #warning "Receive matrices directly from player"
 #include "player/camera/camera.h"
 
-						renderer::renderer()
+						chunk_renderer::chunk_renderer()
 {
 	program = make_unique<class program>(path_to_vertex_shader, path_to_fragment_shader);
 	uniform_projection = program->create_uniform<mat4>("uniform_projection");
@@ -21,9 +22,21 @@
 	program->bind(false);
 }
 
-void					renderer::render(const shared_ptr<model> &model)
+void					chunk_renderer::render(const shared_ptr<chunk> &chunk, mod mod)
 {
-	auto 				instance = global<renderer>::instance();
+	auto 				instance = global<chunk_renderer>::instance();
+	shared_ptr<model>	model;
+
+	switch (mod)
+	{
+		case (mod::main) :
+			model = chunk->main_workspace.model;
+			break ;
+
+		case (mod::water) :
+			model = chunk->water_workspace.model;
+			break ;
+	}
 
 	instance->program->bind(true);
 

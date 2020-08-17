@@ -4,17 +4,28 @@
 #include "world/world/world.h"
 #include "player/camera/camera.h"
 
-					player::player()
+							player::player()
 {
-	layout = "main";
+	layout = "system";
 	should_be_rendered = false;
 }
 
-void				player::update()
+void						player::update()
 {
+	bool 					already_casted_ray = false;
+	optional<camera::hit>	hit;
+
+	if (camera::have_changed)
+	{
+		hit = camera::cast_ray();
+		already_casted_ray = true;
+
+		world::highlight_block(hit ? optional<block_id>(hit->block) : nullopt);
+	}
 	if (input::is_pressed(GLFW_KEY_ENTER))
 	{
-		auto 		hit = camera::cast_ray();
+		if (not already_casted_ray)
+			hit = camera::cast_ray();
 
 		if (hit)
 		{
@@ -22,6 +33,7 @@ void				player::update()
 			auto	neighbor = hit->block.neighbor(axis_and_sign.first, axis_and_sign.second);
 
 			world::remove_block(hit->block);
+			world::highlight_block(nullopt);
 
 //			assert(neighbor);
 //			world::insert_block(*neighbor, block::type::water);

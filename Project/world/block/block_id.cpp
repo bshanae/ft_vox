@@ -29,6 +29,11 @@ optional<block_id>		block_id::neighbor(axis axis, sign sign) const
 	}
 }
 
+vec3					block_id::world_position() const
+{
+	return ((vec3)chunk->position + (vec3)index);
+}
+
 						block_id::block_id(const shared_ptr<::chunk> &chunk, const chunk::index &index)
 {
 	this->chunk = chunk;

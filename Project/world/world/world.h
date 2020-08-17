@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "common/global.h"
 #include "application/unique_object.h"
 #include "world/block/block_id.h"
 #include "world/chunk/chunk.h"
@@ -19,6 +18,8 @@ public :
 
 	static void 				insert_block(const block_id &id, enum block::type type);
 	static void 				remove_block(const block_id &id);
+
+	static void					highlight_block(const optional<block_id> &id);
 
 private :
 
@@ -45,8 +46,8 @@ private :
 
 	queue<shared_ptr<chunk>>	chunks_with_postponed_build;
 
-	using						sorted_models_type = multimap<float, shared_ptr<model>>;
-	sorted_models_type			sorted_models;
+	using						sorted_chunks_type = multimap<float, shared_ptr<chunk>>;
+	sorted_chunks_type			sorted_chunks;
 
 // ----------------------------	Chunks
 

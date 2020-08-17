@@ -28,6 +28,7 @@ class						camera : public unique_object<camera>
 	using					position_type = property<read_write, vec3, camera>;
 	using					projection_matrix_type = property<read_only, mat4, camera>;
 	using					view_matrix_type = property<read_only, mat4, camera>;
+	using					flag_type = property<read_write, bool, camera>;
 
 public :
 							camera();
@@ -48,6 +49,9 @@ public :
 	};
 
 	static optional<hit>	cast_ray();
+
+	static inline
+	flag_type				have_changed;
 
 private :
 

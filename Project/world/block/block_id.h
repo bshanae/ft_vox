@@ -16,6 +16,8 @@ struct					block_id
 	[[nodiscard]]
 	optional<block_id>	neighbor(axis axis, sign sign) const;
 
+	[[nodiscard]] vec3	world_position() const;
+
 private :
 
 	using				chunk_type = shared_ptr<chunk>;

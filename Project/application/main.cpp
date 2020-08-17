@@ -1,7 +1,9 @@
 #include "application/application.h"
 #include "world/block/texture_atlas.h"
 #include "world/world/world.h"
-#include "world/renderer/renderer.h"
+#include "world/chunk/chunk_renderer.h"
+#include "world/chunk/highlighter.h"
+#include "world/chunk/highlighter_renderer.h"
 #include "world/generator/generator_controller.h"
 #include "world/loader/loader.h"
 #include "player/camera/camera.h"
@@ -10,10 +12,14 @@
 int						main()
 {
 	application::initialize();
+
+	application::register_layout("system");
 	application::register_layout("main");
 	application::register_layout("water");
 
 	world::create();
+	highlighter::create();
+	highlighter_renderer::create();
 	camera::create();
 	player::create();
 
@@ -27,7 +33,7 @@ int						main()
 	texture_atlas::association_for(block::type::dirt_with_grass).bottom = ivec2(2, 15);
 	texture_atlas::association_for(block::type::water) = ivec2(13, 3);
 
-	renderer::initialize();
+	chunk_renderer::initialize();
 	generator_controller::initialize();
 	loader::initialize("test.vox");
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "world/renderer/shader.h"
-#include "world/renderer/uniform.h"
+#include "world/program/shader.h"
+#include "world/program/uniform.h"
 
 class					program
 {

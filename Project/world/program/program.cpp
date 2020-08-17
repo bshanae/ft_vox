@@ -1,6 +1,6 @@
 #include "program.h"
 
-#include "world/renderer/shader.h"
+#include "world/program/shader.h"
 
 					program::program(const path &vertex_source, const path &fragment_source)
 {

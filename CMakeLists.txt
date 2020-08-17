@@ -26,11 +26,13 @@ set(SOURCE_FILES
 	Project/world/block/texture_atlas.cpp
 	Project/world/block/block_id.cpp
 	Project/world/chunk/chunk.cpp
+	Project/world/chunk/chunk_renderer.cpp
+	Project/world/chunk/highlighter.cpp
+	Project/world/chunk/highlighter_renderer.cpp
 	Project/world/chunk/model.cpp
 	Project/world/world/world.cpp
-	Project/world/renderer/shader.cpp
-	Project/world/renderer/program.cpp
-	Project/world/renderer/renderer.cpp
+	Project/world/program/shader.cpp
+	Project/world/program/program.cpp
 	Project/world/generator/generator_controller.cpp
 	Project/world/generator/plain_generator.cpp
 	Project/world/loader/loader.cpp

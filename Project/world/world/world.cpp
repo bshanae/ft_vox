@@ -3,7 +3,8 @@
 #include "application/timestamp.h"
 #include "world/chunk/chunk_loader.h"
 #include "world/chunk/chunk_generator.h"
-#include "world/renderer/renderer.h"
+#include "world/chunk/chunk_renderer.h"
+#include "world/chunk/highlighter.h"
 
 static const vec3		left = vec3(-chunk_settings::size[0], 0.f, 0.f);
 static const vec3		right = vec3(+chunk_settings::size[0], 0.f, 0.f);
@@ -62,6 +63,17 @@ void					world::remove_block(const block_id &id)
 {
 	id().type = block::type::air;
 	instance()->rebuild_chunk(id.chunk, id.index);
+}
+
+void					world::highlight_block(const optional<block_id> &id)
+{
+	if (id)
+	{
+		highlighter::instance()->activate();
+		highlighter::instance()->model->translation = id->world_position() + vec3(0.5f);
+	}
+	else
+		highlighter::instance()->deactivate();
 }
 
 shared_ptr<chunk>		world::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
@@ -211,15 +223,15 @@ void					world::render()
 {
 	for (auto [position, chunk] : chunks)
 		if (chunk->main_workspace.model)
-			renderer::render(chunk->main_workspace.model);
+			chunk_renderer::render(chunk, chunk_renderer::mod::main);
 
 	for (auto [position, chunk] : chunks)
 		if (chunk->water_workspace.model)
-			sorted_models.emplace( distance(chunk), chunk->water_workspace.model);
+			sorted_chunks.emplace(distance(chunk), chunk);
 
-	for (auto iterator = sorted_models.rbegin(); iterator != sorted_models.rend(); ++iterator)
-		renderer::render(iterator->second);
-	sorted_models.clear();
+	for (auto iterator = sorted_chunks.rbegin(); iterator != sorted_chunks.rend(); ++iterator)
+		chunk_renderer::render(iterator->second, chunk_renderer::mod::water);
+	sorted_chunks.clear();
 }
 
 // -------------------- Initial procedure

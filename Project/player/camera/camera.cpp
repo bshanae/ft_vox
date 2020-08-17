@@ -7,7 +7,7 @@
 
 						camera::camera()
 {
-	object_template::layout = "main";
+	object_template::layout = "system";
 	object_template::should_be_rendered = false;
 
 	position.setter = [this](const vec3 &value)
@@ -97,25 +97,46 @@ optional<camera::hit>	camera::cast_ray()
 
 void					camera::update()
 {
+	have_changed = input::have_mouse_moved();
+
 //						Axis X
 	if (input::is_pressed_or_held(GLFW_KEY_A))
+	{
 		position = (vec3)position - camera_settings::movement_speed * right;
+		have_changed = true;
+	}
 	else if (input::is_pressed_or_held(GLFW_KEY_D))
+	{
 		position = (vec3)position + camera_settings::movement_speed * right;
+		have_changed = true;
+	}
 
 //						Axis y
 	if (input::is_pressed_or_held(GLFW_KEY_Q))
+	{
 		position = (vec3)position - camera_settings::movement_speed * up;
+		have_changed = true;
+	}
 	else if (input::is_pressed_or_held(GLFW_KEY_E))
+	{
 		position = (vec3)position + camera_settings::movement_speed * up;
+		have_changed = true;
+	}
 
 //						Axis Z
 	if (input::is_pressed_or_held(GLFW_KEY_W))
+	{
 		position = (vec3)position + camera_settings::movement_speed * front;
+		have_changed = true;
+	}
 	else if (input::is_pressed_or_held(GLFW_KEY_S))
+	{
 		position = (vec3)position - camera_settings::movement_speed * front;
+		have_changed = true;
+	}
 
-	recalculate();
+	if (have_changed)
+		recalculate();
 }
 
 void					camera::recalculate()
