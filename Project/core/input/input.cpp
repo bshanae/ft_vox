@@ -1,6 +1,7 @@
 #include "input.h"
 
-#include "application/window.h"
+#include "core/core/core.h"
+#include "core/window/window.h"
 
 					input::input()
 {

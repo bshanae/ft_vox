@@ -4,11 +4,10 @@
 #include "common/property.h"
 #include "common/global.h"
 #include "common/OpenGL.h"
-#include "application/application.h"
 
 class									input : public global<input>
 {
-	friend class						application;
+	friend class						core;
 	friend class						window;
 
 public :
@@ -56,7 +55,7 @@ public :
 
  private :
 
-	map<int, key_state>			keys;
+	map<int, key_state>					keys;
 
 	static void 						callback_key(GLFWwindow *window, int key, int code, int action, int mode);
 

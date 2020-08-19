@@ -3,7 +3,6 @@
 #include "common/OpenGL.h"
 #include "common/aliases.h"
 #include "common/property.h"
-#include "application/object_template.h"
 
 class									model
 {

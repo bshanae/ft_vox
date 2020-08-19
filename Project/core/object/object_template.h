@@ -1,7 +1,7 @@
 #pragma once
 
-#include "object.h"
-#include "application.h"
+#include "core/core/core.h"
+#include "core/object/object.h"
 
 template					<typename final_type>
 class						object_template : public object
@@ -22,7 +22,7 @@ public :
 
 		assert(object != nullptr and "Incorrect object usage");
 		object->create_implementation();
-		object->connect_to_application();
+		object->connect_to_core();
 		object->state.value = state::uninitialized;
 		return (final);
 	}

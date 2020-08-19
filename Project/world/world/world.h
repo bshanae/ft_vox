@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "application/unique_object.h"
+#include "core/object/unique_object.h"
 #include "world/block/block_id.h"
 #include "world/chunk/chunk.h"
 #include "world/world/world_settings.h"

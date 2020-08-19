@@ -5,8 +5,6 @@
 
 class										timestamp
 {
-	friend class							application;
-
 public :
 
 											timestamp()

@@ -1,4 +1,4 @@
-#include "application/application.h"
+#include "core/core/core.h"
 #include "world/block/texture_atlas.h"
 #include "world/world/world.h"
 #include "world/chunk/chunk_renderer.h"
@@ -11,11 +11,11 @@
 
 int						main()
 {
-	application::initialize();
+	core::initialize();
 
-	application::register_layout("system");
-	application::register_layout("main");
-	application::register_layout("water");
+	core::register_layout("system");
+	core::register_layout("main");
+	core::register_layout("water");
 
 	world::create();
 	highlighter::create();
@@ -37,6 +37,6 @@ int						main()
 	generator_controller::initialize();
 	loader::initialize("test.vox");
 
-	application::execute();
+	core::execute();
 	return (0);
 }

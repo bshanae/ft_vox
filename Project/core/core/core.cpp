@@ -1,22 +1,24 @@
-#include "application.h"
+#include "core.h"
 
-#include "application/window.h"
-#include "application/input.h"
+#include "core/core/core_settings.h"
+#include "core/window/window.h"
+#include "core/input/input.h"
+#include "core/time/timer.h"
 
-				application::application()
+				core::core()
 {
 	window::initialize();
 	input::initialize();
 }
 
-void			application::register_layout(const string &key)
+void			core::register_layout(const string &key)
 {
 	instance()->layouts[key] = {};
 }
 
-void			application::execute()
+void			core::execute()
 {
-	auto		instance = global<application>::instance();
+	auto		instance = global<core>::instance();
 
 	do
 	{
@@ -34,7 +36,7 @@ void			application::execute()
 	}  while (not window::is_closed());
 }
 
-void			application::process_input()
+void			core::process_input()
 {
 	static bool	empty_polygons = false;
 
@@ -52,7 +54,7 @@ void			application::process_input()
 	}
 }
 
-void			application::process_creating()
+void			core::process_creating()
 {
 	for (auto &new_object : new_objects)
 		if (auto iterator = layouts.find(new_object.first); iterator != layouts.end())
@@ -68,7 +70,7 @@ void			application::process_creating()
 	new_objects.clear();
 }
 
-void			application::process_destroying()
+void			core::process_destroying()
 {
 	for (auto &layout : layouts)
 		for (auto iterator = layout.second.begin(); iterator != layout.second.end();)
@@ -81,7 +83,7 @@ void			application::process_destroying()
 				++iterator;
 }
 
-void			application::process_updating()
+void			core::process_updating()
 {
 	for (auto &layout : layouts)
 		for (auto &object : layout.second)
@@ -89,9 +91,9 @@ void			application::process_updating()
 				object->update();
 }
 
-void			application::process_rendering()
+void			core::process_rendering()
 {
-	auto 		&background = application_settings::background;
+	auto 		&background = core_settings::background;
 
 	glClearColor(background.x, background.y, background.z, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT);

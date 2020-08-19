@@ -4,27 +4,12 @@
 #include "common/aliases.h"
 #include "common/global.h"
 #include "common/property.h"
-#include "application/unique_object.h"
+#include "core/object/unique_object.h"
 #include "world/block/block_id.h"
-
-struct						camera_settings
-{
-	static constexpr float	movement_speed = 0.15f;
-	static constexpr float	rotation_speed = 0.05f;
-
-	static inline float		near_plane = 0.01f;
-	static inline float		far_plane = 100.f;
-	static inline float 	fov = 30.f;
-
-	static inline vec3		initial_position = vec3(0.f, 5.0f, 0.f);
-
-	static inline int		ray_cast_limit = 15;
-};
+#include "player/camera/camera_settings.h"
 
 class						camera : public unique_object<camera>
 {
-	friend class			application;
-
 	using					position_type = property<read_write, vec3, camera>;
 	using					projection_matrix_type = property<read_only, mat4, camera>;
 	using					view_matrix_type = property<read_only, mat4, camera>;
@@ -63,7 +48,7 @@ public :
 		down
 	};
 
-	static void				move(move_request request);
+	static void				move(move_request request, float speed);
 
 private :
 
@@ -80,6 +65,6 @@ private :
 
 	void					recalculate();
 
-	void					move_non_static(move_request request);
+	void					move_non_static(move_request request, float speed);
 	static float			intbound(float s, float ds);
 };

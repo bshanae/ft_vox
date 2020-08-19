@@ -3,7 +3,7 @@
 #include "common/OpenGL.h"
 #include "common/aliases.h"
 #include "common/array3.h"
-#include "application/object_template.h"
+#include "core/object/object_template.h"
 #include "world/block/block.h"
 #include "world/block/block_id.h"
 #include "world/chunk/model.h"

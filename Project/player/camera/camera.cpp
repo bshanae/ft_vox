@@ -1,8 +1,8 @@
 #include "camera.h"
 
 #include "common/debug.h"
-#include "application/window.h"
-#include "application/input.h"
+#include "core/window/window.h"
+#include "core/input/input.h"
 #include "world/world/world.h"
 
 						camera::camera()
@@ -109,37 +109,37 @@ void					camera::update()
 		recalculate();
 }
 
-void					camera::move(move_request request)
+void					camera::move(move_request request, float speed)
 {
-	instance()->move_non_static(request);
+	instance()->move_non_static(request, speed);
 }
 
-void					camera::move_non_static(move_request request)
+void					camera::move_non_static(move_request request, float speed)
 {
 	switch (request)
 	{
 		case (move_request::left) :
-			position = (vec3)position - camera_settings::movement_speed * right;
+			position = (vec3)position - speed * right;
 			break ;
 
 		case (move_request::right) :
-			position = (vec3)position + camera_settings::movement_speed * right;
+			position = (vec3)position + speed * right;
 			break ;
 
 		case (move_request::forward) :
-			position = (vec3)position + camera_settings::movement_speed * front;
+			position = (vec3)position + speed * front;
 			break ;
 
 		case (move_request::back) :
-			position = (vec3)position - camera_settings::movement_speed * front;
+			position = (vec3)position - speed * front;
 			break ;
 
 		case (move_request::up) :
-			position = (vec3)position + camera_settings::movement_speed * up;
+			position = (vec3)position + speed * up;
 			break ;
 
 		case (move_request::down) :
-			position = (vec3)position - camera_settings::movement_speed * up;
+			position = (vec3)position - speed * up;
 			break ;
 
 	}

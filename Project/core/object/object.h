@@ -6,7 +6,7 @@
 
 class						object : public enable_shared_from_this<object>
 {
-	friend class 			application;
+	friend class 			core;
 
 	template				<typename>
 	friend class 			object_template;
@@ -55,5 +55,5 @@ private :
 	virtual void			initialize() = 0;
 	virtual void			deinitialize() = 0;
 
-	void					connect_to_application();
+	void					connect_to_core();
 };

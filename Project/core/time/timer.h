@@ -6,8 +6,6 @@
 
 class				timer
 {
-	friend class	application;
-
 public :
 
 	enum class 		state

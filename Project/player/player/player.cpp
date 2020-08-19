@@ -1,8 +1,9 @@
 #include "player.h"
 
-#include "application/input.h"
+#include "core/input/input.h"
 #include "world/world/world.h"
 #include "player/camera/camera.h"
+#include "player/player/player_settings.h"
 
 							player::player()
 {
@@ -22,20 +23,20 @@ void						player::update()
 void 						player::process_movement()
 {
 	if (input::is_pressed_or_held(GLFW_KEY_A))
-		camera::move(camera::move_request::left);
+		camera::move(camera::move_request::left, player_settings::movement_speed);
 	else if (input::is_pressed_or_held(GLFW_KEY_D))
-		camera::move(camera::move_request::right);
+		camera::move(camera::move_request::right, player_settings::movement_speed);
 //						Axis y
 	if (input::is_pressed_or_held(GLFW_KEY_Q))
-		camera::move(camera::move_request::down);
+		camera::move(camera::move_request::down, player_settings::movement_speed);
 	else if (input::is_pressed_or_held(GLFW_KEY_E))
-		camera::move(camera::move_request::up);
+		camera::move(camera::move_request::up, player_settings::movement_speed);
 
 //						Axis Z
 	if (input::is_pressed_or_held(GLFW_KEY_W))
-		camera::move(camera::move_request::forward);
+		camera::move(camera::move_request::forward, player_settings::movement_speed);
 	else if (input::is_pressed_or_held(GLFW_KEY_S))
-		camera::move(camera::move_request::back);
+		camera::move(camera::move_request::back, player_settings::movement_speed);
 }
 
 void 						player::process_interaction()

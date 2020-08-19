@@ -1,6 +1,6 @@
 #include "window.h"
 
-#include "application/input.h"
+#include "core/input/input.h"
 
 					window::window()
 {

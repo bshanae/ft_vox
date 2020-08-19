@@ -1,10 +1,11 @@
 #include "world.h"
 
-#include "application/timestamp.h"
+#include "core/time/timestamp.h"
 #include "world/chunk/chunk_loader.h"
 #include "world/chunk/chunk_generator.h"
 #include "world/chunk/chunk_renderer.h"
 #include "world/chunk/highlighter.h"
+#include "player/camera/camera.h"
 
 static const vec3		left = vec3(-chunk_settings::size[0], 0.f, 0.f);
 static const vec3		right = vec3(+chunk_settings::size[0], 0.f, 0.f);
@@ -152,8 +153,6 @@ void					world::deinitialize_implementation()
 			chunk_loader::upload(chunk);
 }
 
-#include "player/camera/camera.h"
-
 void					world::update()
 {
 	auto 				try_build_chunk_if_needed = [this](const shared_ptr<chunk> &chunk)
@@ -171,7 +170,6 @@ void					world::update()
 			should_postpone_build = true;
 	};
 
-#warning "This should be done by player"
 	pivot.x = camera::position->x;
 	pivot.z = camera::position->z;
 
@@ -285,7 +283,7 @@ void					world::create_chunk(const vec3 &position)
 {
 	shared_ptr<chunk>	chunk;
 
-	if (not (chunk = chunk_loader::download(position)))
+//	if (not (chunk = chunk_loader::download(position)))
 		chunk = make_shared<::chunk>(position);
 
 #warning "Generation module needed"

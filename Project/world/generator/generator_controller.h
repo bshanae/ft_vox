@@ -7,9 +7,6 @@
 
 class						generator_controller : public global<generator_controller>
 {
-
-  friend class				application;
-
 public :
 							generator_controller() = default;
 							~generator_controller() override = default;

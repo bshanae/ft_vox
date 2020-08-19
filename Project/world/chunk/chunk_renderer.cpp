@@ -1,9 +1,9 @@
 #include "chunk_renderer.h"
 
+#include "core/core/core_settings.h"
 #include "world/chunk/model.h"
 #include "world/chunk/chunk.h"
 #include "world/world/world_settings.h"
-#warning "Receive matrices directly from player"
 #include "player/camera/camera.h"
 
 						chunk_renderer::chunk_renderer()
@@ -17,7 +17,7 @@
 	uniform_fog_gradient = program->create_uniform<float>("uniform_fog_gradient");
 
 	program->bind(true);
-	uniform_background.upload(application_settings::background);
+	uniform_background.upload(core_settings::background);
 	uniform_fog_gradient.upload(15.f);
 	program->bind(false);
 }

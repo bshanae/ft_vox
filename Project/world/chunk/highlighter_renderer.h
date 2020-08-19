@@ -2,7 +2,7 @@
 
 #include "common/OpenGL.h"
 #include "common/aliases.h"
-#include "application/unique_object.h"
+#include "core/object/unique_object.h"
 #include "world/program/program.h"
 #include "world/program/uniform.h"
 

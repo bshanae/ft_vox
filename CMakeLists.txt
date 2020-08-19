@@ -17,11 +17,10 @@ set(SOURCE_FILES
 
 	Project/common/debug.cpp
 
-    Project/application/window.cpp
-    Project/application/application.cpp
-	Project/application/object.cpp
-	Project/application/input.cpp
-	Project/application/main.cpp
+	Project/core/core/core.cpp
+    Project/core/window/window.cpp
+	Project/core/object/object.cpp
+	Project/core/input/input.cpp
 
 	Project/world/block/texture_atlas.cpp
 	Project/world/block/block.cpp
@@ -40,7 +39,9 @@ set(SOURCE_FILES
 	Project/world/loader/file.cpp
 
 	Project/player/player/player.cpp
-	Project/player/camera/camera.cpp)
+	Project/player/camera/camera.cpp
+
+	Project/application/main.cpp)
 
 set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/Project/)
 include_directories(

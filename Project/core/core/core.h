@@ -2,26 +2,18 @@
 
 #include "common/aliases.h"
 #include "common/global.h"
-#include "application/object.h"
-#include "application/timer.h"
+#include "core/object/object.h"
 
 class 							window;
 class 							object;
 
-struct							application_settings
-{
-	static inline vec3			background = vec3(0.8f);
-};
-
-class 							application final : public global<application>
+class 							core final : public global<core>
 {
 public :
-								application();
-								~application() override = default;
+								core();
+								~core() override = default;
 
 	static void 				register_layout(const string &key);
-
-
 
 	static void					execute();
 
@@ -41,6 +33,6 @@ private :
 	void						process_updating();
 	void						process_rendering();
 
-	friend void					object::connect_to_application();
+	friend void					object::connect_to_core();
 };
 
