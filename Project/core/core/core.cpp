@@ -13,7 +13,10 @@
 
 void			core::register_layout(const string &key)
 {
-	instance()->layouts[key] = {};
+	auto 		layout = make_shared<core::layout>(key);
+
+	instance()->layouts[key] = layout;
+	instance()->layouts_order.push_back(layout);
 }
 
 void			core::execute()
@@ -25,8 +28,8 @@ void			core::execute()
 		instance->process_input();
 
 		if (window::is_closed())
-			for (auto &layout : instance->layouts)
-				for (auto &object : layout.second)
+			for (auto &[name, layout] : instance->layouts)
+				for (auto &object : layout->objects)
 					object->destroy();
 
 		instance->process_creating();
@@ -57,13 +60,13 @@ void			core::process_input()
 void			core::process_creating()
 {
 	for (auto &new_object : new_objects)
-		if (auto iterator = layouts.find(new_object.first); iterator != layouts.end())
-			iterator->second.push_back(new_object.second);
+		if (auto iterator = layouts.find(new_object->layout); iterator != layouts.end())
+			iterator->second->objects.push_back(new_object);
 		else
 			assert(false and "Unknown layout");
 
-	for (auto &layout : layouts)
-		for (auto &object : layout.second)
+	for (auto &layout : layouts_order)
+		for (auto &object : layout->objects)
 			if (object->state == object::state::uninitialized)
 				object->initialize();
 
@@ -72,12 +75,12 @@ void			core::process_creating()
 
 void			core::process_destroying()
 {
-	for (auto &layout : layouts)
-		for (auto iterator = layout.second.begin(); iterator != layout.second.end();)
+	for (auto &[name, layout] : layouts)
+		for (auto iterator = layout->objects.begin(); iterator != layout->objects.end();)
 			if ((*iterator)->should_be_destroyed)
 			{
 				(*iterator)->deinitialize();
-				iterator = layout.second.erase(iterator);
+				iterator = layout->objects.erase(iterator);
 			}
 			else
 				++iterator;
@@ -85,8 +88,8 @@ void			core::process_destroying()
 
 void			core::process_updating()
 {
-	for (auto &layout : layouts)
-		for (auto &object : layout.second)
+	for (auto &[name, layout] : layouts)
+		for (auto &object : layout->objects)
 			if (object->should_be_updated and object->state == object::state::active)
 				object->update();
 }
@@ -99,8 +102,8 @@ void			core::process_rendering()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	for (auto &layout : layouts)
-		for (auto &object : layout.second)
+	for (auto &[name, layout] : layouts)
+		for (auto &object : layout->objects)
 			if (object->should_be_rendered and object->state == object::state::active)
 				object->render();
 

@@ -25,7 +25,7 @@
 	file.close();
 }
 
-void					loader::create_implementation()
+void					loader::initialize_implementation()
 {
 	static_assert(sizeof(enum block::type) == 1u and "Block type should be size of byte");
 	chunk_loader::pointer = instance();
@@ -41,11 +41,6 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
 
 	file.read_pointer = loader_settings::header.size();
 	file.write_pointer = loader_settings::header.size();
-
-	if (position == vec3(-8, 0, 4))
-	{
-
-	}
 
 	while (file)
 	{

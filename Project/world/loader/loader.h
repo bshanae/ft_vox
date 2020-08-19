@@ -42,7 +42,7 @@ private :
 
 	file				file;
 
-	void				create_implementation() override;
+	void				initialize_implementation() override;
 
 	shared_ptr<chunk>	download_implementation(const vec3 &world_position) override;
 	void				upload_implementation(const shared_ptr<chunk> &chunk) override;

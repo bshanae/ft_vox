@@ -283,7 +283,7 @@ void					world::create_chunk(const vec3 &position)
 {
 	shared_ptr<chunk>	chunk;
 
-//	if (not (chunk = chunk_loader::download(position)))
+	if (not (chunk = chunk_loader::download(position)))
 		chunk = make_shared<::chunk>(position);
 
 #warning "Generation module needed"

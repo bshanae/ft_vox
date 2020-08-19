@@ -65,7 +65,7 @@ void 						player::process_interaction()
 //			world::highlight_block(nullopt);
 
 			assert(neighbor);
-			world::insert_block(*neighbor, block::type::water);
+			world::insert_block(*neighbor, block::type::dirt_with_grass);
 			world::highlight_block(*neighbor);
 		}
 	}

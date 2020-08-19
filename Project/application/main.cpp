@@ -17,14 +17,14 @@ int						main()
 	core::register_layout("main");
 	core::register_layout("water");
 
-	world::create();
-	chunk_renderer::create();
 	loader::create();
-	highlighter::create();
 	highlighter_renderer::create();
+	highlighter::create();
+	chunk_renderer::create();
+	world::create();
 
-	player::create();
 	camera::create();
+	player::create();
 
 	texture_atlas::initialize("Project/resources/atlases/default.png");
 	texture_atlas::association_for(block::type::dirt) = ivec2(2, 15);

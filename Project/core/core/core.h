@@ -4,35 +4,42 @@
 #include "common/global.h"
 #include "core/object/object.h"
 
-class 							window;
-class 							object;
+class 								window;
+class 								object;
 
-class 							core final : public global<core>
+class 								core final : public global<core>
 {
 public :
-								core();
-								~core() override = default;
+									core();
+									~core() override = default;
 
-	static void 				register_layout(const string &key);
+	static void 					register_layout(const string &key);
 
-	static void					execute();
+	static void						execute();
 
 private :
 
-	using						new_objects_type = vector<pair<string, shared_ptr<object>>>;
-	using						layouts_type = map<string, vector<shared_ptr<object>>>;
+	struct 							layout
+	{
+		explicit					layout(const string &name) : name(name) {}
 
-	new_objects_type			new_objects;
-	layouts_type				layouts;
+		string 						name;
+		vector<shared_ptr<object>>	objects;
+	};
 
-	void						process_input();
+	vector<shared_ptr<object>>		new_objects;
 
-	void						process_creating();
-	void						process_destroying();
+	map<string, shared_ptr<layout>>	layouts;
+	vector<shared_ptr<layout>>		layouts_order;
 
-	void						process_updating();
-	void						process_rendering();
+	void							process_input();
 
-	friend void					object::connect_to_core();
+	void							process_creating();
+	void							process_destroying();
+
+	void							process_updating();
+	void							process_rendering();
+
+	friend void						object::connect_to_core();
 };
 
