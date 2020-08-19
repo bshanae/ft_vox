@@ -13,7 +13,10 @@ protected :
 	explicit			property_read_functionality(const type *pointer) :
 							pointer(pointer)
 	{
-		getter = [this](){ return (*this->pointer); };
+		getter = [this](){
+			assert(is_default_getter_allowed and "Default getter is prohibited");
+			return (*this->pointer);
+		};
 	}
 
 						operator type () const
@@ -39,6 +42,7 @@ protected :
 	using 				getter_type = function<type()>;
 	getter_type			getter = nullptr;
 
+	bool 				is_default_getter_allowed = true;
 	bool 				is_direct_access_allowed = true;
 
 private :
@@ -56,7 +60,11 @@ protected :
 
 	explicit			property_write_functionality(type *pointer) : pointer(pointer)
 	{
-		setter = [this](const type &value){ *this->pointer = value; };
+		setter = [this](const type &value)
+		{
+			assert(is_default_setter_allowed and "Default setter is prohibited");
+			*this->pointer = value;
+		};
 	}
 
 	void				operator = (const type &value)
@@ -82,6 +90,7 @@ protected :
 	using 				setter_type = function<void(const type &)>;
 	setter_type			setter = nullptr;
 
+	bool 				is_default_setter_allowed = true;
 	bool 				is_direct_access_allowed = true;
 
 private :
@@ -121,6 +130,16 @@ public :
 protected :
 
 	type				value;
+
+	void 				prohibit_default_getter()
+	{
+		property_read_functionality<type>::is_default_getter_allowed = false;
+	}
+
+	void 				prohibit_default_setter()
+	{
+		property_write_functionality<type>::is_default_setter_allowed = false;
+	}
 
 	void 				prohibit_direct_access()
 	{

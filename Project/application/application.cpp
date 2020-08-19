@@ -74,7 +74,7 @@ void			application::process_destroying()
 		for (auto iterator = layout.second.begin(); iterator != layout.second.end();)
 			if ((*iterator)->should_be_destroyed)
 			{
-				(*iterator)->destroy();
+				(*iterator)->deinitialize();
 				iterator = layout.second.erase(iterator);
 			}
 			else

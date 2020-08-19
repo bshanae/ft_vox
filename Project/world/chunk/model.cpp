@@ -31,6 +31,7 @@
 	rotation = vec3(0.f);
 	scaling = vec3(1.f);
 	transformation = mat4(1.f);
+
 	number_of_indices = 0;
 }
 

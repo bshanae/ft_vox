@@ -24,6 +24,7 @@ set(SOURCE_FILES
 	Project/application/main.cpp
 
 	Project/world/block/texture_atlas.cpp
+	Project/world/block/block.cpp
 	Project/world/block/block_id.cpp
 	Project/world/chunk/chunk.cpp
 	Project/world/chunk/chunk_renderer.cpp

@@ -21,16 +21,16 @@ private :
  *	Performs IO for .vox files
  *
  * 	Structure :
- * 	["vox",a,b,c]
- * 	[state][x,y,z][blocks]
+ * 	"Vox" - header
+ * 	[state][x,y,z][blocks] - chunk
+ * 	[state][x,y,z][blocks] - chunk
  * 	...
  *
  * 	Size (in bytes) :
- * 	[3 + 3 * 4]
- * 	[  1  ][4,4,4][number of blocks in chunks]
+ * 	[3] - header
+ * 	[1][4,4,4][number of blocks in chunks] - chunk
  *
  * 	vox - identifier of file
- * 	a, b, c - size of chunk
  *	state - state of chunk
  *	x, y, z - position of chunk as 3 floats
  *	blocks - types of each block in chunk

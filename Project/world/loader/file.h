@@ -6,6 +6,7 @@
 
 class						file final
 {
+	using					property_flag = property<read_only, bool, file>;
 public :
 
 	explicit				file(const path &path);
@@ -14,10 +15,10 @@ public :
 	void					open();
 	void					close();
 
-	bool					is_empty();
-	bool					is_good() const;
-	bool					is_fail() const;
-	bool					is_eof() const;
+	property_flag			is_empty;
+	property_flag			is_good;
+	property_flag			is_fail;
+	property_flag			is_eof;
 
 	explicit				operator bool () const;
 

@@ -118,8 +118,8 @@ static vector<GLuint>	indices =
 		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
 			at(i).type = block::type::dirt;
 
-	at(0, 1 , 0).type = block::type::water;
-	at(1, 1 , 0).type = block::type::water;
+//	at(0, 1 , 0).type = block::type::water;
+//	at(1, 1 , 0).type = block::type::water;
 }
 
 void					chunk::build(build_request request)

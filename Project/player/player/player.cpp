@@ -32,11 +32,12 @@ void						player::update()
 			auto 	axis_and_sign = block::to_axis_and_sign(hit->face);
 			auto	neighbor = hit->block.neighbor(axis_and_sign.first, axis_and_sign.second);
 
-			world::remove_block(hit->block);
-			world::highlight_block(nullopt);
+//			world::remove_block(hit->block);
+//			world::highlight_block(nullopt);
 
-//			assert(neighbor);
-//			world::insert_block(*neighbor, block::type::water);
+			assert(neighbor);
+			world::insert_block(*neighbor, block::type::water);
+			world::highlight_block(*neighbor);
 		}
 	}
 }

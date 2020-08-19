@@ -3,14 +3,29 @@
 					file::file(const class path &path) : path(path)
 {
 	read_pointer.getter = [this](){ return (stream.tellg()); };
-	read_pointer.setter = [this](const int &){ return (stream.tellg()); };
+	read_pointer.setter = [this](const int &value){ stream.seekg(value); };
 	read_pointer.mark_setter = [this](mark mark){ stream.seekg(0, (ios::seekdir)mark); };
 	read_pointer.prohibit_direct_access();
 
 	write_pointer.getter = [this](){ return (stream.tellp()); };
-	write_pointer.setter = [this](const int &){ return (stream.tellp()); };
+	write_pointer.setter = [this](const int &value){ stream.seekp(value); };
 	write_pointer.mark_setter = [this](mark mark){ stream.seekp(0, (ios::seekdir)mark); };
 	write_pointer.prohibit_direct_access();
+
+	is_empty.getter = [this]()
+	{
+		bool			result;
+
+		result = stream.peek() == fstream::traits_type::eof();
+		if (result)
+			stream.clear();
+		return (result);
+	};
+
+	is_good.getter = [this](){ return (stream.good()); };
+	is_fail.getter = [this](){ return (stream.fail()); };
+	is_eof.getter = [this](){ return (stream.eof()); };
+
 }
 
 void				file::open()
@@ -25,32 +40,9 @@ void				file::close()
 	stream.close();
 }
 
-bool				file::is_empty()
-{
-	bool			result;
-
-	result = stream.peek() == fstream::traits_type::eof();
-	if (result)
-		stream.clear();
-	return (result);
-}
-
-bool				file::is_good() const
-{
-	return (stream.good());
-}
-bool				file::is_fail() const
-{
-	return (stream.fail());
-}
-bool				file::is_eof() const
-{
-	return (stream.eof());
-}
-
 					file::operator bool () const
 {
-	return (is_good());
+	return (is_good);
 }
 
 void 				file::clear()

@@ -3,7 +3,7 @@
 						loader::loader(const path &path_to_profile) : file(path_to_profile)
 {
 	file.open();
-	if (file.is_empty())
+	if (file.is_empty)
 		file << loader_settings::header;
 	else
 	{
@@ -36,6 +36,11 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
 	file.read_pointer = loader_settings::header.size();
 	file.write_pointer = loader_settings::header.size();
 
+	if (position == vec3(-8, 0, 4))
+	{
+
+	}
+
 	while (file)
 	{
 		pointer = file.read_pointer;
@@ -43,7 +48,7 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
 		file >> (char &)test_state;
 		file >> test_position;
 
-		if (test_position == position)
+		if (test_state == chunk_state::valid and test_position == position)
 		{
 			have_found_chunk = true;
 			break ;
@@ -73,7 +78,7 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
 void					loader::upload_implementation(const shared_ptr<chunk> &chunk)
 {
 	bool 				have_found_place_for_writing = false;
-	int					pointer = 0;
+	int					pointer;
 
 	chunk_state			state;
 
@@ -90,7 +95,7 @@ void					loader::upload_implementation(const shared_ptr<chunk> &chunk)
 		file >> file::ignore<float>(3);
 		file >> file::ignore(loader_settings::chunk_linear_size);
 
-		if (state != chunk_state::valid)
+		if (state == chunk_state::invalid)
 		{
 			have_found_place_for_writing = true;
 			break;
