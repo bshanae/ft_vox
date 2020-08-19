@@ -18,10 +18,13 @@ int						main()
 	core::register_layout("water");
 
 	world::create();
+	chunk_renderer::create();
+	loader::create();
 	highlighter::create();
 	highlighter_renderer::create();
-	camera::create();
+
 	player::create();
+	camera::create();
 
 	texture_atlas::initialize("Project/resources/atlases/default.png");
 	texture_atlas::association_for(block::type::dirt) = ivec2(2, 15);
@@ -33,10 +36,7 @@ int						main()
 	texture_atlas::association_for(block::type::dirt_with_grass).bottom = ivec2(2, 15);
 	texture_atlas::association_for(block::type::water) = ivec2(13, 3);
 
-	chunk_renderer::initialize();
-	generator_controller::initialize();
-	loader::initialize("test.vox");
-
 	core::execute();
+
 	return (0);
 }

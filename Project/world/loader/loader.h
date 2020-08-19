@@ -3,19 +3,7 @@
 #include "common/aliases.h"
 #include "world/chunk/chunk_loader.h"
 #include "world/loader/file.h"
-
-struct						loader_settings
-{
-	friend class			loader;
-
-private :
-
-	static inline int 		chunk_linear_size = chunk_settings::size[0] * chunk_settings::size[1] * chunk_settings::size[2];
-
-	static
-	inline
-	const string			header = "Vox";
-};
+#include "core/object/unique_object.h"
 
 /*
  *	Performs IO for .vox files
@@ -36,28 +24,28 @@ private :
  *	blocks - types of each block in chunk
  */
 
-class						loader :
-								public chunk_loader,
-								public global<loader>
+class					loader :
+							public chunk_loader,
+							public unique_object<loader>
 {
 public :
 
-	explicit				loader(const path &path_to_profile);
-							~loader() override;
+	explicit			loader();
+						~loader() override;
 private :
 
-	enum class 				chunk_state : char
+	enum class 			chunk_state : char
 	{
 		valid = 'v',
 		invalid = 'i'
 	};
 
-	file					file;
+	file				file;
 
-	void					initializer(shared_ptr<loader> loader) override;
+	void				create_implementation() override;
 
-	shared_ptr<chunk>		download_implementation(const vec3 &world_position) override;
-	void					upload_implementation(const shared_ptr<chunk> &chunk) override;
+	shared_ptr<chunk>	download_implementation(const vec3 &world_position) override;
+	void				upload_implementation(const shared_ptr<chunk> &chunk) override;
 };
 
 

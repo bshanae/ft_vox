@@ -1,7 +1,13 @@
 #include "loader.h"
 
-						loader::loader(const path &path_to_profile) : file(path_to_profile)
+#include "world/loader/loader_settings.h"
+
+					loader::loader() : file(loader_settings::path_to_file)
 {
+	layout = "system";
+	should_be_updated = false;
+	should_be_rendered = false;
+
 	file.open();
 	if (file.is_empty)
 		file << loader_settings::header;
@@ -19,10 +25,10 @@
 	file.close();
 }
 
-void					loader::initializer(shared_ptr<loader> loader)
+void					loader::create_implementation()
 {
 	static_assert(sizeof(enum block::type) == 1u and "Block type should be size of byte");
-	chunk_loader::pointer = static_pointer_cast<chunk_loader>(loader);
+	chunk_loader::pointer = instance();
 }
 
 shared_ptr<chunk>		loader::download_implementation(const vec3 &position)

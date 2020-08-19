@@ -8,6 +8,10 @@
 
 						chunk_renderer::chunk_renderer()
 {
+	layout = "system";
+	should_be_updated = false;
+	should_be_rendered = false;
+
 	program = make_unique<class program>(path_to_vertex_shader, path_to_fragment_shader);
 	uniform_projection = program->create_uniform<mat4>("uniform_projection");
 	uniform_view = program->create_uniform<mat4>("uniform_view");
@@ -24,7 +28,7 @@
 
 void					chunk_renderer::render(const shared_ptr<chunk> &chunk, mod mod)
 {
-	auto 				instance = global<chunk_renderer>::instance();
+	auto 				instance = unique_object<chunk_renderer>::instance();
 	shared_ptr<model>	model;
 
 	if (not chunk->is_visible)
