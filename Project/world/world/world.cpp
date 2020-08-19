@@ -14,6 +14,9 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 						world::world()
 {
 	object_template::layout = "main";
+
+	performing_initial_procedure.getter = [this](){ return (initial_procedure_context.working); };
+	performing_initial_procedure.prohibit_direct_access();
 	initial_procedure();
 }
 

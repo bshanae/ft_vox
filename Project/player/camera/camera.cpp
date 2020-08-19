@@ -97,54 +97,59 @@ optional<camera::hit>	camera::cast_ray()
 
 void					camera::update()
 {
+	if (world::performing_initial_procedure)
+		return ;
+
 	have_changed = input::have_mouse_moved();
 
-//						Axis X
-	if (input::is_pressed_or_held(GLFW_KEY_A))
-	{
-		position = (vec3)position - camera_settings::movement_speed * right;
-		have_changed = true;
-	}
-	else if (input::is_pressed_or_held(GLFW_KEY_D))
-	{
-		position = (vec3)position + camera_settings::movement_speed * right;
-		have_changed = true;
-	}
-
-//						Axis y
-	if (input::is_pressed_or_held(GLFW_KEY_Q))
-	{
-		position = (vec3)position - camera_settings::movement_speed * up;
-		have_changed = true;
-	}
-	else if (input::is_pressed_or_held(GLFW_KEY_E))
-	{
-		position = (vec3)position + camera_settings::movement_speed * up;
-		have_changed = true;
-	}
-
-//						Axis Z
-	if (input::is_pressed_or_held(GLFW_KEY_W))
-	{
-		position = (vec3)position + camera_settings::movement_speed * front;
-		have_changed = true;
-	}
-	else if (input::is_pressed_or_held(GLFW_KEY_S))
-	{
-		position = (vec3)position - camera_settings::movement_speed * front;
-		have_changed = true;
-	}
+	yaw += input::mouse_offset->x * camera_settings::rotation_speed;
+	pitch += input::mouse_offset->y * camera_settings::rotation_speed;
 
 	if (have_changed)
 		recalculate();
 }
 
+void					camera::move(move_request request)
+{
+	instance()->move_non_static(request);
+}
+
+void					camera::move_non_static(move_request request)
+{
+	switch (request)
+	{
+		case (move_request::left) :
+			position = (vec3)position - camera_settings::movement_speed * right;
+			break ;
+
+		case (move_request::right) :
+			position = (vec3)position + camera_settings::movement_speed * right;
+			break ;
+
+		case (move_request::forward) :
+			position = (vec3)position + camera_settings::movement_speed * front;
+			break ;
+
+		case (move_request::back) :
+			position = (vec3)position - camera_settings::movement_speed * front;
+			break ;
+
+		case (move_request::up) :
+			position = (vec3)position + camera_settings::movement_speed * up;
+			break ;
+
+		case (move_request::down) :
+			position = (vec3)position - camera_settings::movement_speed * up;
+			break ;
+
+	}
+
+	recalculate();
+}
+
 void					camera::recalculate()
 {
 	vec3				local_front;
-
-	yaw += input::mouse_offset->x * camera_settings::rotation_speed;
-	pitch += input::mouse_offset->y * camera_settings::rotation_speed;
 
 	if (pitch > 89.0f)
 		pitch = 89.0f;

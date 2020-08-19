@@ -53,6 +53,18 @@ public :
 	static inline
 	flag_type				have_changed;
 
+	enum class				move_request
+	{
+		left,
+		right,
+		forward,
+		back,
+		up,
+		down
+	};
+
+	static void				move(move_request request);
+
 private :
 
 	const vec3				up_const = vec3(0.f, 1.f, 0.f);
@@ -68,5 +80,6 @@ private :
 
 	void					recalculate();
 
+	void					move_non_static(move_request request);
 	static float			intbound(float s, float ds);
 };

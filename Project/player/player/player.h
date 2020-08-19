@@ -10,6 +10,9 @@ public :
 private :
 
 	void			update() override;
+
+	void 			process_movement();
+	void 			process_interaction();
 };
 
 

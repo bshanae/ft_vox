@@ -10,6 +10,8 @@ class							world : public unique_object<world>
 {
 	friend class 				block_id;
 
+	using						bool_property = property<read_only, bool, world>;
+
 public :
 								world();
 								~world() override = default;
@@ -20,6 +22,8 @@ public :
 	static void 				remove_block(const block_id &id);
 
 	static void					highlight_block(const optional<block_id> &id);
+
+	static inline bool_property	performing_initial_procedure;
 
 private :
 
