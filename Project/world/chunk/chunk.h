@@ -31,6 +31,9 @@ public :
 
 private :
 
+	bool									can_be_regenerated = true;
+	bool									is_visible = true;
+
 	struct									model_workspace
 	{
 		function<bool(enum block::type)>	predicate;
@@ -45,8 +48,6 @@ private :
 
 	model_workspace							main_workspace;
 	model_workspace							water_workspace;
-
-	bool									is_visible = true;
 
 	enum class 								build_request
 	{

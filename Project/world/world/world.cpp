@@ -56,12 +56,14 @@ optional<block_id>		world::find_block(const vec3 &position)
 void					world::insert_block(const block_id &id, enum block::type type)
 {
 	id().type = type;
+	id.chunk->can_be_regenerated = false;
 	instance()->rebuild_chunk(id.chunk, id.index);
 }
 
 void					world::remove_block(const block_id &id)
 {
 	id().type = block::type::air;
+	id.chunk->can_be_regenerated = false;
 	instance()->rebuild_chunk(id.chunk, id.index);
 }
 
@@ -142,8 +144,9 @@ void					world::initialize_implementation()
 
 void					world::deinitialize_implementation()
 {
-	for (auto &iterator : chunks)
-		chunk_loader::upload(iterator.second);
+	for (auto [position, chunk] : chunks)
+		if (not chunk->can_be_regenerated)
+			chunk_loader::upload(chunk);
 }
 
 #include "player/camera/camera.h"
@@ -291,7 +294,8 @@ void					world::create_chunk(const vec3 &position)
 
 void					world::destroy_chunk(const shared_ptr<chunk> &chunk)
 {
-	chunk_loader::upload(chunk);
+	if (not chunk->can_be_regenerated)
+		chunk_loader::upload(chunk);
 	old_chunks.push_back(chunk);
 }
 
