@@ -223,13 +223,17 @@ void					world::update()
 void					world::render()
 {
 	for (auto [position, chunk] : chunks)
-			chunk_renderer::render(chunk, chunk_renderer::mod::main);
+		chunk_renderer::render(chunk, chunk::batch_purpose::opaque);
 
 	for (auto [position, chunk] : chunks)
 			sorted_chunks.emplace(distance(chunk), chunk);
 
 	for (auto iterator = sorted_chunks.rbegin(); iterator != sorted_chunks.rend(); ++iterator)
-		chunk_renderer::render(iterator->second, chunk_renderer::mod::water);
+	{
+		chunk_renderer::render(iterator->second, chunk::batch_purpose::partially_transparent);
+		chunk_renderer::render(iterator->second, chunk::batch_purpose::transparent);
+	}
+
 	sorted_chunks.clear();
 }
 

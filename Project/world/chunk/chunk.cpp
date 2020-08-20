@@ -91,6 +91,33 @@ static vector<GLfloat>	left_texture_coordinates = {
 	0.f + epsilon, 1.f - epsilon
 };
 
+static vector<GLfloat>	first_diagonal_vertices = {
+	+0.5f, +0.5f, +0.5f,
+	-0.5f, +0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+	+0.5f, -0.5f, +0.5f,
+};
+
+static vector<GLfloat>	first_diagonal_texture_coordinates = {
+	1.f - epsilon, 1.f - epsilon,
+	0.f + epsilon, 1.f - epsilon,
+	0.f + epsilon, 0.f + epsilon,
+	1.f - epsilon, 0.f + epsilon,
+};
+
+static vector<GLfloat>	second_diagonal_vertices = {
+	+0.5f, +0.5f, -0.5f,
+	-0.5f, +0.5f, +0.5f,
+	-0.5f, -0.5f, +0.5f,
+	+0.5f, -0.5f, -0.5f,
+};
+
+static vector<GLfloat>	second_diagonal_texture_coordinates = {
+	1.f - epsilon, 1.f - epsilon,
+	0.f + epsilon, 1.f - epsilon,
+	0.f + epsilon, 0.f + epsilon,
+	1.f - epsilon, 0.f + epsilon,
+};
 
 static vector<GLuint>	indices =
 {
@@ -104,8 +131,9 @@ static vector<GLuint>	indices =
 	center.getter = [this](){ return (*this->position + chunk_settings::size_as_vector / 2.f); };
 	center.prohibit_direct_access();
 
-	main_workspace.predicate = [](enum block::type type){ return (type != block::type::water); };
-	water_workspace.predicate = [](enum block::type type){ return (type == block::type::water); };
+	workspace_for_opaque.predicate = [](block &block){ return (block.is_opaque()); };
+	workspace_for_transparent.predicate = [](block &block){ return (block.is_transparent()); };
+	workspace_for_partially_transparent.predicate = [](block &block){ return (block.is_partially_transparent()); };
 
 	index				i;
 
@@ -118,8 +146,10 @@ static vector<GLuint>	indices =
 		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
 			at(i).type = block::type::dirt;
 
-//	at(0, 1 , 0).type = block::type::water;
-//	at(1, 1 , 0).type = block::type::water;
+	at(0, 1 , 0).type = block::type::water;
+	at(1, 1 , 0).type = block::type::water;
+
+	at(2, 2 , 0).type = block::type::blue_flower;
 }
 
 void					chunk::build(build_request request)
@@ -138,8 +168,9 @@ void					chunk::build(build_request request)
 
 		case (build_request::model) :
 			assert(build_phase == build_phase::light_done and "Unexpected build phase");
-			build_model(main_workspace);
-			build_model(water_workspace);
+			build_model(workspace_for_opaque);
+			build_model(workspace_for_transparent);
+			build_model(workspace_for_partially_transparent);
 			build_phase = build_phase::model_done;
 			break ;
 	}
@@ -167,7 +198,7 @@ void					chunk::calculate_light()
 
 		if (neighbor_index = index.neighbor(axis::y, sign::minus); not neighbor_index)
 			continue ;
-		if (not at(neighbor_index).is_empty())
+		if (not at(neighbor_index).does_transmit_light())
 			continue ;
 		if (at(index).light_level - at(neighbor_index).light_level >= 2)
 		{
@@ -213,7 +244,7 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 					if (second_sign != 0 and occluder)
 						occluder = occluder->neighbor((::axis)second_axis, (::sign)second_sign);
 
-					if (occluder and not (*occluder)().is_empty())
+					if (occluder and not (*occluder)().does_transmit_light())
 					{
 						if (first_sign == 0 or second_sign == 0)
 							occluders_count += 2;
@@ -237,7 +268,7 @@ char					chunk::apply_ao(char light_level, float ao)
 	return (static_part + ao_result);
 }
 
-void					chunk::build_model(model_workspace &workspace)
+void					chunk::build_model(batch_workspace &workspace)
 {
 	workspace.vertices.clear();
 	workspace.texture_coordinates.clear();
@@ -245,7 +276,7 @@ void					chunk::build_model(model_workspace &workspace)
 	workspace.indices.clear();
 
 	for (auto &iterator : *this)
-		if (workspace.predicate(iterator->value().type))
+		if (workspace.predicate(iterator->value()))
 			build_block(workspace, iterator.index());
 
 	workspace.model = make_shared<model>();
@@ -262,7 +293,7 @@ void					chunk::build_model(model_workspace &workspace)
 	workspace.model->bind(false);
 }
 
-void					chunk::build_block(model_workspace &workspace, const index &index)
+void					chunk::build_block(batch_workspace &workspace, const index &index)
 {
 	auto 				try_build_quad = [this, &workspace, index](axis axis, sign sign)
 	{
@@ -274,7 +305,7 @@ void					chunk::build_block(model_workspace &workspace, const index &index)
 			auto 		this_block = this_block_id();
 			auto 		neighbor_block = (*neighbor_block_id)();
 
-			if (not this_block.is_transparent() and neighbor_block.is_transparent());
+			if (this_block.is_opaque() and neighbor_block.is_transparent_or_partially_transparent());
 			else if (neighbor_block.is_empty());
 			else
 				return ;
@@ -288,13 +319,23 @@ void					chunk::build_block(model_workspace &workspace, const index &index)
 			build_quad(workspace, index, (::axis)axis, (::sign)sign, block_settings::default_light_level);
 	};
 
-	if (at(index).is_empty())
+	auto				&this_block = at(index);
+
+	if (this_block.is_empty())
 		return ;
 
-	for (int axis = (int)axis::x; axis <= (int)axis::z; axis++)
+	if (this_block.is_diagonal())
 	{
-		try_build_quad((::axis)axis, sign::minus);
-		try_build_quad((::axis)axis, sign::plus);
+		build_quad(workspace, index, axis::x, sign::minus, this_block.light_level - 1);
+		build_quad(workspace, index, axis::x, sign::plus, this_block.light_level - 1);
+	}
+	else
+	{
+		for (int axis = (int) axis::x; axis <= (int) axis::z; axis++)
+		{
+			try_build_quad((::axis)axis, sign::minus);
+			try_build_quad((::axis)axis, sign::plus);
+		}
 	}
 }
 
@@ -305,25 +346,42 @@ void					append_to_vector(vector<type> &target, const vector<type> &source)
 }
 
 void					chunk::build_quad(
-							model_workspace &workspace,
+							batch_workspace &workspace,
 							const index &index,
 							axis axis,
 							sign sign,
 							char light_level)
 {
+	auto				&block = at(index);
 	auto				texture_index = ivec2(0);
 
 	light_level = max(block_settings::light_level_min, light_level);
 	if (axis == axis::x and sign == sign::plus)
 	{
-		append_to_vector(workspace.vertices, right_vertices);
-		append_to_vector(workspace.texture_coordinates, right_texture_coordinates);
+		if (block.is_diagonal())
+		{
+			append_to_vector(workspace.vertices, first_diagonal_vertices);
+			append_to_vector(workspace.texture_coordinates, first_diagonal_texture_coordinates);
+		}
+		else
+		{
+			append_to_vector(workspace.vertices, right_vertices);
+			append_to_vector(workspace.texture_coordinates, right_texture_coordinates);
+		}
 		texture_index = texture_atlas::association_for(at(index).type).right;
 	}
 	else if (axis == axis::x and sign == sign::minus)
 	{
-		append_to_vector(workspace.vertices, left_vertices);
-		append_to_vector(workspace.texture_coordinates, left_texture_coordinates);
+		if (block.is_diagonal())
+		{
+			append_to_vector(workspace.vertices, second_diagonal_vertices);
+			append_to_vector(workspace.texture_coordinates, second_diagonal_texture_coordinates);
+		}
+		else
+		{
+			append_to_vector(workspace.vertices, left_vertices);
+			append_to_vector(workspace.texture_coordinates, left_texture_coordinates);
+		}
 		texture_index = texture_atlas::association_for(at(index).type).left;
 	}
 	else if (axis == axis::y and sign == sign::plus)

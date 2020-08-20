@@ -27,14 +27,19 @@ int						main()
 	player::create();
 
 	texture_atlas::initialize("Project/resources/atlases/default.png");
+
 	texture_atlas::association_for(block::type::dirt) = ivec2(2, 15);
+
 	texture_atlas::association_for(block::type::dirt_with_grass).left = ivec2(3, 15);
 	texture_atlas::association_for(block::type::dirt_with_grass).right = ivec2(3, 15);
 	texture_atlas::association_for(block::type::dirt_with_grass).front = ivec2(3, 15);
 	texture_atlas::association_for(block::type::dirt_with_grass).back = ivec2(3, 15);
 	texture_atlas::association_for(block::type::dirt_with_grass).top = ivec2(12, 3);
 	texture_atlas::association_for(block::type::dirt_with_grass).bottom = ivec2(2, 15);
+
 	texture_atlas::association_for(block::type::water) = ivec2(13, 3);
+
+	texture_atlas::association_for(block::type::blue_flower) = ivec2(12, 15);
 
 	core::execute();
 

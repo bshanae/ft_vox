@@ -41,7 +41,42 @@ pair<axis, sign>	block::to_axis_and_sign(face face)
 	}
 }
 
-ostream					&operator << (ostream &stream, enum block::type type)
+bool				block::is_empty() const
+{
+	return (type == type::air);
+}
+
+bool				block::is_opaque() const
+{
+	return (type == type::dirt or type == type::dirt_with_grass);
+}
+
+bool				block::is_transparent() const
+{
+	return (type == type::water);
+}
+
+bool				block::is_partially_transparent() const
+{
+	return (type == type::blue_flower);
+}
+
+bool				block::is_transparent_or_partially_transparent() const
+{
+	return (is_transparent() or is_partially_transparent());
+}
+
+bool				block::is_diagonal() const
+{
+	return (type == type::blue_flower);
+}
+
+bool				block::does_transmit_light() const
+{
+	return (is_empty() or is_transparent() or is_partially_transparent());
+}
+
+ostream				&operator << (ostream &stream, enum block::type type)
 {
 	switch (type)
 	{
@@ -59,6 +94,13 @@ ostream					&operator << (ostream &stream, enum block::type type)
 
 		case (block::type::water) :
 			stream << "water";
+			break ;
+
+		case (block::type::blue_flower) :
+			stream << "blue_flower";
+			break ;
+
+		default :
 			break ;
 	}
 	return (stream);

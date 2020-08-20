@@ -5,8 +5,8 @@
 #include "core/object/unique_object.h"
 #include "world/program/program.h"
 #include "world/program/uniform.h"
+#include "world/chunk/chunk.h"
 
-class 							chunk;
 class 							model;
 
 class							chunk_renderer : public unique_object<chunk_renderer>
@@ -15,13 +15,7 @@ public :
 								chunk_renderer();
 								~chunk_renderer() override = default;
 
-	enum class					mod
-	{
-		main,
-		water
-	};
-
-	static void					render(const shared_ptr<chunk> &chunk, mod mod);
+	static void					render(const shared_ptr<chunk> &chunk, chunk::batch_purpose purpose);
 
 private :
 
@@ -33,6 +27,7 @@ private :
 	uniform<mat4>				uniform_projection;
 	uniform<mat4>				uniform_view;
 	uniform<mat4>				uniform_transformation;
+	uniform<float>				uniform_alpha_discard_floor;
 	uniform<vec3>				uniform_background;
 	uniform<float>				uniform_fog_density;
 	uniform<float>				uniform_fog_gradient;

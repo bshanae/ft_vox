@@ -34,9 +34,9 @@ private :
 	bool									can_be_regenerated = true;
 	bool									is_visible = true;
 
-	struct									model_workspace
+	struct									batch_workspace
 	{
-		function<bool(enum block::type)>	predicate;
+		function<bool(block &)>				predicate;
 
 		vector<GLfloat>						vertices;
 		vector<GLfloat>						texture_coordinates;
@@ -46,8 +46,16 @@ private :
 		shared_ptr<::model>					model;
 	};
 
-	model_workspace							main_workspace;
-	model_workspace							water_workspace;
+	enum class								batch_purpose
+	{
+		opaque,
+		transparent,
+		partially_transparent
+	};
+
+	batch_workspace							workspace_for_opaque;
+	batch_workspace							workspace_for_transparent;
+	batch_workspace							workspace_for_partially_transparent;
 
 	enum class 								build_request
 	{
@@ -73,10 +81,11 @@ private :
 
 // ---------------------------------------- Model
 
-	void									build_model(model_workspace &workspace);
-	void									build_block(model_workspace &workspace, const index &index);
+	void									build_model(batch_workspace &workspace);
+	void									build_block(batch_workspace &workspace, const index &index);
+
 	void									build_quad(
-												model_workspace &workspace,
+												batch_workspace &workspace,
 												const index &index,
 												axis axis,
 												sign sign,
