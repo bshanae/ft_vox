@@ -22,14 +22,14 @@ set(SOURCE_FILES
 	Project/core/object/object.cpp
 	Project/core/input/input.cpp
 
+	Project/world/common/model.cpp
 	Project/world/block/texture_atlas.cpp
 	Project/world/block/block.cpp
 	Project/world/block/block_id.cpp
+	Project/world/block/block_selector.cpp
+	Project/world/block/block_selector_renderer.cpp
 	Project/world/chunk/chunk.cpp
 	Project/world/chunk/chunk_renderer.cpp
-	Project/world/chunk/highlighter.cpp
-	Project/world/chunk/highlighter_renderer.cpp
-	Project/world/chunk/model.cpp
 	Project/world/world/world.cpp
 	Project/world/program/shader.cpp
 	Project/world/program/program.cpp

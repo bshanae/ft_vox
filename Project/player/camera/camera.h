@@ -10,22 +10,25 @@
 
 class						camera : public unique_object<camera>
 {
-	using					position_type = property<read_write, vec3, camera>;
-	using					projection_matrix_type = property<read_only, mat4, camera>;
-	using					view_matrix_type = property<read_only, mat4, camera>;
-	using					flag_type = property<read_write, bool, camera>;
-
 public :
 							camera();
 							~camera() override = default;
 
-	static inline
-	position_type			position;
+							static inline
+							property<read_write, vec3, camera>
+							position;
 
-	static inline
-	projection_matrix_type	projection_matrix;
-	static inline
-	view_matrix_type		view_matrix;
+							static inline
+							property<read_only, mat4, camera>
+							projection_matrix;
+
+							static inline
+							property<read_only, mat4, camera>
+							view_matrix;
+
+							static inline
+							property<read_write, bool, camera>
+							have_changed;
 
 	struct					hit
 	{
@@ -34,9 +37,6 @@ public :
 	};
 
 	static optional<hit>	cast_ray();
-
-	static inline
-	flag_type				have_changed;
 
 	enum class				move_request
 	{

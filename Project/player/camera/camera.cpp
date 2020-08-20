@@ -144,6 +144,7 @@ void					camera::move_non_static(move_request request, float speed)
 
 	}
 
+	have_changed = true;
 	recalculate();
 }
 

@@ -11,7 +11,7 @@ block::face			block::from_axis_and_sign(axis axis, sign sign)
 	if (axis == axis::z and sign == sign::minus)
 		 return (face::back);
 	if (axis == axis::y and sign == sign::plus)
-		 return (face::upper);
+		 return (face::top);
 	if (axis == axis::y and sign == sign::minus)
 		 return (face::bottom);
 	assert(0);
@@ -33,7 +33,7 @@ pair<axis, sign>	block::to_axis_and_sign(face face)
 		case (face::back) :
 			return {axis::z, sign::minus};
 
-		case (face::upper) :
+		case (face::top) :
 			return {axis::y, sign::plus};
 
 		case (face::bottom) :

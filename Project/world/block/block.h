@@ -24,7 +24,7 @@ public :
 		right,
 		front,
 		back,
-		upper,
+		top,
 		bottom
 	};
 

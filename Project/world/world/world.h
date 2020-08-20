@@ -21,7 +21,8 @@ public :
 	static void 				insert_block(const block_id &id, enum block::type type);
 	static void 				remove_block(const block_id &id);
 
-	static void					highlight_block(const optional<block_id> &id);
+	static void					select_block(const block_id &id, block::face face);
+	static void 				unselect_block();
 
 	static inline bool_property	performing_initial_procedure;
 

@@ -18,6 +18,7 @@ void						player::update()
 
 	process_movement();
 	process_interaction();
+	process_ray_casting();
 }
 
 void 						player::process_movement()
@@ -41,32 +42,30 @@ void 						player::process_movement()
 
 void 						player::process_interaction()
 {
-	bool 					already_casted_ray = false;
-	optional<camera::hit>	hit;
-
-	if (camera::have_changed)
-	{
-		hit = camera::cast_ray();
-		already_casted_ray = true;
-
-		world::highlight_block(hit ? optional<block_id>(hit->block) : nullopt);
-	}
 	if (input::is_pressed(GLFW_KEY_ENTER))
 	{
-		if (not already_casted_ray)
-			hit = camera::cast_ray();
-
-		if (hit)
+		if (auto hit = camera::cast_ray(); hit)
 		{
 			auto 	axis_and_sign = block::to_axis_and_sign(hit->face);
 			auto	neighbor = hit->block.neighbor(axis_and_sign.first, axis_and_sign.second);
 
-//			world::remove_block(hit->block);
-//			world::highlight_block(nullopt);
-
 			assert(neighbor);
 			world::insert_block(*neighbor, block::type::dirt_with_grass);
-			world::highlight_block(*neighbor);
+
+			force_ray_cast = true;
 		}
+	}
+}
+
+void 						player::process_ray_casting()
+{
+	if (camera::have_changed or force_ray_cast)
+	{
+		if (auto hit = camera::cast_ray(); hit)
+			world::select_block(hit->block, hit->face);
+		else
+			world::unselect_block();
+
+		force_ray_cast = false;
 	}
 }

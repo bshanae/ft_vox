@@ -1,7 +1,7 @@
 #include "chunk_renderer.h"
 
 #include "core/core/core_settings.h"
-#include "world/chunk/model.h"
+#include "world/common/model.h"
 #include "world/chunk/chunk.h"
 #include "world/world/world_settings.h"
 #include "player/camera/camera.h"

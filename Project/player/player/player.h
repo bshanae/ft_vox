@@ -9,10 +9,13 @@ public :
 					~player() override = default;
 private :
 
+	bool			force_ray_cast = false;
+
 	void			update() override;
 
 	void 			process_movement();
 	void 			process_interaction();
+	void 			process_ray_casting();
 };
 
 

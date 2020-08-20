@@ -6,8 +6,9 @@
 #include "core/object/object_template.h"
 #include "world/block/block.h"
 #include "world/block/block_id.h"
-#include "world/chunk/model.h"
 #include "world/chunk/chunk_settings.h"
+
+class 										model;
 
 class										chunk :
 												public chunk_settings::underlying_array,

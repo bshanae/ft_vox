@@ -1,9 +1,9 @@
 #include "chunk.h"
 
 #include "common/aliases.h"
+#include "world/common/model.h"
 #include "world/block/block_settings.h"
 #include "world/block/texture_atlas.h"
-#include "world/chunk/model.h"
 
 static const float		epsilon = 0.005f;
 

@@ -1,10 +1,10 @@
 #include "world.h"
 
 #include "core/time/timestamp.h"
+#include "world/block/block_selector.h"
 #include "world/chunk/chunk_loader.h"
 #include "world/chunk/chunk_generator.h"
 #include "world/chunk/chunk_renderer.h"
-#include "world/chunk/highlighter.h"
 #include "player/camera/camera.h"
 
 static const vec3		left = vec3(-chunk_settings::size[0], 0.f, 0.f);
@@ -14,7 +14,7 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
 						world::world()
 {
-	object_template::layout = "main";
+	object_template::layout = "first";
 
 	performing_initial_procedure.getter = [this](){ return (initial_procedure_context.working); };
 	performing_initial_procedure.prohibit_direct_access();
@@ -71,15 +71,16 @@ void					world::remove_block(const block_id &id)
 	instance()->rebuild_chunk(id.chunk, id.index);
 }
 
-void					world::highlight_block(const optional<block_id> &id)
+void					world::select_block(const block_id &id, block::face face)
 {
-	if (id)
-	{
-		highlighter::instance()->activate();
-		highlighter::instance()->model->translation = id->world_position() + vec3(0.5f);
-	}
-	else
-		highlighter::instance()->deactivate();
+	block_selector::instance()->activate();
+	block_selector::instance()->translation = id.world_position() + vec3(0.5f);
+	block_selector::instance()->selected_face = face;
+}
+
+void					world::unselect_block()
+{
+	block_selector::instance()->deactivate();
 }
 
 shared_ptr<chunk>		world::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)

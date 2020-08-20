@@ -1,9 +1,9 @@
 #include "core/core/core.h"
 #include "world/block/texture_atlas.h"
 #include "world/world/world.h"
+#include "world/block/block_selector.h"
+#include "world/block/block_selector_renderer.h"
 #include "world/chunk/chunk_renderer.h"
-#include "world/chunk/highlighter.h"
-#include "world/chunk/highlighter_renderer.h"
 #include "world/generator/generator_controller.h"
 #include "world/loader/loader.h"
 #include "player/camera/camera.h"
@@ -14,12 +14,12 @@ int						main()
 	core::initialize();
 
 	core::register_layout("system");
-	core::register_layout("main");
-	core::register_layout("water");
+	core::register_layout("first");
+	core::register_layout("second");
 
 	loader::create();
-	highlighter_renderer::create();
-	highlighter::create();
+	block_selector_renderer::create();
+	block_selector::create();
 	chunk_renderer::create();
 	world::create();
 
