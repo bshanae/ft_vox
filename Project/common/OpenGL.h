@@ -23,6 +23,8 @@ using				glm::scale;
 using				glm::translate;
 using				glm::eulerAngleYXZ;
 
+using 				glm::normalize;
+using 				glm::distance;
+
 using 				glm::value_ptr;
 using				glm::radians;
-using 				glm::distance;

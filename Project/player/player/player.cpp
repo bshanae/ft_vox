@@ -9,77 +9,89 @@
 {
 	layout = "system";
 	should_be_rendered = false;
+	movement_mod = movement_mod::walk;
 }
 
 void					player::update()
 {
 	process_physics();
-	process_movement();
-	process_interaction();
-	process_ray_casting();
+	process_input();
+	process_selection();
 }
 
 void 					player::process_physics()
 {
-	if (not controlled_by_gravity)
+	vec3				position;
+
+#warning "TEMPORARY SOLUTION"
+	static bool 		dummy_lock = true;
+
+	if (input::is_pressed_or_held(GLFW_KEY_1))
+		dummy_lock = false;
+
+	if (dummy_lock)
 		return ;
 
-	vec3				position;
+	if (movement_mod == movement_mod::flight)
+		return ;
 
 	velocity += player_settings::gravity_force;
 	position = (vec3)camera::position + velocity;
 
 	if (does_collide_with_world(position))
-	{
-		controlled_by_gravity = false;
-		controlled_by_input = true;
 		velocity = vec3();
-	}
 	else
 		camera::position = position;
 }
 
-void 					player::process_movement()
+void 					player::process_input()
 {
-	optional<vec3>		movement;
+	vec3				movement = vec3(0.f);
 
-	if (not controlled_by_input)
-		return ;
-
-	if (input::is_pressed_or_held(GLFW_KEY_A))
-		movement = (vec3)camera::right * -1.f * player_settings::movement_speed;
-	else if (input::is_pressed_or_held(GLFW_KEY_D))
-		movement = (vec3)camera::right * +1.f * player_settings::movement_speed;
-
-	if (input::is_pressed_or_held(GLFW_KEY_Q))
-		movement = (vec3)camera::up * -1.f * player_settings::movement_speed;
-	else if (input::is_pressed_or_held(GLFW_KEY_E))
-		movement = (vec3)camera::up * +1.f * player_settings::movement_speed;
-
-	if (input::is_pressed_or_held(GLFW_KEY_W))
-		movement = (vec3)camera::front * +1.f * player_settings::movement_speed;
-	else if (input::is_pressed_or_held(GLFW_KEY_S))
-		movement = (vec3)camera::front * -1.f * player_settings::movement_speed;
-
-	if (input::is_pressed(GLFW_KEY_SPACE))
+	if (movement_mod == movement_mod::walk)
 	{
-		controlled_by_gravity = true;
-		controlled_by_input = false;
-		velocity = player_settings::jump_force;
+		if (input::is_pressed_or_held(GLFW_KEY_A))
+			movement += discard_y_and_normalize(camera::left) * player_settings::movement_speed;
+		else if (input::is_pressed_or_held(GLFW_KEY_D))
+			movement += discard_y_and_normalize(camera::right) * player_settings::movement_speed;
+
+		if (input::is_pressed_or_held(GLFW_KEY_W))
+			movement += discard_y_and_normalize(camera::front) * player_settings::movement_speed;
+		else if (input::is_pressed_or_held(GLFW_KEY_S))
+			movement += discard_y_and_normalize(camera::back) * player_settings::movement_speed;
 	}
-
-	if (movement)
+	else if (movement_mod == movement_mod::flight)
 	{
-		const vec3		position = (vec3)camera::position + *movement;
+		if (input::is_pressed_or_held(GLFW_KEY_A))
+			movement += (vec3)camera::left * player_settings::movement_speed;
+		else if (input::is_pressed_or_held(GLFW_KEY_D))
+			movement += (vec3)camera::right * player_settings::movement_speed;
+
+		if (input::is_pressed_or_held(GLFW_KEY_Q))
+			movement += (vec3)camera::down * player_settings::movement_speed;
+		else if (input::is_pressed_or_held(GLFW_KEY_E))
+			movement += (vec3)camera::up * player_settings::movement_speed;
+
+		if (input::is_pressed_or_held(GLFW_KEY_W))
+			movement += (vec3)camera::front * player_settings::movement_speed;
+		else if (input::is_pressed_or_held(GLFW_KEY_S))
+			movement += (vec3)camera::back * player_settings::movement_speed;
+	}
+	else
+		assert(0);
+
+	if (movement != vec3(0.f))
+	{
+		const vec3		position = (vec3)camera::position + movement;
 		const ::aabb	aabb = player::aabb(position);
 
 		if (not world::does_collide(aabb))
 			camera::position = position;
 	}
-}
 
-void 					player::process_interaction()
-{
+	if (input::is_pressed(GLFW_KEY_SPACE))
+		velocity = player_settings::jump_force;
+
 	if (input::is_pressed(GLFW_KEY_ENTER))
 	{
 		if (auto hit = camera::cast_ray(); hit)
@@ -95,7 +107,7 @@ void 					player::process_interaction()
 	}
 }
 
-void 					player::process_ray_casting()
+void 					player::process_selection()
 {
 	if (camera::have_changed or intentional_ray_cast)
 	{
@@ -110,10 +122,25 @@ void 					player::process_ray_casting()
 
 aabb					player::aabb(const vec3 &position) const
 {
-	return {position - player_settings::aabb_size / 2.f, position +  + player_settings::aabb_size / 2.f};
+	vec3				min = position;
+	vec3				max = position;
+
+	min.x -= player_settings::aabb_size.x / 2.f;
+	min.y -= player_settings::aabb_size.y;
+	min.z -= player_settings::aabb_size.z / 2.f;
+
+	max.x += player_settings::aabb_size.x / 2.f;
+	max.z += player_settings::aabb_size.z / 2.f;
+
+	return {min, max};
 }
 
 bool					player::does_collide_with_world(const vec3 &position) const
 {
 	return (world::does_collide(player::aabb(position)));
+}
+
+vec3					player::discard_y_and_normalize(const vec3 &original)
+{
+	return (glm::normalize(vec3(original.x, 0.f, original.z)));
 }

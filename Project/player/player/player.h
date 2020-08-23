@@ -12,20 +12,24 @@ private :
 
 	bool			intentional_ray_cast = false;
 
-	bool			controlled_by_input = true;
-	bool			controlled_by_gravity = false;
+	enum class		movement_mod
+	{
+		walk,
+		flight
+	}				movement_mod;
 
 	vec3			velocity = vec3(0.f);
 
 	void			update() override;
 
 	void 			process_physics();
-	void 			process_movement();
-	void 			process_interaction();
-	void 			process_ray_casting();
+	void 			process_input();
+	void 			process_selection();
 
 	aabb			aabb(const vec3 &position) const;
 	bool			does_collide_with_world(const vec3 &position) const;
+
+	static vec3		discard_y_and_normalize(const vec3 &original);
 };
 
 

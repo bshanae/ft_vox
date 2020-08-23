@@ -19,6 +19,15 @@
 	front = vec3(0.f, 0.f, -1.f);
 	up = up_const;
 	right = vec3(1.f, 0.f, 0.f);
+
+	back.getter = [this](){ return ((vec3)front * -1.f); };
+	back.prohibit_direct_access();
+
+	down.getter = [this](){ return ((vec3)up * -1.f); };
+	down.prohibit_direct_access();
+
+	left.getter = [this](){ return ((vec3)right * -1.f); };
+	left.prohibit_direct_access();
 }
 
 optional<camera::hit>	camera::cast_ray()

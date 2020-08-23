@@ -28,7 +28,13 @@ public :
 	static inline
 	property<read_only, vec3, camera>	front;
 	static inline
+	property<read_only, vec3, camera>	back;
+	static inline
 	property<read_only, vec3, camera>	up;
+	static inline
+	property<read_only, vec3, camera>	down;
+	static inline
+	property<read_only, vec3, camera>	left;
 	static inline
 	property<read_only, vec3, camera>	right;
 
