@@ -8,37 +8,39 @@
 #include "world/block/block_id.h"
 #include "player/camera/camera_settings.h"
 
-class						camera : public unique_object<camera>
+class									camera : public unique_object<camera>
 {
 public :
-							camera();
-							~camera() override = default;
+										camera();
+										~camera() override = default;
 
-							static inline
-							property<read_write, vec3, camera>
-							position;
+	static inline
+	property<read_write, vec3, camera>	position;
 
-							static inline
-							property<read_only, mat4, camera>
-							projection_matrix;
+	static inline
+	property<read_only, mat4, camera>	projection_matrix;
+	static inline
+	property<read_only, mat4, camera>	view_matrix;
 
-							static inline
-							property<read_only, mat4, camera>
-							view_matrix;
+	static inline
+	property<read_write, bool, camera>	have_changed;
 
-							static inline
-							property<read_write, bool, camera>
-							have_changed;
+	static inline
+	property<read_only, vec3, camera>	front;
+	static inline
+	property<read_only, vec3, camera>	up;
+	static inline
+	property<read_only, vec3, camera>	right;
 
-	struct					hit
+	struct								hit
 	{
-		block_id			block;
-		block::face			face;
+		block_id						block;
+		block::face						face;
 	};
 
-	static optional<hit>	cast_ray();
+	static optional<hit>				cast_ray();
 
-	enum class				move_request
+	enum class							move_request
 	{
 		left,
 		right,
@@ -48,24 +50,17 @@ public :
 		down
 	};
 
-	static vec3				peek_position(move_request request, float speed);
-	static void				move(move_request request, float speed);
-
 private :
 
-	const vec3				up_const = vec3(0.f, 1.f, 0.f);
+	const vec3							up_const = vec3(0.f, 1.f, 0.f);
 
-	vec3					front = vec3(0.f, 0.f, -1.f);
-	vec3					up = up_const;
-	vec3					right = vec3(1.f, 0.f, 0.f);
+	float								yaw = -90.f;
+	float								pitch = 0.f;
 
-	float					yaw = -90.f;
-	float					pitch = 0.f;
+	void								update() override;
 
-	void					update() override;
+	void								recalculate();
 
-	void					recalculate();
-
-	vec3					move_position(move_request request, float speed);
-	static float			intbound(float s, float ds);
+	vec3								move_position(move_request request, float speed);
+	static float						intbound(float s, float ds);
 };

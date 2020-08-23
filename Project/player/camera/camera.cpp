@@ -10,13 +10,15 @@
 	object_template::layout = "system";
 	object_template::should_be_rendered = false;
 
-	position.setter = [this](const vec3 &value)
-	{
+	position.setter = [this](const vec3 &value){
 		position.value = value;
 		recalculate();
 	};
-
 	position = camera_settings::initial_position;
+
+	front = vec3(0.f, 0.f, -1.f);
+	up = up_const;
+	right = vec3(1.f, 0.f, 0.f);
 }
 
 optional<camera::hit>	camera::cast_ray()
@@ -25,9 +27,9 @@ optional<camera::hit>	camera::cast_ray()
 	float				y = floor(position->y);
 	float				z = floor(position->z);
 
-	float 				delta_x = instance()->front.x;
-	float 				delta_y = instance()->front.y;
-	float 				delta_z = instance()->front.z;
+	float 				delta_x = instance()->front->x;
+	float 				delta_y = instance()->front->y;
+	float 				delta_z = instance()->front->z;
 
 	sign				step_x = delta_x >= 0 ? sign::plus : sign::minus;
 	sign				step_y = delta_y >= 0 ? sign::plus : sign::minus;
@@ -106,45 +108,6 @@ void					camera::update()
 		recalculate();
 }
 
-vec3					camera::peek_position(move_request request, float speed)
-{
-	return (instance()->move_position(request, speed));
-}
-
-void					camera::move(move_request request, float speed)
-{
-	auto				instance = camera::instance();
-
-	instance->position = instance->move_position(request, speed);
-	instance->recalculate();
-	have_changed = true;
-}
-
-vec3					camera::move_position(move_request request, float speed)
-{
-	switch (request)
-	{
-		case (move_request::left) :
-			return ((vec3)position - speed * right);
-
-		case (move_request::right) :
-			return ((vec3)position + speed * right);
-
-		case (move_request::forward) :
-			return ((vec3)position + speed * front);
-
-		case (move_request::back) :
-			return ((vec3)position - speed * front);
-
-		case (move_request::up) :
-			return ((vec3)position + speed * up);
-
-		case (move_request::down) :
-			return ((vec3)position - speed * up);
-
-	}
-}
-
 void					camera::recalculate()
 {
 	vec3				local_front;
@@ -158,10 +121,10 @@ void					camera::recalculate()
 	local_front.y = sin(radians(pitch));
 	local_front.z = sin(radians(yaw)) * cos(radians(pitch));
 	front = normalize(local_front);
-	right = normalize(cross(front, up_const));
-	up = normalize(cross(right, front));
+	right = normalize(cross((vec3)front, (vec3)up_const));
+	up = normalize(cross((vec3)right, (vec3)front));
 
-	view_matrix = lookAt((vec3)position, (vec3)position + front, up);
+	view_matrix = lookAt((vec3)position, (vec3)position + (vec3)front, (vec3)up);
 	projection_matrix = perspective(
 		radians(camera_settings::fov),
 		(float)window::size.x / (float)window::size.y,

@@ -5,50 +5,80 @@
 #include "player/camera/camera.h"
 #include "player/player/player_settings.h"
 
-									player::player()
+						player::player()
 {
 	layout = "system";
 	should_be_rendered = false;
 }
 
-void								player::update()
+void					player::update()
 {
+	process_physics();
 	process_movement();
 	process_interaction();
 	process_ray_casting();
 }
 
-void 								player::process_movement()
+void 					player::process_physics()
 {
-	optional<camera::move_request>	request;
+	if (not controlled_by_gravity)
+		return ;
+
+	vec3				position;
+
+	velocity += player_settings::gravity_force;
+	position = (vec3)camera::position + velocity;
+
+	if (does_collide_with_world(position))
+	{
+		controlled_by_gravity = false;
+		controlled_by_input = true;
+		velocity = vec3();
+	}
+	else
+		camera::position = position;
+}
+
+void 					player::process_movement()
+{
+	optional<vec3>		movement;
+
+	if (not controlled_by_input)
+		return ;
 
 	if (input::is_pressed_or_held(GLFW_KEY_A))
-		request = camera::move_request::left;
+		movement = (vec3)camera::right * -1.f * player_settings::movement_speed;
 	else if (input::is_pressed_or_held(GLFW_KEY_D))
-		request = camera::move_request::right;
-//						Axis y
+		movement = (vec3)camera::right * +1.f * player_settings::movement_speed;
+
 	if (input::is_pressed_or_held(GLFW_KEY_Q))
-		request = camera::move_request::down;
+		movement = (vec3)camera::up * -1.f * player_settings::movement_speed;
 	else if (input::is_pressed_or_held(GLFW_KEY_E))
-		request = camera::move_request::up;
+		movement = (vec3)camera::up * +1.f * player_settings::movement_speed;
 
-//						Axis Z
 	if (input::is_pressed_or_held(GLFW_KEY_W))
-		request = camera::move_request::forward;
+		movement = (vec3)camera::front * +1.f * player_settings::movement_speed;
 	else if (input::is_pressed_or_held(GLFW_KEY_S))
-		request = camera::move_request::back;
+		movement = (vec3)camera::front * -1.f * player_settings::movement_speed;
 
-	if (request)
+	if (input::is_pressed(GLFW_KEY_SPACE))
 	{
-		const vec3					future_position = camera::peek_position(*request, player_settings::movement_speed);
-		const ::aabb				aabb = player::aabb(future_position);
+		controlled_by_gravity = true;
+		controlled_by_input = false;
+		velocity = player_settings::jump_force;
+	}
+
+	if (movement)
+	{
+		const vec3		position = (vec3)camera::position + *movement;
+		const ::aabb	aabb = player::aabb(position);
 
 		if (not world::does_collide(aabb))
-			camera::move(*request, player_settings::movement_speed);
+			camera::position = position;
 	}
 }
 
-void 								player::process_interaction()
+void 					player::process_interaction()
 {
 	if (input::is_pressed(GLFW_KEY_ENTER))
 	{
@@ -60,25 +90,30 @@ void 								player::process_interaction()
 			assert(neighbor);
 			world::insert_block(*neighbor, block::type::dirt_with_grass);
 
-			force_ray_cast = true;
+			intentional_ray_cast = true;
 		}
 	}
 }
 
-void 								player::process_ray_casting()
+void 					player::process_ray_casting()
 {
-	if (camera::have_changed or force_ray_cast)
+	if (camera::have_changed or intentional_ray_cast)
 	{
 		if (auto hit = camera::cast_ray(); hit)
 			world::select_block(hit->block, hit->face);
 		else
 			world::unselect_block();
 
-		force_ray_cast = false;
+		intentional_ray_cast = false;
 	}
 }
 
-aabb								player::aabb(const vec3 &position) const
+aabb					player::aabb(const vec3 &position) const
 {
 	return {position - player_settings::aabb_size / 2.f, position +  + player_settings::aabb_size / 2.f};
+}
+
+bool					player::does_collide_with_world(const vec3 &position) const
+{
+	return (world::does_collide(player::aabb(position)));
 }
