@@ -77,6 +77,27 @@ void					world::unselect_block()
 	block_selector::instance()->deactivate();
 }
 
+bool					world::does_collide(const aabb &aabb)
+{
+	vec3 				min = glm::floor(aabb.min);
+	vec3 				max = glm::floor(aabb.max);
+
+	optional<block_id>	block_iterator;
+
+	for (int x = (int)min.x; x <= (int)max.x; x++)
+		for (int y = (int)min.y; y <= (int)max.y; y++)
+			for (int z = (int)min.z; z <= (int)max.z; z++)
+			{
+				block_iterator = find_block(vec3(x, y, z));
+
+				assert(block_iterator);
+				if ((*block_iterator)().is_solid() and aabb::do_collide(aabb, block_iterator->aabb()))
+					return (true);
+			}
+
+	return (false);
+}
+
 shared_ptr<chunk>		world::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
 {
 	vec3				neighbor_position = main->position;

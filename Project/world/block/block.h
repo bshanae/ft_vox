@@ -33,13 +33,18 @@ public :
 
 	explicit					block(enum type type = type::air) : type(type) {}
 
-	[[nodiscard]] bool			is_empty() const;
-	[[nodiscard]] bool			is_opaque() const;
-	[[nodiscard]] bool			is_transparent() const;
-	[[nodiscard]] bool			is_partially_transparent() const;
-	[[nodiscard]] bool			is_transparent_or_partially_transparent() const;
-	[[nodiscard]] bool			is_diagonal() const;
-	[[nodiscard]] bool			does_transmit_light() const;
+	bool						is_empty() const;
+
+	bool						is_opaque() const;
+	bool						is_transparent() const;
+	bool						is_partially_transparent() const;
+	bool						is_transparent_or_partially_transparent() const;
+
+	bool						is_diagonal() const;
+
+	bool						does_transmit_light() const;
+
+	bool						is_solid() const;
 
 	type						type;
 	char						light_level = 0;

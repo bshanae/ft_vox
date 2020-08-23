@@ -21,27 +21,27 @@ public :
 	};
 										input();
 
-	[[nodiscard]] static bool			is_pressed(int key)
+	static bool							is_pressed(int key)
 	{
 		return (instance()->keys[key] == key_state::pressed);
 	}
 
-	[[nodiscard]] static bool			is_released(int key)
+	static bool							is_released(int key)
 	{
 		return (instance()->keys[key] == key_state::released);
 	}
 
-	[[nodiscard]] static bool			is_held(int key)
+	static bool							is_held(int key)
 	{
 		return (instance()->keys[key] == key_state::held);
 	}
 
-	[[nodiscard]] static bool			is_pressed_or_held(int key)
+	static bool							is_pressed_or_held(int key)
 	{
 		return (instance()->keys[key] == key_state::pressed or instance()->keys[key] == key_state::held);
 	}
 
-	[[nodiscard]] static bool			have_mouse_moved()
+	static bool							have_mouse_moved()
 	{
 		return (mouse_offset->x != 0 or mouse_offset->y != 0);
 	}

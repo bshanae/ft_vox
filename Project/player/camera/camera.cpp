@@ -106,43 +106,43 @@ void					camera::update()
 		recalculate();
 }
 
-void					camera::move(move_request request, float speed)
+vec3					camera::peek_position(move_request request, float speed)
 {
-	instance()->move_non_static(request, speed);
+	return (instance()->move_position(request, speed));
 }
 
-void					camera::move_non_static(move_request request, float speed)
+void					camera::move(move_request request, float speed)
+{
+	auto				instance = camera::instance();
+
+	instance->position = instance->move_position(request, speed);
+	instance->recalculate();
+	have_changed = true;
+}
+
+vec3					camera::move_position(move_request request, float speed)
 {
 	switch (request)
 	{
 		case (move_request::left) :
-			position = (vec3)position - speed * right;
-			break ;
+			return ((vec3)position - speed * right);
 
 		case (move_request::right) :
-			position = (vec3)position + speed * right;
-			break ;
+			return ((vec3)position + speed * right);
 
 		case (move_request::forward) :
-			position = (vec3)position + speed * front;
-			break ;
+			return ((vec3)position + speed * front);
 
 		case (move_request::back) :
-			position = (vec3)position - speed * front;
-			break ;
+			return ((vec3)position - speed * front);
 
 		case (move_request::up) :
-			position = (vec3)position + speed * up;
-			break ;
+			return ((vec3)position + speed * up);
 
 		case (move_request::down) :
-			position = (vec3)position - speed * up;
-			break ;
+			return ((vec3)position - speed * up);
 
 	}
-
-	have_changed = true;
-	recalculate();
 }
 
 void					camera::recalculate()

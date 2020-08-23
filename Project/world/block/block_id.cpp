@@ -34,6 +34,19 @@ vec3					block_id::world_position() const
 	return ((vec3)chunk->position + (vec3)index);
 }
 
+aabb					block_id::aabb() const
+{
+	static const vec3	epsilon = vec3(0.08f);
+
+	vec3				min = world_position();
+	vec3				max = world_position() + vec3(1.f);
+
+	min -= epsilon;
+	max += epsilon;
+
+	return {min, max};
+}
+
 						block_id::block_id(const shared_ptr<::chunk> &chunk, const chunk::index &index)
 {
 	this->chunk = chunk;

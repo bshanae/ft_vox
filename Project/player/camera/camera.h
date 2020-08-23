@@ -48,6 +48,7 @@ public :
 		down
 	};
 
+	static vec3				peek_position(move_request request, float speed);
 	static void				move(move_request request, float speed);
 
 private :
@@ -65,6 +66,6 @@ private :
 
 	void					recalculate();
 
-	void					move_non_static(move_request request, float speed);
+	vec3					move_position(move_request request, float speed);
 	static float			intbound(float s, float ds);
 };

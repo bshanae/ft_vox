@@ -10,7 +10,6 @@ public :
 								chunk_generator() = default;
 	virtual						~chunk_generator() = default;
 
-	[[nodiscard]]
 	static shared_ptr<chunk>	generate(const vec3 &position)
 	{
 		assert(pointer != nullptr and "Can't generate chunk");
@@ -23,6 +22,5 @@ protected :
 	inline
 	shared_ptr<chunk_generator>	pointer;
 
-	[[nodiscard]]
 	virtual shared_ptr<chunk>	generate_implementation(const vec3 &position) = 0;
 };

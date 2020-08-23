@@ -76,6 +76,11 @@ bool				block::does_transmit_light() const
 	return (is_empty() or is_transparent() or is_partially_transparent());
 }
 
+bool				block::is_solid() const
+{
+	return (is_opaque());
+}
+
 ostream				&operator << (ostream &stream, enum block::type type)
 {
 	switch (type)

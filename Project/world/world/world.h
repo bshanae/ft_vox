@@ -23,6 +23,8 @@ public :
 	static void					select_block(const block_id &id, block::face face);
 	static void 				unselect_block();
 
+	static bool					does_collide(const aabb &aabb);
+
 private :
 
 // ----------------------------	Types

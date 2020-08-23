@@ -1,6 +1,7 @@
 #pragma once
 
 #include "world/chunk/chunk_settings.h"
+#include "world/aabb/aabb.h"
 
 class					chunk;
 
@@ -10,13 +11,12 @@ struct					block_id
 	friend class		chunk;
 	friend class		world;
 
-	[[nodiscard]]
 	block				&operator () () const;
 
-	[[nodiscard]]
 	optional<block_id>	neighbor(axis axis, sign sign) const;
 
-	[[nodiscard]] vec3	world_position() const;
+	vec3				world_position() const;
+	aabb				aabb() const;
 
 private :
 

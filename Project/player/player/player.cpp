@@ -5,39 +5,50 @@
 #include "player/camera/camera.h"
 #include "player/player/player_settings.h"
 
-							player::player()
+									player::player()
 {
 	layout = "system";
 	should_be_rendered = false;
 }
 
-void						player::update()
+void								player::update()
 {
 	process_movement();
 	process_interaction();
 	process_ray_casting();
 }
 
-void 						player::process_movement()
+void 								player::process_movement()
 {
+	optional<camera::move_request>	request;
+
 	if (input::is_pressed_or_held(GLFW_KEY_A))
-		camera::move(camera::move_request::left, player_settings::movement_speed);
+		request = camera::move_request::left;
 	else if (input::is_pressed_or_held(GLFW_KEY_D))
-		camera::move(camera::move_request::right, player_settings::movement_speed);
+		request = camera::move_request::right;
 //						Axis y
 	if (input::is_pressed_or_held(GLFW_KEY_Q))
-		camera::move(camera::move_request::down, player_settings::movement_speed);
+		request = camera::move_request::down;
 	else if (input::is_pressed_or_held(GLFW_KEY_E))
-		camera::move(camera::move_request::up, player_settings::movement_speed);
+		request = camera::move_request::up;
 
 //						Axis Z
 	if (input::is_pressed_or_held(GLFW_KEY_W))
-		camera::move(camera::move_request::forward, player_settings::movement_speed);
+		request = camera::move_request::forward;
 	else if (input::is_pressed_or_held(GLFW_KEY_S))
-		camera::move(camera::move_request::back, player_settings::movement_speed);
+		request = camera::move_request::back;
+
+	if (request)
+	{
+		const vec3					future_position = camera::peek_position(*request, player_settings::movement_speed);
+		const ::aabb				aabb = player::aabb(future_position);
+
+		if (not world::does_collide(aabb))
+			camera::move(*request, player_settings::movement_speed);
+	}
 }
 
-void 						player::process_interaction()
+void 								player::process_interaction()
 {
 	if (input::is_pressed(GLFW_KEY_ENTER))
 	{
@@ -54,7 +65,7 @@ void 						player::process_interaction()
 	}
 }
 
-void 						player::process_ray_casting()
+void 								player::process_ray_casting()
 {
 	if (camera::have_changed or force_ray_cast)
 	{
@@ -65,4 +76,9 @@ void 						player::process_ray_casting()
 
 		force_ray_cast = false;
 	}
+}
+
+aabb								player::aabb(const vec3 &position) const
+{
+	return {position - player_settings::aabb_size / 2.f, position +  + player_settings::aabb_size / 2.f};
 }
