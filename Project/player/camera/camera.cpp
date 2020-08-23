@@ -1,8 +1,8 @@
 #include "camera.h"
 
 #include "common/debug.h"
-#include "core/window/window.h"
-#include "core/input/input.h"
+#include "engine/window/window.h"
+#include "engine/input/input.h"
 #include "world/world/world.h"
 
 						camera::camera()
@@ -97,9 +97,6 @@ optional<camera::hit>	camera::cast_ray()
 
 void					camera::update()
 {
-	if (world::performing_initial_procedure)
-		return ;
-
 	have_changed = input::have_mouse_moved();
 
 	yaw += input::mouse_offset->x * camera_settings::rotation_speed;

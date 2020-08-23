@@ -36,6 +36,7 @@ using 				std::static_pointer_cast;
 using 				std::dynamic_pointer_cast;
 using 				std::enable_shared_from_this;
 using 				std::addressof;
+using 				std::ref;
 
 // ---------------- IO
 
@@ -55,6 +56,30 @@ using				std::ifstream;
 using				std::ofstream;
 using				std::stringstream;
 using				std::ios;
+
+// ---------------- Asynchronous
+
+#include <shared_mutex>
+#include <future>
+
+using				std::mutex;
+using				std::shared_mutex;
+using				std::shared_lock;
+using				std::unique_lock;
+
+using				std::async;
+using				std::launch;
+using				std::future;
+using				std::future_status;
+using				std::promise;
+
+namespace			this_thread = std::this_thread;
+
+// ---------------- Time
+
+#include <chrono>
+
+namespace			chrono = std::chrono;
 
 // ---------------- Other classes
 

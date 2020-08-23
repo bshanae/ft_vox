@@ -3,7 +3,7 @@
 #include "common/OpenGL.h"
 #include "common/aliases.h"
 #include "common/global.h"
-#include "core/object/object_template.h"
+#include "engine/object/object_template.h"
 
 template 							<typename final_type>
 class								unique_object : public object_template<final_type>

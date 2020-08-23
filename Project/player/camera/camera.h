@@ -4,7 +4,7 @@
 #include "common/aliases.h"
 #include "common/global.h"
 #include "common/property.h"
-#include "core/object/unique_object.h"
+#include "engine/object/unique_object.h"
 #include "world/block/block_id.h"
 #include "player/camera/camera_settings.h"
 

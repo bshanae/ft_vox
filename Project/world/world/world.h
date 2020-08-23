@@ -1,7 +1,8 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "core/object/unique_object.h"
+#include "engine/object/unique_object.h"
+#include "engine/time/timer.h"
 #include "world/block/block_id.h"
 #include "world/chunk/chunk.h"
 #include "world/world/world_settings.h"
@@ -9,8 +10,6 @@
 class							world : public unique_object<world>
 {
 	friend class 				block_id;
-
-	using						bool_property = property<read_only, bool, world>;
 
 public :
 								world();
@@ -24,9 +23,9 @@ public :
 	static void					select_block(const block_id &id, block::face face);
 	static void 				unselect_block();
 
-	static inline bool_property	performing_initial_procedure;
-
 private :
+
+// ----------------------------	Types
 
 	struct						vec3_hasher
 	{
@@ -49,10 +48,12 @@ private :
 	chunks_type					new_chunks;
 	vector<shared_ptr<chunk>>	old_chunks;
 
-	queue<shared_ptr<chunk>>	chunks_with_postponed_build;
-
 	using						sorted_chunks_type = multimap<float, shared_ptr<chunk>>;
 	sorted_chunks_type			sorted_chunks;
+
+	shared_mutex				map_mutex;
+
+	timer						update_timer;
 
 // ----------------------------	Chunks
 
@@ -76,23 +77,10 @@ private :
 	void						update() override;
 	void						render() override;
 
-// ----------------------------	Initial procedure
-
-	struct						initial_procedure_context
-	{
-		bool					first_call = true;
-		bool					working = false;
-
-		float					current_visibility = 5.f;
-		float 					target_visibility = 0.f;
-	}							initial_procedure_context;
-
-	void						initial_procedure();
-
 // ----------------------------	Additional methods
 
-	void						create_chunk_if_needed(const vec3 &position);
-	void						destroy_chunk_if_needed(const shared_ptr<chunk> &chunk);
+	bool						create_chunk_if_needed(const vec3 &position);
+	bool						destroy_chunk_if_needed(const shared_ptr<chunk> &chunk);
 
 	void						create_chunk(const vec3 &position);
 	void						destroy_chunk(const shared_ptr<chunk> &chunk);

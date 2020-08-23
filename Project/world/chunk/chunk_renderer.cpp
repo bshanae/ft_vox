@@ -1,6 +1,6 @@
 #include "chunk_renderer.h"
 
-#include "core/core/core_settings.h"
+#include "engine/core/core_settings.h"
 #include "world/common/model.h"
 #include "world/chunk/chunk.h"
 #include "world/world/world_settings.h"
@@ -23,6 +23,7 @@
 
 	program->bind(true);
 	uniform_background.upload(core_settings::background);
+	uniform_fog_density.upload(1.f / (world_settings::visibility_limit - chunk_settings::size[0] * 1.5f));
 	uniform_fog_gradient.upload(15.f);
 	program->bind(false);
 }
@@ -61,7 +62,6 @@ void					chunk_renderer::render(const shared_ptr<chunk> &chunk, chunk::batch_pur
 	instance->uniform_projection.upload(camera::projection_matrix);
 	instance->uniform_view.upload(camera::view_matrix);
 	instance->uniform_alpha_discard_floor.upload(alpha_discard_floor);
-	instance->uniform_fog_density.upload(1.f / (world_settings::visibility_limit * 0.95f));
 
 	model->bind(true);
 	instance->uniform_transformation.upload(model->transformation);

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/core/core.h"
-#include "core/object/object.h"
+#include "engine/core/core.h"
+#include "engine/object/object.h"
 
 template					<typename final_type>
 class						object_template : public object

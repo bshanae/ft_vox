@@ -3,7 +3,7 @@
 #include "common/aliases.h"
 #include "world/chunk/chunk_loader.h"
 #include "world/loader/file.h"
-#include "core/object/unique_object.h"
+#include "engine/object/unique_object.h"
 
 /*
  *	Performs IO for .vox files

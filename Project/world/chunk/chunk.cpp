@@ -152,8 +152,14 @@ static vector<GLuint>	indices =
 	at(2, 2 , 0).type = block::type::blue_flower;
 }
 
+// -------------------- Build functions
+
+std::thread::id			main_thread;
+
 void					chunk::build(build_request request)
 {
+	main_thread = this_thread::get_id();
+
 	switch (request)
 	{
 		case (build_request::reset) :
@@ -161,13 +167,44 @@ void					chunk::build(build_request request)
 			break ;
 
 		case (build_request::light) :
-			assert(build_phase == build_phase::nothing_done and "Unexpected build phase");
-			calculate_light();
-			build_phase = build_phase::light_done;
+			if (build_phase == build_phase::nothing_done)
+			{
+				build_phase = build_phase::light_in_process;
+				light_build_status = async(launch::async, &chunk::build_light, this);
+			}
+			if (build_phase == build_phase::light_in_process)
+			{
+				if (light_build_status.wait_for(chrono::seconds(0)) == future_status::ready)
+					build_phase = build_phase::light_done;
+			}
+			else
+				assert(0);
+			break ;
+
+		case (build_request::geometry) :
+			if (build_phase == build_phase::light_done)
+			{
+				build_phase = build_phase::geometry_in_process;
+
+				workspace_for_opaque.geometry_build_status = async(launch::async, &chunk::build_geometry, this, ref(workspace_for_opaque));
+				workspace_for_transparent.geometry_build_status = async(launch::async, &chunk::build_geometry, this, ref(workspace_for_transparent));
+				workspace_for_partially_transparent.geometry_build_status = async(launch::async, &chunk::build_geometry, this, ref(workspace_for_partially_transparent));
+			}
+			else if (build_phase == build_phase::geometry_in_process)
+			{
+				bool is_opaque_ready = workspace_for_opaque.geometry_build_status.wait_for(chrono::seconds(0)) == future_status::ready;
+				bool is_transparent_ready = workspace_for_transparent.geometry_build_status.wait_for(chrono::seconds(0)) == future_status::ready;
+				bool is_partially_transparent_ready = workspace_for_partially_transparent.geometry_build_status.wait_for(chrono::seconds(0)) == future_status::ready;
+
+				if (is_opaque_ready and is_transparent_ready and is_partially_transparent_ready)
+					build_phase = build_phase::geometry_done;
+			}
+			else
+				assert(0);
 			break ;
 
 		case (build_request::model) :
-			assert(build_phase == build_phase::light_done and "Unexpected build phase");
+			assert(build_phase == build_phase::geometry_done and "Unexpected build phase");
 			build_model(workspace_for_opaque);
 			build_model(workspace_for_transparent);
 			build_model(workspace_for_partially_transparent);
@@ -176,8 +213,11 @@ void					chunk::build(build_request request)
 	}
 }
 
-void					chunk::calculate_light()
+void					chunk::build_light()
 {
+	if (this_thread::get_id() == main_thread)
+		cerr << "Hi!" << endl;
+
 	queue<index>		queue;
 
 	chunk::index		index;
@@ -207,6 +247,36 @@ void					chunk::calculate_light()
 		}
 	}
 }
+
+void					chunk::build_geometry(batch_workspace &workspace)
+{
+	workspace.vertices.clear();
+	workspace.texture_coordinates.clear();
+	workspace.light_levels.clear();
+	workspace.indices.clear();
+
+	for (auto &iterator : *this)
+		if (workspace.predicate(iterator->value()))
+			build_block(workspace, iterator.index());
+}
+
+void					chunk::build_model(batch_workspace &workspace)
+{
+	workspace.model = make_shared<model>();
+
+//	vec3(0.5f) is block offset, so first block is on vec3(0, 0, 0)
+	workspace.model->translation = (vec3)position + vec3(0.5f);
+	workspace.model->bind(true);
+
+	workspace.model->add_vbo(3, workspace.vertices);
+	workspace.model->add_vbo(2, workspace.texture_coordinates);
+	workspace.model->add_vbo(1, workspace.light_levels);
+	workspace.model->add_ebo(workspace.indices);
+
+	workspace.model->bind(false);
+}
+
+// -------------------- Build helpers
 
 float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 {
@@ -268,31 +338,6 @@ char					chunk::apply_ao(char light_level, float ao)
 	return (static_part + ao_result);
 }
 
-void					chunk::build_model(batch_workspace &workspace)
-{
-	workspace.vertices.clear();
-	workspace.texture_coordinates.clear();
-	workspace.light_levels.clear();
-	workspace.indices.clear();
-
-	for (auto &iterator : *this)
-		if (workspace.predicate(iterator->value()))
-			build_block(workspace, iterator.index());
-
-	workspace.model = make_shared<model>();
-
-//	vec3(0.5f) is block offset, so first block is on vec3(0, 0, 0)
-	workspace.model->translation = (vec3)position + vec3(0.5f);
-	workspace.model->bind(true);
-
-	workspace.model->add_vbo(3, workspace.vertices);
-	workspace.model->add_vbo(2, workspace.texture_coordinates);
-	workspace.model->add_vbo(1, workspace.light_levels);
-	workspace.model->add_ebo(workspace.indices);
-
-	workspace.model->bind(false);
-}
-
 void					chunk::build_block(batch_workspace &workspace, const index &index)
 {
 	auto 				try_build_quad = [this, &workspace, index](axis axis, sign sign)
@@ -331,7 +376,7 @@ void					chunk::build_block(batch_workspace &workspace, const index &index)
 	}
 	else
 	{
-		for (int axis = (int) axis::x; axis <= (int) axis::z; axis++)
+		for (int axis = (int)axis::x; axis <= (int)axis::z; axis++)
 		{
 			try_build_quad((::axis)axis, sign::minus);
 			try_build_quad((::axis)axis, sign::plus);

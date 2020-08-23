@@ -1,9 +1,9 @@
 #include "core.h"
 
-#include "core/core/core_settings.h"
-#include "core/window/window.h"
-#include "core/input/input.h"
-#include "core/time/timer.h"
+#include "engine/core/core_settings.h"
+#include "engine/window/window.h"
+#include "engine/input/input.h"
+#include "engine/time/timer.h"
 
 				core::core()
 {

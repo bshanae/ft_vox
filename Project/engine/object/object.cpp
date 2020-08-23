@@ -1,6 +1,6 @@
 #include "object.h"
 
-#include "core/core/core.h"
+#include "engine/core/core.h"
 
 void				object::connect_to_core()
 {

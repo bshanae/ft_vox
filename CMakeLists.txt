@@ -17,10 +17,10 @@ set(SOURCE_FILES
 
 	Project/common/debug.cpp
 
-	Project/core/core/core.cpp
-    Project/core/window/window.cpp
-	Project/core/object/object.cpp
-	Project/core/input/input.cpp
+	Project/engine/core/core.cpp
+    Project/engine/window/window.cpp
+	Project/engine/object/object.cpp
+	Project/engine/input/input.cpp
 
 	Project/world/common/model.cpp
 	Project/world/block/texture_atlas.cpp

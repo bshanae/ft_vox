@@ -1,6 +1,6 @@
 #include "player.h"
 
-#include "core/input/input.h"
+#include "engine/input/input.h"
 #include "world/world/world.h"
 #include "player/camera/camera.h"
 #include "player/player/player_settings.h"
@@ -13,9 +13,6 @@
 
 void						player::update()
 {
-	if (world::performing_initial_procedure)
-		return ;
-
 	process_movement();
 	process_interaction();
 	process_ray_casting();

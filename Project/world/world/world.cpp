@@ -1,6 +1,6 @@
 #include "world.h"
 
-#include "core/time/timestamp.h"
+#include "engine/time/timestamp.h"
 #include "world/block/block_selector.h"
 #include "world/chunk/chunk_loader.h"
 #include "world/chunk/chunk_generator.h"
@@ -15,10 +15,7 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 						world::world()
 {
 	object_template::layout = "first";
-
-	performing_initial_procedure.getter = [this](){ return (initial_procedure_context.working); };
-	performing_initial_procedure.prohibit_direct_access();
-	initial_procedure();
+	update_timer = timer(world_settings::chunk_generation_time_limit);
 }
 
 optional<block_id>		world::find_block(const vec3 &position)
@@ -47,9 +44,6 @@ optional<block_id>		world::find_block(const vec3 &position)
 	index.x = position.x - chunk_position.x;
 	index.y = position.y - chunk_position.y;
 	index.z = position.z - chunk_position.z;
-
-	auto chunk_ = find_chunk(chunk_position);
-	auto index_ = (bool)index;
 
 	if (chunk = find_chunk(chunk_position); not chunk or not index)
 		return {};
@@ -98,14 +92,13 @@ shared_ptr<chunk>		world::find_neighbor_chunk(const shared_ptr<chunk> &main, axi
 	else
 		return (nullptr);
 
-	if (auto iterator = instance()->chunks.find(neighbor_position); iterator != instance()->chunks.end())
-		return (iterator->second);
-	else
-		return (nullptr);
+	return (find_chunk(neighbor_position));
 }
 
 shared_ptr<chunk>		world::find_chunk(const vec3 &position)
 {
+	shared_lock			lock(instance()->map_mutex);
+
 	auto				iterator = instance()->chunks.find(position);
 
 	if (iterator != instance()->chunks.end())
@@ -156,61 +149,33 @@ void					world::deinitialize_implementation()
 
 void					world::update()
 {
-	auto 				try_build_chunk_if_needed = [this](const shared_ptr<chunk> &chunk)
-	{
-		if (chunk->build_phase != chunk::build_phase::model_done)
-			try_build_chunk(chunk);
-	};
-
-	timestamp			start_timestamp;
-	bool				should_postpone_build = false;
-
-	auto				update_postpone_tasking = [start_timestamp, &should_postpone_build]()
-	{
-		if (timestamp() - start_timestamp > world_settings::chunk_generation_time_limit)
-			should_postpone_build = true;
-	};
+	update_timer();
 
 	pivot.x = camera::position->x;
 	pivot.z = camera::position->z;
 
-	while (not chunks_with_postponed_build.empty())
-	{
-		auto			chunk = chunks_with_postponed_build.front();
-
-		chunks_with_postponed_build.pop();
-		try_build_chunk_if_needed(chunk);
-
-		update_postpone_tasking();
-		if (should_postpone_build)
-			break ;
-	}
+	for (auto [position, chunk] : chunks)
+		if (update_timer.state == timer::state::finished)
+			break;
+		else if (chunk->build_phase != chunk::build_phase::model_done)
+			try_build_chunk(chunk);
 
 	for (auto [position, chunk] : chunks)
 	{
-		create_chunk_if_needed(position + left);
-		create_chunk_if_needed(position + right);
-		create_chunk_if_needed(position + forward);
-		create_chunk_if_needed(position + back);
-
-		destroy_chunk_if_needed(chunk);
-
-		if (not should_postpone_build)
-		{
-			update_postpone_tasking();
-			try_build_chunk_if_needed(chunk);
-		}
-		else
-			chunks_with_postponed_build.push(chunk);
-
-		if (chunk->build_phase == chunk::build_phase::model_done)
-			initial_procedure_context.current_visibility = max(initial_procedure_context.current_visibility, distance(chunk));
-
 		chunk->is_visible = distance(chunk) < world_settings::visibility_limit;
+
+		if (update_timer.state == timer::state::running)
+		{
+			create_chunk_if_needed(position + left);
+			create_chunk_if_needed(position + right);
+			create_chunk_if_needed(position + forward);
+			create_chunk_if_needed(position + back);
+
+			destroy_chunk_if_needed(chunk);
+		}
 	}
 
-	if (initial_procedure_context.working)
-		initial_procedure();
+	unique_lock			lock(map_mutex);
 
 	for (auto [position, chunk] : new_chunks)
 		chunks[position] = chunk;
@@ -219,6 +184,8 @@ void					world::update()
 	for (auto &chunk : old_chunks)
 		chunks.erase(chunk->position);
 	old_chunks.clear();
+
+	lock.unlock();
 }
 
 void					world::render()
@@ -238,50 +205,30 @@ void					world::render()
 	sorted_chunks.clear();
 }
 
-// -------------------- Initial procedure
-
-void					world::initial_procedure()
-{
-	if (initial_procedure_context.first_call)
-	{
-		initial_procedure_context.first_call = false;
-		initial_procedure_context.working = true;
-		initial_procedure_context.target_visibility = world_settings::visibility_limit;
-		world_settings::visibility_limit = initial_procedure_context.current_visibility;
-	}
-	else
-	{
-		assert(initial_procedure_context.working);
-
-		if (initial_procedure_context.current_visibility > world_settings::visibility_limit)
-			world_settings::visibility_limit = initial_procedure_context.current_visibility;
-		if (world_settings::visibility_limit >= initial_procedure_context.target_visibility)
-		{
-			initial_procedure_context.working = false;
-			world_settings::visibility_limit = initial_procedure_context.target_visibility;
-		}
-	}
-}
-
 // -------------------- Additional methods
 
-void					world::create_chunk_if_needed(const vec3 &position)
+bool					world::create_chunk_if_needed(const vec3 &position)
 {
 	if (distance(position) >= world_settings::cashing_limit)
-		return ;
+		return (false);
 	if (find_chunk(position) != nullptr)
-		return ;
+		return (false);
 	if (find_new_chunk(position) != nullptr)
-		return ;
+		return (false);
 
-	find_chunk(position);
 	create_chunk(position);
+	return (true);
 }
 
-void					world::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
+bool					world::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 {
 	if (distance(chunk) >= world_settings::cashing_limit)
+	{
 		destroy_chunk(chunk);
+		return (true);
+	}
+
+	return (false);
 }
 
 void					world::create_chunk(const vec3 &position)
@@ -310,10 +257,16 @@ void 					world::try_build_chunk(const shared_ptr<chunk> &chunk)
 	switch (chunk->build_phase)
 	{
 		case (chunk::build_phase::nothing_done) :
+		case (chunk::build_phase::light_in_process) :
 			chunk->build(chunk::build_request::light);
 			break ;
 
 		case (chunk::build_phase::light_done) :
+		case (chunk::build_phase::geometry_in_process) :
+			chunk->build(chunk::build_request::geometry);
+			break ;
+
+		case (chunk::build_phase::geometry_done) :
 			if (find_chunk(*chunk->position + left) == nullptr)
 				return;
 			if (find_chunk(*chunk->position + right) == nullptr)

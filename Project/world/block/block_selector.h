@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "core/object/unique_object.h"
+#include "engine/object/unique_object.h"
 #include "world/block/block.h"
 
 class 					model;
