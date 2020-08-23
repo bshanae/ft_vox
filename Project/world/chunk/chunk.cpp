@@ -215,9 +215,6 @@ void					chunk::build(build_request request)
 
 void					chunk::build_light()
 {
-	if (this_thread::get_id() == main_thread)
-		cerr << "Hi!" << endl;
-
 	queue<index>		queue;
 
 	chunk::index		index;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "world/program/shader.h"
-#include "world/program/uniform.h"
+#include "engine/program/shader.h"
+#include "engine/program/uniform.h"
 
 class					program
 {
@@ -15,7 +15,7 @@ public :
 	}
 
 	template			<typename type>
-	[[nodiscard]] auto	create_uniform(const std::string &name)
+	auto				create_uniform(const std::string &name)
 	{
 		return (uniform<type>(glGetUniformLocation(value, name.c_str())));
 	}

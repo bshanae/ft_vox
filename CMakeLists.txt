@@ -21,6 +21,8 @@ set(SOURCE_FILES
     Project/engine/window/window.cpp
 	Project/engine/object/object.cpp
 	Project/engine/input/input.cpp
+	Project/engine/program/shader.cpp
+	Project/engine/program/program.cpp
 
 	Project/world/common/model.cpp
 	Project/world/block/texture_atlas.cpp
@@ -31,8 +33,6 @@ set(SOURCE_FILES
 	Project/world/chunk/chunk.cpp
 	Project/world/chunk/chunk_renderer.cpp
 	Project/world/world/world.cpp
-	Project/world/program/shader.cpp
-	Project/world/program/program.cpp
 	Project/world/generator/generator_controller.cpp
 	Project/world/generator/plain_generator.cpp
 	Project/world/loader/loader.cpp

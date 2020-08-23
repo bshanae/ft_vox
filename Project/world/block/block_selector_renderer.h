@@ -3,8 +3,8 @@
 #include "common/OpenGL.h"
 #include "common/aliases.h"
 #include "engine/object/unique_object.h"
-#include "world/program/program.h"
-#include "world/program/uniform.h"
+#include "engine/program/program.h"
+#include "engine/program/uniform.h"
 
 class							model;
 class							block_selector;
