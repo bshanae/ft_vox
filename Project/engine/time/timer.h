@@ -10,7 +10,7 @@ public :
 
 	enum class 							state
 	{
-		deferred,
+		waiting,
 		running,
 		finished
 	};
@@ -24,7 +24,7 @@ public :
 			return (state.value);
 		};
 		state.prohibit_direct_access();
-		state = state::deferred;
+		state = state::waiting;
 	}
 
 	explicit							timer(float value) : timer()
@@ -34,14 +34,20 @@ public :
 
 	virtual								~timer() = default;
 
-	void								operator () ()
+	void 								execute()
 	{
-		assert(total and "Can't execute timer");
+		assert(total and "Can't start timer");
 
 		left = *total;
 		last = glfwGetTime();
 		state = state::running;
 	}
+
+	void 								reset()
+	{
+		state = state::waiting;
+	}
+
 
 	float								progress() const
 	{

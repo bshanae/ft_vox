@@ -170,7 +170,7 @@ void					world::deinitialize_implementation()
 
 void					world::update()
 {
-	update_timer();
+	update_timer.execute();
 
 	pivot.x = camera::position->x;
 	pivot.z = camera::position->z;

@@ -9,7 +9,7 @@
 {
 	layout = "system";
 	should_be_rendered = false;
-	movement_mod = movement_mod::walk;
+	timer_for_second_space = timer(player_settings::second_space_wait);
 }
 
 void					player::update()
@@ -32,13 +32,13 @@ void 					player::process_physics()
 	if (dummy_lock)
 		return ;
 
-	if (movement_mod == movement_mod::flight)
+	if (flying)
 		return ;
 
 	velocity += player_settings::gravity_force;
 	position = (vec3)camera::position + velocity;
 
-	if (does_collide_with_world(position))
+	if (world::does_collide(player::aabb(position)))
 		velocity = vec3();
 	else
 		camera::position = position;
@@ -48,19 +48,7 @@ void 					player::process_input()
 {
 	vec3				movement = vec3(0.f);
 
-	if (movement_mod == movement_mod::walk)
-	{
-		if (input::is_pressed_or_held(GLFW_KEY_A))
-			movement += discard_y_and_normalize(camera::left) * player_settings::movement_speed;
-		else if (input::is_pressed_or_held(GLFW_KEY_D))
-			movement += discard_y_and_normalize(camera::right) * player_settings::movement_speed;
-
-		if (input::is_pressed_or_held(GLFW_KEY_W))
-			movement += discard_y_and_normalize(camera::front) * player_settings::movement_speed;
-		else if (input::is_pressed_or_held(GLFW_KEY_S))
-			movement += discard_y_and_normalize(camera::back) * player_settings::movement_speed;
-	}
-	else if (movement_mod == movement_mod::flight)
+	if (flying)
 	{
 		if (input::is_pressed_or_held(GLFW_KEY_A))
 			movement += (vec3)camera::left * player_settings::movement_speed;
@@ -78,19 +66,44 @@ void 					player::process_input()
 			movement += (vec3)camera::back * player_settings::movement_speed;
 	}
 	else
-		assert(0);
-
-	if (movement != vec3(0.f))
 	{
-		const vec3		position = (vec3)camera::position + movement;
-		const ::aabb	aabb = player::aabb(position);
+		if (input::is_pressed_or_held(GLFW_KEY_A))
+			movement += discard_y_and_normalize(camera::left) * player_settings::movement_speed;
+		else if (input::is_pressed_or_held(GLFW_KEY_D))
+			movement += discard_y_and_normalize(camera::right) * player_settings::movement_speed;
 
-		if (not world::does_collide(aabb))
-			camera::position = position;
+		if (input::is_pressed_or_held(GLFW_KEY_W))
+			movement += discard_y_and_normalize(camera::front) * player_settings::movement_speed;
+		else if (input::is_pressed_or_held(GLFW_KEY_S))
+			movement += discard_y_and_normalize(camera::back) * player_settings::movement_speed;
 	}
 
+	if (movement != vec3(0.f))
+		offset_camera_if_possible(movement);
+
 	if (input::is_pressed(GLFW_KEY_SPACE))
-		velocity = player_settings::jump_force;
+	{
+		if (timer_for_second_space.state == timer::state::running)
+		{
+			timer_for_second_space.reset();
+			flying = not flying;
+		}
+		else
+		{
+			timer_for_second_space.execute();
+
+			if (flying)
+				offset_camera_if_possible(player_settings::flight_lift);
+			else
+				velocity = player_settings::jump_force;
+		}
+	}
+
+	if (input::is_held(GLFW_KEY_SPACE))
+	{
+		if (flying)
+			offset_camera_if_possible(player_settings::flight_lift);
+	}
 
 	if (input::is_pressed(GLFW_KEY_ENTER))
 	{
@@ -135,9 +148,12 @@ aabb					player::aabb(const vec3 &position) const
 	return {min, max};
 }
 
-bool					player::does_collide_with_world(const vec3 &position) const
+void					player::offset_camera_if_possible(const vec3 &offset) const
 {
-	return (world::does_collide(player::aabb(position)));
+	const vec3			new_position = (vec3)camera::position + offset;
+
+	if (not world::does_collide(player::aabb(new_position)))
+		camera::position = new_position;
 }
 
 vec3					player::discard_y_and_normalize(const vec3 &original)

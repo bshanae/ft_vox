@@ -9,7 +9,7 @@ struct						camera_settings
 
 	static inline float		near_plane = 0.05f;
 	static inline float		far_plane = world_settings::visibility_limit + 100.f;
-	static inline float 	fov = 30.f;
+	static inline float 	fov = 50.f;
 
 	static inline vec3		initial_position = vec3(0.f, 5.0f, 0.f);
 
