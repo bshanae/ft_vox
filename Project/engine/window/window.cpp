@@ -21,7 +21,8 @@
 	glViewport(0, 0, size.x, size.y);
 
 	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetKeyCallback(glfw_window, input::callback_key);
+	glfwSetKeyCallback(glfw_window, input::callback_for_keyboard);
+	glfwSetMouseButtonCallback(glfw_window, input::callback_for_mouse_click);
 
 	glEnable(GL_DEPTH_TEST);
 

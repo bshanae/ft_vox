@@ -48,9 +48,9 @@ void			core::process_input()
 
 	glfwPollEvents();
 
-	if (input::is_pressed(GLFW_KEY_ESCAPE))
+	if (input::is_pressed(input::key::escape))
 		window::close();
-	if (input::is_pressed(GLFW_KEY_P))
+	if (input::is_pressed(input::key::letter_p))
 	{
 		empty_polygons = not empty_polygons;
 		glPolygonMode(GL_FRONT_AND_BACK, empty_polygons ? GL_LINE : GL_FILL);

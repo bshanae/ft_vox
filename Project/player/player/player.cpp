@@ -26,7 +26,7 @@ void 					player::process_physics()
 #warning "TEMPORARY SOLUTION"
 	static bool 		dummy_lock = true;
 
-	if (input::is_pressed_or_held(GLFW_KEY_1))
+	if (input::is_pressed_or_held(input::key::number_1))
 		dummy_lock = false;
 
 	if (dummy_lock)
@@ -50,38 +50,33 @@ void 					player::process_input()
 
 	if (flying)
 	{
-		if (input::is_pressed_or_held(GLFW_KEY_A))
+		if (input::is_pressed_or_held(input::key::letter_a))
 			movement += (vec3)camera::left * player_settings::movement_speed;
-		else if (input::is_pressed_or_held(GLFW_KEY_D))
+		else if (input::is_pressed_or_held(input::key::letter_d))
 			movement += (vec3)camera::right * player_settings::movement_speed;
 
-		if (input::is_pressed_or_held(GLFW_KEY_Q))
-			movement += (vec3)camera::down * player_settings::movement_speed;
-		else if (input::is_pressed_or_held(GLFW_KEY_E))
-			movement += (vec3)camera::up * player_settings::movement_speed;
-
-		if (input::is_pressed_or_held(GLFW_KEY_W))
+		if (input::is_pressed_or_held(input::key::letter_w))
 			movement += (vec3)camera::front * player_settings::movement_speed;
-		else if (input::is_pressed_or_held(GLFW_KEY_S))
+		else if (input::is_pressed_or_held(input::key::letter_s))
 			movement += (vec3)camera::back * player_settings::movement_speed;
 	}
 	else
 	{
-		if (input::is_pressed_or_held(GLFW_KEY_A))
+		if (input::is_pressed_or_held(input::key::letter_a))
 			movement += discard_y_and_normalize(camera::left) * player_settings::movement_speed;
-		else if (input::is_pressed_or_held(GLFW_KEY_D))
+		else if (input::is_pressed_or_held(input::key::letter_d))
 			movement += discard_y_and_normalize(camera::right) * player_settings::movement_speed;
 
-		if (input::is_pressed_or_held(GLFW_KEY_W))
+		if (input::is_pressed_or_held(input::key::letter_w))
 			movement += discard_y_and_normalize(camera::front) * player_settings::movement_speed;
-		else if (input::is_pressed_or_held(GLFW_KEY_S))
+		else if (input::is_pressed_or_held(input::key::letter_s))
 			movement += discard_y_and_normalize(camera::back) * player_settings::movement_speed;
 	}
 
 	if (movement != vec3(0.f))
 		offset_camera_if_possible(movement);
 
-	if (input::is_pressed(GLFW_KEY_SPACE))
+	if (input::is_pressed(input::key::space))
 	{
 		if (timer_for_second_space.state == timer::state::running)
 		{
@@ -99,13 +94,22 @@ void 					player::process_input()
 		}
 	}
 
-	if (input::is_held(GLFW_KEY_SPACE))
+	if (input::is_held(input::key::space))
 	{
 		if (flying)
 			offset_camera_if_possible(player_settings::flight_lift);
 	}
 
-	if (input::is_pressed(GLFW_KEY_ENTER))
+	if (input::is_pressed(input::key::mouse_left))
+	{
+		if (auto hit = camera::cast_ray(); hit)
+		{
+			world::remove_block(hit->block);
+			force_ray_cast = true;
+		}
+	}
+
+	if (input::is_pressed(input::key::mouse_right))
 	{
 		if (auto hit = camera::cast_ray(); hit)
 		{
@@ -115,21 +119,21 @@ void 					player::process_input()
 			assert(neighbor);
 			world::insert_block(*neighbor, block::type::dirt_with_grass);
 
-			intentional_ray_cast = true;
+			force_ray_cast = true;
 		}
 	}
 }
 
 void 					player::process_selection()
 {
-	if (camera::have_changed or intentional_ray_cast)
+	if (camera::have_changed or force_ray_cast)
 	{
 		if (auto hit = camera::cast_ray(); hit)
 			world::select_block(hit->block, hit->face);
 		else
 			world::unselect_block();
 
-		intentional_ray_cast = false;
+		force_ray_cast = false;
 	}
 }
 

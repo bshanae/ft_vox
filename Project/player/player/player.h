@@ -11,7 +11,7 @@ public :
 					~player() override = default;
 private :
 
-	bool			intentional_ray_cast = false;
+	bool			force_ray_cast = false;
 	bool 			flying = false;
 
 	timer			timer_for_second_space;

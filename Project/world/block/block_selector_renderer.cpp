@@ -20,7 +20,7 @@ void					block_selector_renderer::render(const block_selector &selector)
 	float				distance;
 
 	distance = glm::distance((vec3)camera::position, (vec3)selector.translation);
-	instance->epsilon = (distance / 10.f) * 0.002f;
+	instance->epsilon = (distance / 10.f) * 0.003f;
 
 	instance->program->bind(true);
 
