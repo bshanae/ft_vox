@@ -81,6 +81,11 @@ bool				block::is_solid() const
 	return (is_opaque());
 }
 
+bool				block::is_editable() const
+{
+	return (type == type::dirt or type == type::dirt_with_grass or type == type::blue_flower);
+}
+
 ostream				&operator << (ostream &stream, enum block::type type)
 {
 	switch (type)

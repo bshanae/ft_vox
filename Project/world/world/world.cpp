@@ -251,7 +251,9 @@ void					world::create_chunk(const vec3 &position)
 {
 	shared_ptr<chunk>	chunk;
 
-	if (not (chunk = chunk_loader::download(position)))
+	if ((chunk = chunk_loader::download(position)))
+		chunk->can_be_regenerated = false;
+	else
 		chunk = make_shared<::chunk>(position);
 
 #warning "Generation module needed"
@@ -302,7 +304,7 @@ void 					world::try_build_chunk(const shared_ptr<chunk> &chunk)
 
 void					world::rebuild_chunk(const shared_ptr<chunk> &chunk, const chunk::index &changed_block)
 {
-	static auto			find_and_rebuild = [this](const vec3 &position)
+	static auto			find_and_rebuild = [](const vec3 &position)
 	{
 		auto			chunk = find_chunk(position);
 

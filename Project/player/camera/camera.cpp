@@ -98,7 +98,7 @@ optional<camera::hit>	camera::cast_ray()
 		if (auto block = world::find_block(vec3(x, y, z)))
 		{
 			assert(block);
-			if (not (*block)().is_opaque())
+			if ((*block)().is_editable())
 				return {(hit){*block, face}};
 		}
 	}
