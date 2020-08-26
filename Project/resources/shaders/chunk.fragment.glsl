@@ -11,24 +11,26 @@ uniform float		uniform_alpha_discard_floor;
 uniform vec3		uniform_background;
 uniform float		uniform_fog_density;
 uniform float		uniform_fog_gradient;
+uniform int			uniform_apply_water_tint;
 
 void				main()
 {
-	vec4			temp_color;
+	vec4			color;
 
-	temp_color = texture(uniform_texture, pass_texture_coordinates);
-	temp_color.xyz *= pass_light_level;
+	color = texture(uniform_texture, pass_texture_coordinates);
+	color.xyz *= pass_light_level;
 
-	if (temp_color.a < uniform_alpha_discard_floor)
+	if (color.a < uniform_alpha_discard_floor)
 		discard;
 
 	float			visibility;
 
 	visibility = exp(-pow(pass_distance_to_camera * uniform_fog_density, uniform_fog_gradient));
 	visibility = clamp(visibility, 0.f, 1.f);
-	temp_color.xyz = mix(uniform_background, temp_color.xyz, visibility);
+	color.xyz = mix(uniform_background, color.xyz, visibility);
 
-	out_color = temp_color;
+	if (uniform_apply_water_tint == 1)
+		color = mix(color, vec4(0, 0.16, 1.0, 1.0), 0.45);
 
-//	out_color = vec4(uniform_alpha_discard_floor, 0, 0, 1);
+	out_color = color;
 }

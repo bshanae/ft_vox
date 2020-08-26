@@ -20,22 +20,13 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
 optional<block_id>		world::find_block(const vec3 &position)
 {
-	const ivec3			int_position = position;
-
 	chunk::index		index;
 	vec3				chunk_position;
 	shared_ptr<chunk>	chunk;
 
-	chunk_position.x = int_position.x / chunk_settings::size[0];
-	chunk_position.y = int_position.y / chunk_settings::size[1];
-	chunk_position.z = int_position.z / chunk_settings::size[2];
-
-	if (position.x < 0 and int_position.x % chunk_settings::size[0] != 0)
-		chunk_position.x -= 1;
-	if (position.y < 0 and int_position.y % chunk_settings::size[1] != 0)
-		chunk_position.y -= 1;
-	if (position.z < 0 and int_position.z % chunk_settings::size[2] != 0)
-		chunk_position.z -= 1;
+	chunk_position.x = floor(position.x / chunk_settings::size[0]);
+	chunk_position.y = floor(position.y / chunk_settings::size[1]);
+	chunk_position.z = floor(position.z / chunk_settings::size[2]);
 
 	chunk_position.x *= chunk_settings::size[0];
 	chunk_position.y *= chunk_settings::size[1];
@@ -44,6 +35,8 @@ optional<block_id>		world::find_block(const vec3 &position)
 	index.x = position.x - chunk_position.x;
 	index.y = position.y - chunk_position.y;
 	index.z = position.z - chunk_position.z;
+
+	chunk_position.y = 0;
 
 	if (chunk = find_chunk(chunk_position); not chunk or not index)
 		return {};
@@ -88,9 +81,8 @@ bool					world::does_collide(const aabb &aabb)
 		for (int y = (int)min.y; y <= (int)max.y; y++)
 			for (int z = (int)min.z; z <= (int)max.z; z++)
 			{
-				block_iterator = find_block(vec3(x, y, z));
-
-				assert(block_iterator);
+				if (not (block_iterator = find_block(vec3(x, y, z))))
+					continue ;
 				if ((*block_iterator)().is_solid() and aabb::do_collide(aabb, block_iterator->aabb()))
 					return (true);
 			}
@@ -211,6 +203,9 @@ void					world::update()
 
 void					world::render()
 {
+	if (auto camera_block = find_block((vec3)camera::position))
+		chunk_renderer::apply_water_tint = (*camera_block)().type == block::type::water;
+
 	for (auto [position, chunk] : chunks)
 		chunk_renderer::render(chunk, chunk::batch_purpose::opaque);
 

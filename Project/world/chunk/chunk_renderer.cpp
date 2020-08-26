@@ -12,6 +12,8 @@
 	should_be_updated = false;
 	should_be_rendered = false;
 
+	apply_water_tint = false;
+
 	program = make_unique<class program>(path_to_vertex_shader, path_to_fragment_shader);
 	uniform_projection = program->create_uniform<mat4>("uniform_projection");
 	uniform_view = program->create_uniform<mat4>("uniform_view");
@@ -20,11 +22,13 @@
 	uniform_background = program->create_uniform<vec3>("uniform_background");
 	uniform_fog_density = program->create_uniform<float>("uniform_fog_density");
 	uniform_fog_gradient = program->create_uniform<float>("uniform_fog_gradient");
+	uniform_apply_water_tint = program->create_uniform<int>("uniform_apply_water_tint");
 
 	program->bind(true);
 	uniform_background.upload(core_settings::background);
 	uniform_fog_density.upload(1.f / (world_settings::visibility_limit - chunk_settings::size[0] * 1.5f));
 	uniform_fog_gradient.upload(15.f);
+	uniform_apply_water_tint.upload(0);
 	program->bind(false);
 }
 
@@ -62,6 +66,7 @@ void					chunk_renderer::render(const shared_ptr<chunk> &chunk, chunk::batch_pur
 	instance->uniform_projection.upload(camera::projection_matrix);
 	instance->uniform_view.upload(camera::view_matrix);
 	instance->uniform_alpha_discard_floor.upload(alpha_discard_floor);
+	instance->uniform_apply_water_tint.upload(apply_water_tint.value);
 
 	model->bind(true);
 	instance->uniform_transformation.upload(model->transformation);

@@ -17,6 +17,10 @@ public :
 
 	static void					render(const shared_ptr<chunk> &chunk, chunk::batch_purpose purpose);
 
+								static inline
+								property<write_only, bool, chunk_renderer>
+								apply_water_tint;
+
 private :
 
 	inline static const path	path_to_vertex_shader = "Project/resources/shaders/chunk.vertex.glsl";
@@ -31,4 +35,5 @@ private :
 	uniform<vec3>				uniform_background;
 	uniform<float>				uniform_fog_density;
 	uniform<float>				uniform_fog_gradient;
+	uniform<int>				uniform_apply_water_tint;
 };

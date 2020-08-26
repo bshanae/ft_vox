@@ -149,6 +149,12 @@ static vector<GLuint>	indices =
 	at(0, 1 , 0).type = block::type::water;
 	at(1, 1 , 0).type = block::type::water;
 
+	at(0, 2, 0).type = block::type::water;
+	at(1, 2, 0).type = block::type::water;
+
+	at(0, 3, 0).type = block::type::water;
+	at(1, 3, 0).type = block::type::water;
+
 	at(2, 2 , 0).type = block::type::blue_flower;
 }
 
@@ -348,6 +354,8 @@ void					chunk::build_block(batch_workspace &workspace, const index &index)
 			auto 		neighbor_block = (*neighbor_block_id)();
 
 			if (this_block.is_opaque() and neighbor_block.is_transparent_or_partially_transparent());
+			else if (this_block.is_transparent() and neighbor_block.is_partially_transparent());
+			else if (this_block.is_partially_transparent() and neighbor_block.is_partially_transparent());
 			else if (neighbor_block.is_empty());
 			else
 				return ;
