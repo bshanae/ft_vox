@@ -1,12 +1,12 @@
 #pragma once
 
-#include "common/OpenGL.h"
+#include "common/opengl.h"
 #include "common/aliases.h"
 #include "common/global.h"
-#include "engine/object/object_template.h"
+#include "engine/object/usual_object.h"
 
 template 							<typename final_type>
-class								unique_object : public object_template<final_type>
+class								unique_object : public usual_object<final_type>
 {
 public :
 									unique_object() = default;

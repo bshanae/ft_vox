@@ -1,7 +1,7 @@
 #pragma once
 
+#include "common/glm.h"
 #include "common/aliases.h"
-#include "common/OpenGL.h"
 
 class 				aabb
 {

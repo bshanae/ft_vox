@@ -7,8 +7,8 @@
 
 						camera::camera()
 {
-	object_template::layout = "system";
-	object_template::should_be_rendered = false;
+	usual_object::layout = "system";
+	usual_object::should_be_rendered = false;
 
 	position.setter = [this](const vec3 &value){
 		position.value = value;

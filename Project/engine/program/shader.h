@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/OpenGL.h"
+#include "common/opengl.h"
 #include "common/aliases.h"
 
 class				shader

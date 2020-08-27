@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/OpenGL.h"
+#include "common/glm.h"
 #include "common/aliases.h"
 #include "common/property.h"
 

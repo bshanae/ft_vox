@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "common/OpenGL.h"
+#include "common/glm.h"
 #include "common/property.h"
 
 class						file final

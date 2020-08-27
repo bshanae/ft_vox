@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/OpenGL.h"
+#include "common/opengl.h"
 
 #define VOX_DEBUG		1
 

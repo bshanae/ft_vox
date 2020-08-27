@@ -1,9 +1,9 @@
 #pragma once
 
-#include "common/OpenGL.h"
+#include "common/opengl.h"
 #include "common/aliases.h"
 #include "common/array3.h"
-#include "engine/object/object_template.h"
+#include "engine/object/usual_object.h"
 #include "world/block/block.h"
 #include "world/block/block_id.h"
 #include "world/chunk/chunk_settings.h"

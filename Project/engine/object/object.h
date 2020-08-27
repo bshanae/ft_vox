@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/OpenGL.h"
+#include "common/opengl.h"
 #include "common/aliases.h"
 #include "common/property.h"
 
@@ -9,7 +9,7 @@ class						object : public enable_shared_from_this<object>
 	friend class 			core;
 
 	template				<typename>
-	friend class 			object_template;
+	friend class 			usual_object;
 
 protected :
 
@@ -42,7 +42,7 @@ protected :
 	class					state_property : public property<read_only, state, object>
 	{
 		template			<typename>
-		friend class 		object_template;
+		friend class 		usual_object;
 	}						state;
 
 	virtual void 			render() = 0;

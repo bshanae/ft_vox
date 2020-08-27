@@ -1,9 +1,10 @@
 #pragma once
 
+#include "common/opengl.h"
+#include "common/glm.h"
 #include "common/aliases.h"
 #include "common/property.h"
 #include "common/global.h"
-#include "common/OpenGL.h"
 
 class									input : public global<input>
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/OpenGL.h"
+#include "common/glm.h"
 
 struct 					core_settings
 {

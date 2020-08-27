@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "libraries/FastNoise/FastNoise.h"
+#include "external/FastNoise/FastNoise.h"
 
 class				generator
 {

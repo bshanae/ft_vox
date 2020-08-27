@@ -1,7 +1,6 @@
 #include "texture_atlas.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "libraries/stb_image/stb_image.h"
+#include "common/stb.h"
 
 							texture_atlas::texture_atlas(const path &source)
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/OpenGL.h"
+#include "common/opengl.h"
 #include "common/property.h"
 
 class				timestamp : public property<read_only, float, timestamp>

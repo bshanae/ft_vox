@@ -14,7 +14,7 @@ static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
 						world::world()
 {
-	object_template::layout = "first";
+	usual_object::layout = "first";
 	update_timer = timer(world_settings::chunk_generation_time_limit);
 }
 
