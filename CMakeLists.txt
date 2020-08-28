@@ -1,60 +1,70 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_CXX_STANDARD 17)
 set(PROJECT_NAME Vox)
+set(PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/project)
+set(PROJECT_EXTERNAL ${PROJECT_ROOT}/external)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
+set(CMAKE_CXX_STANDARD 17)
+
 project(${PROJECT_NAME})
 
-find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(GLFW3 REQUIRED)
-find_package(FREETYPE REQUIRED)
+set(SOURCES_EXTERNAL
+	${PROJECT_EXTERNAL}/glad/src/glad.c
+	${PROJECT_EXTERNAL}/FastNoise/FastNoise.cpp)
 
-set(SOURCE_FILES
-	Project/common/debug.cpp
+set(SOURCES_ENGINE
+	${PROJECT_ROOT}/engine/core/core.cpp
+	${PROJECT_ROOT}/engine/window/window.cpp
+	${PROJECT_ROOT}/engine/object/object.cpp
+	${PROJECT_ROOT}/engine/input/input.cpp
+	${PROJECT_ROOT}/engine/program/shader.cpp
+	${PROJECT_ROOT}/engine/program/program.cpp)
 
-	Project/engine/core/core.cpp
-    Project/engine/window/window.cpp
-	Project/engine/object/object.cpp
-	Project/engine/input/input.cpp
-	Project/engine/program/shader.cpp
-	Project/engine/program/program.cpp
+set(SOURCES_WORLD
+	${PROJECT_ROOT}/world/common/model.cpp
+	${PROJECT_ROOT}/world/block/texture_atlas.cpp
+	${PROJECT_ROOT}/world/block/block.cpp
+	${PROJECT_ROOT}/world/block/block_id.cpp
+	${PROJECT_ROOT}/world/block/block_selector.cpp
+	${PROJECT_ROOT}/world/block/block_selector_renderer.cpp
+	${PROJECT_ROOT}/world/chunk/chunk.cpp
+	${PROJECT_ROOT}/world/chunk/chunk_renderer.cpp
+	${PROJECT_ROOT}/world/world/world.cpp
+	${PROJECT_ROOT}/world/generator/generator_controller.cpp
+	${PROJECT_ROOT}/world/generator/plain_generator.cpp
+	${PROJECT_ROOT}/world/loader/loader.cpp
+	${PROJECT_ROOT}/world/loader/file.cpp)
 
-	Project/world/common/model.cpp
-	Project/world/block/texture_atlas.cpp
-	Project/world/block/block.cpp
-	Project/world/block/block_id.cpp
-	Project/world/block/block_selector.cpp
-	Project/world/block/block_selector_renderer.cpp
-	Project/world/chunk/chunk.cpp
-	Project/world/chunk/chunk_renderer.cpp
-	Project/world/world/world.cpp
-	Project/world/generator/generator_controller.cpp
-	Project/world/generator/plain_generator.cpp
-	Project/world/loader/loader.cpp
-	Project/world/loader/file.cpp
+set(SOURCES_UI
+	${PROJECT_ROOT}/ui/font/symbol.cpp
+	${PROJECT_ROOT}/ui/font/font.cpp)
 
-	Project/ui/font/symbol.cpp
-	Project/ui/font/font.cpp
+set(SOURCES_PLAYER
+	${PROJECT_ROOT}/player/player/player.cpp
+	${PROJECT_ROOT}/player/camera/camera.cpp)
 
-	Project/player/player/player.cpp
-	Project/player/camera/camera.cpp
-
-	Project/application/main.cpp)
+set(SOURCES_APPLICATION
+	${PROJECT_ROOT}/application/main.cpp)
 
 include_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}/Project
-    Project/external/glad/include
-	Project/external/freetype2/include)
+	${PROJECT_ROOT}
+	${PROJECT_EXTERNAL}/glad/include
+	${PROJECT_EXTERNAL}/glfw/include
+	${PROJECT_EXTERNAL}/stb
+	${PROJECT_EXTERNAL}/freetype2/include
+	${PROJECT_EXTERNAL}/FastNoise)
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME}
+	${SOURCES_EXTERNAL}
+	${SOURCES_ENGINE}
+	${SOURCES_UI}
+	${SOURCES_WORLD}
+	${SOURCES_PLAYER}
+	${SOURCES_APPLICATION})
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${OPENGL_INCLUDE_DIRS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${GLEW_INCLUDE_DIRS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${FREETYPE_INCLUDE_DIRS})
-
-target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
+add_subdirectory(${PROJECT_EXTERNAL}/glfw)
 target_link_libraries(${PROJECT_NAME} glfw)
-target_link_libraries(${PROJECT_NAME} glew)
-target_link_libraries(${PROJECT_NAME} ${FREETYPE_LIBRARIES})
 
-target_link_directories(${PROJECT_NAME} PRIVATE ${ASSIMP_LIBRARY_DIRS})
+add_subdirectory(${PROJECT_EXTERNAL}/freetype2)
+target_link_libraries(${PROJECT_NAME} freetype)

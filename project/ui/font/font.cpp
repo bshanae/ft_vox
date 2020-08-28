@@ -6,8 +6,8 @@
 {
 	if (not library)
 	{
-		assert(FT_Init_FreeType(&library) == 0);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//		assert(FT_Init_FreeType(&library) == 0);
+//		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	}
 }
 
