@@ -54,6 +54,24 @@ void				window::swap_buffers()
 	glfwSwapBuffers(instance()->glfw_window);
 }
 
+void				window::use_depth_test(bool state)
+{
+	if (state)
+		glEnable(GL_DEPTH_TEST);
+	else
+		glDisable(GL_DEPTH_TEST);
+}
+
+vec2				window::to_normal(const ivec2 &value)
+{
+	return {value.x / size.x, value.y / size.y};
+}
+
+ivec2				window::to_absolute(const vec2 &value)
+{
+	return {value.x * size.x, value.y * size.y};
+}
+
 vec2				window::mouse_position_getter()
 {
 	double			x;

@@ -11,9 +11,9 @@
 	input::initialize();
 }
 
-void			core::register_layout(const string &key)
+void			core::register_layout(const string &key, int options)
 {
-	auto 		layout = make_shared<core::layout>(key);
+	auto 		layout = make_shared<::layout>(key, options);
 
 	instance()->layouts[key] = layout;
 	instance()->layouts_order.push_back(layout);
@@ -104,8 +104,11 @@ void			core::process_rendering()
 
 	for (auto &[name, layout] : layouts)
 		for (auto &object : layout->objects)
+		{
+			window::use_depth_test((layout->options & (int)layout::option::use_depth_test) != 0);
 			if (object->should_be_rendered and object->state == object::state::active)
 				object->render();
+		}
 
 	window::swap_buffers();
 }

@@ -1,11 +1,11 @@
 #include "block_selector_renderer.h"
-#include "world/common/model.h"
+#include "engine/model/model.h"
 #include "world/block/block_selector.h"
 #include "player/camera/camera.h"
 
 						block_selector_renderer::block_selector_renderer()
 {
-	layout = "system";
+	layout = "System";
 
 	program = make_unique<class program>(path_to_vertex_shader, path_to_fragment_shader);
 	uniform_projection = program->create_uniform<mat4>("uniform_projection");
@@ -81,7 +81,7 @@ void					block_selector_renderer::render(const shared_ptr<model> &model, const v
 	model->bind(true);
 
 	uniform_transformation.upload(model->transformation);
-	glDrawElements(GL_LINES, model->number_of_indices, GL_UNSIGNED_INT, nullptr);
+	model->render();
 
 	model->bind(false);
 

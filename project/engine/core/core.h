@@ -2,6 +2,7 @@
 
 #include "common/aliases.h"
 #include "common/global.h"
+#include "engine/layout/layout.h"
 #include "engine/object/object.h"
 
 class 								window;
@@ -13,19 +14,11 @@ public :
 									core();
 									~core() override = default;
 
-	static void 					register_layout(const string &key);
+	static void 					register_layout(const string &key, int options = 0);
 
 	static void						execute();
 
 private :
-
-	struct 							layout
-	{
-		explicit					layout(const string &name) : name(name) {}
-
-		string 						name;
-		vector<shared_ptr<object>>	objects;
-	};
 
 	vector<shared_ptr<object>>		new_objects;
 

@@ -4,26 +4,30 @@
 #include "common/glm.h"
 #include "common/freetype.h"
 #include "common/aliases.h"
+#include "common/property.h"
+#include "engine/model/texture.h"
 
-class 					font;
+class 									font;
 
-class					symbol
+class									symbol : public texture
 {
-	friend class		font;
+	friend class						font;
+	friend class						text;
 
 public :
 
-	explicit			symbol(FT_Face &face);
-						~symbol() = default;
+	explicit							symbol(FT_Face &face);
+										~symbol() = default;
+
+	property<read_only, ivec2, symbol>	size;
+	property<read_only, ivec2, symbol>	bearing;
+	property<read_only, int, symbol>	advance;
+
 private :
 
-	shared_ptr<font>	font;
+	shared_ptr<font>					font;
 
-	GLuint				texture;
-
-	ivec2				size;
-	ivec2				bearing;
-	int					advance;
+	void 								render(const vec2 &position);
 };
 
 

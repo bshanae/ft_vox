@@ -7,7 +7,7 @@
 
 						player::player()
 {
-	layout = "system";
+	layout = "System";
 	should_be_rendered = false;
 	timer_for_second_space = timer(player_settings::second_space_wait);
 }

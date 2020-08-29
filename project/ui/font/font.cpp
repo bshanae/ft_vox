@@ -1,33 +1,15 @@
 #include "font.h"
 
+#include "ui/font/font_library.h"
 #include "ui/font/symbol.h"
 
-						font::shared_library::shared_library()
+						font::font(const path &source, const int &width)
 {
-	if (not library)
-	{
-//		assert(FT_Init_FreeType(&library) == 0);
-//		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	}
-}
+	auto				library = font_library::instance()->library;
 
-						font::shared_library::~shared_library()
-{
-	FT_Done_FreeType(library);
-}
-
-						font::font(const path &source, const int &width, const vec3 &color)
-{
-	assert(FT_New_Face(shared_library.library, source.c_str(), 0, &face) == 0);
+	assert(FT_New_Face(library, source.c_str(), 0, &face) == 0);
 	FT_Set_Pixel_Sizes(face, 0, width);
 }
-
-void					font::build_map()
-{
-	for (int i = 0; i < size_of_map; i++)
-		map.emplace(i, build_symbol(static_cast<char>(i)));
-}
-
 
 shared_ptr<symbol>		font::find_symbol(char task) const
 {
@@ -37,6 +19,11 @@ shared_ptr<symbol>		font::find_symbol(char task) const
 	return (result->second);
 }
 
+void					font::build_map()
+{
+	for (int i = 0; i < size_of_map; i++)
+		map.emplace(i, build_symbol(static_cast<char>(i)));
+}
 
 shared_ptr<symbol>		font::build_symbol(char task)
 {

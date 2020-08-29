@@ -11,7 +11,7 @@ class								font : public enable_shared_from_this<font>
 public :
 
 	template						<typename ...args_type>
-	shared_ptr<font>				create(args_type &&...args)
+	static shared_ptr<font>			create(args_type &&...args)
 	{
 		shared_ptr<font>			pointer;
 
@@ -19,23 +19,15 @@ public :
 		pointer->build_map();
 		return (pointer);
 	}
-
+									font(const path &source, const int &width);
 									~font() = default;
-private :
 
-									font(const path &source, const int &width, const vec3 &color = vec3(1.f));
+	shared_ptr<symbol>				find_symbol(char task) const;
+
+private :
 
 	void							build_map();
 	shared_ptr<symbol>				build_symbol(char task);
-	shared_ptr<symbol>				find_symbol(char task) const;
-
-	static inline struct			shared_library
-	{
-									shared_library();
-									~shared_library();
-
-		FT_Library					library;
-	}								shared_library;
 
 	static constexpr int			size_of_map = 128;
 

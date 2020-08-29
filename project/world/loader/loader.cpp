@@ -4,7 +4,7 @@
 
 					loader::loader() : file(loader_settings::path_to_file)
 {
-	layout = "system";
+	layout = "System";
 	should_be_updated = false;
 	should_be_rendered = false;
 

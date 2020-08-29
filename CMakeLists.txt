@@ -19,11 +19,11 @@ set(SOURCES_ENGINE
 	${PROJECT_ROOT}/engine/object/object.cpp
 	${PROJECT_ROOT}/engine/input/input.cpp
 	${PROJECT_ROOT}/engine/program/shader.cpp
-	${PROJECT_ROOT}/engine/program/program.cpp)
+	${PROJECT_ROOT}/engine/program/program.cpp
+	${PROJECT_ROOT}/engine/model/model.cpp)
 
 set(SOURCES_WORLD
-	${PROJECT_ROOT}/world/common/model.cpp
-	${PROJECT_ROOT}/world/block/texture_atlas.cpp
+	${PROJECT_ROOT}/world/texture_atlas/texture_atlas.cpp
 	${PROJECT_ROOT}/world/block/block.cpp
 	${PROJECT_ROOT}/world/block/block_id.cpp
 	${PROJECT_ROOT}/world/block/block_selector.cpp
@@ -37,8 +37,10 @@ set(SOURCES_WORLD
 	${PROJECT_ROOT}/world/loader/file.cpp)
 
 set(SOURCES_UI
+	${PROJECT_ROOT}/ui/font/font.cpp
 	${PROJECT_ROOT}/ui/font/symbol.cpp
-	${PROJECT_ROOT}/ui/font/font.cpp)
+	${PROJECT_ROOT}/ui/font/symbol_renderer.cpp
+	${PROJECT_ROOT}/ui/text/text.cpp)
 
 set(SOURCES_PLAYER
 	${PROJECT_ROOT}/player/player/player.cpp

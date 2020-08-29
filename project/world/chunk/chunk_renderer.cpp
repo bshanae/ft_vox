@@ -1,14 +1,15 @@
 #include "chunk_renderer.h"
 
 #include "engine/core/core_settings.h"
-#include "world/common/model.h"
+#include "engine/model/model.h"
+#include "world/texture_atlas/texture_atlas.h"
 #include "world/chunk/chunk.h"
 #include "world/world/world_settings.h"
 #include "player/camera/camera.h"
 
 						chunk_renderer::chunk_renderer()
 {
-	layout = "system";
+	layout = "System";
 	should_be_updated = false;
 	should_be_rendered = false;
 
@@ -18,6 +19,7 @@
 	uniform_projection = program->create_uniform<mat4>("uniform_projection");
 	uniform_view = program->create_uniform<mat4>("uniform_view");
 	uniform_transformation = program->create_uniform<mat4>("uniform_transformation");
+	uniform_texture = program->create_uniform<int>("uniform_texture");
 	uniform_alpha_discard_floor = program->create_uniform<float>("uniform_alpha_discard_floor");
 	uniform_background = program->create_uniform<vec3>("uniform_background");
 	uniform_fog_density = program->create_uniform<float>("uniform_fog_density");
@@ -26,6 +28,7 @@
 
 	program->bind(true);
 	uniform_background.upload(core_settings::background);
+	uniform_texture.upload(0);
 	uniform_fog_density.upload(1.f / (world_settings::visibility_limit - chunk_settings::size[0] * 1.5f));
 	uniform_fog_gradient.upload(15.f);
 	uniform_apply_water_tint.upload(0);
@@ -69,9 +72,12 @@ void					chunk_renderer::render(const shared_ptr<chunk> &chunk, chunk::batch_pur
 	instance->uniform_apply_water_tint.upload(apply_water_tint.value);
 
 	model->bind(true);
-	instance->uniform_transformation.upload(model->transformation);
-	glDrawElements(GL_TRIANGLES, model->number_of_indices, GL_UNSIGNED_INT, nullptr);
-	model->bind(false);
+	texture_atlas::instance()->bind(true);
 
+	instance->uniform_transformation.upload(model->transformation);
+	model->render();
+
+	texture_atlas::instance()->bind(false);
+	model->bind(false);
 	instance->program->bind(false);
 }
