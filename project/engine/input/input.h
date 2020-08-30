@@ -80,11 +80,11 @@ public :
 	static bool							have_mouse_moved();
 
 	static inline
-	property<read_only, ivec2, input>	mouse_offset;
+	property<read_only, vec2, input>	mouse_offset;
 	static inline
-	property<read_only, ivec2, input>	mouse_last_position;
+	property<read_only, vec2, input>	mouse_last_position;
 	static inline
-	property<read_only, ivec2, input>	mouse_current_position;
+	property<read_only, vec2, input>	mouse_current_position;
 
  private :
 

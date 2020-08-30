@@ -23,7 +23,7 @@
 	texture::bind(false);
 }
 
-void 				symbol::render(const vec2 &position)
+void 				symbol::render(const ivec2 &position)
 {
 	symbol_renderer::render(*this, position);
 }

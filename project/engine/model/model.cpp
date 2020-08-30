@@ -110,6 +110,6 @@ void 				model::recalculate_transformation()
 
 	transformation = mat4(1.f);
 	transformation.value *= translate(translation.value);
-	transformation.value *= scale(scaling.value);
 	transformation.value *= eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
+	transformation.value *= scale(scaling.value);
 }

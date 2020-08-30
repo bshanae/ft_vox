@@ -21,10 +21,10 @@
 	program->bind(false);
 
 	vector<GLfloat>	vertices = {
-		+0.5f, +0.5f, 0.0f,
-		+0.5f, -0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		-0.5f, +0.5f, 0.0f
+		1.f, 1.f, 0.0f,
+		1.f, 0.f, 0.0f,
+		0.f, 0.f, 0.0f,
+		0.f, 1.f, 0.0f
 	};
 
 	vector<GLfloat>	texture_coordinates = {
@@ -50,7 +50,7 @@
 	model->bind(false);
 }
 
-void				symbol_renderer::render(const symbol &symbol, const vec2 &position)
+void				symbol_renderer::render(const symbol &symbol, const ivec2 &position)
 {
 	auto			instance = unique_object::instance();
 

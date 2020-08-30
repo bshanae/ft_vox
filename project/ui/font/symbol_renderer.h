@@ -12,7 +12,7 @@ public :
 								symbol_renderer();
 								~symbol_renderer() override = default;
 
-	static void					render(const symbol &symbol, const vec2 &position);
+	static void					render(const symbol &symbol, const ivec2 &position);
 
 private :
 

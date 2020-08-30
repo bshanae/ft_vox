@@ -72,11 +72,16 @@ ivec2				window::to_absolute(const vec2 &value)
 	return {value.x * size.x, value.y * size.y};
 }
 
+ivec2				window::invert_y(const vec2 &value)
+{
+	return {value.x, size.y - value.y};
+}
+
 vec2				window::mouse_position_getter()
 {
 	double			x;
 	double			y;
 
 	glfwGetCursorPos(instance()->glfw_window, &x, &y);
-	return {x, y};
+	return (invert_y(vec2(x, y)));
 }

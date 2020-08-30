@@ -6,6 +6,9 @@
 template					<typename final_type>
 class						usual_object : public object
 {
+	template				<typename, typename>
+	friend class 			inheritor_object;
+
 public :
 
 	using					object::state;

@@ -40,7 +40,8 @@ set(SOURCES_UI
 	${PROJECT_ROOT}/ui/font/font.cpp
 	${PROJECT_ROOT}/ui/font/symbol.cpp
 	${PROJECT_ROOT}/ui/font/symbol_renderer.cpp
-	${PROJECT_ROOT}/ui/text/text.cpp)
+	${PROJECT_ROOT}/ui/text/text.cpp
+	${PROJECT_ROOT}/ui/button/button.cpp)
 
 set(SOURCES_PLAYER
 	${PROJECT_ROOT}/player/player/player.cpp

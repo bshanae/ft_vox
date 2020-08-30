@@ -11,6 +11,9 @@ class						object : public enable_shared_from_this<object>
 	template				<typename>
 	friend class 			usual_object;
 
+	template				<typename, typename>
+	friend class 			inheritor_object;
+
 protected :
 
 	enum class 				state
@@ -43,6 +46,9 @@ protected :
 	{
 		template			<typename>
 		friend class 		usual_object;
+
+		template			<typename, typename>
+		friend class 		inheritor_object;
 	}						state;
 
 	virtual void 			render() = 0;

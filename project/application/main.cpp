@@ -10,9 +10,6 @@
 #include "player/camera/camera.h"
 #include "player/player/player.h"
 
-#include "ui/text/text.h"
-#include "ui/font/font.h"
-
 int						main()
 {
 	core::initialize();
@@ -48,11 +45,6 @@ int						main()
 	texture_atlas::association_for(block::type::water) = ivec2(13, 3);
 
 	texture_atlas::association_for(block::type::blue_flower) = ivec2(12, 15);
-
-	auto text = text::create();
-
-	text->position = vec2(0.5f);
-	text->font = font::create("project/resources/fonts/HelveticaNeue.ttc", 50);
 
 	core::execute();
 

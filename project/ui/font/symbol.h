@@ -12,7 +12,6 @@ class 									font;
 class									symbol : public texture
 {
 	friend class						font;
-	friend class						text;
 
 public :
 
@@ -23,11 +22,11 @@ public :
 	property<read_only, ivec2, symbol>	bearing;
 	property<read_only, int, symbol>	advance;
 
+	void 								render(const ivec2 &position);
+
 private :
 
 	shared_ptr<font>					font;
-
-	void 								render(const vec2 &position);
 };
 
 

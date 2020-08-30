@@ -8,8 +8,20 @@
 {
 	usual_object::layout = "UI";
 
+	string.setter = [this](const ::string &value)
+	{
+		string.value = value;
+		recalculate_size();
+	};
+
+	font.setter = [this](const shared_ptr<::font> &value)
+	{
+		font.value = value;
+		recalculate_size();
+	};
+
 	string = "EMPTY";
-	position = vec2(0, 0);
+	position = ivec2(0, 0);
 	font = nullptr;
 }
 
@@ -17,22 +29,37 @@ void 				text::render()
 {
 	assert(*font);
 
-	ivec2			position_iterator = window::to_absolute(position);
+	ivec2			position_iterator = position;
 	vec3			position_of_symbol = vec3(0.f);
 
+	position_iterator = window::invert_y(position_iterator);
 	for (char character : *string)
 	{
 		auto		symbol = (*font)->find_symbol(character);
 
-		auto		size = *symbol->size;
 		auto		bearing = *symbol->bearing;
 		auto		advance = *symbol->advance;
 
-		position_of_symbol.x = (float)(position_iterator.x + bearing.x) + (float)size.x / 2.f;
-		position_of_symbol.y = (float)(position_iterator.y - bearing.y) + (float)size.y / 2.f;
+		position_of_symbol.x = (float)(position_iterator.x);
+		position_of_symbol.y = (float)(position_iterator.y - bearing.y);
 
 		symbol->render(position_of_symbol);
 
-		position_iterator.x += advance;
+		position_iterator.x += advance + bearing.x;
+	}
+}
+
+void				text::recalculate_size()
+{
+	size = vec2(0, 0);
+
+	if (not *font)
+		return ;
+	for (char character : *string)
+	{
+		auto 		symbol = (*font)->find_symbol(character);
+
+		size.value.x += symbol->size->x + symbol->advance + symbol->bearing->x;
+		size.value.y = max(size->y, symbol->size->y);
 	}
 }
