@@ -2,9 +2,9 @@
 
 #include "engine/time/timestamp.h"
 #include "world/block/block_selector.h"
-#include "world/chunk/chunk_loader.h"
-#include "world/chunk/chunk_generator.h"
 #include "world/chunk/chunk_renderer.h"
+#include "world/generator/generator.h"
+#include "world/loader/loader.h"
 #include "player/camera/camera.h"
 
 static const vec3		left = vec3(-chunk_settings::size[0], 0.f, 0.f);
@@ -157,7 +157,7 @@ void					world::deinitialize_implementation()
 {
 	for (auto [position, chunk] : chunks)
 		if (not chunk->can_be_regenerated)
-			chunk_loader::upload(chunk);
+			loader::upload(chunk);
 }
 
 void					world::update()
@@ -251,14 +251,12 @@ void					world::create_chunk(const vec3 &position)
 {
 	shared_ptr<chunk>	chunk;
 
-	if ((chunk = chunk_loader::download(position)))
+	if ((chunk = loader::download(position)))
 		chunk->can_be_regenerated = false;
 	else
 		chunk = make_shared<::chunk>(position);
 
 #warning "Generation module needed"
-//	if (not (chunk = chunk_loader::download(position)))
-//		chunk = chunk_generator::generate(position);
 
 	new_chunks.emplace(position, chunk);
 }
@@ -266,7 +264,7 @@ void					world::create_chunk(const vec3 &position)
 void					world::destroy_chunk(const shared_ptr<chunk> &chunk)
 {
 	if (not chunk->can_be_regenerated)
-		chunk_loader::upload(chunk);
+		loader::upload(chunk);
 	old_chunks.push_back(chunk);
 }
 

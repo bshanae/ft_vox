@@ -1,30 +1,21 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "external/FastNoise/FastNoise.h"
+#include "common/glm.h"
+#include "engine/object/unique_object.h"
 
-class				generator
+class 							chunk;
+
+class							generator : public unique_object<generator>
 {
-public:
-					generator() = default;
-	virtual			~generator() = default;
+public :
+								generator() = default;
+								~generator() = default;
 
-	virtual float	get_noise(float x, float y) = 0;
-	virtual float	get_noise(float x, float y, float z) = 0;
 
-protected :
+	static shared_ptr<chunk>	generate(const vec3 &position);
 
-	FastNoise		noise;
+private :
 };
-/*
-mapHeight[] = getheight
- 3dmap for(xyz)
- {
- 	y >  height = air
- 	{
- 		200 < getGenerator(dimod)
- 		else
- 			stome
- 	}
- }
- */
+
+

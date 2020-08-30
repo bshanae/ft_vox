@@ -1,5 +1,6 @@
 #include "loader.h"
 
+#include "world/chunk/chunk.h"
 #include "world/loader/loader_settings.h"
 
 					loader::loader() : file(loader_settings::path_to_file)
@@ -25,14 +26,10 @@
 	file.close();
 }
 
-void					loader::initialize_implementation()
+shared_ptr<chunk>		loader::download(const vec3 &position)
 {
-	static_assert(sizeof(enum block::type) == 1u and "Block type should be size of byte");
-	chunk_loader::pointer = instance();
-}
+	auto				&file = instance()->file;
 
-shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
-{
 	int					pointer;
 	bool 				have_found_chunk = false;
 
@@ -76,8 +73,10 @@ shared_ptr<chunk>		loader::download_implementation(const vec3 &position)
 	return (chunk);
 }
 
-void					loader::upload_implementation(const shared_ptr<chunk> &chunk)
+void					loader::upload(const shared_ptr<chunk> &chunk)
 {
+	auto				&file = instance()->file;
+
 	bool 				have_found_place_for_writing = false;
 	int					pointer;
 

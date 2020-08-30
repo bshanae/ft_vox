@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "world/chunk/chunk_loader.h"
 #include "world/loader/file.h"
 #include "engine/object/unique_object.h"
 
