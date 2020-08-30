@@ -120,5 +120,5 @@ void				input::update_mouse()
 
 	mouse_current_position = position;
 	mouse_offset.value.x = mouse_current_position->x - mouse_last_position->x;
-	mouse_offset.value.y = mouse_last_position->y - mouse_current_position->y;
+	mouse_offset.value.y = mouse_current_position->y - mouse_last_position->y;
 }
