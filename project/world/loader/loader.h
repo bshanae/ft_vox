@@ -12,7 +12,7 @@ public :
 								loader();
 								~loader() override;
 
-	static shared_ptr<chunk>	download(const vec3 &world_position);
+	static bool					download(const shared_ptr<chunk> &chunk);
 	static void					upload(const shared_ptr<chunk> &chunk);
 
 private :

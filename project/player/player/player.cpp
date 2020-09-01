@@ -129,7 +129,12 @@ void 					player::process_selection()
 	if (camera::have_changed or force_ray_cast)
 	{
 		if (auto hit = camera::cast_ray(); hit)
+		{
+#if VOX_DEBUG_PLAYER
+			cout << "Selected block : " << to_string(hit->block.world_position()) << endl;
+#endif
 			world::select_block(hit->block, hit->face);
+		}
 		else
 			world::unselect_block();
 
@@ -154,10 +159,14 @@ aabb					player::aabb(const vec3 &position) const
 
 void					player::offset_camera_if_possible(const vec3 &offset) const
 {
+#if VOX_DEBUG_PLAYER
+	camera::position = (vec3)camera::position + offset;
+#else
 	const vec3			new_position = (vec3)camera::position + offset;
 
-//	if (not world::does_collide(player::aabb(new_position)))
+	if (not world::does_collide(player::aabb(new_position)))
 		camera::position = new_position;
+#endif
 }
 
 vec3					player::discard_y_and_normalize(const vec3 &original)

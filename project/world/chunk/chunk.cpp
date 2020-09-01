@@ -151,40 +151,17 @@ void					chunk::build(build_request request)
 			break ;
 
 		case (build_request::light) :
-			if (build_phase == build_phase::nothing_done)
-			{
-				build_phase = build_phase::light_in_process;
-				light_build_status = async(launch::async, &chunk::build_light, this);
-			}
-			if (build_phase == build_phase::light_in_process)
-			{
-				if (light_build_status.wait_for(chrono::seconds(0)) == future_status::ready)
-					build_phase = build_phase::light_done;
-			}
-			else
-				assert(0);
+			build_phase = build_phase::light_in_process;
+			light_build_status = async(launch::async, &chunk::build_light, this);
 			break ;
 
 		case (build_request::geometry) :
-			if (build_phase == build_phase::light_done)
-			{
-				build_phase = build_phase::geometry_in_process;
+			assert(build_phase == build_phase::light_done);
+			build_phase = build_phase::geometry_in_process;
 
-				workspace_for_opaque.geometry_build_status = async(launch::async, &chunk::build_geometry, this, ref(workspace_for_opaque));
-				workspace_for_transparent.geometry_build_status = async(launch::async, &chunk::build_geometry, this, ref(workspace_for_transparent));
-				workspace_for_partially_transparent.geometry_build_status = async(launch::async, &chunk::build_geometry, this, ref(workspace_for_partially_transparent));
-			}
-			else if (build_phase == build_phase::geometry_in_process)
-			{
-				bool is_opaque_ready = workspace_for_opaque.geometry_build_status.wait_for(chrono::seconds(0)) == future_status::ready;
-				bool is_transparent_ready = workspace_for_transparent.geometry_build_status.wait_for(chrono::seconds(0)) == future_status::ready;
-				bool is_partially_transparent_ready = workspace_for_partially_transparent.geometry_build_status.wait_for(chrono::seconds(0)) == future_status::ready;
-
-				if (is_opaque_ready and is_transparent_ready and is_partially_transparent_ready)
-					build_phase = build_phase::geometry_done;
-			}
-			else
-				assert(0);
+			workspace_for_opaque.geometry_build_status = async(launch::async, &chunk::build_geometry, this, ref(workspace_for_opaque));
+			workspace_for_transparent.geometry_build_status = async(launch::async, &chunk::build_geometry, this, ref(workspace_for_transparent));
+			workspace_for_partially_transparent.geometry_build_status = async(launch::async, &chunk::build_geometry, this, ref(workspace_for_partially_transparent));
 			break ;
 
 		case (build_request::model) :
@@ -194,6 +171,42 @@ void					chunk::build(build_request request)
 			build_model(workspace_for_partially_transparent);
 			build_phase = build_phase::model_done;
 			break ;
+
+		default :
+			assert(0);
+	}
+}
+
+void					chunk::wait(build_request request)
+{
+	switch (request)
+	{
+		case (build_request::reset) :
+			build_phase = build_phase::nothing_done;
+			break ;
+
+		case (build_request::light) :
+			if (light_build_status.wait_for(chrono::seconds(0)) == future_status::ready)
+				build_phase = build_phase::light_done;
+			break ;
+
+		case (build_request::geometry) :
+			assert(build_phase == build_phase::geometry_in_process);
+
+			bool is_opaque_ready;
+			bool is_transparent_ready;
+			bool is_partially_transparent_ready;
+
+			is_opaque_ready = workspace_for_opaque.geometry_build_status.wait_for(chrono::seconds(0)) == future_status::ready;
+			is_transparent_ready = workspace_for_transparent.geometry_build_status.wait_for(chrono::seconds(0)) == future_status::ready;
+			is_partially_transparent_ready = workspace_for_partially_transparent.geometry_build_status.wait_for(chrono::seconds(0)) == future_status::ready;
+
+			if (is_opaque_ready and is_transparent_ready and is_partially_transparent_ready)
+				build_phase = build_phase::geometry_done;
+			break ;
+
+		default :
+			assert(0);
 	}
 }
 
@@ -446,7 +459,7 @@ void					chunk::build_quad(
 		workspace.vertices[i + 2] += (float)index.z;
 	}
 
-	auto				transform_texture_coordinate = [this, texture_index](float &x, float &y)
+	auto				transform_texture_coordinate = [texture_index](float &x, float &y)
 	{
 		static vec2 	size = texture_atlas::texture_size();
 

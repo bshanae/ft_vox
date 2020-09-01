@@ -31,7 +31,7 @@
 
 	glGetShaderiv(value, GL_COMPILE_STATUS, &success);
 
-#if VOX_DEBUG
+#if VOX_DEBUG_ENGINE
 	GLchar				log[1024];
 
 	if (not success)

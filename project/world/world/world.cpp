@@ -249,12 +249,12 @@ bool					world::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 
 void					world::create_chunk(const vec3 &position)
 {
-	shared_ptr<chunk>	chunk;
+	shared_ptr<chunk>	chunk = make_shared<::chunk>(position);
 
-	if ((chunk = loader::download(position)))
+	if (loader::download(chunk))
 		chunk->can_be_regenerated = false;
 	else
-		chunk = generator::generate(position);
+		generator::generate(chunk);
 
 	new_chunks.emplace(position, chunk);
 }
@@ -268,28 +268,39 @@ void					world::destroy_chunk(const shared_ptr<chunk> &chunk)
 
 void 					world::try_build_chunk(const shared_ptr<chunk> &chunk)
 {
+	static auto 		chunk_exist_and_has_light = [](const vec3 &position)
+	{
+		auto 			chunk = find_chunk(position);
+
+		return (chunk and chunk->build_phase >= chunk::build_phase::light_done);
+	};
+
 	switch (chunk->build_phase)
 	{
 		case (chunk::build_phase::nothing_done) :
-		case (chunk::build_phase::light_in_process) :
 			chunk->build(chunk::build_request::light);
 			break ;
 
+		case (chunk::build_phase::light_in_process) :
+			chunk->wait(chunk::build_request::light);
+			break ;
+
 		case (chunk::build_phase::light_done) :
+			if
+			(
+				chunk_exist_and_has_light(*chunk->position + left) and
+				chunk_exist_and_has_light(*chunk->position + right) and
+				chunk_exist_and_has_light(*chunk->position + forward) and
+				chunk_exist_and_has_light(*chunk->position + back)
+			)
+				chunk->build(chunk::build_request::geometry);
+			break ;
+
 		case (chunk::build_phase::geometry_in_process) :
-			chunk->build(chunk::build_request::geometry);
+			chunk->wait(chunk::build_request::geometry);
 			break ;
 
 		case (chunk::build_phase::geometry_done) :
-			if (find_chunk(*chunk->position + left) == nullptr)
-				return;
-			if (find_chunk(*chunk->position + right) == nullptr)
-				return;
-			if (find_chunk(*chunk->position + forward) == nullptr)
-				return;
-			if (find_chunk(*chunk->position + back) == nullptr)
-				return;
-
 			chunk->build(chunk::build_request::model);
 			break ;
 

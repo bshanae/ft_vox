@@ -17,7 +17,7 @@
 
 	glGetProgramiv(value, GL_LINK_STATUS, &success);
 
-#if VOX_DEBUG
+#if VOX_DEBUG_ENGINE
 	GLchar			log[1024];
 
 	glGetProgramiv(value, GL_LINK_STATUS, &success);

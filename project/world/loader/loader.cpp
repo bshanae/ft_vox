@@ -26,7 +26,7 @@
 	file.close();
 }
 
-shared_ptr<chunk>		loader::download(const vec3 &position)
+bool					loader::download(const shared_ptr<chunk> &chunk)
 {
 	auto				&file = instance()->file;
 
@@ -46,7 +46,7 @@ shared_ptr<chunk>		loader::download(const vec3 &position)
 		file >> (char &)test_state;
 		file >> test_position;
 
-		if (test_state == chunk_state::valid and test_position == position)
+		if (test_state == chunk_state::valid and test_position == *chunk->position)
 		{
 			have_found_chunk = true;
 			break ;
@@ -58,19 +58,16 @@ shared_ptr<chunk>		loader::download(const vec3 &position)
 	if (not have_found_chunk)
 	{
 		file.clear();
-		return (nullptr);
+		return (false);
 	}
 
-	shared_ptr<chunk>	chunk;
-
-	chunk = make_shared<::chunk>(position);
 	for (auto iterator = chunk->begin(); iterator != chunk->end(); iterator++)
 		file >> (char &)iterator->value().type;
 
 	file.write_pointer = pointer;
 	file << (char)(chunk_state::invalid);
 
-	return (chunk);
+	return (true);
 }
 
 void					loader::upload(const shared_ptr<chunk> &chunk)

@@ -15,8 +15,7 @@ public :
 						~generator() override = default;
 
 
-	static
-	shared_ptr<chunk>	generate(const vec3 &position);
+	static void			generate(const shared_ptr<chunk> &chunk);
 
 	int 				height_level(const vec3 &position);
 

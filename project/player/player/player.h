@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/debug.h"
 #include "engine/object/unique_object.h"
 #include "engine/time/timer.h"
 #include "world/aabb/aabb.h"

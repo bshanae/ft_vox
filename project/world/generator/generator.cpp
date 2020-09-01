@@ -11,16 +11,15 @@
 	noise.SetNoiseType(FastNoise::Simplex);
 }
 
-shared_ptr<chunk>		generator::generate(const vec3 &position)
+void					generator::generate(const shared_ptr<chunk> &chunk)
 {
 	static const int	water_level = 20;
 
 	auto 				instance = generator::instance();
+	const vec3			position = chunk->position;
 
-	shared_ptr<chunk>	chunk;
 	chunk::index		index;
 
-	chunk = make_shared<::chunk>(position);
 	for (index.x = 0; index.x < chunk_settings::size[0]; index.x++)
 		for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
 		{
@@ -33,8 +32,6 @@ shared_ptr<chunk>		generator::generate(const vec3 &position)
 				else if (index.y <= water_level)
 					chunk->at(index).type = block::type::water;
 		}
-
-	return (chunk);
 }
 
 int 					generator::height_level(const vec3 &position)

@@ -87,6 +87,7 @@ private :
 // ------------------------------------ Build functions
 
 	void								build(build_request request);
+	void								wait(build_request request);
 
 	void								build_light();
 	void								build_geometry(batch_workspace &workspace);
