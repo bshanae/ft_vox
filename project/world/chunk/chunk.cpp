@@ -134,28 +134,6 @@ static vector<GLuint>	indices =
 	workspace_for_opaque.predicate = [](block &block){ return (block.is_opaque()); };
 	workspace_for_transparent.predicate = [](block &block){ return (block.is_transparent()); };
 	workspace_for_partially_transparent.predicate = [](block &block){ return (block.is_partially_transparent()); };
-
-	index				i;
-
-	i.y = 1;
-	for (i.x = 0; i.x < chunk_settings::size[0]; i.x++)
-		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
-			at(i).type = block::type::dirt;
-	i.y = 0;
-	for (i.x = 0; i.x < chunk_settings::size[0]; i.x++)
-		for (i.z = 0; i.z < chunk_settings::size[2]; i.z++)
-			at(i).type = block::type::dirt;
-
-	at(0, 1 , 0).type = block::type::water;
-	at(1, 1 , 0).type = block::type::water;
-
-	at(0, 2, 0).type = block::type::water;
-	at(1, 2, 0).type = block::type::water;
-
-	at(0, 3, 0).type = block::type::water;
-	at(1, 3, 0).type = block::type::water;
-
-	at(2, 2 , 0).type = block::type::blue_flower;
 }
 
 // -------------------- Build functions
@@ -333,7 +311,7 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 
 char					chunk::apply_ao(char light_level, float ao)
 {
-	const char			dynamic_part = (float)light_level * 0.8f;
+	const char			dynamic_part = (float)light_level * 0.4f;
 	const char			static_part = light_level - dynamic_part;
 
 	const char			ao_result = (float)dynamic_part * (1.f - ao);

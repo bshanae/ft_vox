@@ -254,9 +254,7 @@ void					world::create_chunk(const vec3 &position)
 	if ((chunk = loader::download(position)))
 		chunk->can_be_regenerated = false;
 	else
-		chunk = make_shared<::chunk>(position);
-
-#warning "Generation module needed"
+		chunk = generator::generate(position);
 
 	new_chunks.emplace(position, chunk);
 }

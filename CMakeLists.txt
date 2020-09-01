@@ -53,6 +53,7 @@ include_directories(
 	${PROJECT_ROOT}
 	${PROJECT_EXTERNAL}/glad/include
 	${PROJECT_EXTERNAL}/glfw/include
+	${PROJECT_EXTERNAL}/glm
 	${PROJECT_EXTERNAL}/stb
 	${PROJECT_EXTERNAL}/freetype2/include
 	${PROJECT_EXTERNAL}/FastNoise)

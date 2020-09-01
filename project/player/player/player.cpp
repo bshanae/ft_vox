@@ -156,7 +156,7 @@ void					player::offset_camera_if_possible(const vec3 &offset) const
 {
 	const vec3			new_position = (vec3)camera::position + offset;
 
-	if (not world::does_collide(player::aabb(new_position)))
+//	if (not world::does_collide(player::aabb(new_position)))
 		camera::position = new_position;
 }
 

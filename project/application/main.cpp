@@ -6,6 +6,7 @@
 #include "world/block/block_selector.h"
 #include "world/block/block_selector_renderer.h"
 #include "world/chunk/chunk_renderer.h"
+#include "world/generator/generator.h"
 #include "world/loader/loader.h"
 #include "player/camera/camera.h"
 #include "player/player/player.h"
@@ -22,6 +23,7 @@ int						main()
 	font_library::create();
 	symbol_renderer::create();
 
+	generator::create();
 	loader::create();
 	block_selector::create();
 	block_selector_renderer::create();
@@ -32,6 +34,8 @@ int						main()
 	player::create();
 
 	texture_atlas::initialize("Project/resources/atlases/default.png");
+
+	texture_atlas::association_for(block::type::stone) = ivec2(1, 15);
 
 	texture_atlas::association_for(block::type::dirt) = ivec2(2, 15);
 

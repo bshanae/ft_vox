@@ -48,7 +48,12 @@ bool				block::is_empty() const
 
 bool				block::is_opaque() const
 {
-	return (type == type::dirt or type == type::dirt_with_grass);
+	return
+	(
+		type == type::stone or
+		type == type::dirt or
+		type == type::dirt_with_grass
+	);
 }
 
 bool				block::is_transparent() const
@@ -83,7 +88,13 @@ bool				block::is_solid() const
 
 bool				block::is_editable() const
 {
-	return (type == type::dirt or type == type::dirt_with_grass or type == type::blue_flower);
+	return
+	(
+		type == type::stone or
+		type == type::dirt or
+		type == type::dirt_with_grass or
+		type == type::blue_flower
+	);
 }
 
 ostream				&operator << (ostream &stream, enum block::type type)

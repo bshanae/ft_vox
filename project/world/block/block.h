@@ -12,6 +12,7 @@ public :
 	enum class					type : char
 	{
 		air,
+		stone,
 		dirt,
 		dirt_with_grass,
 		water,

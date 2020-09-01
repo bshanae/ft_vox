@@ -1,12 +1,13 @@
 #pragma once
 
-#include "external/glm/glm/glm.hpp"
-#include "external/glm/glm/gtc/quaternion.hpp"
-#include "external/glm/glm/gtc/matrix_transform.hpp"
-#include "external/glm/glm/gtc/type_ptr.hpp"
-#include "external/glm/glm/gtx/string_cast.hpp"
-#include "external/glm/glm/gtx/euler_angles.hpp"
-#include "external/glm/glm/gtx/transform.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/quaternion.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/gtx/string_cast.hpp"
+#include "glm/gtx/euler_angles.hpp"
+#include "glm/gtx/transform.hpp"
+#include "glm/gtc/noise.hpp"
 
 using 				glm::ivec2;
 using 				glm::vec2;
@@ -27,3 +28,5 @@ using 				glm::distance;
 
 using 				glm::value_ptr;
 using				glm::radians;
+
+using				glm::simplex;
