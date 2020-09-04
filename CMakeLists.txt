@@ -31,7 +31,7 @@ set(SOURCES_WORLD
 	${PROJECT_ROOT}/world/chunk/chunk.cpp
 	${PROJECT_ROOT}/world/chunk/chunk_renderer.cpp
 	${PROJECT_ROOT}/world/world/world.cpp
-	${PROJECT_ROOT}/world/generator/generator.cpp
+	${PROJECT_ROOT}/world/generator/generator/generator.cpp
 	${PROJECT_ROOT}/world/loader/file.cpp
 	${PROJECT_ROOT}/world/loader/loader.cpp)
 

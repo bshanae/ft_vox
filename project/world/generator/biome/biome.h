@@ -4,7 +4,8 @@
 #include "common/property.h"
 #include "engine/object/unique_object.h"
 #include "world/block/block.h"
-#include "world/generator/noise.h"
+#include "world/generator/noise/noise.h"
+#include "world/generator/noise/random_noise.h"
 
 class 						biome
 {
@@ -27,12 +28,12 @@ public :
 		switch (this->type.value = type)
 		{
 			case (test_dirt) :
-				noise = ::noise(FastNoise::Perlin, 0.01, 15);
+				noise = make_shared<random_noise>(0.01, 10.f);
 				first_layer = block::type::dirt;
 				break ;
 
 			case (test_stone) :
-				noise = ::noise(FastNoise::Perlin, 0.01, 40);
+				noise = make_shared<random_noise>(0.01, 10.f);
 				first_layer = block::type::stone;
 				break ;
 
@@ -57,7 +58,7 @@ public :
 	int 					height(const vec3 &position) const
 	{
 		assert(type != biome::null);
-		return ((int)noise(position));
+		return ((int)(*noise)(position));
 	}
 
 	friend bool 			operator == (const biome &left, const biome &right)
@@ -72,5 +73,5 @@ public :
 
 private :
 
-	noise					noise;
+	shared_ptr<noise>		noise;
 };

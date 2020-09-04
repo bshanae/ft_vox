@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "world/generator/biome.h"
+#include "world/generator/biome/biome.h"
 
 class 					biome_collection : public unique_object<biome_collection>
 {

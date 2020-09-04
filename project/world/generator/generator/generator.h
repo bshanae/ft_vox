@@ -5,7 +5,7 @@
 #include "common/aliases.h"
 #include "common/glm.h"
 #include "engine/object/unique_object.h"
-#include "world/generator/biome_collection.h"
+#include "world/generator/biome/biome_collection.h"
 
 class 					chunk;
 

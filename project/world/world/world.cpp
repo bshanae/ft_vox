@@ -3,7 +3,7 @@
 #include "engine/time/timestamp.h"
 #include "world/block/block_selector.h"
 #include "world/chunk/chunk_renderer.h"
-#include "world/generator/generator.h"
+#include "world/generator/generator/generator.h"
 #include "world/loader/loader.h"
 #include "player/camera/camera.h"
 

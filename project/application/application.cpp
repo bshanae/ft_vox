@@ -8,7 +8,7 @@
 #include "world/block/block_selector.h"
 #include "world/block/block_selector_renderer.h"
 #include "world/chunk/chunk_renderer.h"
-#include "world/generator/generator.h"
+#include "world/generator/generator/generator.h"
 #include "world/loader/loader.h"
 #include "player/camera/camera.h"
 #include "player/player/player.h"

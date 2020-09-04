@@ -25,8 +25,7 @@ using				glm::eulerAngleYXZ;
 
 using 				glm::normalize;
 using 				glm::distance;
+using				glm::fract;
 
 using 				glm::value_ptr;
 using				glm::radians;
-
-using				glm::simplex;
