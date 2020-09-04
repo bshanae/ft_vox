@@ -5,6 +5,7 @@
 #include "common/aliases.h"
 #include "common/glm.h"
 #include "engine/object/unique_object.h"
+#include "world/generator/biome_collection.h"
 
 class 					chunk;
 
@@ -17,11 +18,22 @@ public :
 
 	static void			generate(const shared_ptr<chunk> &chunk);
 
-	int 				height_level(const vec3 &position);
-
 private :
 
-	FastNoise			noise;
+	struct
+	{
+		vec3			position;
+
+		biome			biome;
+		int				height;
+	}					workspace;
+
+	FastNoise			noise_for_biome;
+
+	biome				biome(const vec3 &position);
+	optional<::biome>	neighbor_biome(const vec3 &direction);
+
+	void				process_column(const vec3 &position);
 };
 
 

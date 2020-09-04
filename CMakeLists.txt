@@ -47,6 +47,7 @@ set(SOURCES_PLAYER
 	${PROJECT_ROOT}/player/camera/camera.cpp)
 
 set(SOURCES_APPLICATION
+	${PROJECT_ROOT}/application/application.cpp
 	${PROJECT_ROOT}/application/main.cpp)
 
 include_directories(
