@@ -18,7 +18,9 @@ public :
 private :
 
 	bool			force_ray_cast = false;
-	bool 			flying = false;
+
+	bool 			is_jumping = false;
+	bool 			is_flying = false;
 
 	engine::timer	timer_for_second_space;
 
