@@ -2,6 +2,8 @@
 
 #include "engine/input/input.h"
 
+using namespace		engine;
+
 					window::window()
 {
 	glfwInit();

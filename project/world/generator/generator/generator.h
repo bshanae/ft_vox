@@ -4,36 +4,41 @@
 
 #include "common/aliases.h"
 #include "common/glm.h"
-#include "engine/object/unique_object.h"
+#include "engine/object/unique_object/unique_object.h"
 #include "world/generator/biome/biome_collection.h"
 
-class 					chunk;
+namespace						world
+{
+	class						chunk;
 
-class					generator : public unique_object<generator>
+	class						generator;
+}
+
+class							world::generator : public engine::unique_object<generator>
 {
 public :
-						generator();
-						~generator() override = default;
+								generator();
+								~generator() override = default;
 
 
-	static void			generate(const shared_ptr<chunk> &chunk);
+	static void					generate(const shared_ptr<chunk> &chunk);
 
 private :
 
 	struct
 	{
-		vec3			position;
+		vec3					position;
 
-		biome			biome;
-		int				height;
-	}					workspace;
+		biome					biome;
+		int						height;
+	}							workspace;
 
-	FastNoise			noise_for_biome;
+	FastNoise					noise_for_biome;
 
-	biome				biome(const vec3 &position);
-	optional<::biome>	neighbor_biome(const vec3 &direction);
+	biome						biome(const vec3 &position);
+	optional<::world::biome>	neighbor_biome(const vec3 &direction);
 
-	void				process_column(const vec3 &position);
+	void						process_column(const vec3 &position);
 };
 
 

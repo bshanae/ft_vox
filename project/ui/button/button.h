@@ -1,12 +1,17 @@
 #pragma once
 
-#include "engine/object/inheritor_object.h"
-#include "ui/font/font.h"
+#include "engine/object/inheritor_object/inheritor_object.h"
+#include "ui/font/font/font.h"
 #include "ui/text/text.h"
 
-class 				font;
+namespace			ui
+{
+	class 			font;
 
-class				button : public inheritor_object<button, text>
+	class			button;
+}
+
+class				ui::button : public engine::inheritor_object<button, text>
 {
 public :
 					button();

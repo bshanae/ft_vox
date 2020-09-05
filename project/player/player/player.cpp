@@ -5,21 +5,23 @@
 #include "player/camera/camera.h"
 #include "player/player/player_settings.h"
 
-						player::player()
+using namespace 		engine;
+
+						player::player::player()
 {
 	layout = "System";
 	should_be_rendered = false;
 	timer_for_second_space = timer(player_settings::second_space_wait);
 }
 
-void					player::update()
+void					player::player::update()
 {
 	process_physics();
 	process_input();
 	process_selection();
 }
 
-void 					player::process_physics()
+void 					player::player::process_physics()
 {
 	vec3				position;
 
@@ -38,13 +40,13 @@ void 					player::process_physics()
 	velocity += player_settings::gravity_force;
 	position = (vec3)camera::position + velocity;
 
-	if (world::does_collide(player::aabb(position)))
+	if (world::world::does_collide(player::aabb(position)))
 		velocity = vec3();
 	else
 		camera::position = position;
 }
 
-void 					player::process_input()
+void 					player::player::process_input()
 {
 	vec3				movement = vec3(0.f);
 
@@ -104,7 +106,7 @@ void 					player::process_input()
 	{
 		if (auto hit = camera::cast_ray(); hit)
 		{
-			world::remove_block(hit->block);
+			world::world::remove_block(hit->block);
 			force_ray_cast = true;
 		}
 	}
@@ -113,18 +115,18 @@ void 					player::process_input()
 	{
 		if (auto hit = camera::cast_ray(); hit)
 		{
-			auto 	axis_and_sign = block::to_axis_and_sign(hit->face);
+			auto 	axis_and_sign = world::block::to_axis_and_sign(hit->face);
 			auto	neighbor = hit->block.neighbor(axis_and_sign.first, axis_and_sign.second);
 
 			assert(neighbor);
-			world::insert_block(*neighbor, block::type::dirt_with_grass);
+			world::world::insert_block(*neighbor, world::block::type::dirt_with_grass);
 
 			force_ray_cast = true;
 		}
 	}
 }
 
-void 					player::process_selection()
+void 					player::player::process_selection()
 {
 	if (camera::have_changed or force_ray_cast)
 	{
@@ -133,16 +135,16 @@ void 					player::process_selection()
 #if VOX_DEBUG_PLAYER
 			cout << "Selected block : " << to_string(hit->block.world_position()) << endl;
 #endif
-			world::select_block(hit->block, hit->face);
+			world::world::select_block(hit->block, hit->face);
 		}
 		else
-			world::unselect_block();
+			world::world::unselect_block();
 
 		force_ray_cast = false;
 	}
 }
 
-aabb					player::aabb(const vec3 &position) const
+world::aabb				player::player::aabb(const vec3 &position) const
 {
 	vec3				min = position;
 	vec3				max = position;
@@ -157,19 +159,19 @@ aabb					player::aabb(const vec3 &position) const
 	return {min, max};
 }
 
-void					player::offset_camera_if_possible(const vec3 &offset) const
+void					player::player::offset_camera_if_possible(const vec3 &offset) const
 {
 #if VOX_DEBUG_PLAYER
 	camera::position = (vec3)camera::position + offset;
 #else
 	const vec3			new_position = (vec3)camera::position + offset;
 
-	if (not world::does_collide(player::aabb(new_position)))
+	if (not world::world::does_collide(player::aabb(new_position)))
 		camera::position = new_position;
 #endif
 }
 
-vec3					player::discard_y_and_normalize(const vec3 &original)
+vec3					player::player::discard_y_and_normalize(const vec3 &original)
 {
 	return (glm::normalize(vec3(original.x, 0.f, original.z)));
 }

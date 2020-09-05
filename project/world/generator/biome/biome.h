@@ -2,12 +2,16 @@
 
 #include "common/aliases.h"
 #include "common/property.h"
-#include "engine/object/unique_object.h"
-#include "world/block/block.h"
+#include "world/block/block/block.h"
 #include "world/generator/noise/noise.h"
 #include "world/generator/noise/random_noise.h"
 
-class 						biome
+namespace					world
+{
+	class 					biome;
+}
+
+class 						world::biome
 {
 public :
 

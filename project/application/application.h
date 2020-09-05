@@ -2,7 +2,12 @@
 
 #include "common/global.h"
 
-class				application : public global<application>
+namespace			application
+{
+	class 			application;
+}
+
+class				application::application : public global<application>
 {
 public :
 					application();
@@ -12,14 +17,14 @@ public :
 
 private :
 
-	void 			initialize_engine();
+	static void		initialize_engine();
 
-	void 			initialize_ui();
+	static void		initialize_ui();
 
-	void 			initialize_world();
-	void			initialize_texture_atlas();
+	static void		initialize_world();
+	static void		initialize_texture_atlas();
 
-	void 			initialize_player();
+	static void		initialize_player();
 };
 
 

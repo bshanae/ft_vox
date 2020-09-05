@@ -4,11 +4,16 @@
 #include "common/aliases.h"
 #include "common/global.h"
 #include "common/property.h"
-#include "engine/object/unique_object.h"
-#include "world/block/block_id.h"
+#include "engine/object/unique_object/unique_object.h"
+#include "world/block/block_id/block_id.h"
 #include "player/camera/camera_settings.h"
 
-class									camera : public unique_object<camera>
+namespace								player
+{
+	class								camera;
+}
+
+class									player::camera : public engine::unique_object<camera>
 {
 public :
 										camera();
@@ -40,8 +45,8 @@ public :
 
 	struct								hit
 	{
-		block_id						block;
-		block::face						face;
+		world::block_id					block;
+		world::block::face				face;
 	};
 
 	static optional<hit>				cast_ray();

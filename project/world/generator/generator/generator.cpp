@@ -2,6 +2,8 @@
 
 #include "world/chunk/chunk.h"
 
+using namespace			world;
+
 						generator::generator()
 {
 	object::layout = "System";

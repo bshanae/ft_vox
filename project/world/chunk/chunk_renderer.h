@@ -2,14 +2,22 @@
 
 #include "common/opengl.h"
 #include "common/aliases.h"
-#include "engine/object/unique_object.h"
-#include "engine/program/program.h"
-#include "engine/program/uniform.h"
+#include "engine/object/unique_object/unique_object.h"
+#include "engine/program/program/program.h"
+#include "engine/program/uniform/uniform.h"
 #include "world/chunk/chunk.h"
 
-class 											model;
+namespace										engine
+{
+	class										model;
+}
 
-class											chunk_renderer : public unique_object<chunk_renderer>
+namespace										world
+{
+	class										chunk_renderer;
+}
+
+class											world::chunk_renderer : public engine::unique_object<chunk_renderer>
 {
 public :
 												chunk_renderer();
@@ -25,15 +33,15 @@ private :
 	inline static const path					path_to_vertex_shader = "project/resources/shaders/chunk.vertex.glsl";
 	inline static const path					path_to_fragment_shader = "project/resources/shaders/chunk.fragment.glsl";
 
-	unique_ptr<program>							program;
+	unique_ptr<engine::program>					program;
 
-	uniform<mat4>								uniform_projection;
-	uniform<mat4>								uniform_view;
-	uniform<mat4>								uniform_transformation;
-	uniform<int>								uniform_texture;
-	uniform<float>								uniform_alpha_discard_floor;
-	uniform<vec3>								uniform_background;
-	uniform<float>								uniform_fog_density;
-	uniform<float>								uniform_fog_gradient;
-	uniform<int>								uniform_apply_water_tint;
+	engine::uniform<mat4>						uniform_projection;
+	engine::uniform<mat4>						uniform_view;
+	engine::uniform<mat4>						uniform_transformation;
+	engine::uniform<int>						uniform_texture;
+	engine::uniform<float>						uniform_alpha_discard_floor;
+	engine::uniform<vec3>						uniform_background;
+	engine::uniform<float>						uniform_fog_density;
+	engine::uniform<float>						uniform_fog_gradient;
+	engine::uniform<int>						uniform_apply_water_tint;
 };

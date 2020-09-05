@@ -2,6 +2,8 @@
 
 #include "common/stb.h"
 
+using namespace				world;
+
 							texture_atlas::texture_atlas(const path &source)
 {
 	unsigned char			*data;

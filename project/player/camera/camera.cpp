@@ -5,6 +5,9 @@
 #include "engine/input/input.h"
 #include "world/world/world.h"
 
+using namespace			engine;
+using namespace			player;
+
 						camera::camera()
 {
 	usual_object::layout = "System";
@@ -20,13 +23,13 @@
 	up = up_const;
 	right = vec3(1.f, 0.f, 0.f);
 
-	back.getter = [this](){ return ((vec3)front * -1.f); };
+	back.getter = [](){ return ((vec3)front * -1.f); };
 	back.prohibit_direct_access();
 
-	down.getter = [this](){ return ((vec3)up * -1.f); };
+	down.getter = [](){ return ((vec3)up * -1.f); };
 	down.prohibit_direct_access();
 
-	left.getter = [this](){ return ((vec3)right * -1.f); };
+	left.getter = [](){ return ((vec3)right * -1.f); };
 	left.prohibit_direct_access();
 }
 
@@ -56,7 +59,7 @@ optional<camera::hit>	camera::cast_ray()
 	float				t_delta_y = (float)step_y / delta_y;
 	float				t_delta_z = (float)step_z / delta_z;
 
-	block::face			face;
+	world::block::face	face;
 	axis				choice;
 
 	for (int i = 0; i < camera_settings::ray_cast_limit; i++)
@@ -80,22 +83,22 @@ optional<camera::hit>	camera::cast_ray()
 		{
 			x += (float)step_x;
 			t_max_x += t_delta_x;
-			face = block::from_axis_and_sign(axis::x, inverted_step_x);
+			face = world::block::from_axis_and_sign(axis::x, inverted_step_x);
 		}
 		else if (choice == axis::y)
 		{
 			y += (float)step_y;
 			t_max_y += t_delta_y;
-			face = block::from_axis_and_sign(axis::y, inverted_step_y);
+			face = world::block::from_axis_and_sign(axis::y, inverted_step_y);
 		}
 		else if (choice == axis::z)
 		{
 			z += (float)step_z;
 			t_max_z += t_delta_z;
-			face = block::from_axis_and_sign(axis::z, inverted_step_z);
+			face = world::block::from_axis_and_sign(axis::z, inverted_step_z);
 		}
 
-		if (auto block = world::find_block(vec3(x, y, z)))
+		if (auto block = world::world::find_block(vec3(x, y, z)))
 		{
 			assert(block);
 			if ((*block)().is_editable())

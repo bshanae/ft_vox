@@ -2,8 +2,8 @@
 
 int						main()
 {
-	application::initialize();
-	application::execute();
+	application::application::initialize();
+	application::application::execute();
 
 	return (0);
 }

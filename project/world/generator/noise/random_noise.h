@@ -2,7 +2,12 @@
 
 #include "world/generator/noise/noise.h"
 
-class 					random_noise : public noise
+namespace				world
+{
+	class				random_noise;
+}
+
+class 					world::random_noise : public noise
 {
 public :
 

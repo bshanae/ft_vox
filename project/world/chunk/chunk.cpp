@@ -1,9 +1,11 @@
 #include "chunk.h"
 
 #include "common/aliases.h"
-#include "engine/model/model.h"
+#include "engine/model/model/model.h"
 #include "world/texture_atlas/texture_atlas.h"
-#include "world/block/block_settings.h"
+#include "world/block/block/block_settings.h"
+
+using namespace			world;
 
 static const float		epsilon = 0.005f;
 
@@ -256,7 +258,7 @@ void					chunk::build_geometry(batch_workspace &workspace)
 
 void					chunk::build_model(batch_workspace &workspace)
 {
-	workspace.model = make_shared<model>();
+	workspace.model = make_shared<engine::model>();
 
 //	vec3(0.5f) is block offset, so first block is on vec3(0, 0, 0)
 	workspace.model->translation = (vec3)position + vec3(0.5f);

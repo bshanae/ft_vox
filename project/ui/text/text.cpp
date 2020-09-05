@@ -1,8 +1,11 @@
 #include "text.h"
 
 #include "engine/window/window.h"
-#include "ui/font/font.h"
-#include "ui/font/symbol.h"
+#include "ui/font/font/font.h"
+#include "ui/font/symbol/symbol.h"
+
+using namespace		engine;
+using namespace		ui;
 
 					text::text()
 {

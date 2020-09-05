@@ -3,6 +3,8 @@
 #include "engine/core/core.h"
 #include "engine/window/window.h"
 
+using namespace		engine;
+
 					input::input()
 {
 	states[key::letter_a] = state::waiting;

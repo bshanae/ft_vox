@@ -3,12 +3,17 @@
 #include "common/aliases.h"
 #include "common/global.h"
 #include "engine/layout/layout.h"
-#include "engine/object/object.h"
+#include "engine/object/object/object.h"
 
-class 								window;
-class 								object;
+namespace							engine
+{
+	class 							window;
+	class 							object;
 
-class 								core final : public global<core>
+	class 							core;
+}
+
+class 								engine::core final : public global<core>
 {
 public :
 									core();

@@ -3,7 +3,12 @@
 #include "common/glm.h"
 #include "common/aliases.h"
 
-class 				aabb
+namespace			world
+{
+	class			aabb;
+}
+
+class 				world::aabb
 {
 public :
 					aabb(const vec3 &min, const vec3 &max) : min(min), max(max) {}

@@ -3,20 +3,32 @@
 #include "common/opengl.h"
 #include "common/aliases.h"
 #include "common/array3.h"
-#include "engine/object/usual_object.h"
-#include "world/block/block.h"
-#include "world/block/block_id.h"
+#include "engine/object/usual_object/usual_object.h"
+#include "world/block/block/block.h"
+#include "world/block/block_id/block_id.h"
 #include "world/chunk/chunk_settings.h"
 
-class 									model;
+namespace								engine
+{
+	class								model;
+}
 
-class									chunk :
+namespace								world
+{
+	class								block_id;
+	class								world;
+	class								chunk_renderer;
+
+	class								chunk;
+}
+
+class									world::chunk :
 											public chunk_settings::underlying_array,
 											public enable_shared_from_this<chunk>
 {
-	friend class						block_id;
-	friend class 						world;
-	friend class 						chunk_renderer;
+	friend class						::world::block_id;
+	friend class 						::world::world;
+	friend class 						::world::chunk_renderer;
 
 public :
 
@@ -46,7 +58,7 @@ private :
 		vector<GLfloat>					light_levels;
 		vector<GLuint>					indices;
 
-		shared_ptr<::model>				model;
+		shared_ptr<engine::model>		model;
 
 		future<void>					geometry_build_status;
 	};

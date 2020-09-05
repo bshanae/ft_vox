@@ -5,6 +5,8 @@
 #include "engine/input/input.h"
 #include "engine/time/timer.h"
 
+using namespace	engine;
+
 				core::core()
 {
 	window::initialize();

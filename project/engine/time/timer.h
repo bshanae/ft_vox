@@ -4,7 +4,12 @@
 #include "common/aliases.h"
 #include "common/property.h"
 
-class									timer
+namespace								engine
+{
+	class								timer;
+}
+
+class									engine::timer
 {
 public :
 

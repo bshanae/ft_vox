@@ -1,11 +1,18 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "engine/object/object.h"
+#include "engine/object/object/object.h"
 
-class 							layout
+namespace						engine
 {
-	friend class 				core;
+	class						core;
+
+	class 						layout;
+}
+
+class 							engine::layout
+{
+	friend class 				engine::core;
 
 public :
 

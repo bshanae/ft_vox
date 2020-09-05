@@ -2,7 +2,12 @@
 
 #include "common/glm.h"
 
-class 				noise
+namespace			world
+{
+	class			noise;
+}
+
+class 				world::noise
 {
 public :
 

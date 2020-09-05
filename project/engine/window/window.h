@@ -6,7 +6,12 @@
 #include "common/property.h"
 #include "common/global.h"
 
-class									window : public global<window>
+namespace								engine
+{
+	class								window;
+}
+
+class									engine::window : public global<window>
 {
 public :
 										window();

@@ -3,10 +3,14 @@
 #include "common/opengl.h"
 #include "common/property.h"
 
-class				timestamp : public property<read_only, float, timestamp>
+namespace			engine
+{
+	class			timestamp;
+}
+
+class				engine::timestamp : public property<read_only, float, timestamp>
 {
 public :
-
 					timestamp()
 	{
 		value = glfwGetTime();

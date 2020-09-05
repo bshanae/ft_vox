@@ -1,6 +1,11 @@
 #pragma once
 
-struct							player_settings
+namespace						player
+{
+	struct 						player_settings;
+}
+
+struct							player::player_settings
 {
 	static inline const float	movement_speed = 0.2f;
 	static inline const vec3	aabb_size = vec3(0.3f, 1.9f, 0.3f);

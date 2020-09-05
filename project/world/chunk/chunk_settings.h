@@ -2,10 +2,14 @@
 
 #include "common/opengl.h"
 #include "common/array3.h"
+#include "world/block/block/block.h"
 
-#include "world/block/block.h"
+namespace						world
+{
+	struct						chunk_settings;
+}
 
-struct							chunk_settings
+struct							world::chunk_settings
 {
 	static constexpr int		size[3] = {16, 64, 16};
 	static inline const vec3	size_as_vector = vec3(size[0], size[1], size[2]);

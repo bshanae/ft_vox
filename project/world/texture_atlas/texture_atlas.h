@@ -3,12 +3,20 @@
 #include "common/opengl.h"
 #include "common/global.h"
 #include "common/aliases.h"
-#include "engine/model/texture.h"
-#include "world/block/block.h"
+#include "engine/model/texture/texture.h"
+#include "world/block/block/block.h"
 
-class						texture_atlas :
+namespace					world
+{
+	class					chunk_renderer;
+
+	class					texture_atlas;
+}
+
+
+class						world::texture_atlas :
 								public global<texture_atlas>,
-								public texture
+								public engine::texture
 {
 	friend class			chunk_renderer;
 

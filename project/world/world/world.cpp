@@ -1,28 +1,31 @@
 #include "world.h"
 
 #include "engine/time/timestamp.h"
-#include "world/block/block_selector.h"
+#include "world/block/block_selector/block_selector.h"
 #include "world/chunk/chunk_renderer.h"
 #include "world/generator/generator/generator.h"
-#include "world/loader/loader.h"
+#include "world/loader/loader/loader.h"
 #include "player/camera/camera.h"
 
-static const vec3		left = vec3(-chunk_settings::size[0], 0.f, 0.f);
-static const vec3		right = vec3(+chunk_settings::size[0], 0.f, 0.f);
-static const vec3		forward = vec3(0.f, 0.f, chunk_settings::size[2]);
-static const vec3		back = vec3(0.f, 0.f, -chunk_settings::size[2]);
+using namespace				engine;
+using namespace				player;
 
-						world::world()
+static const vec3			left = vec3(-world::chunk_settings::size[0], 0.f, 0.f);
+static const vec3			right = vec3(+world::chunk_settings::size[0], 0.f, 0.f);
+static const vec3			forward = vec3(0.f, 0.f, world::chunk_settings::size[2]);
+static const vec3			back = vec3(0.f, 0.f, -world::chunk_settings::size[2]);
+
+							world::world::world()
 {
 	usual_object::layout = "Opaque";
 	update_timer = timer(world_settings::chunk_generation_time_limit);
 }
 
-optional<block_id>		world::find_block(const vec3 &position)
+optional<::world::block_id>	world::world::find_block(const vec3 &position)
 {
-	chunk::index		index;
-	vec3				chunk_position;
-	shared_ptr<chunk>	chunk;
+	chunk::index			index;
+	vec3					chunk_position;
+	shared_ptr<chunk>		chunk;
 
 	chunk_position.x = floor(position.x / chunk_settings::size[0]);
 	chunk_position.y = floor(position.y / chunk_settings::size[1]);
@@ -44,38 +47,38 @@ optional<block_id>		world::find_block(const vec3 &position)
 		return (block_id(chunk, index));
 }
 
-void					world::insert_block(const block_id &id, enum block::type type)
+void						world::world::insert_block(const block_id &id, enum block::type type)
 {
 	id().type = type;
 	id.chunk->can_be_regenerated = false;
 	instance()->rebuild_chunk(id.chunk, id.index);
 }
 
-void					world::remove_block(const block_id &id)
+void						world::world::remove_block(const block_id &id)
 {
 	id().type = block::type::air;
 	id.chunk->can_be_regenerated = false;
 	instance()->rebuild_chunk(id.chunk, id.index);
 }
 
-void					world::select_block(const block_id &id, block::face face)
+void						world::world::select_block(const block_id &id, block::face face)
 {
 	block_selector::instance()->activate();
 	block_selector::instance()->translation = id.world_position() + vec3(0.5f);
 	block_selector::instance()->selected_face = face;
 }
 
-void					world::unselect_block()
+void						world::world::unselect_block()
 {
 	block_selector::instance()->deactivate();
 }
 
-bool					world::does_collide(const aabb &aabb)
+bool						world::world::does_collide(const aabb &aabb)
 {
-	vec3 				min = glm::floor(aabb.min);
-	vec3 				max = glm::floor(aabb.max);
+	vec3 					min = glm::floor(aabb.min);
+	vec3 					max = glm::floor(aabb.max);
 
-	optional<block_id>	block_iterator;
+	optional<block_id>		block_iterator;
 
 	for (int x = (int)min.x; x <= (int)max.x; x++)
 		for (int y = (int)min.y; y <= (int)max.y; y++)
@@ -90,9 +93,9 @@ bool					world::does_collide(const aabb &aabb)
 	return (false);
 }
 
-shared_ptr<chunk>		world::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
+shared_ptr<world::chunk>	world::world::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
 {
-	vec3				neighbor_position = main->position;
+	vec3					neighbor_position = main->position;
 
 	if (axis == axis::x and sign == sign::minus)
 		neighbor_position += left;
@@ -108,11 +111,11 @@ shared_ptr<chunk>		world::find_neighbor_chunk(const shared_ptr<chunk> &main, axi
 	return (find_chunk(neighbor_position));
 }
 
-shared_ptr<chunk>		world::find_chunk(const vec3 &position)
+shared_ptr<world::chunk>	world::world::find_chunk(const vec3 &position)
 {
-	shared_lock			lock(instance()->map_mutex);
+	shared_lock				lock(instance()->map_mutex);
 
-	auto				iterator = instance()->chunks.find(position);
+	auto					iterator = instance()->chunks.find(position);
 
 	if (iterator != instance()->chunks.end())
 		return (iterator->second);
@@ -120,9 +123,9 @@ shared_ptr<chunk>		world::find_chunk(const vec3 &position)
 		return (nullptr);
 }
 
-shared_ptr<chunk>		world::find_new_chunk(const vec3 &position)
+shared_ptr<world::chunk>	world::world::find_new_chunk(const vec3 &position)
 {
-	auto				iterator = instance()->new_chunks.find(position);
+	auto					iterator = instance()->new_chunks.find(position);
 
 	if (iterator != instance()->new_chunks.end())
 		return (iterator->second);
@@ -130,21 +133,21 @@ shared_ptr<chunk>		world::find_new_chunk(const vec3 &position)
 		return (nullptr);
 }
 
-// --------------------	Pivot
+// ------------------------ Pivot
 
-float					world::distance(const vec3 &position)
+float						world::world::distance(const vec3 &position)
 {
 	return (glm::distance(pivot, position + chunk_settings::size_as_vector / 2.f));
 }
 
-float					world::distance(const shared_ptr<chunk> &chunk)
+float						world::world::distance(const shared_ptr<chunk> &chunk)
 {
 	return (glm::distance(pivot, (vec3)chunk->center));
 }
 
-// --------------------	Object methods
+// ------------------------ Object methods
 
-void					world::initialize_implementation()
+void						world::world::initialize_implementation()
 {
 	create_chunk(vec3());
 	create_chunk(left);
@@ -153,14 +156,14 @@ void					world::initialize_implementation()
 	create_chunk(back);
 }
 
-void					world::deinitialize_implementation()
+void						world::world::deinitialize_implementation()
 {
 	for (auto [position, chunk] : chunks)
 		if (not chunk->can_be_regenerated)
 			loader::upload(chunk);
 }
 
-void					world::update()
+void						world::world::update()
 {
 	update_timer.execute();
 
@@ -188,7 +191,7 @@ void					world::update()
 		}
 	}
 
-	unique_lock			lock(map_mutex);
+	unique_lock				lock(map_mutex);
 
 	for (auto [position, chunk] : new_chunks)
 		chunks[position] = chunk;
@@ -201,7 +204,7 @@ void					world::update()
 	lock.unlock();
 }
 
-void					world::render()
+void						world::world::render()
 {
 	if (auto camera_block = find_block((vec3)camera::position))
 		chunk_renderer::apply_water_tint = (*camera_block)().type == block::type::water;
@@ -221,9 +224,9 @@ void					world::render()
 	sorted_chunks.clear();
 }
 
-// -------------------- Additional methods
+// ------------------------ Additional methods
 
-bool					world::create_chunk_if_needed(const vec3 &position)
+bool						world::world::create_chunk_if_needed(const vec3 &position)
 {
 	if (distance(position) >= world_settings::cashing_limit)
 		return (false);
@@ -236,7 +239,7 @@ bool					world::create_chunk_if_needed(const vec3 &position)
 	return (true);
 }
 
-bool					world::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
+bool						world::world::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 {
 	if (distance(chunk) >= world_settings::cashing_limit)
 	{
@@ -247,9 +250,9 @@ bool					world::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 	return (false);
 }
 
-void					world::create_chunk(const vec3 &position)
+void						world::world::create_chunk(const vec3 &position)
 {
-	shared_ptr<chunk>	chunk = make_shared<::chunk>(position);
+	auto					chunk = make_shared<::world::chunk>(position);
 
 	if (loader::download(chunk))
 		chunk->can_be_regenerated = false;
@@ -259,18 +262,18 @@ void					world::create_chunk(const vec3 &position)
 	new_chunks.emplace(position, chunk);
 }
 
-void					world::destroy_chunk(const shared_ptr<chunk> &chunk)
+void						world::world::destroy_chunk(const shared_ptr<chunk> &chunk)
 {
 	if (not chunk->can_be_regenerated)
 		loader::upload(chunk);
 	old_chunks.push_back(chunk);
 }
 
-void 					world::try_build_chunk(const shared_ptr<chunk> &chunk)
+void						world::world::try_build_chunk(const shared_ptr<chunk> &chunk)
 {
-	static auto 		chunk_exist_and_has_light = [](const vec3 &position)
+	static auto				chunk_exist_and_has_light = [](const vec3 &position)
 	{
-		auto 			chunk = find_chunk(position);
+		auto				chunk = find_chunk(position);
 
 		return (chunk and chunk->build_phase >= chunk::build_phase::light_done);
 	};
@@ -309,11 +312,11 @@ void 					world::try_build_chunk(const shared_ptr<chunk> &chunk)
 	}
 }
 
-void					world::rebuild_chunk(const shared_ptr<chunk> &chunk, const chunk::index &changed_block)
+void						world::world::rebuild_chunk(const shared_ptr<chunk> &chunk, const chunk::index &changed_block)
 {
-	static auto			find_and_rebuild = [](const vec3 &position)
+	static auto				find_and_rebuild = [](const vec3 &position)
 	{
-		auto			chunk = find_chunk(position);
+		auto				chunk = find_chunk(position);
 
 		assert(chunk);
 		chunk->build(chunk::build_request::reset);

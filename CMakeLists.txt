@@ -16,29 +16,29 @@ set(SOURCES_EXTERNAL
 set(SOURCES_ENGINE
 	${PROJECT_ROOT}/engine/core/core.cpp
 	${PROJECT_ROOT}/engine/window/window.cpp
-	${PROJECT_ROOT}/engine/object/object.cpp
+	${PROJECT_ROOT}/engine/object/object/object.cpp
 	${PROJECT_ROOT}/engine/input/input.cpp
-	${PROJECT_ROOT}/engine/program/shader.cpp
-	${PROJECT_ROOT}/engine/program/program.cpp
-	${PROJECT_ROOT}/engine/model/model.cpp)
+	${PROJECT_ROOT}/engine/program/shader/shader.cpp
+	${PROJECT_ROOT}/engine/program/program/program.cpp
+	${PROJECT_ROOT}/engine/model/model/model.cpp)
 
 set(SOURCES_WORLD
 	${PROJECT_ROOT}/world/texture_atlas/texture_atlas.cpp
-	${PROJECT_ROOT}/world/block/block.cpp
-	${PROJECT_ROOT}/world/block/block_id.cpp
-	${PROJECT_ROOT}/world/block/block_selector.cpp
-	${PROJECT_ROOT}/world/block/block_selector_renderer.cpp
+	${PROJECT_ROOT}/world/block/block/block.cpp
+	${PROJECT_ROOT}/world/block/block_id/block_id.cpp
+	${PROJECT_ROOT}/world/block/block_selector/block_selector.cpp
+	${PROJECT_ROOT}/world/block/block_selector/block_selector_renderer.cpp
 	${PROJECT_ROOT}/world/chunk/chunk.cpp
 	${PROJECT_ROOT}/world/chunk/chunk_renderer.cpp
 	${PROJECT_ROOT}/world/world/world.cpp
 	${PROJECT_ROOT}/world/generator/generator/generator.cpp
-	${PROJECT_ROOT}/world/loader/file.cpp
-	${PROJECT_ROOT}/world/loader/loader.cpp)
+	${PROJECT_ROOT}/world/loader/file/file.cpp
+	${PROJECT_ROOT}/world/loader/loader/loader.cpp)
 
 set(SOURCES_UI
-	${PROJECT_ROOT}/ui/font/font.cpp
-	${PROJECT_ROOT}/ui/font/symbol.cpp
-	${PROJECT_ROOT}/ui/font/symbol_renderer.cpp
+	${PROJECT_ROOT}/ui/font/font/font.cpp
+	${PROJECT_ROOT}/ui/font/symbol/symbol.cpp
+	${PROJECT_ROOT}/ui/font/symbol/symbol_renderer.cpp
 	${PROJECT_ROOT}/ui/text/text.cpp
 	${PROJECT_ROOT}/ui/button/button.cpp)
 

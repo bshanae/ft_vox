@@ -1,11 +1,15 @@
 #include "chunk_renderer.h"
 
 #include "engine/core/core_settings.h"
-#include "engine/model/model.h"
+#include "engine/model/model/model.h"
 #include "world/texture_atlas/texture_atlas.h"
 #include "world/chunk/chunk.h"
 #include "world/world/world_settings.h"
 #include "player/camera/camera.h"
+
+using namespace			engine;
+using namespace			world;
+using namespace			player;
 
 						chunk_renderer::chunk_renderer()
 {

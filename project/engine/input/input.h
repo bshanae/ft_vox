@@ -6,10 +6,18 @@
 #include "common/property.h"
 #include "common/global.h"
 
-class									input : public global<input>
+namespace								engine
 {
-	friend class						core;
-	friend class						window;
+	class								core;
+	class								window;
+
+	class								input;
+}
+
+class									engine::input : public global<input>
+{
+	friend class						engine::core;
+	friend class						engine::window;
 
 public :
 

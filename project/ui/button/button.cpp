@@ -2,7 +2,10 @@
 
 #include "engine/window/window.h"
 #include "engine/input/input.h"
-#include "ui/font/symbol.h"
+#include "ui/font/symbol/symbol.h"
+
+using namespace		ui;
+using namespace		engine;
 
 					button::button()
 {

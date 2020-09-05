@@ -1,13 +1,18 @@
 #pragma once
 
 #include "common/aliases.h"
-#include "engine/object/unique_object.h"
+#include "engine/object/unique_object/unique_object.h"
 #include "engine/time/timer.h"
-#include "world/block/block_id.h"
+#include "world/block/block_id/block_id.h"
 #include "world/chunk/chunk.h"
 #include "world/world/world_settings.h"
 
-class							world : public unique_object<world>
+namespace						world
+{
+	class						world;
+}
+
+class							world::world : public engine::unique_object<world>
 {
 	friend class 				block_id;
 
@@ -55,7 +60,7 @@ private :
 
 	shared_mutex				map_mutex;
 
-	timer						update_timer;
+	engine::timer				update_timer;
 
 // ----------------------------	Chunks
 

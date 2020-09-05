@@ -2,11 +2,16 @@
 
 #include "common/glm.h"
 #include "common/property.h"
-#include "engine/object/usual_object.h"
+#include "engine/object/usual_object/usual_object.h"
 
-class 				font;
+namespace			ui
+{
+	class 			font;
 
-class				text : public usual_object<text>
+	class 			text;
+}
+
+class				ui::text : public engine::usual_object<text>
 {
 public :
 					text();
