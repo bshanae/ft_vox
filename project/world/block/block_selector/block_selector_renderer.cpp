@@ -33,27 +33,27 @@ void					block_selector_renderer::render(const block_selector &selector)
 
 	switch (selector.selected_face)
 	{
-		case (block::face::left) :
+		case (block::left) :
 			instance->render(selector.left);
 			break;
 
-		case (block::face::right) :
+		case (block::right) :
 			instance->render(selector.right);
 			break;
 
-		case (block::face::front) :
+		case (block::front) :
 			instance->render(selector.front);
 			break;
 
-		case (block::face::back) :
+		case (block::back) :
 			instance->render(selector.back);
 			break;
 
-		case (block::face::top) :
+		case (block::top) :
 				instance->render(selector.top);
 			break;
 
-		case (block::face::bottom) :
+		case (block::bottom) :
 			instance->render(selector.bottom);
 			break;
 	}

@@ -17,7 +17,7 @@ class							world::block
 
 public :
 
-	enum class					type : char
+	enum						type : char
 	{
 		air,
 		stone,
@@ -27,7 +27,7 @@ public :
 		blue_flower
 	};
 
-	enum class					face : char
+	enum						face : char
 	{
 		left,
 		right,
@@ -40,7 +40,7 @@ public :
 	static face					from_axis_and_sign(axis axis, sign sign);
 	static pair<axis, sign>		to_axis_and_sign(face face);
 
-	explicit					block(enum type type = type::air) : type(type) {}
+	explicit					block(enum type type = air) : type(type) {}
 
 	bool						is_empty() const;
 

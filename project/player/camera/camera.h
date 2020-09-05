@@ -51,7 +51,7 @@ public :
 
 	static optional<hit>				cast_ray();
 
-	enum class							move_request
+	enum class							direction
 	{
 		left,
 		right,
@@ -72,6 +72,6 @@ private :
 
 	void								recalculate();
 
-	vec3								move_position(move_request request, float speed);
+	vec3								move_position(direction request, float speed);
 	static float						intbound(float s, float ds);
 };

@@ -52,11 +52,11 @@ void				model::render() const
 {
 	switch (draw_mode)
 	{
-		case (draw_mode::triangles) :
+		case (triangles) :
 			glDrawElements(GL_TRIANGLES, number_of_indices, GL_UNSIGNED_INT, nullptr);
 			break ;
 
-		case (draw_mode::lines) :
+		case (lines) :
 			glDrawElements(GL_LINES, number_of_indices, GL_UNSIGNED_INT, nullptr);
 			break ;
 	}

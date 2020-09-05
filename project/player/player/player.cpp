@@ -80,7 +80,7 @@ void 					player::player::process_input()
 
 	if (input::is_pressed(input::key::space))
 	{
-		if (timer_for_second_space.state == timer::state::running)
+		if (timer_for_second_space.state == timer::running)
 		{
 			timer_for_second_space.reset();
 			flying = not flying;
@@ -119,7 +119,7 @@ void 					player::player::process_input()
 			auto	neighbor = hit->block.neighbor(axis_and_sign.first, axis_and_sign.second);
 
 			assert(neighbor);
-			world::world::insert_block(*neighbor, world::block::type::dirt_with_grass);
+			world::world::insert_block(*neighbor, world::block::dirt_with_grass);
 
 			force_ray_cast = true;
 		}

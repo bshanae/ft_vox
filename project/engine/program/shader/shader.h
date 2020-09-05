@@ -14,7 +14,7 @@ class				engine::shader
 {
 	friend class	engine::program;
 
-	enum class		type : GLuint
+	enum			type : GLuint
 	{
 		vertex = GL_VERTEX_SHADER,
 		fragment = GL_FRAGMENT_SHADER

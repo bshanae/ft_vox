@@ -106,7 +106,7 @@ void					loader::upload(const shared_ptr<chunk> &chunk)
 	if (have_found_place_for_writing)
 		file.write_pointer = pointer;
 	else
-		file.write_pointer = file::mark::end;
+		file.write_pointer = file::end;
 
 	file << (char)chunk_state::valid;
 	file << *chunk->position;

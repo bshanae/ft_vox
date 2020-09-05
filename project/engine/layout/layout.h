@@ -16,7 +16,7 @@ class 							engine::layout
 
 public :
 
-	enum class					option
+	enum						option
 	{
 		use_depth_test = 1 << 0
 	};

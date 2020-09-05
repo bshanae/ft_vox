@@ -56,7 +56,7 @@ void						world::world::insert_block(const block_id &id, enum block::type type)
 
 void						world::world::remove_block(const block_id &id)
 {
-	id().type = block::type::air;
+	id().type = block::air;
 	id.chunk->can_be_regenerated = false;
 	instance()->rebuild_chunk(id.chunk, id.index);
 }
@@ -171,7 +171,7 @@ void						world::world::update()
 	pivot.z = camera::position->z;
 
 	for (auto [position, chunk] : chunks)
-		if (update_timer.state == timer::state::finished)
+		if (update_timer.state == timer::finished)
 			break;
 		else if (chunk->build_phase != chunk::build_phase::model_done)
 			try_build_chunk(chunk);
@@ -180,7 +180,7 @@ void						world::world::update()
 	{
 		chunk->is_visible = distance(chunk) < world_settings::visibility_limit;
 
-		if (update_timer.state == timer::state::running)
+		if (update_timer.state == timer::running)
 		{
 			create_chunk_if_needed(position + left);
 			create_chunk_if_needed(position + right);
@@ -207,7 +207,7 @@ void						world::world::update()
 void						world::world::render()
 {
 	if (auto camera_block = find_block((vec3)camera::position))
-		chunk_renderer::apply_water_tint = (*camera_block)().type == block::type::water;
+		chunk_renderer::apply_water_tint = (*camera_block)().type == block::water;
 
 	for (auto [position, chunk] : chunks)
 		chunk_renderer::render(chunk, chunk::batch_purpose::opaque);

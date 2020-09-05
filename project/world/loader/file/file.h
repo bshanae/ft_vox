@@ -89,7 +89,7 @@ public :
 
 	friend file				&operator >> (file &file, string &value);
 
-	enum class 				mark
+	enum					mark
 	{
 		begin = ios::beg,
 		end = ios::end

@@ -27,7 +27,7 @@ class						engine::object : public enable_shared_from_this<object>
 
 protected :
 
-	enum class 				state
+	enum					state
 	{
 		undefined,
 		active,
@@ -43,7 +43,7 @@ protected :
 
 							object()
 	{
-		state.value = state::undefined;
+		state.value = undefined;
 	}
 
 	virtual					~object() = default;

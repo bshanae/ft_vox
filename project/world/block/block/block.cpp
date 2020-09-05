@@ -45,27 +45,27 @@ pair<axis, sign>	block::to_axis_and_sign(face face)
 
 bool				block::is_empty() const
 {
-	return (type == type::air);
+	return (type == air);
 }
 
 bool				block::is_opaque() const
 {
 	return
 	(
-		type == type::stone or
-		type == type::dirt or
-		type == type::dirt_with_grass
+		type == stone or
+		type == dirt or
+		type == dirt_with_grass
 	);
 }
 
 bool				block::is_transparent() const
 {
-	return (type == type::water);
+	return (type == water);
 }
 
 bool				block::is_partially_transparent() const
 {
-	return (type == type::blue_flower);
+	return (type == blue_flower);
 }
 
 bool				block::is_transparent_or_partially_transparent() const
@@ -75,7 +75,7 @@ bool				block::is_transparent_or_partially_transparent() const
 
 bool				block::is_diagonal() const
 {
-	return (type == type::blue_flower);
+	return (type == blue_flower);
 }
 
 bool				block::does_transmit_light() const
@@ -92,10 +92,10 @@ bool				block::is_editable() const
 {
 	return
 	(
-		type == type::stone or
-		type == type::dirt or
-		type == type::dirt_with_grass or
-		type == type::blue_flower
+		type == stone or
+		type == dirt or
+		type == dirt_with_grass or
+		type == blue_flower
 	);
 }
 
@@ -103,23 +103,23 @@ ostream				&operator << (ostream &stream, enum block::type type)
 {
 	switch (type)
 	{
-		case (block::type::air) :
+		case (block::air) :
 			stream << "air";
 			break ;
 
-		case (block::type::dirt) :
+		case (block::dirt) :
 			stream << "dirt";
 			break ;
 
-		case (block::type::dirt_with_grass) :
+		case (block::dirt_with_grass) :
 			stream << "dirt_with_grass";
 			break ;
 
-		case (block::type::water) :
+		case (block::water) :
 			stream << "water";
 			break ;
 
-		case (block::type::blue_flower) :
+		case (block::blue_flower) :
 			stream << "blue_flower";
 			break ;
 

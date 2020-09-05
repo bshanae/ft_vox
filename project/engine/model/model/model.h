@@ -21,13 +21,13 @@ public:
 	property<read_write, vec3, model>	rotation;
 	property<read_only, mat4, model>	transformation;
 
-	enum class							draw_mode
+	enum								draw_mode
 	{
 		triangles,
 		lines
 	};
 
-	explicit							model(draw_mode mode = draw_mode::triangles);
+	explicit							model(draw_mode mode = triangles);
 										~model();
 
 	void								add_vbo(int dimension, const vector<GLfloat> &data);

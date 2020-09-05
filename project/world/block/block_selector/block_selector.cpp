@@ -101,43 +101,43 @@ void 					block_selector::create_implementation()
 {
 	unique_object<block_selector>::create_implementation();
 
-	cube = make_shared<::model>(model::draw_mode::lines);
+	cube = make_shared<::model>(model::lines);
 	cube->bind(true);
 	cube->add_vbo(3, cube_vertices);
 	cube->add_ebo(cube_indices);
 	cube->bind(false);
 
-	left = make_shared<::model>(model::draw_mode::lines);
+	left = make_shared<::model>(model::lines);
 	left->bind(true);
 	left->add_vbo(3, left_vertices);
 	left->add_ebo(face_indices);
 	left->bind(false);
 
-	right = make_shared<::model>(model::draw_mode::lines);
+	right = make_shared<::model>(model::lines);
 	right->bind(true);
 	right->add_vbo(3, right_vertices);
 	right->add_ebo(face_indices);
 	right->bind(false);
 
-	front = make_shared<::model>(model::draw_mode::lines);
+	front = make_shared<::model>(model::lines);
 	front->bind(true);
 	front->add_vbo(3, front_vertices);
 	front->add_ebo(face_indices);
 	front->bind(false);
 
-	back = make_shared<::model>(model::draw_mode::lines);
+	back = make_shared<::model>(model::lines);
 	back->bind(true);
 	back->add_vbo(3, back_vertices);
 	back->add_ebo(face_indices);
 	back->bind(false);
 
-	top = make_shared<::model>(model::draw_mode::lines);
+	top = make_shared<::model>(model::lines);
 	top->bind(true);
 	top->add_vbo(3, top_vertices);
 	top->add_ebo(face_indices);
 	top->bind(false);
 
-	bottom = make_shared<::model>(model::draw_mode::lines);
+	bottom = make_shared<::model>(model::lines);
 	bottom->bind(true);
 	bottom->add_vbo(3, bottom_vertices);
 	bottom->add_ebo(face_indices);

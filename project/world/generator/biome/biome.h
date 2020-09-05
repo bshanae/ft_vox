@@ -33,12 +33,12 @@ public :
 		{
 			case (test_dirt) :
 				noise = make_shared<random_noise>(0.01, 10.f);
-				first_layer = block::type::dirt;
+				first_layer = block::dirt;
 				break ;
 
 			case (test_stone) :
 				noise = make_shared<random_noise>(0.01, 10.f);
-				first_layer = block::type::stone;
+				first_layer = block::stone;
 				break ;
 
 			default :

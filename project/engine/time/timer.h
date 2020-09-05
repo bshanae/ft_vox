@@ -13,7 +13,7 @@ class									engine::timer
 {
 public :
 
-	enum class 							state
+	enum								state
 	{
 		waiting,
 		running,
@@ -29,7 +29,7 @@ public :
 			return (state.value);
 		};
 		state.prohibit_direct_access();
-		state = state::waiting;
+		state = waiting;
 	}
 
 	explicit							timer(float value) : timer()
@@ -45,12 +45,12 @@ public :
 
 		left = *total;
 		last = glfwGetTime();
-		state = state::running;
+		state = running;
 	}
 
 	void 								reset()
 	{
-		state = state::waiting;
+		state = waiting;
 	}
 
 
@@ -72,7 +72,7 @@ private :
 
 	void								update()
 	{
-		if (state.value == state::running)
+		if (state.value == running)
 		{
 			auto						current = (float)glfwGetTime();
 
@@ -81,7 +81,7 @@ private :
 
 			if (left <= 0.f)
 			{
-				state.value = state::finished;
+				state.value = finished;
 				left = 0.f;
 			}
 		}

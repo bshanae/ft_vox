@@ -25,7 +25,7 @@ public :
 		assert(object and "Incorrect object usage");
 		object->create_implementation();
 		object->connect_to_core();
-		object->state.value = object::state::uninitialized;
+		object->state.value = object::uninitialized;
 		return (final);
 	}
 

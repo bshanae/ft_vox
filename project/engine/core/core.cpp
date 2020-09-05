@@ -69,7 +69,7 @@ void			core::process_creating()
 
 	for (auto &layout : layouts_order)
 		for (auto &object : layout->objects)
-			if (object->state == object::state::uninitialized)
+			if (object->state == object::uninitialized)
 				object->initialize();
 
 	new_objects.clear();
@@ -92,7 +92,7 @@ void			core::process_updating()
 {
 	for (auto &[name, layout] : layouts)
 		for (auto &object : layout->objects)
-			if (object->should_be_updated and object->state == object::state::active)
+			if (object->should_be_updated and object->state == object::active)
 				object->update();
 }
 
@@ -107,8 +107,8 @@ void			core::process_rendering()
 	for (auto &[name, layout] : layouts)
 		for (auto &object : layout->objects)
 		{
-			window::use_depth_test((layout->options & (int)layout::option::use_depth_test) != 0);
-			if (object->should_be_rendered and object->state == object::state::active)
+			window::use_depth_test((layout->options & (int)layout::use_depth_test) != 0);
+			if (object->should_be_rendered and object->state == object::active)
 				object->render();
 		}
 

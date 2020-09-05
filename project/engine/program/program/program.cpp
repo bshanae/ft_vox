@@ -8,8 +8,8 @@ using namespace		engine;
 {
 	value = glCreateProgram();
 
-	shader			vertex_shader(shader::type::vertex, vertex_source);
-	shader			fragment_shader(shader::type::fragment, fragment_source);
+	shader			vertex_shader(shader::vertex, vertex_source);
+	shader			fragment_shader(shader::fragment, fragment_source);
 
 	glAttachShader(value, vertex_shader.value);
 	glAttachShader(value, fragment_shader.value);
