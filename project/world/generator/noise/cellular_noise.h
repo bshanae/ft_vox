@@ -43,13 +43,13 @@ public :
 		for (int x = -1; x <= 1; x++)
 			for (int y = -1; y <= 1; y++)
 			{
-				vec2		test_cell = random.generate_2d(whole + vec2(x, y)) + vec2(x, y);
+				vec2		test_cell = vec2(x, y) + random.generate_2d(whole + vec2(x, y));
 				float		test_distance = length(fractional - test_cell);
 
 				if (test_distance < info.final_distance)
 				{
 					info.final_distance = test_distance;
-					info.final_cell = test_cell;
+					info.final_cell = whole + test_cell;
 				}
 			}
 
