@@ -56,30 +56,31 @@ void 					player::player::process_input()
 	if (is_flying)
 	{
 		if (input::is_pressed_or_held(input::key::letter_a))
-			movement += (vec3)camera::left * player_settings::movement_speed;
+			movement += (vec3)camera::left;
 		else if (input::is_pressed_or_held(input::key::letter_d))
-			movement += (vec3)camera::right * player_settings::movement_speed;
+			movement += (vec3)camera::right;
 
 		if (input::is_pressed_or_held(input::key::letter_w))
-			movement += (vec3)camera::front * player_settings::movement_speed;
+			movement += (vec3)camera::front;
 		else if (input::is_pressed_or_held(input::key::letter_s))
-			movement += (vec3)camera::back * player_settings::movement_speed;
+			movement += (vec3)camera::back;
 	}
 	else if (not is_jumping)
 	{
 		if (input::is_pressed_or_held(input::key::letter_a))
-			movement += discard_y_and_normalize(camera::left) * player_settings::movement_speed;
+			movement += discard_y(camera::left);
 		else if (input::is_pressed_or_held(input::key::letter_d))
-			movement += discard_y_and_normalize(camera::right) * player_settings::movement_speed;
+			movement += discard_y(camera::right);
 
 		if (input::is_pressed_or_held(input::key::letter_w))
-			movement += discard_y_and_normalize(camera::front) * player_settings::movement_speed;
+			movement += discard_y(camera::front);
 		else if (input::is_pressed_or_held(input::key::letter_s))
-			movement += discard_y_and_normalize(camera::back) * player_settings::movement_speed;
+			movement += discard_y(camera::back);
 	}
 
 	if (movement != vec3(0.f))
 	{
+		movement = normalize(movement) * player_settings::movement_speed;
 		velocity += movement * player_settings::movement_force;
 		offset_camera_if_possible(movement);
 	}
@@ -182,7 +183,7 @@ void					player::player::offset_camera_if_possible(const vec3 &offset) const
 #endif
 }
 
-vec3					player::player::discard_y_and_normalize(const vec3 &original)
+vec3					player::player::discard_y(const vec3 &original)
 {
-	return (glm::normalize(vec3(original.x, 0.f, original.z)));
+	return (vec3(original.x, 0.f, original.z));
 }

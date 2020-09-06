@@ -35,7 +35,7 @@ private :
 	world::aabb		aabb(const vec3 &position) const;
 	void			offset_camera_if_possible(const vec3 &offset) const;
 
-	static vec3		discard_y_and_normalize(const vec3 &original);
+	static vec3		discard_y(const vec3 &original);
 };
 
 
