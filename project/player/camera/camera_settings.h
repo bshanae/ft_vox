@@ -16,7 +16,7 @@ struct						player::camera_settings
 	static inline float		far_plane = world::world_settings::visibility_limit + 100.f;
 	static inline float 	fov = 50.f;
 
-	static inline vec3		initial_position = vec3(0.f, 5.0f, 0.f);
+	static inline vec3		initial_position = vec3(0.f, 30.0f, 0.f);
 
 	static inline int		ray_cast_limit = 15;
 };

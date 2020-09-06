@@ -8,6 +8,9 @@
 #include "glm/gtx/euler_angles.hpp"
 #include "glm/gtx/transform.hpp"
 #include "glm/gtc/noise.hpp"
+#include "glm/gtx/rotate_vector.hpp"
+
+// ---------------- Types
 
 using 				glm::ivec2;
 using 				glm::vec2;
@@ -16,16 +19,26 @@ using 				glm::vec3;
 using 				glm::vec4;
 using 				glm::mat4;
 
+// ---------------- Matrices
+
 using				glm::perspective;
 using				glm::ortho;
 using				glm::lookAt;
 using				glm::scale;
 using				glm::translate;
 using				glm::eulerAngleYXZ;
+using 				glm::value_ptr;
+
+// ---------------- Vectors
 
 using 				glm::normalize;
 using 				glm::distance;
-using				glm::fract;
+using				glm::length;
+using				glm::rotate;
 
-using 				glm::value_ptr;
+// ---------------- Others
+
+using				glm::fract;
+using				glm::mix;
+using 				glm::mod;
 using				glm::radians;

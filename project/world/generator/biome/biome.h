@@ -3,8 +3,8 @@
 #include "common/aliases.h"
 #include "common/property.h"
 #include "world/block/block/block.h"
-#include "world/generator/noise/noise.h"
-#include "world/generator/noise/random_noise.h"
+#include "world/generator/noise/perlin_noise.h"
+#include "world/generator/noise/cellular_noise.h"
 
 namespace					world
 {
@@ -32,12 +32,12 @@ public :
 		switch (this->type.value = type)
 		{
 			case (test_dirt) :
-				noise = make_shared<random_noise>(0.01, 10.f);
+				noise = cellular_noise(1.f, 0.01f, 30.f);
 				first_layer = block::dirt;
 				break ;
 
 			case (test_stone) :
-				noise = make_shared<random_noise>(0.01, 10.f);
+				noise = cellular_noise(1.f, 0.01f, 30.f);
 				first_layer = block::stone;
 				break ;
 
@@ -62,7 +62,7 @@ public :
 	int 					height(const vec3 &position) const
 	{
 		assert(type != biome::null);
-		return ((int)(*noise)(position));
+		return (noise.generate(vec2(position.x, position.z)).final_distance * 15);
 	}
 
 	friend bool 			operator == (const biome &left, const biome &right)
@@ -77,5 +77,5 @@ public :
 
 private :
 
-	shared_ptr<noise>		noise;
+	cellular_noise			noise;
 };

@@ -33,7 +33,7 @@ private :
 		int						height;
 	}							workspace;
 
-	FastNoise					noise_for_biome;
+	cellular_noise				noise_for_biome;
 
 	biome						biome(const vec3 &position);
 	optional<::world::biome>	neighbor_biome(const vec3 &direction);
