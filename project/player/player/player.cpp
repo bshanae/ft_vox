@@ -52,6 +52,7 @@ void 					player::player::process_physics()
 void 					player::player::process_input()
 {
 	vec3				movement = vec3(0.f);
+	float				speed_up = input::is_held(input::key::shift) and is_flying ? player_settings::speed_up : 1.f;
 
 	if (is_flying)
 	{
@@ -80,11 +81,8 @@ void 					player::player::process_input()
 
 	if (movement != vec3(0.f))
 	{
-		movement = normalize(movement) * player_settings::movement_speed;
+		movement = normalize(movement) * player_settings::movement_speed * speed_up;
 		velocity += movement * player_settings::movement_force;
-
-		if (input::is_held(input::key::shift) and is_flying)
-			movement *= player_settings::speed_up;
 
 		offset_camera_if_possible(movement);
 	}
@@ -103,7 +101,7 @@ void 					player::player::process_input()
 			timer_for_second_space.execute();
 
 			if (is_flying)
-				offset_camera_if_possible(player_settings::flight_lift);
+				offset_camera_if_possible(player_settings::flight_lift * speed_up);
 			else if (not is_jumping)
 			{
 				velocity += player_settings::jump_force;
@@ -112,11 +110,8 @@ void 					player::player::process_input()
 		}
 	}
 
-	if (input::is_held(input::key::space))
-	{
-		if (is_flying)
-			offset_camera_if_possible(player_settings::flight_lift);
-	}
+	if (input::is_held(input::key::space) and is_flying)
+		offset_camera_if_possible(player_settings::flight_lift * speed_up);
 
 	if (input::is_pressed(input::key::mouse_left))
 	{
