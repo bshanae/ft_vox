@@ -82,6 +82,10 @@ void 					player::player::process_input()
 	{
 		movement = normalize(movement) * player_settings::movement_speed;
 		velocity += movement * player_settings::movement_force;
+
+		if (input::is_held(input::key::shift) and is_flying)
+			movement *= player_settings::speed_up;
+
 		offset_camera_if_possible(movement);
 	}
 

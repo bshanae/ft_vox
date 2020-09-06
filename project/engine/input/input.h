@@ -62,6 +62,7 @@ public :
 		escape = GLFW_KEY_ESCAPE,
 		enter = GLFW_KEY_ENTER,
 		space = GLFW_KEY_SPACE,
+		shift = GLFW_KEY_LEFT_SHIFT,
 		left = GLFW_KEY_LEFT,
 		up = GLFW_KEY_UP,
 		right = GLFW_KEY_RIGHT,

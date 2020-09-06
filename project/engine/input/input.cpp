@@ -46,6 +46,7 @@ using namespace		engine;
 	states[key::escape] = state::waiting;
 	states[key::enter] = state::waiting;
 	states[key::space] = state::waiting;
+	states[key::shift] = state::waiting;
 	states[key::left] = state::waiting;
 	states[key::up] = state::waiting;
 	states[key::right] = state::waiting;
