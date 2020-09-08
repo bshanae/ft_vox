@@ -35,10 +35,9 @@ private :
 
 	cellular_noise				noise_for_biome;
 
-	biome						biome(const vec3 &position);
-	optional<::world::biome>	neighbor_biome(const vec3 &direction);
-
 	void						process_column(const vec3 &position);
+
+	const biome					&choose_biome(float noise_value);
 };
 
 

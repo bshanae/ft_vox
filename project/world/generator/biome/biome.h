@@ -27,17 +27,17 @@ public :
 							property<read_only, enum block::type, biome>
 							first_layer;
 
-	explicit				biome(enum type type = biome::null)
+							biome(enum type type = biome::null)
 	{
 		switch (this->type.value = type)
 		{
 			case (test_dirt) :
-				noise = cellular_noise(1.f, 0.01f, 30.f);
+				noise = perlin_noise(1.f, 0.01f, 10.f);
 				first_layer = block::dirt;
 				break ;
 
 			case (test_stone) :
-				noise = cellular_noise(1.f, 0.01f, 30.f);
+				noise = perlin_noise(1.f, 0.05f, 30.f);
 				first_layer = block::stone;
 				break ;
 
@@ -52,7 +52,7 @@ public :
 		};
 	}
 
-						biome(const biome &other)
+							biome(const biome &other)
 	{
 		type = other.type;
 		first_layer = other.first_layer.value;
@@ -62,7 +62,7 @@ public :
 	int 					height(const vec3 &position) const
 	{
 		assert(type != biome::null);
-		return (noise.generate(vec2(position.x, position.z)).final_distance * 15);
+		return (noise.generate(vec2(position.x, position.z)));
 	}
 
 	friend bool 			operator == (const biome &left, const biome &right)
@@ -77,5 +77,5 @@ public :
 
 private :
 
-	cellular_noise			noise;
+	perlin_noise			noise;
 };
