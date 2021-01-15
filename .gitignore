@@ -1,4 +1,7 @@
-cmake-build-debug
 .idea
 .DS_Store
+
 ft_vox
+
+/cmake-build-debug
+/project/libraries

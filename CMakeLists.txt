@@ -1,18 +1,26 @@
 cmake_minimum_required(VERSION 3.10)
 
+
+# Variables
+
 set(PROJECT_NAME ft_vox)
 set(PROJECT_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/project)
 set(LIBRARIES_FOLDER ${PROJECT_FOLDER}/libraries)
 set(SOURCES_FOLDER ${PROJECT_FOLDER}/sources)
+
+
+# Settings
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 set(CMAKE_CXX_STANDARD 17)
 
 project(${PROJECT_NAME})
 
+
+# Sources
+
 set(SOURCES_LIBRARIES
-	${LIBRARIES_FOLDER}/glad/src/glad.c
-	${LIBRARIES_FOLDER}/FastNoise/FastNoise.cpp)
+	${LIBRARIES_FOLDER}/glad/build/src/glad.c)
 
 set(SOURCES_COMMON
 	${SOURCES_FOLDER}/common/debug/logger/logger.cpp)
@@ -56,12 +64,12 @@ set(SOURCES_APPLICATION
 
 include_directories(
 	${LIBRARIES_FOLDER}
-	${LIBRARIES_FOLDER}/glad/include
+	${LIBRARIES_FOLDER}/glad/build/include
 	${LIBRARIES_FOLDER}/glfw/include
 	${LIBRARIES_FOLDER}/glm
 	${LIBRARIES_FOLDER}/stb
 	${LIBRARIES_FOLDER}/freetype2/include
-	${LIBRARIES_FOLDER}/FastNoise
+	${LIBRARIES_FOLDER}/FastNoise/Cpp
 
 	${SOURCES_FOLDER})
 
@@ -73,6 +81,8 @@ add_executable(${PROJECT_NAME}
 	${SOURCES_WORLD}
 	${SOURCES_PLAYER}
 	${SOURCES_APPLICATION})
+
+# External projects
 
 add_subdirectory(${LIBRARIES_FOLDER}/glfw)
 target_link_libraries(${PROJECT_NAME} glfw)
