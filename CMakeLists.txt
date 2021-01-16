@@ -1,12 +1,13 @@
-cmake_minimum_required(VERSION 3.10)
+# CMake setup
 
+cmake_minimum_required(VERSION 3.10)
 
 # Variables
 
 set(PROJECT_NAME ft_vox)
-set(PROJECT_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/project)
-set(LIBRARIES_FOLDER ${PROJECT_FOLDER}/libraries)
-set(SOURCES_FOLDER ${PROJECT_FOLDER}/sources)
+set(PROJECT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project)
+set(LIBRARIES_DIRECTORY ${PROJECT_DIRECTORY}/libraries)
+set(SOURCES_DIRECTORY ${PROJECT_DIRECTORY}/sources)
 
 
 # Settings
@@ -16,82 +17,85 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(${PROJECT_NAME})
 
+# Headers
+
+include_directories(
+	${LIBRARIES_DIRECTORY}
+	${LIBRARIES_DIRECTORY}/glad/build/include
+	${LIBRARIES_DIRECTORY}/glfw/include
+	${LIBRARIES_DIRECTORY}/glm
+	${LIBRARIES_DIRECTORY}/stb
+	${LIBRARIES_DIRECTORY}/freetype2/include
+	${LIBRARIES_DIRECTORY}/FastNoise/Cpp
+
+	${SOURCES_DIRECTORY})
 
 # Sources
 
-set(SOURCES_LIBRARIES
-	${LIBRARIES_FOLDER}/glad/build/src/glad.c)
+set(SOURCES
+	# Libraries
+	${LIBRARIES_DIRECTORY}/glad/build/src/glad.c
 
-set(SOURCES_COMMON
-	${SOURCES_FOLDER}/common/debug/logger/logger.cpp)
+	# Engine : Core
+	${SOURCES_DIRECTORY}/engine/core/object/object/object.cpp
 
-set(SOURCES_ENGINE
-	${SOURCES_FOLDER}/engine/core/core.cpp
-	${SOURCES_FOLDER}/engine/window/window.cpp
-	${SOURCES_FOLDER}/engine/object/object/object.cpp
-	${SOURCES_FOLDER}/engine/input/input.cpp
-	${SOURCES_FOLDER}/engine/program/shader/shader.cpp
-	${SOURCES_FOLDER}/engine/program/program/program.cpp
-	${SOURCES_FOLDER}/engine/model/model/model.cpp
-	${SOURCES_FOLDER}/engine/model/texture/texture.cpp
-	${SOURCES_FOLDER}/engine/time/timer/timer.cpp
-	${SOURCES_FOLDER}/engine/time/timestamp/timestamp.cpp)
+	# Engine : Rendering : Main
+	${SOURCES_DIRECTORY}/engine/rendering/main/camera/camera.cpp
+	${SOURCES_DIRECTORY}/engine/rendering/main/model/model/model.cpp
+	${SOURCES_DIRECTORY}/engine/rendering/main/model/texture/texture.cpp
+	${SOURCES_DIRECTORY}/engine/rendering/main/program/program/program.cpp
+	${SOURCES_DIRECTORY}/engine/rendering/main/program/shader/shader.cpp
 
-set(SOURCES_WORLD
-	${SOURCES_FOLDER}/world/texture_atlas/texture_atlas.cpp
-	${SOURCES_FOLDER}/world/block/block/block.cpp
-	${SOURCES_FOLDER}/world/block/block_id/block_id.cpp
-	${SOURCES_FOLDER}/world/block/block_selector/block_selector.cpp
-	${SOURCES_FOLDER}/world/block/block_selector/block_selector_renderer.cpp
-	${SOURCES_FOLDER}/world/chunk/chunk.cpp
-	${SOURCES_FOLDER}/world/chunk/chunk_renderer.cpp
-	${SOURCES_FOLDER}/world/world/world.cpp
-	${SOURCES_FOLDER}/world/generator/generator/generator.cpp
-	${SOURCES_FOLDER}/world/generator/biome/biome.cpp
-	${SOURCES_FOLDER}/world/generator/biome_collection/biome_collection.cpp)
+	# Engine : Rendering : Ui
+	${SOURCES_DIRECTORY}/engine/rendering/ui/button/button.cpp
+	${SOURCES_DIRECTORY}/engine/rendering/ui/text/text.cpp
+	${SOURCES_DIRECTORY}/engine/rendering/ui/font/symbol/symbol.cpp
+	${SOURCES_DIRECTORY}/engine/rendering/ui/font/symbol/symbol_renderer.cpp
+	${SOURCES_DIRECTORY}/engine/rendering/ui/font/font/font.cpp
 
-set(SOURCES_UI
-	${SOURCES_FOLDER}/ui/font/font/font.cpp
-	${SOURCES_FOLDER}/ui/font/symbol/symbol.cpp
-	${SOURCES_FOLDER}/ui/font/symbol/symbol_renderer.cpp
-	${SOURCES_FOLDER}/ui/text/text.cpp
-	${SOURCES_FOLDER}/ui/button/button.cpp)
+	# Engine : System
+	${SOURCES_DIRECTORY}/engine/system/input/input.cpp
+	${SOURCES_DIRECTORY}/engine/system/time/timer/timer.cpp
+	${SOURCES_DIRECTORY}/engine/system/time/timestamp/timestamp.cpp
+	${SOURCES_DIRECTORY}/engine/system/window/window.cpp
 
-set(SOURCES_PLAYER
-	${SOURCES_FOLDER}/player/player/player.cpp
-	${SOURCES_FOLDER}/player/camera/camera.cpp)
+	# Engine : Processor
+	${SOURCES_DIRECTORY}/engine/processor/processor.cpp
 
-set(SOURCES_APPLICATION
-	${SOURCES_FOLDER}/application/application.cpp
-	${SOURCES_FOLDER}/application/main.cpp)
+	# Game : World
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk/chunk.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk_renderer/chunk_renderer.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome_collection/biome_collection.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/generator/generator/generator.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome/biome.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/block/block_alias/block_alias.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/block/block_selector/block_selector.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/block/block_selector/block_selector_renderer.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/block/block/block.cpp
+	${SOURCES_DIRECTORY}/game/world/world/world.cpp
+	${SOURCES_DIRECTORY}/game/world/utils/texture_atlas/texture_atlas.cpp
 
-include_directories(
-	${LIBRARIES_FOLDER}
-	${LIBRARIES_FOLDER}/glad/build/include
-	${LIBRARIES_FOLDER}/glfw/include
-	${LIBRARIES_FOLDER}/glm
-	${LIBRARIES_FOLDER}/stb
-	${LIBRARIES_FOLDER}/freetype2/include
-	${LIBRARIES_FOLDER}/FastNoise/Cpp
+	# Game : Player
+	${SOURCES_DIRECTORY}/game/player/player.cpp
 
-	${SOURCES_FOLDER})
+	# Application : Common
+	${SOURCES_DIRECTORY}/application/common/debug/logger/logger.cpp
 
-add_executable(${PROJECT_NAME}
-	${SOURCES_LIBRARIES}
-	${SOURCES_COMMON}
-	${SOURCES_ENGINE}
-	${SOURCES_UI}
-	${SOURCES_WORLD}
-	${SOURCES_PLAYER}
-	${SOURCES_APPLICATION})
+	# Application : Environment
+	${SOURCES_DIRECTORY}/application/environment/environment.cpp
+	${SOURCES_DIRECTORY}/application/environment/main.cpp)
+
+# Executable
+
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 # External projects
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-add_subdirectory(${LIBRARIES_FOLDER}/glfw)
+add_subdirectory(${LIBRARIES_DIRECTORY}/glfw)
 target_link_libraries(${PROJECT_NAME} glfw)
 
-add_subdirectory(${LIBRARIES_FOLDER}/freetype2)
+add_subdirectory(${LIBRARIES_DIRECTORY}/freetype2)
 target_link_libraries(${PROJECT_NAME} freetype)

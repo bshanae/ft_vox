@@ -269,8 +269,8 @@ function install_stb
 enter_libraries_folder
 
 install_glfw
-#install_glad
-#install_fast_noise
-#install_glm
-#install_free_type
-#install_stb
+install_glad
+install_fast_noise
+install_glm
+install_free_type
+install_stb
