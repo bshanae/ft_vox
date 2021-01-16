@@ -7,7 +7,7 @@ using namespace			ui;
 
 						font::font(const path &source, const int &width)
 {
-	auto				library = font_library::instance()->library;
+	auto				library = font_library::get_instance()->library;
 
 	assert(FT_New_Face(library, source.c_str(), 0, &face) == 0);
 	FT_Set_Pixel_Sizes(face, 0, width);

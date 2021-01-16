@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/imports/opengl.h"
-#include "common/aliases.h"
+#include "common/imports/std.h"
 #include "engine/object/unique_object/unique_object.h"
 #include "engine/program/program/program.h"
 #include "engine/program/uniform/uniform.h"
@@ -25,7 +25,7 @@ public :
 								block_selector_renderer();
 								~block_selector_renderer() override = default;
 
-	static void					render(const block_selector &selector);
+	void						render(const block_selector &selector);
 
 private :
 

@@ -6,4 +6,3 @@ int					main()
 	application::application::execute();
 	return 0;
 }
-

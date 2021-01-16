@@ -1,8 +1,7 @@
 #pragma once
 
 #include "common/imports/opengl.h"
-#include "common/classes/property.h"
-#include "common/aliases.h"
+#include "common/imports/std.h"
 
 namespace					engine
 {
@@ -34,7 +33,7 @@ protected :
 		inactive,
 		initialized,
 		uninitialized
-	};
+	}						state;
 
 	string 					layout;
 
@@ -43,7 +42,7 @@ protected :
 
 							object()
 	{
-		state.value = undefined;
+		state = undefined;
 	}
 
 	virtual					~object() = default;
@@ -52,15 +51,6 @@ protected :
 
 	virtual void			activate() = 0;
 	virtual void			deactivate() = 0;
-
-	class					state_property : public property<read_only, state, object>
-	{
-		template			<typename>
-		friend class 		engine::usual_object;
-
-		template			<typename, typename>
-		friend class 		engine::inheritor_object;
-	}						state;
 
 	virtual void 			render() = 0;
 	virtual void 			update() = 0;

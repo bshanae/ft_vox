@@ -32,7 +32,10 @@ set(SOURCES_ENGINE
 	${SOURCES_FOLDER}/engine/input/input.cpp
 	${SOURCES_FOLDER}/engine/program/shader/shader.cpp
 	${SOURCES_FOLDER}/engine/program/program/program.cpp
-	${SOURCES_FOLDER}/engine/model/model/model.cpp)
+	${SOURCES_FOLDER}/engine/model/model/model.cpp
+	${SOURCES_FOLDER}/engine/model/texture/texture.cpp
+	${SOURCES_FOLDER}/engine/time/timer/timer.cpp
+	${SOURCES_FOLDER}/engine/time/timestamp/timestamp.cpp)
 
 set(SOURCES_WORLD
 	${SOURCES_FOLDER}/world/texture_atlas/texture_atlas.cpp
@@ -44,8 +47,8 @@ set(SOURCES_WORLD
 	${SOURCES_FOLDER}/world/chunk/chunk_renderer.cpp
 	${SOURCES_FOLDER}/world/world/world.cpp
 	${SOURCES_FOLDER}/world/generator/generator/generator.cpp
-	${SOURCES_FOLDER}/world/loader/file/file.cpp
-	${SOURCES_FOLDER}/world/loader/loader/loader.cpp)
+	${SOURCES_FOLDER}/world/generator/biome/biome.cpp
+	${SOURCES_FOLDER}/world/generator/biome_collection/biome_collection.cpp)
 
 set(SOURCES_UI
 	${SOURCES_FOLDER}/ui/font/font/font.cpp

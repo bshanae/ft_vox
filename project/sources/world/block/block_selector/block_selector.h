@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/aliases.h"
+#include "common/imports/std.h"
 #include "engine/object/unique_object/unique_object.h"
 #include "world/block/block/block.h"
 
@@ -26,16 +26,16 @@ public :
 								block_selector();
 								~block_selector() override = default;
 
-								property<read_write, vec3, block_selector>
-								translation;
+	vec3						get_translation() const;
+	block::face					get_selected_face() const;
 
-								property<read_write, block::face, block_selector>
-								selected_face;
+	void						set_translation(const vec3 &value);
+	void						set_selected_face(block::face face);
+
 private :
 
-	void 						create_implementation() override;
-
-	void						render() override;
+	vec3						translation;
+	block::face					selected_face;
 
 	shared_ptr<engine::model>	cube;
 
@@ -45,6 +45,9 @@ private :
 	shared_ptr<engine::model>	back;
 	shared_ptr<engine::model>	top;
 	shared_ptr<engine::model>	bottom;
+
+	void 						create_implementation() override;
+	void						render() override;
 };
 
 

@@ -23,21 +23,24 @@ using namespace		ui;
 	uniform_texture.upload(0);
 	program->bind(false);
 
-	vector<GLfloat>	vertices = {
+	vector<GLfloat>	vertices =
+	{
 		1.f, 1.f, 0.0f,
 		1.f, 0.f, 0.0f,
 		0.f, 0.f, 0.0f,
 		0.f, 1.f, 0.0f
 	};
 
-	vector<GLfloat>	texture_coordinates = {
+	vector<GLfloat>	texture_coordinates =
+	{
 		1.0f, 1.0f,
 		1.0f, 0.0f,
 		0.0f, 0.0f,
 		0.0f, 1.0f
 	};
 
-	vector<GLuint>	indices = {
+	vector<GLuint>	indices =
+	{
 		0, 1, 3,
 		1, 2, 3
 	};
@@ -55,16 +58,16 @@ using namespace		ui;
 
 void				symbol_renderer::render(const symbol &symbol, const ivec2 &position)
 {
-	auto			instance = unique_object::instance();
+	auto			instance = unique_object::get_instance();
 
-	instance->model->translation = vec3(position.x, position.y, 0);
-	instance->model->scaling = vec3(symbol.size->x, symbol.size->y, 0);
+	instance->model->set_translation(vec3(position.x, position.y, 0));
+	instance->model->set_scaling(vec3(symbol.get_size().x, symbol.get_size().y, 0));
 
 	instance->program->bind(true);
 	instance->model->bind(true);
 	symbol.bind(true);
 
-	instance->uniform_transformation.upload(instance->model->transformation);
+	instance->uniform_transformation.upload(instance->model->get_transformation());
 	instance->model->render();
 
 	symbol.bind(false);

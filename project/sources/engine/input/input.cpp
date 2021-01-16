@@ -53,35 +53,61 @@ using namespace		engine;
 	states[key::down] = state::waiting;
 	states[key::mouse_left] = state::waiting;
 	states[key::mouse_right] = state::waiting;
+
+	mouse_offset = vec2();
+	last_mouse_position = vec2();
+	current_mouse_position = vec2();
 }
 
-bool				input::is_pressed(enum key key)
+vec2				input::get_mouse_offset() const
 {
-	assert(get_instance()->states.find(key) != get_instance()->states.end());
-	return (get_instance()->states[key] == state::pressed);
+	return mouse_offset;
 }
 
-bool				input::is_released(enum key key)
+vec2				input::get_last_mouse_position() const
 {
-	assert(get_instance()->states.find(key) != get_instance()->states.end());
-	return (get_instance()->states[key] == state::released);
+	return last_mouse_position;
 }
 
-bool				input::is_held(enum key key)
+vec2				input::get_current_mouse_position() const
 {
-	assert(get_instance()->states.find(key) != get_instance()->states.end());
-	return (get_instance()->states[key] == state::held);
+	return current_mouse_position;
 }
 
-bool				input::is_pressed_or_held(enum key key)
+bool				input::is_pressed(enum key key) const
 {
-	assert(get_instance()->states.find(key) != get_instance()->states.end());
-	return (get_instance()->states[key] == state::pressed or get_instance()->states[key] == state::held);
+	return get_state_for_key(key) == state::pressed;
 }
 
-bool				input::have_mouse_moved()
+bool				input::is_released(enum key key) const
 {
-	return (mouse_offset->x != 0 or mouse_offset->y != 0);
+	return get_state_for_key(key) == state::released;
+}
+
+bool				input::is_held(enum key key) const
+{
+	return get_state_for_key(key) == state::held;
+}
+
+bool				input::is_pressed_or_held(enum key key) const
+{
+	enum state		state;
+
+	state = get_state_for_key(key);
+	return state == state::pressed or state == state::held;
+}
+
+bool				input::did_mouse_move() const
+{
+	return mouse_offset.x != 0 or mouse_offset.y != 0;
+}
+
+input::state		input::get_state_for_key(enum key key) const
+{
+	const auto		iterator = states.find(key);
+
+	assert(iterator != states.end());
+	return iterator->second;
 }
 
 void				input::callback_for_keyboard(GLFWwindow *window, int key, int code, int action, int mode)
@@ -98,7 +124,7 @@ void 				input::callback_for_mouse_click(GLFWwindow *window, int key, int action
 
 void				input::reset_keys()
 {
-	for (auto &iterator : get_instance()->states)
+	for (auto &iterator : states)
 		if (iterator.second == state::pressed)
 			iterator.second = state::held;
 		else if (iterator.second == state::released)
@@ -109,19 +135,18 @@ void				input::update_mouse()
 {
 	static bool 	first_call = true;
 
-	auto			instance = singleton<input>::get_instance();
-	vec2 			position = window::mouse_position;
+	vec2 			position = window::get_instance()->get_mouse_position();
 
 	if (first_call)
 	{
 		first_call = false;
-		mouse_last_position = position;
+		last_mouse_position = position;
 		mouse_offset = ivec2(0);
 	}
 	else
-		mouse_last_position = *mouse_current_position;
+		last_mouse_position = current_mouse_position;
 
-	mouse_current_position = position;
-	mouse_offset.value.x = mouse_current_position->x - mouse_last_position->x;
-	mouse_offset.value.y = mouse_current_position->y - mouse_last_position->y;
+	current_mouse_position = position;
+	mouse_offset.x = current_mouse_position.x - last_mouse_position.x;
+	mouse_offset.y = current_mouse_position.y - last_mouse_position.y;
 }

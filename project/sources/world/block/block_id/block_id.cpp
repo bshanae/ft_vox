@@ -21,7 +21,7 @@ optional<block_id>		block_id::neighbor(axis axis, sign sign) const
 		chunk::index	reflected_index;
 		chunk_type		neighbor_chunk;
 
-		if ((neighbor_chunk = world::find_neighbor_chunk(chunk, axis, sign)) == nullptr)
+		if ((neighbor_chunk = world::get_instance()->find_neighbor_chunk(chunk, axis, sign)) == nullptr)
 			return {};
 
 		neighbor_index = index.neighbor(axis, sign);

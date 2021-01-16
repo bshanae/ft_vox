@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/aliases.h"
+#include "common/imports/std.h"
 
 template						<typename final_type>
 class							singleton
@@ -18,10 +18,8 @@ public :
 		assert(instance == nullptr and "Global instance is already initialized");
 
 		instance = make_shared<final_type>(args...);
-		static_pointer_cast<singleton>(instance)->initializer(instance);
+		static_pointer_cast<singleton>(instance)->when_initialized(instance);
 	}
-
-protected :
 
 	static auto					get_instance()
 	{
@@ -29,8 +27,9 @@ protected :
 		return (instance);
 	}
 
-	virtual void				initializer(shared_ptr<final_type>)
-	{}
+protected :
+
+	virtual void				when_initialized(shared_ptr<final_type>) {}
 
 private :
 

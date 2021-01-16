@@ -1,8 +1,8 @@
 #pragma once
 
-#include "common/aliases.h"
+#include "common/imports/std.h"
 #include "engine/object/unique_object/unique_object.h"
-#include "engine/time/timer.h"
+#include "engine/time/timer/timer.h"
 #include "world/block/block_id/block_id.h"
 #include "world/chunk/chunk.h"
 #include "world/world/world_settings.h"
@@ -20,15 +20,15 @@ public :
 								world();
 								~world() override = default;
 
-	static optional<block_id>	find_block(const vec3 &position);
+	optional<block_id>			find_block(const vec3 &position);
 
-	static void 				insert_block(const block_id &id, enum block::type type);
-	static void 				remove_block(const block_id &id);
+	void 						insert_block(const block_id &id, enum block::type type);
+	void 						remove_block(const block_id &id);
 
-	static void					select_block(const block_id &id, block::face face);
-	static void 				unselect_block();
+	void						select_block(const block_id &id, block::face face);
+	void 						unselect_block();
 
-	static bool					does_collide(const aabb &aabb);
+	bool						does_collide(const aabb &aabb);
 
 private :
 
@@ -64,10 +64,10 @@ private :
 
 // ----------------------------	Chunks
 
-	static shared_ptr<chunk>	find_chunk(const vec3 &position);
-	static shared_ptr<chunk>	find_new_chunk(const vec3 &position);
+	shared_ptr<chunk>			find_chunk(const vec3 &position);
+	shared_ptr<chunk>			find_new_chunk(const vec3 &position);
 
-	static shared_ptr<chunk>	find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign);
+	shared_ptr<chunk>			find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign);
 
 // ----------------------------	Pivot
 

@@ -6,29 +6,6 @@ using namespace		engine;
 {
 	glGenVertexArrays(1, &vao);
 
-	translation.setter = [this](const vec3 &value)
-	{
-		translation.value = value;
-		recalculate_transformation();
-	};
-	translation.prohibit_direct_access();
-
-	rotation.setter = [this](const vec3 &value)
-	{
-		rotation.value = value;
-		recalculate_transformation();
-	};
-	rotation.prohibit_direct_access();
-
-	scaling.setter = [this](const vec3 &value)
-	{
-		scaling.value = value;
-		recalculate_transformation();
-	};
-	scaling.prohibit_direct_access();
-
-	transformation.prohibit_direct_access();
-
 	translation = vec3(0.f);
 	rotation = vec3(0.f);
 	scaling = vec3(1.f);
@@ -41,6 +18,49 @@ using namespace		engine;
 {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(vbos.size(), vbos.data());
+}
+
+int					model::get_number_of_indices() const
+{
+	return number_of_indices;
+}
+
+vec3				model::get_scaling() const
+{
+	return scaling;
+}
+
+vec3				model::get_translation() const
+{
+	return translation;
+}
+
+vec3				model::get_rotation() const
+{
+	return rotation;
+}
+
+mat4				model::get_transformation() const
+{
+	return transformation;
+}
+
+void				model::set_scaling(const vec3 &value)
+{
+	scaling = value;
+	recalculate_transformation();
+}
+
+void				model::set_translation(const vec3 &value)
+{
+	translation = value;
+	recalculate_transformation();
+}
+
+void				model::set_rotation(const vec3 &value)
+{
+	rotation = value;
+	recalculate_transformation();
 }
 
 void				model::bind(bool state) const
@@ -106,12 +126,12 @@ void 				model::recalculate_transformation()
 {
 	vec3 			rotation;
 
-	rotation.x = radians(this->rotation.value.x);
-	rotation.y = radians(this->rotation.value.y);
-	rotation.z = radians(this->rotation.value.z);
+	rotation.x = radians(this->rotation.x);
+	rotation.y = radians(this->rotation.y);
+	rotation.z = radians(this->rotation.z);
 
 	transformation = mat4(1.f);
-	transformation.value *= translate(translation.value);
-	transformation.value *= eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
-	transformation.value *= scale(scaling.value);
+	transformation *= translate(translation);
+	transformation *= eulerAngleYXZ(rotation.y, rotation.x, rotation.z);
+	transformation *= scale(scaling);
 }

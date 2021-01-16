@@ -39,9 +39,14 @@ using namespace			player;
 	program->bind(false);
 }
 
+void					chunk_renderer::set_apply_water_tint(bool value)
+{
+	apply_water_tint = value;
+}
+
 void					chunk_renderer::render(const shared_ptr<chunk> &chunk, chunk::batch_purpose purpose)
 {
-	auto 				instance = unique_object<chunk_renderer>::instance();
+	auto 				instance = get_instance();
 
 	shared_ptr<model>	model;
 	float				alpha_discard_floor = 0.f;
@@ -70,15 +75,15 @@ void					chunk_renderer::render(const shared_ptr<chunk> &chunk, chunk::batch_pur
 
 	instance->program->bind(true);
 
-	instance->uniform_projection.upload(camera::projection_matrix);
-	instance->uniform_view.upload(camera::view_matrix);
+	instance->uniform_projection.upload(camera::get_instance()->get_projection_matrix());
+	instance->uniform_view.upload(camera::get_instance()->get_view_matrix());
 	instance->uniform_alpha_discard_floor.upload(alpha_discard_floor);
-	instance->uniform_apply_water_tint.upload(apply_water_tint.value);
+	instance->uniform_apply_water_tint.upload(apply_water_tint);
 
 	model->bind(true);
 	texture_atlas::get_instance()->bind(true);
 
-	instance->uniform_transformation.upload(model->transformation);
+	instance->uniform_transformation.upload(model->get_transformation());
 	model->render();
 
 	texture_atlas::get_instance()->bind(false);

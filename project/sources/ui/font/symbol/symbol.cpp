@@ -12,10 +12,12 @@ using namespace		ui;
 
 	texture::bind(true);
 
-	glTexImage2D(
+	glTexImage2D
+	(
 		GL_TEXTURE_2D, 0, GL_RED,
 		face->glyph->bitmap.width, face->glyph->bitmap.rows,
-		0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
+		0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer
+	);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -25,7 +27,23 @@ using namespace		ui;
 	texture::bind(false);
 }
 
-void 				symbol::render(const ivec2 &position)
+ivec2				symbol::get_size() const
+{
+	return size;
+}
+
+ivec2				symbol::get_bearing() const
+{
+	return bearing;
+}
+
+int					symbol::get_advance() const
+{
+	return advance;
+}
+
+
+void 				symbol::render(const ivec2 &position) const
 {
 	symbol_renderer::render(*this, position);
 }

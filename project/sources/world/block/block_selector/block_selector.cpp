@@ -5,7 +5,8 @@
 using namespace			engine;
 using namespace			world;
 
-static vector<float>	cube_vertices = {
+static vector<float>	cube_vertices =
+{
 	-0.5f, -0.5f, -0.5f,
 	-0.5f, +0.5f, -0.5f,
 	+0.5f, +0.5f, -0.5f,
@@ -16,7 +17,8 @@ static vector<float>	cube_vertices = {
 	+0.5f, -0.5f, +0.5f,
 };
 
-static vector<GLuint>	cube_indices = {
+static vector<GLuint>	cube_indices =
+{
 	0, 1,
 	1, 2,
 	2, 3,
@@ -33,42 +35,48 @@ static vector<GLuint>	cube_indices = {
 	3, 7
 };
 
-static vector<float>	left_vertices = {
+static vector<float>	left_vertices =
+{
 	-0.5f, +0.5f, -0.5f,
 	-0.5f, -0.5f, +0.5f,
 	-0.5f, +0.5f, +0.5f,
 	-0.5f, -0.5f, -0.5f
 };
 
-static vector<float>	right_vertices = {
+static vector<float>	right_vertices =
+{
 	+0.5f, +0.5f, -0.5f,
 	+0.5f, -0.5f, +0.5f,
 	+0.5f, +0.5f, +0.5f,
 	+0.5f, -0.5f, -0.5f
 };
 
-static vector<float>	front_vertices = {
+static vector<float>	front_vertices =
+{
 	-0.5f, +0.5f, +0.5f,
 	+0.5f, -0.5f, +0.5f,
 	+0.5f, +0.5f, +0.5f,
 	-0.5f, -0.5f, +0.5f
 };
 
-static vector<float>	back_vertices = {
+static vector<float>	back_vertices =
+{
 	-0.5f, +0.5f, -0.5f,
 	+0.5f, -0.5f, -0.5f,
 	+0.5f, +0.5f, -0.5f,
 	-0.5f, -0.5f, -0.5f
 };
 
-static vector<float>	top_vertices = {
+static vector<float>	top_vertices =
+{
 	-0.5f, +0.5f, -0.5f,
 	+0.5f, +0.5f, +0.5f,
 	-0.5f, +0.5f, +0.5f,
 	+0.5f, +0.5f, -0.5f
 };
 
-static vector<float>	bottom_vertices = {
+static vector<float>	bottom_vertices =
+{
 	-0.5f, -0.5f, -0.5f,
 	+0.5f, -0.5f, +0.5f,
 	-0.5f, -0.5f, +0.5f,
@@ -80,21 +88,34 @@ static vector<GLuint>	face_indices = {0, 1, 2, 3};
 						block_selector::block_selector()
 {
 	layout = "Transparent";
+}
 
-	translation.prohibit_direct_access();
-	translation.setter = [this](const vec3 &value)
-	{
-		translation.value = value;
+vec3					block_selector::get_translation() const
+{
+	return translation;
+}
 
-		cube->translation = value;
+block::face				block_selector::get_selected_face() const
+{
+	return selected_face;
+}
 
-		left->translation = value;
-		right->translation = value;
-		front->translation = value;
-		back->translation = value;
-		top->translation = value;
-		bottom->translation = value;
-	};
+void					block_selector::set_translation(const vec3 &value)
+{
+	translation = value;
+
+	cube->set_translation(value);
+	left->set_translation(value);
+	right->set_translation(value);
+	front->set_translation(value);
+	back->set_translation(value);
+	top->set_translation(value);
+	bottom->set_translation(value);
+}
+
+void					block_selector::set_selected_face(block::face face)
+{
+	selected_face = face;
 }
 
 void 					block_selector::create_implementation()
@@ -146,5 +167,5 @@ void 					block_selector::create_implementation()
 
 void					block_selector::render()
 {
-	block_selector_renderer::render(*this);
+	block_selector_renderer::get_instance()->render(*this);
 }

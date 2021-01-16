@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/aliases.h"
+#include "common/imports/std.h"
 #include "engine/object/object/object.h"
 
 namespace						engine

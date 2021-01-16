@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/imports/opengl.h"
-#include "common/aliases.h"
+#include "common/imports/std.h"
 #include "common/classes/singleton.h"
 #include "engine/object/usual_object/usual_object.h"
 
@@ -17,12 +17,13 @@ class								engine::unique_object : public usual_object<final_type>
 public :
 									unique_object() = default;
 									~unique_object() override = default;
-protected :
 
-	static shared_ptr<final_type>	instance()
+	static shared_ptr<final_type>	get_instance()
 	{
 		return (pointer);
 	}
+
+protected :
 
 	void 							create_implementation() override
 	{

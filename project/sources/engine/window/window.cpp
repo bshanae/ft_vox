@@ -30,9 +30,6 @@ using namespace		engine;
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	mouse_position.getter = mouse_position_getter;
-	mouse_position.prohibit_direct_access();
 }
 
 					window::~window()
@@ -41,19 +38,28 @@ using namespace		engine;
 	glfwTerminate();
 }
 
-bool				window::is_closed()
+vec2				window::get_mouse_position() const
 {
-	return (glfwWindowShouldClose(get_instance()->glfw_window));
+	double			x;
+	double			y;
+
+	glfwGetCursorPos(glfw_window, &x, &y);
+	return (invert_y(vec2(x, y)));
+}
+
+bool				window::is_closed() const
+{
+	return (glfwWindowShouldClose(glfw_window));
 }
 
 void 				window::close()
 {
-	glfwSetWindowShouldClose(get_instance()->glfw_window, true);
+	glfwSetWindowShouldClose(glfw_window, true);
 }
 
 void				window::swap_buffers()
 {
-	glfwSwapBuffers(get_instance()->glfw_window);
+	glfwSwapBuffers(glfw_window);
 }
 
 void				window::use_depth_test(bool state)
@@ -64,26 +70,17 @@ void				window::use_depth_test(bool state)
 		glDisable(GL_DEPTH_TEST);
 }
 
-vec2				window::to_normal(const ivec2 &value)
+vec2				window::to_normal(const ivec2 &value) const
 {
 	return {value.x / size.x, value.y / size.y};
 }
 
-ivec2				window::to_absolute(const vec2 &value)
+ivec2				window::to_absolute(const vec2 &value) const
 {
 	return {value.x * size.x, value.y * size.y};
 }
 
-ivec2				window::invert_y(const vec2 &value)
+ivec2				window::invert_y(const vec2 &value) const
 {
 	return {value.x, size.y - value.y};
-}
-
-vec2				window::mouse_position_getter()
-{
-	double			x;
-	double			y;
-
-	glfwGetCursorPos(get_instance()->glfw_window, &x, &y);
-	return (invert_y(vec2(x, y)));
 }

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "common/imports/glm.h"
-#include "common/aliases.h"
-#include "common/classes/property.h"
+#include "common/imports/std.h"
 
 enum class 						axis : int
 {
@@ -35,6 +34,7 @@ public :
 	{
 		data = make_shared<internal_type>();
 	}
+
 	virtual						~array3() = default;
 
 	struct						index

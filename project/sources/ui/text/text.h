@@ -1,38 +1,37 @@
 #pragma once
 
 #include "common/imports/glm.h"
-#include "common/classes/property.h"
 #include "engine/object/usual_object/usual_object.h"
 
-namespace			ui
+namespace				ui
 {
-	class 			font;
-
-	class 			text;
+	class 				font;
+	class 				text;
 }
 
-class				ui::text : public engine::usual_object<text>
+class					ui::text : public engine::usual_object<text>
 {
 public :
-					text();
-					~text() override = default;
+						text();
+						~text() override = default;
 
-					property<read_write, string, text>
-					string;
+	std::string			get_string() const;
+	ivec2				get_position() const;
+	shared_ptr<font>	get_font() const;
+	ivec2				get_size() const;
 
-					property<read_write, ivec2, text>
-					position;
+	void				set_string(const std::string &string);
+	void				set_font(const shared_ptr<font> &font);
 
-					property<read_write, shared_ptr<font>, text>
-					font;
-
-					property<read_only, ivec2, text>
-					size;
 private :
 
-	void			render() override;
+	std::string			string;
+	ivec2				position;
+	shared_ptr<font>	font;
+	ivec2				size;
 
-	void			recalculate_size();
+	void				render() override;
+	void				recalculate_size();
 };
 
 

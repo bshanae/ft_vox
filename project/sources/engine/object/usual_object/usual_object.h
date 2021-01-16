@@ -35,7 +35,7 @@ public :
 		assert(object != nullptr and "Incorrect object usage");
 		object->create_implementation();
 		object->connect_to_core();
-		object->state.value = uninitialized;
+		object->state = uninitialized;
 		return (final);
 	}
 
@@ -50,13 +50,13 @@ public :
 	void					activate() final
 	{
 		activate_implementation();
-		state.value = active;
+		state = active;
 	}
 
 	void					deactivate() final
 	{
 		deactivate_implementation();
-		state.value = inactive;
+		state = inactive;
 	}
 
 protected :
@@ -80,7 +80,7 @@ private :
 	void					initialize() final
 	{
 		initialize_implementation();
-		state.value = initialized;
+		state = initialized;
 		if (automatic_activation)
 			activate();
 	}
@@ -88,6 +88,6 @@ private :
 	void					deinitialize() final
 	{
 		deinitialize_implementation();
-		state.value = uninitialized;
+		state = uninitialized;
 	}
 };

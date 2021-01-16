@@ -2,40 +2,37 @@
 
 #include "common/imports/opengl.h"
 #include "common/imports/glm.h"
-#include "common/classes/property.h"
+#include "common/imports/std.h"
 #include "common/classes/singleton.h"
-#include "common/aliases.h"
 
-namespace								engine
+namespace					engine
 {
-	class								window;
+	class					window;
 }
 
-class									engine::window : public singleton<window>
+class						engine::window : public singleton<window>
 {
 public :
-										window();
-										~window() override;
 
-	static inline string				title = "";
-	static inline ivec2					size = ivec2(1280, 720);
+	static inline string	title = "";
+	static inline ivec2		size = ivec2(1280, 720);
 
-	static void 						close();
-	static bool							is_closed();
+							window();
+							~window() override;
 
-	static void 						swap_buffers();
-	static void 						use_depth_test(bool state);
+	vec2					get_mouse_position() const;
 
-	static inline
-	property<read_only, vec2, window>	mouse_position;
+	bool					is_closed() const;
+	void 					close();
 
-	static vec2							to_normal(const ivec2 &value);
-	static ivec2						to_absolute(const vec2 &value);
-	static ivec2						invert_y(const vec2 &value);
+	void 					swap_buffers();
+	void 					use_depth_test(bool state);
+
+	vec2					to_normal(const ivec2 &value) const;
+	ivec2					to_absolute(const vec2 &value) const;
+	ivec2					invert_y(const vec2 &value) const;
 
 private :
 
-	GLFWwindow							*glfw_window = nullptr;
-
-	static vec2							mouse_position_getter();
+	GLFWwindow				*glfw_window = nullptr;
 };

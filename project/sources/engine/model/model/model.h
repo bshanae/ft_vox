@@ -2,47 +2,54 @@
 
 #include "common/imports/opengl.h"
 #include "common/imports/glm.h"
-#include "common/aliases.h"
-#include "common/classes/property.h"
+#include "common/imports/std.h"
 
-namespace								engine
+namespace				engine
 {
-	class 								model;
+	class 				model;
 }
 
-class									engine::model
+class					engine::model
 {
 public:
 
-	property<read_only, int, model>		number_of_indices;
-
-	property<read_write, vec3, model>	scaling;
-	property<read_write, vec3, model>	translation;
-	property<read_write, vec3, model>	rotation;
-	property<read_only, mat4, model>	transformation;
-
-	enum								draw_mode
+	enum				draw_mode
 	{
 		triangles,
 		lines
 	};
 
-	explicit							model(draw_mode mode = triangles);
-										~model();
+	explicit			model(draw_mode mode = triangles);
+						~model();
 
-	void								add_vbo(int dimension, const vector<GLfloat> &data);
-	void								add_ebo(const vector<GLuint> &indices);
+	int					get_number_of_indices() const;
+	vec3				get_scaling() const;
+	vec3				get_translation() const;
+	vec3				get_rotation() const;
+	mat4				get_transformation() const;
 
-	void								bind(bool state) const;
+	void				set_scaling(const vec3 &value);
+	void				set_translation(const vec3 &value);
+	void				set_rotation(const vec3 &value);
 
-	void								render() const;
+	void				add_vbo(int dimension, const vector<GLfloat> &data);
+	void				add_ebo(const vector<GLuint> &indices);
+
+	void				bind(bool state) const;
+
+	void				render() const;
 
 private :
 
-	const draw_mode						draw_mode;
+	const draw_mode		draw_mode;
 
-	GLuint								vao = 0;
-	vector<GLuint>						vbos;
+	GLuint				vao = 0;
+	vector<GLuint>		vbos;
+	int					number_of_indices;
+	vec3				scaling;
+	vec3				translation;
+	vec3				rotation;
+	mat4				transformation;
 
-	void 								recalculate_transformation();
+	void 				recalculate_transformation();
 };

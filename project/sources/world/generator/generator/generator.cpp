@@ -17,8 +17,8 @@ void					generator::generate(const shared_ptr<chunk> &chunk)
 {
 	static const int	water_level = 1;
 
-	auto 				instance = generator::instance();
-	const vec3			position = chunk->position;
+	auto 				instance = get_instance();
+	const vec3			position = chunk->get_position();
 
 	chunk::index		index;
 
@@ -29,7 +29,7 @@ void					generator::generate(const shared_ptr<chunk> &chunk)
 
 			const auto	&workspace = instance->workspace;
 
-			const auto	block_type = (enum block::type)workspace.biome.first_layer;
+			const auto	block_type = (enum block::type)workspace.biome.get_first_layer();
 			const auto	height_limit = min(chunk_settings::size[1], max(water_level, workspace.height));
 
 			for (index.y = 0; index.y < height_limit; index.y++)
@@ -57,15 +57,15 @@ void					generator::process_column(const vec3 &position)
 	const auto			&bottom_left_cell = result.bottom_left;
 	const auto			&bottom_right_cell = result.bottom_right;
 
-	const auto			central_cell_height = choose_biome(central_cell.noise_value).height(position);
-	const auto			left_cell_height = choose_biome(left_cell.noise_value).height(position);
-	const auto			right_cell_height = choose_biome(right_cell.noise_value).height(position);
-	const auto			top_cell_height = choose_biome(top_cell.noise_value).height(position);
-	const auto			bottom_cell_height = choose_biome(bottom_cell.noise_value).height(position);
-	const auto			top_left_cell_height = choose_biome(top_left_cell.noise_value).height(position);
-	const auto			top_right_cell_height = choose_biome(top_right_cell.noise_value).height(position);
-	const auto			bottom_left_cell_height = choose_biome(bottom_left_cell.noise_value).height(position);
-	const auto			bottom_right_cell_height = choose_biome(bottom_right_cell.noise_value).height(position);
+	const auto			central_cell_height = choose_biome(central_cell.noise_value).generate_height(position);
+	const auto			left_cell_height = choose_biome(left_cell.noise_value).generate_height(position);
+	const auto			right_cell_height = choose_biome(right_cell.noise_value).generate_height(position);
+	const auto			top_cell_height = choose_biome(top_cell.noise_value).generate_height(position);
+	const auto			bottom_cell_height = choose_biome(bottom_cell.noise_value).generate_height(position);
+	const auto			top_left_cell_height = choose_biome(top_left_cell.noise_value).generate_height(position);
+	const auto			top_right_cell_height = choose_biome(top_right_cell.noise_value).generate_height(position);
+	const auto			bottom_left_cell_height = choose_biome(bottom_left_cell.noise_value).generate_height(position);
+	const auto			bottom_right_cell_height = choose_biome(bottom_right_cell.noise_value).generate_height(position);
 
 	const float			central_cell_influence = 1.f - central_cell.distance / furthest.distance;
 	const float			left_cell_influence = 1.f - left_cell.distance / furthest.distance;
@@ -110,7 +110,7 @@ void					generator::process_column(const vec3 &position)
 const biome				&generator::choose_biome(float noise_value)
 {
 	if (noise_value > 0.5f)
-		return (biome_collection::biome(biome::test_dirt));
+		return (biome_collection::get_instance()->get_biome(biome::test_dirt));
 	else
-		return (biome_collection::biome(biome::test_stone));
+		return (biome_collection::get_instance()->get_biome(biome::test_stone));
 }

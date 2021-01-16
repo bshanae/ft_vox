@@ -1,57 +1,50 @@
 #pragma once
 
 #include "common/imports/opengl.h"
-#include "common/aliases.h"
+#include "common/imports/std.h"
 #include "common/classes/singleton.h"
-#include "common/classes/property.h"
 #include "engine/object/unique_object/unique_object.h"
 #include "world/block/block_id/block_id.h"
 #include "player/camera/camera_settings.h"
 
-namespace								player
+namespace					player
 {
-	class								camera;
+	class					camera;
 }
 
-class									player::camera : public engine::unique_object<camera>
+class						player::camera : public engine::unique_object<camera>
 {
 public :
-										camera();
-										~camera() override = default;
 
-	static inline
-	property<read_write, vec3, camera>	position;
-
-	static inline
-	property<read_only, mat4, camera>	projection_matrix;
-	static inline
-	property<read_only, mat4, camera>	view_matrix;
-
-	static inline
-	property<read_write, bool, camera>	have_changed;
-
-	static inline
-	property<read_only, vec3, camera>	front;
-	static inline
-	property<read_only, vec3, camera>	back;
-	static inline
-	property<read_only, vec3, camera>	up;
-	static inline
-	property<read_only, vec3, camera>	down;
-	static inline
-	property<read_only, vec3, camera>	left;
-	static inline
-	property<read_only, vec3, camera>	right;
-
-	struct								hit
+	struct					hit
 	{
-		world::block_id					block;
-		world::block::face				face;
+		world::block_id		block;
+		world::block::face	face;
 	};
 
-	static optional<hit>				cast_ray();
+							camera();
+							~camera() override = default;
 
-	enum class							direction
+	vec3					get_position() const;
+
+	mat4					get_projection_matrix() const;
+	mat4					get_view_matrix() const;
+
+	bool					did_change() const;
+
+	vec3					get_front() const;
+	vec3					get_back() const;
+	vec3					get_up() const;
+	vec3					get_down() const;
+	vec3					get_left() const;
+	vec3					get_right() const;
+
+	void					set_position(const vec3 &value);
+	void					set_did_change(bool value);
+
+	optional<hit>			cast_ray();
+
+	enum class				direction
 	{
 		left,
 		right,
@@ -63,15 +56,23 @@ public :
 
 private :
 
-	const vec3							up_const = vec3(0.f, 1.f, 0.f);
+	vec3					position;
+	mat4					projection_matrix;
+	mat4					view_matrix;
 
-	float								yaw = -90.f;
-	float								pitch = 0.f;
+	const vec3				up_const = vec3(0.f, 1.f, 0.f);
 
-	void								update() override;
+	vec3					front;
+	vec3					up;
+	vec3					right;
 
-	void								recalculate();
+	float					yaw = -90.f;
+	float					pitch = 0.f;
 
-	vec3								move_position(direction request, float speed);
-	static float						intbound(float s, float ds);
+	bool 					_did_change;
+
+	void					update() override;
+	void					recalculate();
+
+	static float			intbound(float s, float ds);
 };

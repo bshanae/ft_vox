@@ -9,7 +9,6 @@
 #include "world/block/block_selector/block_selector_renderer.h"
 #include "world/chunk/chunk_renderer.h"
 #include "world/generator/generator/generator.h"
-#include "world/loader/loader/loader.h"
 #include "player/camera/camera.h"
 #include "player/player/player.h"
 
@@ -46,7 +45,6 @@ void 				application::application::initialize_world()
 {
 	world::generator::create();
 	world::biome_collection::create();
-	world::loader::create();
 	world::block_selector::create();
 	world::block_selector_renderer::create();
 	world::chunk_renderer::create();

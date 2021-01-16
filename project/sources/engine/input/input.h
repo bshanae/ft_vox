@@ -2,26 +2,25 @@
 
 #include "common/imports/opengl.h"
 #include "common/imports/glm.h"
-#include "common/classes/property.h"
 #include "common/classes/singleton.h"
-#include "common/aliases.h"
+#include "common/imports/std.h"
 
-namespace								engine
+namespace						engine
 {
-	class								core;
-	class								window;
+	class						core;
+	class						window;
 
-	class								input;
+	class						input;
 }
 
-class									engine::input : public singleton<input>
+class							engine::input : public singleton<input>
 {
-	friend class						engine::core;
-	friend class						engine::window;
+	friend class				engine::core;
+	friend class				engine::window;
 
 public :
 
-	enum class							key : int
+	enum class					key : int
 	{
 		letter_a = GLFW_KEY_A,
 		letter_b = GLFW_KEY_B,
@@ -71,7 +70,7 @@ public :
 		mouse_right = GLFW_MOUSE_BUTTON_RIGHT,
 	};
 
-	enum class							state : int
+	enum class					state : int
 	{
 		waiting = 0,
 		pressed = GLFW_PRESS,
@@ -79,29 +78,32 @@ public :
 		held = GLFW_REPEAT
 	};
 
-										input();
+								input();
 
-	static bool							is_pressed(enum key key);
-	static bool							is_released(enum key key);
-	static bool							is_held(enum key key);
-	static bool							is_pressed_or_held(enum key key);
+	vec2						get_mouse_offset() const;
+	vec2						get_last_mouse_position() const;
+	vec2						get_current_mouse_position() const;
 
-	static bool							have_mouse_moved();
+	bool						is_pressed(enum key key) const;
+	bool						is_released(enum key key) const;
+	bool						is_held(enum key key) const;
+	bool						is_pressed_or_held(enum key key) const;
 
-	static inline
-	property<read_only, vec2, input>	mouse_offset;
-	static inline
-	property<read_only, vec2, input>	mouse_last_position;
-	static inline
-	property<read_only, vec2, input>	mouse_current_position;
+	bool						did_mouse_move() const;
 
 private :
 
-	unordered_map<key, state>			states;
+	unordered_map<key, state>	states;
 
-	static void 						callback_for_keyboard(GLFWwindow *window, int key, int code, int action, int mode);
-	static void 						callback_for_mouse_click(GLFWwindow *window, int key, int action, int mode);
+	vec2						mouse_offset;
+	vec2						last_mouse_position;
+	vec2						current_mouse_position;
 
-	static void							reset_keys();
-	static void							update_mouse();
+	state						get_state_for_key(enum key key) const;
+
+	static void					callback_for_keyboard(GLFWwindow *window, int key, int code, int action, int mode);
+	static void					callback_for_mouse_click(GLFWwindow *window, int key, int action, int mode);
+
+	void						reset_keys();
+	void						update_mouse();
 };

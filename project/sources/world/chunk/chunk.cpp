@@ -1,6 +1,6 @@
 #include "chunk.h"
 
-#include "common/aliases.h"
+#include "common/imports/std.h"
 #include "engine/model/model/model.h"
 #include "world/texture_atlas/texture_atlas.h"
 #include "world/block/block/block_settings.h"
@@ -9,112 +9,128 @@ using namespace			world;
 
 static const float		epsilon = 0.005f;
 
-static vector<GLfloat>	front_vertices = {
+static vector<GLfloat>	front_vertices =
+{
 	+0.5f, +0.5f, +0.5f,
 	-0.5f, +0.5f, +0.5f,
 	-0.5f, -0.5f, +0.5f,
 	+0.5f, -0.5f, +0.5f
 };
 
-static vector<GLfloat>	front_texture_coordinates = {
+static vector<GLfloat>	front_texture_coordinates =
+{
 	1.f - epsilon, 1.f - epsilon,
 	0.f + epsilon, 1.f - epsilon,
 	0.f + epsilon, 0.f + epsilon,
 	1.f - epsilon, 0.f + epsilon,
 };
 
-static vector<GLfloat>	back_vertices = {
+static vector<GLfloat>	back_vertices =
+{
 	+0.5f, +0.5f, -0.5f,
 	+0.5f, -0.5f, -0.5f,
 	-0.5f, -0.5f, -0.5f,
 	-0.5f, +0.5f, -0.5f
 };
 
-static vector<GLfloat>	back_texture_coordinates = {
+static vector<GLfloat>	back_texture_coordinates =
+{
 	0.f + epsilon, 1.f - epsilon,
 	0.f + epsilon, 0.f + epsilon,
 	1.f - epsilon, 0.f + epsilon,
 	1.f - epsilon, 1.f - epsilon,
 };
 
-static vector<GLfloat>	top_vertices = {
+static vector<GLfloat>	top_vertices =
+{
 	-0.5f, +0.5f, +0.5f,
 	+0.5f, +0.5f, +0.5f,
 	+0.5f, +0.5f, -0.5f,
 	-0.5f, +0.5f, -0.5f
 };
 
-static vector<GLfloat>	top_texture_coordinates = {
+static vector<GLfloat>	top_texture_coordinates =
+{
 	0.f + epsilon, 0.f + epsilon,
 	1.f - epsilon, 0.f + epsilon,
 	1.f - epsilon, 1.f - epsilon,
 	0.f + epsilon, 1.f - epsilon,
 };
 
-static vector<GLfloat>	bottom_vertices = {
+static vector<GLfloat>	bottom_vertices =
+{
 	-0.5f, -0.5f, +0.5f,
 	-0.5f, -0.5f, -0.5f,
 	+0.5f, -0.5f, -0.5f,
 	+0.5f, -0.5f, +0.5f
 };
 
-static vector<GLfloat>	bottom_texture_coordinates = {
+static vector<GLfloat>	bottom_texture_coordinates =
+{
 	0.f + epsilon, 0.f + epsilon,
 	0.f + epsilon, 1.f - epsilon,
 	1.f - epsilon, 1.f - epsilon,
 	1.f - epsilon, 0.f + epsilon,
 };
 
-static vector<GLfloat>	right_vertices = {
+static vector<GLfloat>	right_vertices =
+{
 	+0.5f, +0.5f, +0.5f,
 	+0.5f, -0.5f, +0.5f,
 	+0.5f, -0.5f, -0.5f,
 	+0.5f, +0.5f, -0.5f
 };
 
-static vector<GLfloat>	right_texture_coordinates = {
+static vector<GLfloat>	right_texture_coordinates =
+{
 	0.f + epsilon, 1.f - epsilon,
 	0.f + epsilon, 0.f + epsilon,
 	1.f - epsilon, 0.f + epsilon,
 	1.f - epsilon, 1.f - epsilon,
 };
 
-static vector<GLfloat>	left_vertices = {
+static vector<GLfloat>	left_vertices =
+{
 	-0.5f, -0.5f, -0.5f,
 	-0.5f, -0.5f, +0.5f,
 	-0.5f, +0.5f, +0.5f,
 	-0.5f, +0.5f, -0.5f,
 };
 
-static vector<GLfloat>	left_texture_coordinates = {
+static vector<GLfloat>	left_texture_coordinates =
+{
 	0.f + epsilon, 0.f + epsilon,
 	1.f - epsilon, 0.f + epsilon,
 	1.f - epsilon, 1.f - epsilon,
 	0.f + epsilon, 1.f - epsilon
 };
 
-static vector<GLfloat>	first_diagonal_vertices = {
+static vector<GLfloat>	first_diagonal_vertices =
+{
 	+0.5f, +0.5f, +0.5f,
 	-0.5f, +0.5f, -0.5f,
 	-0.5f, -0.5f, -0.5f,
 	+0.5f, -0.5f, +0.5f,
 };
 
-static vector<GLfloat>	first_diagonal_texture_coordinates = {
+static vector<GLfloat>	first_diagonal_texture_coordinates =
+{
 	1.f - epsilon, 1.f - epsilon,
 	0.f + epsilon, 1.f - epsilon,
 	0.f + epsilon, 0.f + epsilon,
 	1.f - epsilon, 0.f + epsilon,
 };
 
-static vector<GLfloat>	second_diagonal_vertices = {
+static vector<GLfloat>	second_diagonal_vertices =
+{
 	+0.5f, +0.5f, -0.5f,
 	-0.5f, +0.5f, +0.5f,
 	-0.5f, -0.5f, +0.5f,
 	+0.5f, -0.5f, -0.5f,
 };
 
-static vector<GLfloat>	second_diagonal_texture_coordinates = {
+static vector<GLfloat>	second_diagonal_texture_coordinates =
+{
 	1.f - epsilon, 1.f - epsilon,
 	0.f + epsilon, 1.f - epsilon,
 	0.f + epsilon, 0.f + epsilon,
@@ -127,15 +143,23 @@ static vector<GLuint>	indices =
 	1, 2, 3
 };
 
-						chunk::chunk(const vec3 &position)
+						chunk::chunk(const vec3 &position) :
+							position(position),
+							center(position + chunk_settings::size_as_vector / 2.f)
 {
-	this->position = position;
-	center.getter = [this](){ return (*this->position + chunk_settings::size_as_vector / 2.f); };
-	center.prohibit_direct_access();
-
 	workspace_for_opaque.predicate = [](block &block){ return (block.is_opaque()); };
 	workspace_for_transparent.predicate = [](block &block){ return (block.is_transparent()); };
 	workspace_for_partially_transparent.predicate = [](block &block){ return (block.is_partially_transparent()); };
+}
+
+vec3					chunk::get_position() const
+{
+	return position;
+}
+
+vec3					chunk::get_center() const
+{
+	return center;
 }
 
 // -------------------- Build functions
@@ -261,7 +285,7 @@ void					chunk::build_model(batch_workspace &workspace)
 	workspace.model = make_shared<engine::model>();
 
 //	vec3(0.5f) is block offset, so first block is on vec3(0, 0, 0)
-	workspace.model->translation = (vec3)position + vec3(0.5f);
+	workspace.model->set_translation((vec3)position + vec3(0.5f));
 	workspace.model->bind(true);
 
 	workspace.model->add_vbo(3, workspace.vertices);

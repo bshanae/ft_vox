@@ -12,18 +12,33 @@ using namespace		engine;
 	extends = ivec2(0);
 }
 
+void 				button::set_callback(const function<void(void)> &callback)
+{
+	this->callback = callback;
+}
+
+ivec2				button::get_extends() const
+{
+	return extends;
+}
+
 void 				button::update()
 {
-	if (input::is_pressed(input::key::mouse_left) and
-		is_inside(input::mouse_current_position) and
-		*callback != nullptr)
-		(*callback)();
+	if
+	(
+		input::get_instance()->is_pressed(input::key::mouse_left) and
+		is_inside(input::get_instance()->get_current_mouse_position()) and
+		callback != nullptr
+	)
+	{
+		callback();
+	}
 }
 
 bool				button::is_inside(const vec2 &point)
 {
-	const ivec2		min = *text::position - *extends;
-	const ivec2		max = *text::position + *text::size + *extends;
+	const ivec2		min = get_position() - extends;
+	const ivec2		max = get_position() + get_size() + extends;
 
 	return
 	(

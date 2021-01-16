@@ -1,33 +1,23 @@
 #pragma once
 
 #include "common/imports/opengl.h"
-#include "common/classes/property.h"
 
-namespace									engine
+namespace			engine
 {
-	class									texture;
+	class			texture;
 }
 
-class 										engine::texture
+class 				engine::texture
 {
 public :
+					texture();
+					~texture();
 
-	property<read_only, GLuint, texture>	value;
+	GLuint			get_value() const;
 
-											texture()
-	{
-		GLuint								temporary;
+	void 			bind(bool state) const;
 
-		glGenTextures(1, &temporary);
-		value = temporary;
-	}
-											~texture()
-	{
-		glDeleteTextures(1, &*value);
-	}
+private :
 
-	void 									bind(bool state) const
-	{
-		glBindTexture(GL_TEXTURE_2D, state ? value : 0);
-	}
+	GLuint			value;
 };

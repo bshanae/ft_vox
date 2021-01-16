@@ -11,37 +11,58 @@ using namespace		ui;
 {
 	usual_object::layout = "UI";
 
-	string.setter = [this](const ::string &value)
-	{
-		string.value = value;
-		recalculate_size();
-	};
-
-	font.setter = [this](const shared_ptr<::font> &value)
-	{
-		font.value = value;
-		recalculate_size();
-	};
-
 	string = "EMPTY";
 	position = ivec2(0, 0);
 	font = nullptr;
 }
 
+std::string			text::get_string() const
+{
+	return string;
+}
+
+ivec2				text::get_position() const
+{
+	return position;
+}
+
+shared_ptr<font>	text::get_font() const
+{
+	return font;
+}
+
+ivec2				text::get_size() const
+{
+	return size;
+}
+
+
+void				text::set_string(const std::string &string)
+{
+	this->string = string;
+	recalculate_size();
+}
+
+void				text::set_font(const shared_ptr<ui::font> &font)
+{
+	this->font = font;
+	recalculate_size();
+}
+
 void 				text::render()
 {
-	assert(*font);
+	assert(font);
 
 	ivec2			position_iterator = position;
 	vec3			position_of_symbol = vec3(0.f);
 
-	position_iterator = window::invert_y(position_iterator);
-	for (char character : *string)
+	position_iterator = window::get_instance()->invert_y(position_iterator);
+	for (char character : string)
 	{
-		auto		symbol = (*font)->find_symbol(character);
+		auto		symbol = font->find_symbol(character);
 
-		auto		bearing = *symbol->bearing;
-		auto		advance = *symbol->advance;
+		auto		bearing = symbol->get_bearing();
+		auto		advance = symbol->get_advance();
 
 		position_of_symbol.x = (float)(position_iterator.x);
 		position_of_symbol.y = (float)(position_iterator.y - bearing.y);
@@ -54,15 +75,18 @@ void 				text::render()
 
 void				text::recalculate_size()
 {
-	size = vec2(0, 0);
+	ivec2			new_size = vec2(0, 0);
 
-	if (not *font)
+	if (not font)
 		return ;
-	for (char character : *string)
-	{
-		auto 		symbol = (*font)->find_symbol(character);
 
-		size.value.x += symbol->size->x + symbol->advance + symbol->bearing->x;
-		size.value.y = max(size->y, symbol->size->y);
+	for (char character : string)
+	{
+		auto 		symbol = font->find_symbol(character);
+
+		new_size.x += symbol->get_size().x + symbol->get_advance() + symbol->get_bearing().x;
+		new_size.y = max(new_size.y, symbol->get_size().y);
 	}
+
+	size = new_size;
 }

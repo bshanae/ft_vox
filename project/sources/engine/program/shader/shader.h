@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/imports/opengl.h"
-#include "common/aliases.h"
+#include "common/imports/std.h"
 
 namespace			engine
 {

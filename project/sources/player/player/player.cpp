@@ -30,7 +30,7 @@ void 					player::player::process_physics()
 #warning "TEMPORARY SOLUTION"
 	static bool 		dummy_lock = true;
 
-	if (input::is_pressed_or_held(input::key::number_1))
+	if (input::get_instance()->is_pressed_or_held(input::key::number_1))
 		dummy_lock = false;
 
 	if (dummy_lock)
@@ -40,45 +40,47 @@ void 					player::player::process_physics()
 		return ;
 
 	velocity += player_settings::gravity_force;
-	position = (vec3)camera::position + velocity;
+	position = (vec3)camera::get_instance()->get_position() + velocity;
 
-	if (world::world::does_collide(player::aabb(position)))
+	if (world::world::get_instance()->does_collide(player::aabb(position)))
 	{
 		velocity = vec3();
 		is_jumping = false;
 	}
 	else
-		camera::position = position;
+		camera::get_instance()->get_position() = position;
 }
 
 void 					player::player::process_input()
 {
 	vec3				movement = vec3(0.f);
-	float				speed_up = input::is_held(input::key::shift) and is_flying ? player_settings::speed_up : 1.f;
+	float				speed_up;
+
+	speed_up = input::get_instance()->is_held(input::key::shift) and is_flying ? player_settings::speed_up : 1.f;
 
 	if (is_flying)
 	{
-		if (input::is_pressed_or_held(input::key::letter_a))
-			movement += (vec3)camera::left;
-		else if (input::is_pressed_or_held(input::key::letter_d))
-			movement += (vec3)camera::right;
+		if (input::get_instance()->is_pressed_or_held(input::key::letter_a))
+			movement += (vec3)camera::get_instance()->get_left();
+		else if (input::get_instance()->is_pressed_or_held(input::key::letter_d))
+			movement += (vec3)camera::get_instance()->get_right();
 
-		if (input::is_pressed_or_held(input::key::letter_w))
-			movement += (vec3)camera::front;
-		else if (input::is_pressed_or_held(input::key::letter_s))
-			movement += (vec3)camera::back;
+		if (input::get_instance()->is_pressed_or_held(input::key::letter_w))
+			movement += (vec3)camera::get_instance()->get_front();
+		else if (input::get_instance()->is_pressed_or_held(input::key::letter_s))
+			movement += (vec3)camera::get_instance()->get_back();
 	}
 	else if (not is_jumping)
 	{
-		if (input::is_pressed_or_held(input::key::letter_a))
-			movement += discard_y(camera::left);
-		else if (input::is_pressed_or_held(input::key::letter_d))
-			movement += discard_y(camera::right);
+		if (input::get_instance()->is_pressed_or_held(input::key::letter_a))
+			movement += discard_y(camera::get_instance()->get_left());
+		else if (input::get_instance()->is_pressed_or_held(input::key::letter_d))
+			movement += discard_y(camera::get_instance()->get_right());
 
-		if (input::is_pressed_or_held(input::key::letter_w))
-			movement += discard_y(camera::front);
-		else if (input::is_pressed_or_held(input::key::letter_s))
-			movement += discard_y(camera::back);
+		if (input::get_instance()->is_pressed_or_held(input::key::letter_w))
+			movement += discard_y(camera::get_instance()->get_front());
+		else if (input::get_instance()->is_pressed_or_held(input::key::letter_s))
+			movement += discard_y(camera::get_instance()->get_back());
 	}
 
 	if (movement != vec3(0.f))
@@ -89,9 +91,9 @@ void 					player::player::process_input()
 		offset_camera_if_possible(movement);
 	}
 
-	if (input::is_pressed(input::key::space))
+	if (input::get_instance()->is_pressed(input::key::space))
 	{
-		if (timer_for_second_space.state == timer::running)
+		if (timer_for_second_space.get_state() == timer::running)
 		{
 			timer_for_second_space.reset();
 			is_flying = not is_flying;
@@ -112,27 +114,27 @@ void 					player::player::process_input()
 		}
 	}
 
-	if (input::is_held(input::key::space) and is_flying)
+	if (input::get_instance()->is_held(input::key::space) and is_flying)
 		offset_camera_if_possible(player_settings::flight_lift * speed_up);
 
-	if (input::is_pressed(input::key::mouse_left))
+	if (input::get_instance()->is_pressed(input::key::mouse_left))
 	{
-		if (auto hit = camera::cast_ray(); hit)
+		if (auto hit = camera::get_instance()->cast_ray(); hit)
 		{
-			world::world::remove_block(hit->block);
+			world::world::get_instance()->remove_block(hit->block);
 			force_ray_cast = true;
 		}
 	}
 
-	if (input::is_pressed(input::key::mouse_right))
+	if (input::get_instance()->is_pressed(input::key::mouse_right))
 	{
-		if (auto hit = camera::cast_ray(); hit)
+		if (auto hit = camera::get_instance()->cast_ray(); hit)
 		{
 			auto 	axis_and_sign = world::block::to_axis_and_sign(hit->face);
 			auto	neighbor = hit->block.neighbor(axis_and_sign.first, axis_and_sign.second);
 
 			assert(neighbor);
-			world::world::insert_block(*neighbor, world::block::dirt_with_grass);
+			world::world::get_instance()->insert_block(*neighbor, world::block::dirt_with_grass);
 
 			force_ray_cast = true;
 		}
@@ -141,15 +143,15 @@ void 					player::player::process_input()
 
 void 					player::player::process_selection()
 {
-	if (camera::have_changed or force_ray_cast)
+	if (camera::get_instance()->did_change() or force_ray_cast)
 	{
-		if (auto hit = camera::cast_ray(); hit)
+		if (auto hit = camera::get_instance()->cast_ray(); hit)
 		{
 			logger::log(logger::player, "Selected block : " + to_string(hit->block.world_position()));
-			world::world::select_block(hit->block, hit->face);
+			world::world::get_instance()->select_block(hit->block, hit->face);
 		}
 		else
-			world::world::unselect_block();
+			world::world::get_instance()->unselect_block();
 
 		force_ray_cast = false;
 	}
@@ -172,10 +174,11 @@ world::aabb				player::player::aabb(const vec3 &position) const
 
 void					player::player::offset_camera_if_possible(const vec3 &offset) const
 {
-	const vec3			new_position = (vec3)camera::position + offset;
+	vec3				new_position;
 
-	if (not world::world::does_collide(player::aabb(new_position)))
-		camera::position = new_position;
+	new_position = (vec3)camera::get_instance()->get_position() + offset;
+	if (not world::world::get_instance()->does_collide(player::aabb(new_position)))
+		camera::get_instance()->set_position(new_position);
 }
 
 vec3					player::player::discard_y(const vec3 &original)

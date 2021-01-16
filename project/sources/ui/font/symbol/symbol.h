@@ -3,35 +3,38 @@
 #include "common/imports/opengl.h"
 #include "common/imports/glm.h"
 #include "common/imports/freetype.h"
-#include "common/aliases.h"
-#include "common/classes/property.h"
+#include "common/imports/std.h"
 #include "engine/model/texture/texture.h"
 
-namespace								ui
+namespace				ui
 {
-	class								font;
+	class				font;
 
-	class								symbol;
+	class				symbol;
 }
 
-class									ui::symbol : public engine::texture
+class					ui::symbol : public engine::texture
 {
-	friend class						font;
+	friend class		font;
 
 public :
 
-	explicit							symbol(FT_Face &face);
-										~symbol() = default;
+	explicit			symbol(FT_Face &face);
+						~symbol() = default;
 
-	property<read_only, ivec2, symbol>	size;
-	property<read_only, ivec2, symbol>	bearing;
-	property<read_only, int, symbol>	advance;
+	ivec2				get_size() const;
+	ivec2				get_bearing() const;
+	int					get_advance() const;
 
-	void 								render(const ivec2 &position);
+	void 				render(const ivec2 &position) const;
 
 private :
 
-	shared_ptr<font>					font;
+	ivec2				size;
+	ivec2				bearing;
+	int					advance;
+
+	shared_ptr<font>	font;
 };
 
 

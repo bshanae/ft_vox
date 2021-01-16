@@ -1,11 +1,11 @@
 #pragma once
 
-#include "FastNoise.h"
+#include "FastNoiseLite.h"
 
-#include "common/aliases.h"
+#include "common/imports/std.h"
 #include "common/imports/glm.h"
 #include "engine/object/unique_object/unique_object.h"
-#include "world/generator/biome/biome_collection.h"
+#include "world/generator/biome_collection/biome_collection.h"
 
 namespace						world
 {

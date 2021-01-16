@@ -1,7 +1,6 @@
 #pragma once
 
-#include "common/aliases.h"
-#include "common/classes/property.h"
+#include "common/imports/std.h"
 #include "world/block/block/block.h"
 #include "world/generator/noise/perlin_noise.h"
 #include "world/generator/noise/cellular_noise.h"
@@ -21,61 +20,30 @@ public :
 		test_dirt,
 		test_stone
 	};
-							property<read_only, enum type, biome>
-							type;
 
-							property<read_only, enum block::type, biome>
-							first_layer;
+	explicit				biome(enum type type = biome::null);
+							biome(const biome &other);
 
-							biome(enum type type = biome::null)
+	friend bool 			operator == (const biome &left, const biome &right);
+	friend bool 			operator != (const biome &left, const biome &right);
+
+	enum type				get_type() const
 	{
-		switch (this->type.value = type)
-		{
-			case (test_dirt) :
-				noise = perlin_noise(1.f, 0.01f, 10.f);
-				first_layer = block::dirt;
-				break ;
-
-			case (test_stone) :
-				noise = perlin_noise(1.f, 0.05f, 30.f);
-				first_layer = block::stone;
-				break ;
-
-			default :
-				break ;
-		}
-
-		first_layer.getter = [this]()
-		{
-			assert(this->type != biome::null);
-			return (first_layer.value);
-		};
+		return type;
 	}
 
-							biome(const biome &other)
+	enum block::type		get_first_layer() const
 	{
-		type = other.type;
-		first_layer = other.first_layer.value;
-		noise = other.noise;
+		assert(this->type != biome::null);
+		return (first_layer);
 	}
 
-	int 					height(const vec3 &position) const
-	{
-		assert(type != biome::null);
-		return (noise.generate(vec2(position.x, position.z)));
-	}
-
-	friend bool 			operator == (const biome &left, const biome &right)
-	{
-		return (left.type == right.type);
-	}
-
-	friend bool 			operator != (const biome &left, const biome &right)
-	{
-		return (left.type != right.type);
-	}
+	int 					generate_height(const vec3 &position) const;
 
 private :
+
+	enum type				type;
+	enum block::type		first_layer;
 
 	perlin_noise			noise;
 };

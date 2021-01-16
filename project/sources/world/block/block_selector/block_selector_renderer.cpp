@@ -20,75 +20,74 @@ using namespace			player;
 
 void					block_selector_renderer::render(const block_selector &selector)
 {
-	auto 				instance = unique_object<block_selector_renderer>::instance();
-
 	float				distance;
 
-	distance = glm::distance((vec3)camera::position, (vec3)selector.translation);
-	instance->epsilon = (distance / 10.f) * 0.003f;
+	distance = glm::distance(camera::get_instance()->get_position(), (vec3)selector.translation);
+	epsilon = (distance / 10.f) * 0.003f;
 
-	instance->program->bind(true);
+	program->bind(true);
 
-	instance->render(selector.cube);
+	render(selector.cube);
 
 	switch (selector.selected_face)
 	{
 		case (block::left) :
-			instance->render(selector.left);
+			render(selector.left);
 			break;
 
 		case (block::right) :
-			instance->render(selector.right);
+			render(selector.right);
 			break;
 
 		case (block::front) :
-			instance->render(selector.front);
+			render(selector.front);
 			break;
 
 		case (block::back) :
-			instance->render(selector.back);
+			render(selector.back);
 			break;
 
 		case (block::top) :
-				instance->render(selector.top);
+				render(selector.top);
 			break;
 
 		case (block::bottom) :
-			instance->render(selector.bottom);
+			render(selector.bottom);
 			break;
 	}
 
-	instance->program->bind(false);
+	program->bind(false);
 }
 
 void					block_selector_renderer::render(const shared_ptr<model> &model)
 {
 	for (int x_indicator = -2; x_indicator <= +2; x_indicator++)
-		for (int y_indicator = -2; y_indicator <= +2; y_indicator++)
-			for (int z_indicator = -2; z_indicator <= +2; z_indicator++)
-				render(
-					model,
-					vec3(
-						(float)x_indicator * epsilon,
-						(float)y_indicator * epsilon,
-						(float)z_indicator * epsilon));
+	for (int y_indicator = -2; y_indicator <= +2; y_indicator++)
+	for (int z_indicator = -2; z_indicator <= +2; z_indicator++)
+	{
+		render
+		(
+			model,
+			vec3((float)x_indicator, (float)y_indicator, (float)z_indicator) * epsilon
+		);
+	}
 }
 
 void					block_selector_renderer::render(const shared_ptr<model> &model, const vec3 &shift)
 {
-	const auto			original_translation = (vec3)model->translation;
+	const auto			original_translation = (vec3)model->get_translation();
 
-	model->translation = (vec3)model->translation + shift;
+	model->set_translation((vec3)model->get_translation() + shift);
 
-	uniform_projection.upload(camera::projection_matrix);
-	uniform_view.upload(camera::view_matrix);
+	uniform_projection.upload(camera::get_instance()->get_projection_matrix());
+	uniform_view.upload(camera::get_instance()->get_view_matrix());
 
 	model->bind(true);
 
-	uniform_transformation.upload(model->transformation);
+	uniform_transformation.upload(model->get_transformation());
 	model->render();
 
 	model->bind(false);
 
-	model->translation = original_translation;
+	model->set_translation(original_translation);
 }

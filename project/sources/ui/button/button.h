@@ -4,30 +4,28 @@
 #include "ui/font/font/font.h"
 #include "ui/text/text.h"
 
-namespace			ui
+namespace					ui
 {
-	class 			font;
-
-	class			button;
+	class 					font;
+	class					button;
 }
 
-class				ui::button : public engine::inheritor_object<button, text>
+class						ui::button : public engine::inheritor_object<button, text>
 {
 public :
-					button();
-					~button() override = default;
+							button();
+							~button() override = default;
 
-					property<write_only, function<void(void)>, button>
-					callback;
-
-					property<read_write, ivec2, button>
-					extends;
+	void 					set_callback(const function<void(void)> &callback);
+	ivec2					get_extends() const;
 
 private :
 
-	void 			update() override;
+	function<void(void)>	callback;
+	ivec2					extends;
 
-	bool			is_inside(const vec2 &point);
+	void 					update() override;
+	bool					is_inside(const vec2 &point);
 };
 
 

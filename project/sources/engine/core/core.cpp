@@ -3,7 +3,7 @@
 #include "engine/core/core_settings.h"
 #include "engine/window/window.h"
 #include "engine/input/input.h"
-#include "engine/time/timer.h"
+#include "engine/time/timer/timer.h"
 
 using namespace	engine;
 
@@ -29,7 +29,7 @@ void			core::execute()
 	{
 		instance->process_input();
 
-		if (window::is_closed())
+		if (window::get_instance()->is_closed())
 		{
 			for (auto &[name, layout] : instance->layouts)
 			for (auto &object : layout->objects)
@@ -41,21 +41,21 @@ void			core::execute()
 		instance->process_updating();
 		instance->process_rendering();
 	}
-	while (not window::is_closed());
+	while (not window::get_instance()->is_closed());
 }
 
 void			core::process_input()
 {
 	static bool	empty_polygons = false;
 
-	input::reset_keys();
-	input::update_mouse();
+	input::get_instance()->reset_keys();
+	input::get_instance()->update_mouse();
 
 	glfwPollEvents();
 
-	if (input::is_pressed(input::key::escape))
-		window::close();
-	if (input::is_pressed(input::key::letter_p))
+	if (input::get_instance()->is_pressed(input::key::escape))
+		window::get_instance()->close();
+	if (input::get_instance()->is_pressed(input::key::letter_p))
 	{
 		empty_polygons = not empty_polygons;
 		glPolygonMode(GL_FRONT_AND_BACK, empty_polygons ? GL_LINE : GL_FILL);
@@ -91,7 +91,8 @@ void			core::process_destroying()
 		{
 			(*iterator)->deinitialize();
 			iterator = layout->objects.erase(iterator);
-		} else
+		}
+		else
 			++iterator;
 	}
 }
@@ -115,10 +116,10 @@ void			core::process_rendering()
 	for (auto &[name, layout] : layouts)
 	for (auto &object : layout->objects)
 	{
-		window::use_depth_test((layout->options & (int)layout::use_depth_test) != 0);
+		window::get_instance()->use_depth_test((layout->options & (int)layout::use_depth_test) != 0);
 		if (object->should_be_rendered and object->state == object::active)
 			object->render();
 	}
 
-	window::swap_buffers();
+	window::get_instance()->swap_buffers();
 }
