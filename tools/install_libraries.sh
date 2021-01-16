@@ -4,16 +4,30 @@
 # Common
 ########################################################################################################################
 
+REDIRECT_OUTPUT=1
+
 RESET="\033[0m"
 RED="\033[31m"
 GREEN="\033[32m"
 
-CURL_FLAGS="-sLf"
+CURL_FLAGS="-Lf"
 
 function raise_error
 {
 	echo -e "${RED}Error : $1${RESET}"
 	exit
+}
+
+function evaluate
+{
+	COMMAND="$1"
+	OPTIONS=""
+
+	if ((REDIRECT_OUTPUT)); then
+		OPTIONS="> /dev/null 2>&1"
+	fi
+
+	eval "$COMMAND" "$OPTIONS"
 }
 
 function write
@@ -33,7 +47,10 @@ function enter_folder
 
 function enter_libraries_folder
 {
-	enter_folder "project/libraries"
+	LIBRARIES="project/libraries"
+
+	mkdir -p "$LIBRARIES"
+	enter_folder "$LIBRARIES"
 }
 
 function log_start
@@ -65,7 +82,7 @@ function download
 
 	write "Downloading $1..."
 
-	curl "$CURL_FLAGS" "$URL" -o "$FILE"
+	evaluate "curl $CURL_FLAGS $URL -o $FILE"
 
 	if [ "$?" -ne 0 ]; then
     	raise_error "Can't download from URL ${URL}"
@@ -145,8 +162,8 @@ function install_glad
 	mkdir "$GLAD_BUILD"
 	enter_folder  "$GLAD_BUILD"
 
-	cmake .. > /dev/null 2>&1
-	make > /dev/null 2>&1
+	evaluate "cmake .."
+	evaluate "make"
 
 	enter_folder ../..
 
@@ -252,8 +269,8 @@ function install_stb
 enter_libraries_folder
 
 install_glfw
-install_glad
-install_fast_noise
-install_glm
-install_free_type
-install_stb
+#install_glad
+#install_fast_noise
+#install_glm
+#install_free_type
+#install_stb
