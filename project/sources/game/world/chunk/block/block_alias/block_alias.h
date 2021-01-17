@@ -2,7 +2,7 @@
 
 #include "game/world/chunk/chunk/chunk/chunk_settings.h"
 
-namespace					world
+namespace					game
 {
 	enum class 				axis;
 	enum class 				sign;
@@ -16,11 +16,11 @@ namespace					world
 	class					block_alias;
 }
 
-class						world::block_alias
+class						game::block_alias
 {
-	friend class			::world::block;
-	friend class			::world::chunk;
-	friend class			::world::world;
+	friend class			::game::block;
+	friend class			::game::chunk;
+	friend class			::game::world;
 
 public :
 
@@ -36,7 +36,7 @@ private :
 	using					chunk_type = shared_ptr<chunk>;
 	using					index_type = chunk_settings::underlying_array::index;
 
-							block_alias(const shared_ptr<::world::chunk> &chunk, const index_type &index);
+							block_alias(const shared_ptr<::game::chunk> &chunk, const index_type &index);
 
 	chunk_type				chunk;
 	index_type				index;

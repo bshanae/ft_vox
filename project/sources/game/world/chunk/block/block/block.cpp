@@ -2,7 +2,7 @@
 
 #include "game/world/utils/array3/array3.h"
 
-using namespace		world;
+using namespace		game;
 
 block::face			block::from_axis_and_sign(axis axis, sign sign)
 {
@@ -25,22 +25,22 @@ pair<axis, sign>	block::to_axis_and_sign(face face)
 {
 	switch (face)
 	{
-		case (face::left) :
+		case face::left :
 			return {axis::x, sign::minus};
 
-		case (face::right) :
+		case face::right :
 			return {axis::x, sign::plus};
 
-		case (face::front) :
+		case face::front :
 			return {axis::z, sign::plus};
 
-		case (face::back) :
+		case face::back :
 			return {axis::z, sign::minus};
 
-		case (face::top) :
+		case face::top :
 			return {axis::y, sign::plus};
 
-		case (face::bottom) :
+		case face::bottom :
 			return {axis::y, sign::minus};
 	}
 }
@@ -105,23 +105,23 @@ ostream				&operator << (ostream &stream, enum block::type type)
 {
 	switch (type)
 	{
-		case (block::air) :
+		case block::air :
 			stream << "air";
 			break ;
 
-		case (block::dirt) :
+		case block::dirt :
 			stream << "dirt";
 			break ;
 
-		case (block::dirt_with_grass) :
+		case block::dirt_with_grass :
 			stream << "dirt_with_grass";
 			break ;
 
-		case (block::water) :
+		case block::water :
 			stream << "water";
 			break ;
 
-		case (block::blue_flower) :
+		case block::blue_flower :
 			stream << "blue_flower";
 			break ;
 

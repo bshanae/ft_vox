@@ -1,29 +1,19 @@
 #pragma once
 
+#include "game/world/utils/axis/axis.h"
+#include "game/world/utils/sign/sign.h"
+
 #include "application/common/imports/glm.h"
 #include "application/common/imports/std.h"
 
-namespace						world
+namespace						game
 {
-	enum class 					axis : int
-	{
-		x,
-		y,
-		z
-	};
-
-	enum class 					sign : int
-	{
-		minus = -1,
-		plus = +1
-	};
-
 	template 					<typename, int, int, int>
 	class						array3;
 }
 
 template 						<typename type, int size_x, int size_y, int size_z>
-class							world::array3
+class							game::array3
 {
 private :
 

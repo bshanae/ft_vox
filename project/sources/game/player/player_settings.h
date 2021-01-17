@@ -1,11 +1,11 @@
 #pragma once
 
-namespace						player
+namespace						game
 {
 	struct 						player_settings;
 }
 
-struct							player::player_settings
+struct							game::player_settings
 {
 	static inline const float	movement_speed = 0.15f;
 

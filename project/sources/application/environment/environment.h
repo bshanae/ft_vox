@@ -21,7 +21,7 @@ private :
 
 	static void		initialize_ui();
 
-	static void		initialize_world();
+	static void		initialize_game();
 	static void		initialize_texture_atlas();
 
 	static void		initialize_player();

@@ -6,7 +6,7 @@
 #include "game/world/world/world.h"
 
 using namespace			engine;
-using namespace			player;
+using namespace			game; // TODO
 
 						camera::camera()
 {
@@ -79,8 +79,6 @@ void					camera::set_did_change(bool value)
 
 // TODO Remove this
 #include "game/world/utils/array3/array3.h"
-using					sign = world::sign;
-using					axis = world::axis;
 
 optional<camera::hit>	camera::cast_ray()
 {
@@ -108,7 +106,7 @@ optional<camera::hit>	camera::cast_ray()
 	float				t_delta_y = (float)step_y / delta_y;
 	float				t_delta_z = (float)step_z / delta_z;
 
-	world::block::face	face;
+	block::face			face;
 	axis				choice;
 
 	for (int i = 0; i < camera_settings::ray_cast_limit; i++)
@@ -132,22 +130,22 @@ optional<camera::hit>	camera::cast_ray()
 		{
 			x += (float)step_x;
 			t_max_x += t_delta_x;
-			face = world::block::from_axis_and_sign(axis::x, inverted_step_x);
+			face = block::from_axis_and_sign(axis::x, inverted_step_x);
 		}
 		else if (choice == axis::y)
 		{
 			y += (float)step_y;
 			t_max_y += t_delta_y;
-			face = world::block::from_axis_and_sign(axis::y, inverted_step_y);
+			face = block::from_axis_and_sign(axis::y, inverted_step_y);
 		}
 		else if (choice == axis::z)
 		{
 			z += (float)step_z;
 			t_max_z += t_delta_z;
-			face = world::block::from_axis_and_sign(axis::z, inverted_step_z);
+			face = block::from_axis_and_sign(axis::z, inverted_step_z);
 		}
 
-		if (auto block = world::world::get_instance()->find_block(vec3(x, y, z)))
+		if (auto block = #include "game/world/chunk/chunk/chunk_renderer/chunk_renderer.h"::world::get_instance()->find_block(vec3(x, y, z)))
 		{
 			assert(block);
 			if ((*block)().is_editable())
@@ -186,11 +184,13 @@ void					camera::recalculate()
 	up = normalize(cross((vec3)right, (vec3)front));
 
 	view_matrix = lookAt((vec3)position, (vec3)position + (vec3)front, (vec3)up);
-	projection_matrix = perspective(
+	projection_matrix = perspective
+	(
 		radians(camera_settings::fov),
 		(float)window::size.x / (float)window::size.y,
 		camera_settings::near_plane,
-		camera_settings::far_plane);
+		camera_settings::far_plane
+	);
 }
 
 float					camera::intbound(float s, float ds)

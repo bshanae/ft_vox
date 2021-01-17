@@ -3,11 +3,10 @@
 #include "engine/rendering/main/model/model/model.h"
 #include "engine/rendering/main/camera/camera.h"
 
-#include "game/world/chunk/block/block_selector/block_selector.h"
+#include "game/world/chunk/block/block_selector/block_selector/block_selector.h"
 
 using namespace			engine;
-using namespace			world;
-using namespace			player;
+using namespace			game;
 
 						block_selector_renderer::block_selector_renderer()
 {

@@ -11,19 +11,19 @@
 #include "application/common/imports/glm.h"
 #include "application/common/classes/singleton.h"
 
-namespace					player
+namespace					engine
 {
 	class					camera;
 }
 
-class						player::camera : public engine::unique_object<camera>
+class						engine::camera : public engine::unique_object<camera>
 {
 public :
 
 	struct					hit
 	{
-		world::block_alias	block;
-		world::block::face	face;
+		game::block_alias	block;
+		game::block::face	face;
 	};
 
 							camera();

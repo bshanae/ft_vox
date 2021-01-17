@@ -10,8 +10,7 @@
 #include "game/world/world/world_settings.h"
 
 using namespace			engine;
-using namespace			world;
-using namespace			player;
+using namespace			game;
 
 						chunk_renderer::chunk_renderer()
 {

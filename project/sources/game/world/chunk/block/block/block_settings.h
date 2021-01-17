@@ -1,11 +1,11 @@
 #pragma once
 
-namespace						world
+namespace						game
 {
 	struct						block_settings;
 }
 
-struct							world::block_settings
+struct							game::block_settings
 {
 	static inline const char	light_level_min = 4;
 	static inline const char 	light_level_max = 16;

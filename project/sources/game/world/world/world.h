@@ -9,12 +9,12 @@
 
 #include "application/common/imports/std.h"
 
-namespace						world
+namespace						game
 {
 	class						world;
 }
 
-class							world::world : public engine::unique_object<world>
+class							game::world : public engine::unique_object<world>
 {
 	friend class 				block_alias;
 

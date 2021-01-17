@@ -2,16 +2,16 @@
 
 #include "engine/core/object/unique_object/unique_object.h"
 
-#include "game/world/chunk/generator/biome/biome.h"
+#include "game/world/chunk/generator/biome/biome/biome.h"
 
 #include "application/common/imports/std.h"
 
-namespace				world
+namespace				game
 {
 	class				biome_collection;
 }
 
-class 					world::biome_collection : public engine::unique_object<biome_collection>
+class 					game::biome_collection : public engine::unique_object<biome_collection>
 {
 public :
 						biome_collection();
@@ -20,6 +20,6 @@ public :
 	const biome			&get_biome(enum biome::type type);
 
 private :
-						unordered_map<enum biome::type, ::world::biome>
+						unordered_map<enum biome::type, biome>
 						collection;
 };

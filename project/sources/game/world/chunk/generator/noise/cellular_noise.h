@@ -2,12 +2,12 @@
 
 #include "game/world/chunk/generator/noise/random_noise.h"
 
-namespace					world
+namespace					game
 {
 	class					cellular_noise;
 }
 
-class 						world::cellular_noise
+class 						game::cellular_noise
 {
 public :
 

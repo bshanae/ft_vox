@@ -1,6 +1,6 @@
 #include "biome_collection.h"
 
-using namespace 	world;
+using namespace 	game;
 
 					biome_collection::biome_collection()
 {
@@ -8,8 +8,8 @@ using namespace 	world;
 	object::should_be_rendered = false;
 	object::should_be_updated = false;
 
-	collection.emplace(biome::test_dirt, ::world::biome(biome::test_dirt));
-	collection.emplace(biome::test_stone, ::world::biome(biome::test_stone));
+	collection.emplace(biome::test_dirt, biome(biome::test_dirt));
+	collection.emplace(biome::test_stone, biome(biome::test_stone));
 }
 
 const biome			&biome_collection::get_biome(enum biome::type type)

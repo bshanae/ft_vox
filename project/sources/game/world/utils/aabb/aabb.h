@@ -3,12 +3,12 @@
 #include "application/common/imports/glm.h"
 #include "application/common/imports/std.h"
 
-namespace			world
+namespace			game
 {
 	class			aabb;
 }
 
-class 				world::aabb
+class 				game::aabb
 {
 public :
 					aabb(const vec3 &min, const vec3 &max) : min(min), max(max) {}

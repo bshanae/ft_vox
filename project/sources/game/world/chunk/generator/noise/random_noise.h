@@ -2,12 +2,12 @@
 
 #include "application/common/imports/glm.h"
 
-namespace				world
+namespace				game
 {
 	class				random_noise;
 }
 
-class 					world::random_noise
+class 					game::random_noise
 {
 public :
 

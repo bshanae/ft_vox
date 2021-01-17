@@ -2,7 +2,7 @@
 
 #include "application/common/imports/stb.h"
 
-using namespace				world;
+using namespace				game;
 
 							texture_atlas::texture_atlas(const path &source)
 {

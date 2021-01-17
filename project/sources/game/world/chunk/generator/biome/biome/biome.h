@@ -6,12 +6,12 @@
 
 #include "application/common/imports/std.h"
 
-namespace					world
+namespace					game
 {
 	class 					biome;
 }
 
-class 						world::biome
+class 						game::biome
 {
 public :
 

@@ -65,12 +65,12 @@ set(SOURCES
 	# Game : World
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk/chunk.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk_renderer/chunk_renderer.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome_collection/biome_collection.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/generator/generator/generator.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome/biome.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome/biome_collection/biome_collection.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome/biome/biome.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_alias/block_alias.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block_selector/block_selector.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block_selector/block_selector_renderer.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/block/block_selector/block_selector/block_selector.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/block/block_selector/block_selector_renderer/block_selector_renderer.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block/block.cpp
 	${SOURCES_DIRECTORY}/game/world/world/world.cpp
 	${SOURCES_DIRECTORY}/game/world/utils/texture_atlas/texture_atlas.cpp

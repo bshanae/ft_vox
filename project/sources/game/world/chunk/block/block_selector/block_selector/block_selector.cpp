@@ -2,10 +2,10 @@
 
 #include "engine/rendering/main/model/model/model.h"
 
-#include "game/world/chunk/block/block_selector/block_selector_renderer.h"
+#include "game/world/chunk/block/block_selector/block_selector_renderer/block_selector_renderer.h"
 
 using namespace			engine;
-using namespace			world;
+using namespace			game;
 
 static vector<float>	cube_vertices =
 {

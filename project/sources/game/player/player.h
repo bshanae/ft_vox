@@ -5,12 +5,12 @@
 
 #include "game/world/utils/aabb/aabb.h"
 
-namespace			player
+namespace			game
 {
 	class			player;
 }
 
-class				player::player : public engine::unique_object<player>
+class				game::player : public engine::unique_object<player>
 {
 public :
 					player();
@@ -32,7 +32,7 @@ private :
 	void 			process_input();
 	void 			process_selection();
 
-	world::aabb		get_aabb(const vec3 &position) const;
+	aabb			get_aabb(const vec3 &position) const;
 	void			offset_camera_if_possible(const vec3 &offset) const;
 
 	static vec3		discard_y(const vec3 &original);

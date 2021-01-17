@@ -2,12 +2,12 @@
 
 #include "game/world/chunk/generator/noise/random_noise.h"
 
-namespace					world
+namespace					game
 {
 	class					perlin_noise;
 }
 
-class 						world::perlin_noise
+class 						game::perlin_noise
 {
 public :
 

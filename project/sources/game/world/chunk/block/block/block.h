@@ -2,7 +2,7 @@
 
 #include "application/common/imports/std.h"
 
-namespace						world
+namespace						game
 {
 	enum class 					axis;
 	enum class 					sign;
@@ -13,10 +13,10 @@ namespace						world
 	class						block;
 }
 
-class							world::block
+class							game::block
 {
-	friend class 				::world::chunk;
-	friend class 				::world::world;
+	friend class 				::game::chunk;
+	friend class 				::game::world;
 
 public :
 
@@ -45,6 +45,8 @@ public :
 
 	explicit					block(enum type type = air) : type(type) {}
 
+	friend ostream				&operator << (ostream &stream, enum game::block::type type);
+
 	bool						is_empty() const;
 
 	bool						is_opaque() const;
@@ -59,5 +61,3 @@ public :
 	type						type;
 	char						light_level = 0;
 };
-
-ostream							&operator << (ostream &stream, enum world::block::type type);

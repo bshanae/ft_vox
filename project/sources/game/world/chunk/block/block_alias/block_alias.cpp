@@ -5,7 +5,7 @@
 #include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/world/world.h"
 
-using namespace			world;
+using namespace			game;
 
 block					&block_alias::operator () () const
 {

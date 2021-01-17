@@ -1,6 +1,6 @@
 #include "biome.h"
 
-using namespace		world;
+using namespace		game;
 
 					biome::biome(enum type type)
 {
@@ -28,12 +28,12 @@ using namespace		world;
 	noise = other.noise;
 }
 
-bool				::world::operator == (const biome &left, const biome &right)
+bool				::game::operator == (const biome &left, const biome &right)
 {
 	return left.type == right.type;
 }
 
-bool				::world::operator != (const biome &left, const biome &right)
+bool				::game::operator != (const biome &left, const biome &right)
 {
 	return left.type != right.type;
 }

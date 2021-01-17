@@ -7,7 +7,7 @@
 
 #include "application/common/imports/std.h"
 
-using namespace			world;
+using namespace			game;
 
 static const float		epsilon = 0.005f;
 

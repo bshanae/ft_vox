@@ -15,12 +15,12 @@ namespace							engine
 	class							program;
 }
 
-namespace							world
+namespace							game
 {
 	class							chunk_renderer;
 }
 
-class								world::chunk_renderer : public engine::unique_object<chunk_renderer>
+class								game::chunk_renderer : public engine::unique_object<chunk_renderer>
 {
 public :
 									chunk_renderer();

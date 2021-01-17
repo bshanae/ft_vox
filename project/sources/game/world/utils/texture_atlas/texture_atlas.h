@@ -9,15 +9,14 @@
 #include "application/common/imports/glm.h"
 #include "application/common/imports/std.h"
 
-namespace					world
+namespace					game
 {
 	class					chunk_renderer;
-
 	class					texture_atlas;
 }
 
 
-class						world::texture_atlas :
+class						game::texture_atlas :
 								public singleton<texture_atlas>,
 								public engine::texture
 {

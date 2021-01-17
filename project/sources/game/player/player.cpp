@@ -10,22 +10,23 @@
 
 using namespace 		debug;
 using namespace 		engine;
+using namespace 		game;
 
-						player::player::player()
+						player::player()
 {
 	layout = "System";
 	should_be_rendered = false;
 	timer_for_second_space = timer(player_settings::second_space_wait);
 }
 
-void					player::player::update()
+void					player::update()
 {
 	process_physics();
 	process_input();
 	process_selection();
 }
 
-void 					player::player::process_physics()
+void 					player::process_physics()
 {
 	vec3				position;
 
@@ -53,7 +54,7 @@ void 					player::player::process_physics()
 		camera::get_instance()->get_position() = position;
 }
 
-void 					player::player::process_input()
+void 					player::process_input()
 {
 	vec3				movement = vec3(0.f);
 	float				speed_up;
@@ -132,18 +133,18 @@ void 					player::player::process_input()
 	{
 		if (auto hit = camera::get_instance()->cast_ray(); hit)
 		{
-			auto 	axis_and_sign = world::block::to_axis_and_sign(hit->face);
+			auto 	axis_and_sign = block::to_axis_and_sign(hit->face);
 			auto	neighbor = hit->block.get_neighbor(axis_and_sign.first, axis_and_sign.second);
 
 			assert(neighbor);
-			world::world::get_instance()->insert_block(*neighbor, world::block::dirt_with_grass);
+			world::world::get_instance()->insert_block(*neighbor, block::dirt_with_grass);
 
 			force_ray_cast = true;
 		}
 	}
 }
 
-void 					player::player::process_selection()
+void 					player::process_selection()
 {
 	if (camera::get_instance()->did_change() or force_ray_cast)
 	{
@@ -159,7 +160,7 @@ void 					player::player::process_selection()
 	}
 }
 
-world::aabb				player::player::get_aabb(const vec3 &position) const
+aabb					player::get_aabb(const vec3 &position) const
 {
 	vec3				min = position;
 	vec3				max = position;
@@ -174,7 +175,7 @@ world::aabb				player::player::get_aabb(const vec3 &position) const
 	return {min, max};
 }
 
-void					player::player::offset_camera_if_possible(const vec3 &offset) const
+void					player::offset_camera_if_possible(const vec3 &offset) const
 {
 	vec3				new_position;
 
@@ -183,7 +184,7 @@ void					player::player::offset_camera_if_possible(const vec3 &offset) const
 		camera::get_instance()->set_position(new_position);
 }
 
-vec3					player::player::discard_y(const vec3 &original)
+vec3					player::discard_y(const vec3 &original)
 {
 	return (vec3(original.x, 0.f, original.z));
 }

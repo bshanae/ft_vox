@@ -2,20 +2,20 @@
 
 #include "engine/core/object/unique_object/unique_object.h"
 
-#include "game/world/chunk/generator/biome_collection/biome_collection.h"
+#include "game/world/chunk/generator/biome/biome_collection/biome_collection.h"
 
 #include "application/common/imports/std.h"
 #include "application/common/imports/glm.h"
 #include "FastNoiseLite.h"
 
-namespace						world
+namespace						game
 {
 	class						chunk;
 
 	class						generator;
 }
 
-class							world::generator : public engine::unique_object<generator>
+class							game::generator : public engine::unique_object<generator>
 {
 public :
 								generator();

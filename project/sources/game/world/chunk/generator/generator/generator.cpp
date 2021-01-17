@@ -2,7 +2,7 @@
 
 #include "game/world/chunk/chunk/chunk/chunk.h"
 
-using namespace			world;
+using namespace			game;
 
 						generator::generator()
 {

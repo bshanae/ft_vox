@@ -12,7 +12,7 @@ namespace						engine
 	class						model;
 }
 
-namespace						world
+namespace						game
 {
 	class						block_selector_renderer;
 	class						world;
@@ -20,10 +20,10 @@ namespace						world
 	class						block_selector;
 }
 
-class							world::block_selector  : public engine::unique_object<block_selector>
+class							game::block_selector  : public engine::unique_object<block_selector>
 {
-	friend class 				::world::block_selector_renderer;
-	friend class 				::world::world;
+	friend class 				::game::block_selector_renderer;
+	friend class 				::game::world;
 
 public :
 								block_selector();

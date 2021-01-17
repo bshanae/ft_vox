@@ -15,7 +15,7 @@ namespace							engine
 	class							model;
 }
 
-namespace							world
+namespace							game
 {
 	class							block_alias;
 	class							world;
@@ -24,13 +24,13 @@ namespace							world
 	class							chunk;
 }
 
-class								world::chunk :
+class								game::chunk :
 										public chunk_settings::underlying_array,
 										public enable_shared_from_this<chunk>
 {
-	friend class					::world::block_alias;
-	friend class 					::world::world;
-	friend class 					::world::chunk_renderer;
+	friend class					::game::block_alias;
+	friend class 					::game::world;
+	friend class 					::game::chunk_renderer;
 
 public :
 
