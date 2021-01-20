@@ -24,6 +24,7 @@ public :
 	void			upload(const type &data) const
 	{
 		assert(value != -1u and "Bad uniform");
+
 		if constexpr (is_same<type, int>::value)
 			glUniform1i(value, data);
 		else if constexpr (is_same<type, float>::value)
@@ -40,8 +41,7 @@ public :
 
 private :
 
-	explicit		uniform(GLuint value) : value(value)
-					{}
+	explicit		uniform(GLuint value) : value(value) {}
 
 	GLuint 			value;
 };

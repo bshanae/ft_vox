@@ -1,9 +1,11 @@
 #include "environment.h"
 
-#include "engine/processor/processor.h"
+#include "engine/rendering/main/layout/layout/layout.h"
+#include "engine/rendering/main/layout/layout_storage/layout_storage.h"
 #include "engine/rendering/ui/font/font_library/font_library.h"
 #include "engine/rendering/ui/font/symbol/symbol_renderer.h"
 #include "engine/rendering/main/camera/camera.h"
+#include "engine/processor/processor.h"
 
 #include "game/world/utils/texture_atlas/texture_atlas.h"
 #include "game/world/world/world.h"
@@ -13,7 +15,7 @@
 #include "game/world/chunk/generator/generator/generator.h"
 #include "game/player/player.h"
 
-					application::application::application()
+					environment::environment()
 {
 	initialize_engine();
 	initialize_ui();
@@ -21,42 +23,42 @@
 	initialize_player();
 }
 
-void 				application::application::execute()
+void 				environment::execute()
 {
-	engine::processor::execute();
+	engine::processor::get_instance()->execute();
 }
 
-void 				application::application::initialize_engine()
+void 				environment::initialize_engine()
 {
-	engine::processor::initialize();
+	engine::processor::construct();
 
-	engine::processor::register_layout("System", false);
-	engine::processor::register_layout("Opaque", true);
-	engine::processor::register_layout("Transparent", true);
-	engine::processor::register_layout("UI", false);
+	engine::layout_storage::define("System");
+	engine::layout_storage::define("Opaque", engine::layout::use_depth_test);
+	engine::layout_storage::define("Transparent", engine::layout::use_depth_test);
+	engine::layout_storage::define("UI");
 }
 
-void 				application::application::initialize_ui()
+void 				environment::initialize_ui()
 {
-	ui::font_library::create();
-	ui::symbol_renderer::create();
+	ui::font_library::construct();
+	ui::symbol_renderer::construct();
 }
 
-void 				application::application::initialize_game()
+void 				environment::initialize_game()
 {
-	game::generator::create();
-	game::biome_collection::create();
-	game::block_selector::create();
-	game::block_selector_renderer::create();
-	game::chunk_renderer::create();
-	game::world::create();
+	game::generator::construct();
+	game::biome_collection::construct();
+	game::block_selector::construct();
+	game::block_selector_renderer::construct();
+	game::chunk_renderer::construct();
+	game::world::construct();
 
 	initialize_texture_atlas();
 }
 
-void 				application::application::initialize_texture_atlas()
+void 				environment::initialize_texture_atlas()
 {
-	game::texture_atlas::initialize("project/resources/atlases/default.png");
+	game::texture_atlas::construct();
 
 	game::texture_atlas::association_for(game::block::stone) = ivec2(1, 15);
 
@@ -74,8 +76,8 @@ void 				application::application::initialize_texture_atlas()
 	game::texture_atlas::association_for(game::block::blue_flower) = ivec2(12, 15);
 }
 
-void				application::application::initialize_player()
+void				environment::initialize_player()
 {
-	engine::camera::create(); // TODO
-	game::player::create();
+	engine::camera::construct(); // TODO
+	game::player::construct();
 }

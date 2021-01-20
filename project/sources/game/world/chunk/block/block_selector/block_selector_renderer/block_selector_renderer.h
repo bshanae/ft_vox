@@ -1,6 +1,7 @@
 #pragma once
 
-#include "engine/core/object/unique_object/unique_object.h"
+#include "engine/core/object/object/object.h"
+#include "engine/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 #include "engine/rendering/main/program/program/program.h"
 #include "engine/rendering/main/program/uniform/uniform.h"
 
@@ -20,7 +21,9 @@ namespace						game
 	class 						block_selector_renderer;
 }
 
-class							game::block_selector_renderer : public engine::unique_object<block_selector_renderer>
+class							game::block_selector_renderer :
+									public engine::object,
+									public engine::unique_object_constructor<block_selector_renderer>
 {
 public :
 								block_selector_renderer();

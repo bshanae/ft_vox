@@ -1,6 +1,8 @@
 #pragma once
 
-#include "engine/core/object/unique_object/unique_object.h"
+#include "engine/core/object/object/object.h"
+#include "engine/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
+#include "engine/rendering/main/program/program/program.h"
 #include "engine/rendering/main/program/uniform/uniform.h"
 
 #include "game/world/chunk/chunk/chunk/chunk.h"
@@ -20,7 +22,9 @@ namespace							game
 	class							chunk_renderer;
 }
 
-class								game::chunk_renderer : public engine::unique_object<chunk_renderer>
+class								game::chunk_renderer :
+										public engine::object,
+										public engine::unique_object_constructor<game::chunk_renderer>
 {
 public :
 									chunk_renderer();

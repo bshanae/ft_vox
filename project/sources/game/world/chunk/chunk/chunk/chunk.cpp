@@ -278,8 +278,10 @@ void					chunk::build_geometry(batch_workspace &workspace)
 	workspace.indices.clear();
 
 	for (auto &iterator : *this)
+	{
 		if (workspace.predicate(iterator->value()))
 			build_block(workspace, iterator.index());
+	}
 }
 
 void					chunk::build_model(batch_workspace &workspace)
@@ -489,7 +491,7 @@ void					chunk::build_quad(
 
 	auto				transform_texture_coordinate = [texture_index](float &x, float &y)
 	{
-		static vec2 	size = texture_atlas::texture_size();
+		static vec2 	size = texture_atlas::get_texture_size();
 
 		x = size.x *((float)texture_index.x + x);
 		y = size.y *((float)texture_index.y + y);

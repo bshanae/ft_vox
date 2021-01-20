@@ -89,7 +89,7 @@ static vector<GLuint>	face_indices = {0, 1, 2, 3};
 
 						block_selector::block_selector()
 {
-	layout = "Transparent";
+	set_layout("Transparent");
 }
 
 vec3					block_selector::get_translation() const
@@ -120,10 +120,8 @@ void					block_selector::set_selected_face(block::face face)
 	selected_face = face;
 }
 
-void 					block_selector::create_implementation()
+void 					block_selector::when_initialized()
 {
-	unique_object<block_selector>::create_implementation();
-
 	cube = make_shared<::model>(model::lines);
 	cube->bind(true);
 	cube->add_vbo(3, cube_vertices);
@@ -167,7 +165,7 @@ void 					block_selector::create_implementation()
 	bottom->bind(false);
 }
 
-void					block_selector::render()
+void					block_selector::when_rendered()
 {
 	block_selector_renderer::get_instance()->render(*this);
 }

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "engine/core/object/unique_object/unique_object.h"
+#include "engine/core/object/object/object.h"
+#include "engine/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 #include "engine/system/time/timer/timer.h"
 
 #include "game/world/chunk/block/block_alias/block_alias.h"
@@ -14,7 +15,9 @@ namespace						game
 	class						world;
 }
 
-class							game::world : public engine::unique_object<world>
+class							game::world :
+									public engine::object,
+									public engine::unique_object_constructor<world>
 {
 	friend class 				block_alias;
 
@@ -22,7 +25,7 @@ public :
 								world();
 								~world() override = default;
 
-	optional<block_alias>			find_block(const vec3 &position);
+	optional<block_alias>		find_block(const vec3 &position);
 
 	void 						insert_block(const block_alias &id, enum block::type type);
 	void 						remove_block(const block_alias &id);
@@ -80,11 +83,11 @@ private :
 
 // ----------------------------	Object methods
 
-	void						initialize_implementation() override;
-	void						deinitialize_implementation() override;
+	void						when_initialized() override;
+	void						when_deinitialized() override;
 
-	void						update() override;
-	void						render() override;
+	void						when_updated() override;
+	void						when_rendered() override;
 
 // ----------------------------	Additional methods
 

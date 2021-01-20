@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/core/object/usual_object/usual_object.h"
+#include "engine/core/object/object/object.h"
 
 #include "application/common/imports/glm.h"
 
@@ -10,7 +10,7 @@ namespace				ui
 	class 				text;
 }
 
-class					ui::text : public engine::usual_object<text>
+class					ui::text : public engine::object
 {
 public :
 						text();
@@ -31,7 +31,7 @@ private :
 	shared_ptr<font>	font;
 	ivec2				size;
 
-	void				render() override;
+	void				when_rendered() override;
 	void				recalculate_size();
 };
 

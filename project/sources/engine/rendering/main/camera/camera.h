@@ -1,6 +1,7 @@
 #pragma once
 
-#include "engine/core/object/unique_object/unique_object.h"
+#include "engine/core/object/object/object.h"
+#include "engine/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 #include "engine/rendering/main/camera/camera_settings.h"
 
 // TODO Remove dependency
@@ -9,14 +10,16 @@
 #include "application/common/imports/opengl.h"
 #include "application/common/imports/std.h"
 #include "application/common/imports/glm.h"
-#include "application/common/classes/singleton.h"
+#include "application/common/templates/singleton/singleton.h"
 
 namespace					engine
 {
 	class					camera;
 }
 
-class						engine::camera : public engine::unique_object<camera>
+class						engine::camera :
+								public engine::object,
+								public engine::unique_object_constructor<engine::camera>
 {
 public :
 
@@ -75,7 +78,7 @@ private :
 
 	bool 					_did_change;
 
-	void					update() override;
+	void					when_updated() override;
 	void					recalculate();
 
 	static float			intbound(float s, float ds);

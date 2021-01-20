@@ -21,13 +21,13 @@ void 				logger::log(log_group group, const string &message)
 void				logger::log_engine(const string &message)
 {
 #if FT_DEBUG && FT_LOG_ENGINE
-	cout << message << endl;
+	cout << "[Engine] " << message << endl;
 #endif
 }
 
 void				logger::log_player(const string &message)
 {
 #if FT_DEBUG && FT_LOG_PLAYER
-	cout << message << endl;
+	cout << "[Player] " << message << endl;
 #endif
 }

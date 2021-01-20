@@ -335,24 +335,19 @@ public :
 			return (this);
 		}
 
-		bool					operator == (const iterator& that)
+		bool					operator == (const iterator& that) const
 		{
-			return (data == that.data and internal_index == that.internal_index);
-		}
-
-		bool					operator != (const iterator& that)
-		{
-			return (data != that.data or internal_index != that.internal_index);
+			return data == that.data and internal_index == that.internal_index;
 		}
 
 		auto					&value()
 		{
-			return ((*data)[internal_index.x][internal_index.y][internal_index.z]);
+			return (*data)[internal_index.x][internal_index.y][internal_index.z];
 		}
 
 		const auto				&value() const
 		{
-			return ((*data)[internal_index.x][internal_index.y][internal_index.z]);
+			return (*data)[internal_index.x][internal_index.y][internal_index.z];
 		}
 
 		index					&index()

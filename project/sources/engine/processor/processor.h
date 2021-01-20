@@ -1,44 +1,37 @@
 #pragma once
 
-#include "application/common/imports/std.h"
-#include "application/common/classes/singleton.h"
-
 #include "engine/core/object/object/object.h"
+#include "engine/core/object/object_storage/object_storage_event/object_storage_event.h"
 
-namespace							engine
+#include "application/common/templates/singleton/singleton.h"
+#include "application/common/templates/notifier_listener/listener.h"
+#include "application/common/imports/std.h"
+
+namespace						engine
 {
-	class 							object;
-	class 							layout;
-	class 							window;
+	class 						object;
+	class 						layout;
+	class 						window;
 
-	class 							processor;
+	class 						processor;
 }
 
-class 								engine::processor final : public singleton<processor>
+class 							engine::processor final : public singleton<processor>
 {
 public :
-									processor();
-									~processor() override = default;
+								processor();
+								~processor() override = default;
 
-	static void 					register_layout(const string &key, int options = 0);
-
-	static void						execute();
+	void						execute();
 
 private :
 
-	vector<shared_ptr<object>>		new_objects;
+	stack<shared_ptr<object>>	added_objects;
+	stack<shared_ptr<object>>	removed_objects;
 
-	map<string, shared_ptr<layout>>	layouts;
-	vector<shared_ptr<layout>>		layouts_order;
+	void						process_input();
 
-	void							process_input();
-
-	void							process_creating();
-	void							process_destroying();
-
-	void							process_updating();
-	void							process_rendering();
-
-	friend void						object::connect_to_core();
+	void						process_activation();
+	void						process_updating();
+	void						process_rendering();
 };
-

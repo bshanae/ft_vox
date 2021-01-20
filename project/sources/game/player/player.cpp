@@ -14,12 +14,11 @@ using namespace 		game;
 
 						player::player()
 {
-	layout = "System";
-	should_be_rendered = false;
+	set_layout("System");
 	timer_for_second_space = timer(player_settings::second_space_wait);
 }
 
-void					player::update()
+void					player::when_updated()
 {
 	process_physics();
 	process_input();

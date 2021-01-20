@@ -5,7 +5,7 @@
 #include "game/world/chunk/block/block/block.h"
 
 #include "application/common/imports/opengl.h"
-#include "application/common/classes/singleton.h"
+#include "application/common/templates/singleton/singleton.h"
 #include "application/common/imports/glm.h"
 #include "application/common/imports/std.h"
 
@@ -23,8 +23,7 @@ class						game::texture_atlas :
 	friend class			chunk_renderer;
 
 public :
-
-	explicit				texture_atlas(const path &source);
+							texture_atlas();
 							~texture_atlas() override = default;
 
 	struct					association
@@ -47,7 +46,7 @@ public :
 
 	static association		&association_for(enum block::type type);
 
-	static vec2 			texture_size();
+	static vec2 			get_texture_size();
 
 private :
 

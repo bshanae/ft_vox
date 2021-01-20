@@ -6,9 +6,7 @@ using namespace			game;
 
 						generator::generator()
 {
-	object::layout = "System";
-	object::should_be_updated = false;
-	object::should_be_rendered = false;
+	set_layout("System");
 
 	noise_for_biome = cellular_noise(0.01f);
 }

@@ -5,62 +5,52 @@
 
 namespace					engine
 {
-	class 					processor;
-	template				<typename>
-	class 					usual_object;
-	template				<typename, typename>
-	class 					inheritor_object;
-
 	class					object;
+	class 					object_manipulator;
 }
 
 class						engine::object : public enable_shared_from_this<object>
 {
-	friend class 			engine::processor;
+	friend class 			engine::object_manipulator;
 
-	template				<typename>
-	friend class 			engine::usual_object;
+public :
 
-	template				<typename, typename>
-	friend class 			engine::inheritor_object;
+	enum class				state
+	{
+		null,
+		initialized,
+		activated,
+		deactivated,
+		deinitialized
+	};
+
+							object();
+	virtual					~object() = default;
+
+	void					activate();
+	void					deactivate();
+
+	void					render();
+	void					update();
+
+	state					get_state() const;
+	const string			&get_layout() const;
 
 protected :
 
-	enum					state
-	{
-		undefined,
-		active,
-		inactive,
-		initialized,
-		uninitialized
-	}						state;
+	void 					set_layout(const string &value);
 
-	string 					layout;
+	virtual void			when_initialized() {}
+	virtual void			when_deinitialized() {}
 
-	bool 					should_be_rendered = true;
-	bool 					should_be_updated = true;
+	virtual void			when_activated() {}
+	virtual void			when_deactivated() {}
 
-							object()
-	{
-		state = undefined;
-	}
-
-	virtual					~object() = default;
-
-	virtual void			destroy() = 0;
-
-	virtual void			activate() = 0;
-	virtual void			deactivate() = 0;
-
-	virtual void 			render() = 0;
-	virtual void 			update() = 0;
+	virtual void 			when_updated() {}
+	virtual void 			when_rendered() {}
 
 private :
 
-	bool					should_be_destroyed = false;
-
-	virtual void			initialize() = 0;
-	virtual void			deinitialize() = 0;
-
-	void					connect_to_core();
+	enum state				state;
+	string 					layout;
 };

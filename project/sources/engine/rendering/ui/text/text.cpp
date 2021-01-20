@@ -9,7 +9,7 @@ using namespace		ui;
 
 					text::text()
 {
-	usual_object::layout = "UI";
+	set_layout("UI");
 
 	string = "EMPTY";
 	position = ivec2(0, 0);
@@ -49,7 +49,7 @@ void				text::set_font(const shared_ptr<ui::font> &font)
 	recalculate_size();
 }
 
-void 				text::render()
+void 				text::when_rendered()
 {
 	assert(font);
 

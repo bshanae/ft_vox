@@ -10,9 +10,7 @@ using namespace			game; // TODO
 
 						camera::camera()
 {
-	usual_object::layout = "System";
-	usual_object::should_be_rendered = false;
-
+	set_layout("System");
 	position = camera_settings::initial_position;
 }
 
@@ -145,7 +143,7 @@ optional<camera::hit>	camera::cast_ray()
 			face = block::from_axis_and_sign(axis::z, inverted_step_z);
 		}
 
-		if (auto block = #include "game/world/chunk/chunk/chunk_renderer/chunk_renderer.h"::world::get_instance()->find_block(vec3(x, y, z)))
+		if (auto block = game::world::get_instance()->find_block(vec3(x, y, z)))
 		{
 			assert(block);
 			if ((*block)().is_editable())
@@ -156,7 +154,7 @@ optional<camera::hit>	camera::cast_ray()
 	return {};
 }
 
-void					camera::update()
+void					camera::when_updated()
 {
 	_did_change = input::get_instance()->did_mouse_move();
 

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "engine/core/object/unique_object/unique_object.h"
+#include "engine/core/object/object/object.h"
+#include "engine/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 #include "engine/system/time/timer/timer.h"
 
 #include "game/world/utils/aabb/aabb.h"
@@ -10,7 +11,9 @@ namespace			game
 	class			player;
 }
 
-class				game::player : public engine::unique_object<player>
+class				game::player :
+						public engine::object,
+						public engine::unique_object_constructor<game::player>
 {
 public :
 					player();
@@ -26,7 +29,7 @@ private :
 
 	vec3			velocity = vec3(0.f);
 
-	void			update() override;
+	void			when_updated() override;
 
 	void 			process_physics();
 	void 			process_input();

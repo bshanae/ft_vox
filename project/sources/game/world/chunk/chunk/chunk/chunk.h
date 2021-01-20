@@ -1,7 +1,5 @@
 #pragma once
 
-#include "engine/core/object/usual_object/usual_object.h"
-
 #include "game/world/utils/array3/array3.h"
 #include "game/world/chunk/block/block/block.h"
 #include "game/world/chunk/block/block_alias/block_alias.h"
@@ -28,9 +26,9 @@ class								game::chunk :
 										public chunk_settings::underlying_array,
 										public enable_shared_from_this<chunk>
 {
-	friend class					::game::block_alias;
-	friend class 					::game::world;
-	friend class 					::game::chunk_renderer;
+	friend class					block_alias;
+	friend class 					world;
+	friend class 					chunk_renderer;
 
 public :
 

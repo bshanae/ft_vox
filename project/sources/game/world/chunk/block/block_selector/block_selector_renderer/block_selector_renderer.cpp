@@ -10,7 +10,7 @@ using namespace			game;
 
 						block_selector_renderer::block_selector_renderer()
 {
-	layout = "System";
+	set_layout("System");
 
 	program = make_unique<class program>(path_to_vertex_shader, path_to_fragment_shader);
 	uniform_projection = program->create_uniform<mat4>("uniform_projection");

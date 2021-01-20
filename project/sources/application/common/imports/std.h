@@ -1,6 +1,6 @@
 #pragma once
 
-// ---------------- Meta
+#pragma region Meta
 
 #include <type_traits>
 
@@ -8,23 +8,33 @@ using				std::is_same;
 using				std::enable_if;
 using				std::is_base_of;
 
-// ---------------- Containers
+#pragma endregion
 
-#include <map>
+#pragma region Containers
+
 #include <array>
 #include <vector>
+#include <list>
 #include <queue>
+#include <stack>
+#include <map>
 #include <unordered_map>
 
-using				std::vector;
 using				std::array;
+using				std::vector;
+using				std::list;
 using				std::map;
+using				std::queue;
+using				std::stack;
 using				std::multimap;
 using				std::unordered_map;
-using				std::queue;
-using				std::pair;
 
-// ---------------- Pointers
+using				std::erase;
+using				std::erase_if;
+
+#pragma endregion
+
+#pragma region Pointers
 
 #include <memory>
 
@@ -38,7 +48,9 @@ using 				std::enable_shared_from_this;
 using 				std::addressof;
 using 				std::ref;
 
-// ---------------- IO
+#pragma endregion
+
+#pragma region IO
 
 #include <string>
 #include <sstream>
@@ -57,7 +69,9 @@ using				std::ofstream;
 using				std::stringstream;
 using				std::ios;
 
-// ---------------- Asynchronous
+#pragma endregion
+
+#pragma region Asynchronous
 
 #include <shared_mutex>
 #include <future>
@@ -75,13 +89,17 @@ using				std::promise;
 
 namespace			this_thread = std::this_thread;
 
-// ---------------- Time
+#pragma endregion
+
+#pragma region Time
 
 #include <chrono>
 
 namespace			chrono = std::chrono;
 
-// ---------------- Other classes
+#pragma endregion
+
+#pragma region Other classes
 
 #include <iterator>
 #include <functional>
@@ -93,11 +111,16 @@ using				std::function;
 using				std::optional;
 using				std::nullopt;
 using				std::numeric_limits;
+using				std::pair;
 
-// ---------------- Other functions
+#pragma endregion
+
+#pragma region Other functions
 
 using				std::to_string;
 using				std::filesystem::exists;
 using				std::min;
 using				std::max;
 using				std::hash;
+
+#pragma endregion

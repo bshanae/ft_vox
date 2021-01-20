@@ -9,9 +9,7 @@ using namespace		ui;
 
 					symbol_renderer::symbol_renderer()
 {
-	unique_object::layout = "System";
-	unique_object::should_be_rendered = false;
-	unique_object::should_be_updated = false;
+	set_layout("System");
 
 	program = make_unique<class program>(path_to_vertex_shader, path_to_fragment_shader);
 	uniform_projection = program->create_uniform<mat4>("uniform_projection");
@@ -58,7 +56,7 @@ using namespace		ui;
 
 void				symbol_renderer::render(const symbol &symbol, const ivec2 &position)
 {
-	auto			instance = unique_object::get_instance();
+	auto			instance = get_instance();
 
 	instance->model->set_translation(vec3(position.x, position.y, 0));
 	instance->model->set_scaling(vec3(symbol.get_size().x, symbol.get_size().y, 0));

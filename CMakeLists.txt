@@ -2,18 +2,15 @@
 
 cmake_minimum_required(VERSION 3.10)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
+set(CMAKE_CXX_STANDARD 20)
+
 # Variables
 
 set(PROJECT_NAME ft_vox)
 set(PROJECT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project)
 set(LIBRARIES_DIRECTORY ${PROJECT_DIRECTORY}/libraries)
 set(SOURCES_DIRECTORY ${PROJECT_DIRECTORY}/sources)
-
-
-# Settings
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
-set(CMAKE_CXX_STANDARD 17)
 
 project(${PROJECT_NAME})
 
@@ -38,8 +35,12 @@ set(SOURCES
 
 	# Engine : Core
 	${SOURCES_DIRECTORY}/engine/core/object/object/object.cpp
+	${SOURCES_DIRECTORY}/engine/core/object/object_manipulator/object_manipulator.cpp
+	${SOURCES_DIRECTORY}/engine/core/object/object_storage/object_storage/object_storage.cpp
 
 	# Engine : Rendering : Main
+	${SOURCES_DIRECTORY}/engine/rendering/main/layout/layout/layout.cpp
+	${SOURCES_DIRECTORY}/engine/rendering/main/layout/layout_storage/layout_storage.cpp
 	${SOURCES_DIRECTORY}/engine/rendering/main/camera/camera.cpp
 	${SOURCES_DIRECTORY}/engine/rendering/main/model/model/model.cpp
 	${SOURCES_DIRECTORY}/engine/rendering/main/model/texture/texture.cpp
@@ -47,7 +48,6 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/engine/rendering/main/program/shader/shader.cpp
 
 	# Engine : Rendering : Ui
-	${SOURCES_DIRECTORY}/engine/rendering/ui/button/button.cpp
 	${SOURCES_DIRECTORY}/engine/rendering/ui/text/text.cpp
 	${SOURCES_DIRECTORY}/engine/rendering/ui/font/symbol/symbol.cpp
 	${SOURCES_DIRECTORY}/engine/rendering/ui/font/symbol/symbol_renderer.cpp

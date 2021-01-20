@@ -1,6 +1,7 @@
 #pragma once
 
-#include "engine/core/object/unique_object/unique_object.h"
+#include "engine/core/object/object/object.h"
+#include "engine/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 #include "engine/rendering/main/program/program/program.h"
 
 namespace						engine
@@ -15,7 +16,9 @@ namespace						ui
 	class						symbol_renderer;
 }
 
-class							ui::symbol_renderer : public engine::unique_object<symbol_renderer>
+class							ui::symbol_renderer :
+									public engine::object,
+									public engine::unique_object_constructor<symbol_renderer>
 {
 public :
 								symbol_renderer();

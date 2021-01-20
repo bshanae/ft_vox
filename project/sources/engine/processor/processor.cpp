@@ -1,46 +1,40 @@
 #include "processor.h"
 
+#include "engine/core/object/object_manipulator/object_manipulator.h"
+#include "engine/core/object/object_storage/object_storage/object_storage.h"
 #include "engine/system/window/window.h"
 #include "engine/system/input/input.h"
 #include "engine/system/time/timer/timer.h"
-#include "engine/rendering/main/layout/layout.h"
+#include "engine/rendering/main/layout/layout/layout.h"
+#include "engine/rendering/main/layout/layout_storage/layout_storage.h"
 #include "engine/processor/processor_settings.h"
 
 using namespace	engine;
 
 				processor::processor()
 {
-	window::initialize();
-	input::initialize();
-}
-
-void			processor::register_layout(const string &key, int options)
-{
-	auto 		layout = make_shared<::layout>(key, options);
-
-	get_instance()->layouts[key] = layout;
-	get_instance()->layouts_order.push_back(layout);
+	window::construct();
+	input::construct();
 }
 
 void			processor::execute()
 {
-	auto		instance = singleton<processor>::get_instance();
-
 	do
 	{
-		instance->process_input();
+		process_input();
 
 		if (window::get_instance()->is_closed())
 		{
-			for (auto &[name, layout] : instance->layouts)
-			for (auto &object : layout->objects)
-				object->destroy();
+//			for (auto &[name, layout] : layouts)
+//			for (auto &object : layout->objects)
+				// TODO
+//				object_manipulator::deinitialize(object);
+				;
 		}
 
-		instance->process_creating();
-		instance->process_destroying();
-		instance->process_updating();
-		instance->process_rendering();
+		process_activation();
+		process_updating();
+		process_rendering();
 	}
 	while (not window::get_instance()->is_closed());
 }
@@ -63,47 +57,24 @@ void			processor::process_input()
 	}
 }
 
-void			processor::process_creating()
+void			processor::process_activation()
 {
-	for (auto &new_object : new_objects)
+	for (const auto &[name, layout] : layout_storage::get_layouts())
+	for (auto &object : layout->get_objects())
 	{
-		if (auto iterator = layouts.find(new_object->layout); iterator != layouts.end())
-			iterator->second->objects.push_back(new_object);
-		else
-			assert(false and "Unknown layout");
-	}
-
-	for (auto &layout : layouts_order)
-	for (auto &object : layout->objects)
-	{
-		if (object->state == object::uninitialized)
-				object->initialize();
-	}
-
-	new_objects.clear();
-}
-
-void			processor::process_destroying()
-{
-	for (auto &[name, layout] : layouts)
-	for (auto iterator = layout->objects.begin(); iterator != layout->objects.end();)
-	{
-		if ((*iterator)->should_be_destroyed)
-		{
-			(*iterator)->deinitialize();
-			iterator = layout->objects.erase(iterator);
-		}
-		else
-			++iterator;
+		if (object->get_state() == object::state::initialized)
+			object->activate();
 	}
 }
 
 void			processor::process_updating()
 {
-	for (auto &[name, layout] : layouts)
-	for (auto &object : layout->objects)
-		if (object->should_be_updated and object->state == object::active)
+	for (const auto &[name, layout] : layout_storage::get_layouts())
+	for (auto &object : layout->get_objects())
+	{
+		if (object->get_state() == object::state::activated)
 			object->update();
+	}
 }
 
 void			processor::process_rendering()
@@ -114,12 +85,15 @@ void			processor::process_rendering()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	for (auto &[name, layout] : layouts)
-	for (auto &object : layout->objects)
+	for (const auto &[name, layout] : layout_storage::get_layouts())
 	{
-		window::get_instance()->use_depth_test((layout->options & (int)layout::use_depth_test) != 0);
-		if (object->should_be_rendered and object->state == object::active)
-			object->render();
+		window::get_instance()->use_depth_test((layout->get_options() & (int)layout::use_depth_test) != 0);
+
+		for (auto &object : layout->get_objects())
+		{
+			if (object->get_state() == object::state::activated)
+				object->render();
+		}
 	}
 
 	window::get_instance()->swap_buffers();

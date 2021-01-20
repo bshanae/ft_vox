@@ -1,6 +1,6 @@
 #pragma once
 
-#include "application/common/classes/singleton.h"
+#include "application/common/templates/singleton/singleton.h"
 #include "application/common/imports/opengl.h"
 #include "application/common/imports/glm.h"
 #include "application/common/imports/std.h"
@@ -19,6 +19,7 @@ public :
 
 							window();
 							~window() override;
+public :
 
 	vec2					get_mouse_position() const;
 

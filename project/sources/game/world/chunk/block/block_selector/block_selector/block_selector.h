@@ -1,6 +1,7 @@
 #pragma once
 
-#include "engine/core/object/unique_object/unique_object.h"
+#include "engine/core/object/object/object.h"
+#include "engine/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 
 #include "game/world/chunk/block/block/block.h"
 
@@ -20,7 +21,10 @@ namespace						game
 	class						block_selector;
 }
 
-class							game::block_selector  : public engine::unique_object<block_selector>
+class							game::block_selector  :
+									public engine::object,
+									public engine::unique_object_constructor<block_selector>
+
 {
 	friend class 				::game::block_selector_renderer;
 	friend class 				::game::world;
@@ -49,8 +53,8 @@ private :
 	shared_ptr<engine::model>	top;
 	shared_ptr<engine::model>	bottom;
 
-	void 						create_implementation() override;
-	void						render() override;
+	void 						when_initialized() override;
+	void						when_rendered() override;
 };
 
 

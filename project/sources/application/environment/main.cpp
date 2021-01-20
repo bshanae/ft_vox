@@ -2,7 +2,7 @@
 
 int					main()
 {
-	application::application::initialize();
-	application::application::execute();
+	environment::construct();
+	environment::execute();
 	return 0;
 }

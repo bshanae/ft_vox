@@ -1,7 +1,6 @@
 #pragma once
 
-#include "engine/core/object/usual_object/usual_object.h"
-
+#include "application/common/imports/std.h"
 #include "application/common/imports/glm.h"
 #include "application/common/imports/freetype.h"
 

@@ -1,5 +1,6 @@
 #include "world.h"
 
+#include "engine/core/object/object_manipulator/object_manipulator.h"
 #include "engine/system/time/timestamp/timestamp.h"
 #include "engine/rendering/main/camera/camera.h"
 
@@ -19,7 +20,7 @@ static const vec3			back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
 							world::world()
 {
-	usual_object::layout = "Opaque";
+	set_layout("Opaque");
 	update_timer = timer(world_settings::chunk_generation_time_limit);
 }
 
@@ -147,7 +148,7 @@ float						world::distance(const shared_ptr<chunk> &chunk)
 
 // ------------------------ Object methods
 
-void						world::initialize_implementation()
+void						world::when_initialized()
 {
 	create_chunk(vec3());
 	create_chunk(left);
@@ -156,9 +157,9 @@ void						world::initialize_implementation()
 	create_chunk(back);
 }
 
-void						world::deinitialize_implementation() {}
+void						world::when_deinitialized() {}
 
-void						world::update()
+void						world::when_updated()
 {
 	update_timer.execute();
 
@@ -199,7 +200,7 @@ void						world::update()
 	lock.unlock();
 }
 
-void						world::render()
+void						world::when_rendered()
 {
 	if (auto camera_block = find_block((vec3)camera::get_instance()->get_position()))
 		chunk_renderer::get_instance()->set_apply_water_tint((*camera_block)().type == block::water);

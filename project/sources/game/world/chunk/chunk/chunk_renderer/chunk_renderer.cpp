@@ -14,9 +14,7 @@ using namespace			game;
 
 						chunk_renderer::chunk_renderer()
 {
-	layout = "System";
-	should_be_updated = false;
-	should_be_rendered = false;
+	set_layout("System");
 
 	apply_water_tint = false;
 

@@ -1,17 +1,12 @@
 #pragma once
 
-#include "application/common/classes/singleton.h"
+#include "application/common/templates/singleton/singleton.h"
 
-namespace			application
-{
-	class 			application;
-}
-
-class				application::application : public singleton<application>
+class				environment : public singleton<environment>
 {
 public :
-					application();
-					~application() override = default;
+					environment();
+					~environment() override = default;
 
 	static void 	execute();
 

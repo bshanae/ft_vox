@@ -2,13 +2,13 @@
 
 #include "engine/rendering/main/program/shader/shader.h"
 
-using namespace			engine;
+using namespace		engine;
 
-						program::program(const path &vertex_source, const path &fragment_source)
+					program::program(const path &vertex_source, const path &fragment_source)
 {
-	auto				log_error = [this]()
+	auto			log_error = [this]()
 	{
-		GLchar			log[1024];
+		GLchar		log[1024];
 
 		glGetProgramInfoLog(value, 1024, nullptr, log);
 		cout << "DEBUG // GLSL OUTPUT" << endl << endl;
@@ -19,9 +19,9 @@ using namespace			engine;
 
 	value = glCreateProgram();
 
-	shader				vertex_shader(shader::vertex, vertex_source);
-	shader				fragment_shader(shader::fragment, fragment_source);
-	GLint				success;
+	shader			vertex_shader(shader::vertex, vertex_source);
+	shader			fragment_shader(shader::fragment, fragment_source);
+	GLint			success;
 
 	glAttachShader(value, vertex_shader.value);
 	glAttachShader(value, fragment_shader.value);
@@ -33,7 +33,12 @@ using namespace			engine;
 		log_error();
 }
 
-						program::~program()
+					program::~program()
 {
 	glDeleteProgram(value);
+}
+
+void				program::bind(bool state)
+{
+	glUseProgram(state ? value : 0);
 }

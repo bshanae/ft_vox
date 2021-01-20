@@ -4,7 +4,9 @@
 
 using namespace				game;
 
-							texture_atlas::texture_atlas(const path &source)
+static string				source = "project/resources/atlases/default.png";
+
+							texture_atlas::texture_atlas()
 {
 	unsigned char			*data;
 	int						number_of_components;
@@ -87,7 +89,7 @@ texture_atlas::association	&texture_atlas::association_for(enum block::type type
 	return (instance->associations.at(type));
 }
 
-vec2						texture_atlas::texture_size()
+vec2						texture_atlas::get_texture_size()
 {
 	return
 	{

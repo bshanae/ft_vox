@@ -2,7 +2,7 @@
 
 #include "application/common/imports/opengl.h"
 #include "application/common/imports/glm.h"
-#include "application/common/classes/singleton.h"
+#include "application/common/templates/singleton/singleton.h"
 #include "application/common/imports/std.h"
 
 namespace						engine
@@ -79,6 +79,7 @@ public :
 	};
 
 								input();
+								~input() override = default;
 
 	vec2						get_mouse_offset() const;
 	vec2						get_last_mouse_position() const;
