@@ -1,14 +1,14 @@
-#include "block_selector_renderer.h"
+#include "block_highlighter_renderer.h"
 
 #include "engine/main/rendering/model/model/model.h"
 #include "engine/main/rendering/camera/camera.h"
 
-#include "game/world/chunk/block/block_selector/block_selector/block_selector.h"
+#include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
 
 using namespace			engine;
 using namespace			game;
 
-						block_selector_renderer::block_selector_renderer()
+						block_highlighter_renderer::block_highlighter_renderer()
 {
 	set_layout("System");
 
@@ -18,7 +18,7 @@ using namespace			game;
 	uniform_transformation = program->create_uniform<mat4>("uniform_transformation");
 }
 
-void					block_selector_renderer::render(const block_selector &selector)
+void					block_highlighter_renderer::render(const block_highlighter &selector)
 {
 	const auto 			instance = get_instance();
 
@@ -61,7 +61,7 @@ void					block_selector_renderer::render(const block_selector &selector)
 	instance->program->bind(false);
 }
 
-void					block_selector_renderer::render(const shared_ptr<model> &model)
+void					block_highlighter_renderer::render(const shared_ptr<model> &model)
 {
 	for (int x_indicator = -2; x_indicator <= +2; x_indicator++)
 	for (int y_indicator = -2; y_indicator <= +2; y_indicator++)
@@ -75,7 +75,7 @@ void					block_selector_renderer::render(const shared_ptr<model> &model)
 	}
 }
 
-void					block_selector_renderer::render(const shared_ptr<model> &model, const vec3 &shift)
+void					block_highlighter_renderer::render(const shared_ptr<model> &model, const vec3 &shift)
 {
 	const auto			original_translation = (vec3)model->get_translation();
 

@@ -9,8 +9,8 @@
 
 #include "game/world/utils/texture_atlas/texture_atlas.h"
 #include "game/world/world/world.h"
-#include "game/world/chunk/block/block_selector/block_selector/block_selector.h"
-#include "game/world/chunk/block/block_selector/block_selector_renderer/block_selector_renderer.h"
+#include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
+#include "game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.h"
 #include "game/world/chunk/chunk/chunk_renderer/chunk_renderer.h"
 #include "game/world/chunk/generator/generator/generator.h"
 #include "game/player/player.h"
@@ -48,8 +48,8 @@ void 				environment::initialize_game()
 {
 	game::generator::construct();
 	game::biome_collection::construct();
-	game::block_selector::construct();
-	game::block_selector_renderer::construct();
+	game::block_highlighter::construct();
+	game::block_highlighter_renderer::construct();
 	game::chunk_renderer::construct();
 	game::world::construct();
 

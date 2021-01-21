@@ -5,7 +5,7 @@
 #include "engine/main/rendering/camera/camera.h"
 
 #include "game/world/utils/aabb/aabb.h"
-#include "game/world/chunk/block/block_selector/block_selector/block_selector.h"
+#include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/chunk/chunk/chunk_renderer/chunk_renderer.h"
 #include "game/world/chunk/generator/generator/generator.h"
@@ -64,15 +64,15 @@ void						world::remove_block(const block_alias &id)
 
 void						world::select_block(const block_alias &id, block::face face)
 {
-	block_selector::get_instance()->activate();
+	block_highlighter::get_instance()->activate();
 
-	block_selector::set_translation(id.world_position() + vec3(0.5f));
-	block_selector::set_selected_face(face);
+	block_highlighter::set_translation(id.world_position() + vec3(0.5f));
+	block_highlighter::set_selected_face(face);
 }
 
 void						world::unselect_block()
 {
-	block_selector::get_instance()->deactivate();
+	block_highlighter::get_instance()->deactivate();
 }
 
 bool						world::does_collide(const aabb &aabb)

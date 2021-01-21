@@ -16,20 +16,19 @@ namespace						engine
 namespace						game
 {
 
-	class						block_selector;
-
-	class 						block_selector_renderer;
+	class						block_highlighter;
+	class 						block_highlighter_renderer;
 }
 
-class							game::block_selector_renderer :
+class							game::block_highlighter_renderer :
 									public engine::object,
-									public engine::unique_object_constructor<block_selector_renderer>
+									public engine::unique_object_constructor<block_highlighter_renderer>
 {
 public :
-								block_selector_renderer();
-								~block_selector_renderer() override = default;
+								block_highlighter_renderer();
+								~block_highlighter_renderer() override = default;
 
-	static void					render(const block_selector &selector);
+	static void					render(const block_highlighter &selector);
 
 private :
 

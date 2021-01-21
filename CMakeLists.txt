@@ -38,7 +38,7 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/engine/main/core/object/object_manipulator/object_manipulator.cpp
 	${SOURCES_DIRECTORY}/engine/main/core/object/object_storage/object_storage/object_storage.cpp
 
-	# Engine : Rendering : Main
+	# Engine : Rendering
 	${SOURCES_DIRECTORY}/engine/main/rendering/layout/layout/layout.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/layout/layout_manager/layout_manager.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/camera/camera.cpp
@@ -56,7 +56,7 @@ set(SOURCES
 	# Engine : Processor
 	${SOURCES_DIRECTORY}/engine/main/processor/processor.cpp
 
-	# Engine : Extensions : UI
+	# Engine : UI
 	${SOURCES_DIRECTORY}/engine/extensions/ui/text/text.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol_renderer.cpp
@@ -69,8 +69,8 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome/biome_collection/biome_collection.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome/biome/biome.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_alias/block_alias.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block_selector/block_selector/block_selector.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block_selector/block_selector_renderer/block_selector_renderer.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block/block.cpp
 	${SOURCES_DIRECTORY}/game/world/world/world.cpp
 	${SOURCES_DIRECTORY}/game/world/utils/texture_atlas/texture_atlas.cpp

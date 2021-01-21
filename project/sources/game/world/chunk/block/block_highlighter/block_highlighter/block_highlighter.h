@@ -15,22 +15,22 @@ namespace						engine
 
 namespace						game
 {
-	class						block_selector_renderer;
+	class						block_highlighter_renderer;
 	class						world;
 
-	class						block_selector;
+	class						block_highlighter;
 }
 
-class							game::block_selector  :
+class							game::block_highlighter  :
 									public engine::object,
-									public engine::unique_object_constructor<block_selector>
+									public engine::unique_object_constructor<block_highlighter>
 
 {
-	friend class 				::game::block_selector_renderer;
+	friend class 				block_highlighter_renderer;
 
 public :
-								block_selector();
-								~block_selector() override = default;
+								block_highlighter();
+								~block_highlighter() override = default;
 
 	static vec3					get_translation();
 	static block::face			get_selected_face();
