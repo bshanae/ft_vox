@@ -1,7 +1,7 @@
 #include "environment.h"
 
 #include "engine/rendering/main/layout/layout/layout.h"
-#include "engine/rendering/main/layout/layout_storage/layout_storage.h"
+#include "engine/rendering/main/layout/layout_manager/layout_manager.h"
 #include "engine/rendering/ui/font/font_library/font_library.h"
 #include "engine/rendering/ui/font/symbol/symbol_renderer.h"
 #include "engine/rendering/main/camera/camera.h"
@@ -32,10 +32,10 @@ void 				environment::initialize_engine()
 {
 	engine::processor::construct();
 
-	engine::layout_storage::define("System");
-	engine::layout_storage::define("Opaque", engine::layout::use_depth_test);
-	engine::layout_storage::define("Transparent", engine::layout::use_depth_test);
-	engine::layout_storage::define("UI");
+	engine::layout_manager::add("System");
+	engine::layout_manager::add("Opaque", engine::layout::use_depth_test);
+	engine::layout_manager::add("Transparent", engine::layout::use_depth_test);
+	engine::layout_manager::add("UI");
 }
 
 void 				environment::initialize_ui()

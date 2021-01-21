@@ -77,7 +77,7 @@ void					block_selector_renderer::render(const shared_ptr<model> &model, const v
 {
 	const auto			original_translation = (vec3)model->get_translation();
 
-	model->set_translation((vec3)model->get_translation() + shift);
+	model->set_translation(model->get_translation() + shift);
 
 	uniform_projection.upload(camera::get_instance()->get_projection_matrix());
 	uniform_view.upload(camera::get_instance()->get_view_matrix());

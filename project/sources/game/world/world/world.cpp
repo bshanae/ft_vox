@@ -65,8 +65,8 @@ void						world::remove_block(const block_alias &id)
 void						world::select_block(const block_alias &id, block::face face)
 {
 	block_selector::get_instance()->activate();
-	block_selector::get_instance()->translation = id.world_position() + vec3(0.5f);
-	block_selector::get_instance()->selected_face = face;
+	block_selector::get_instance()->set_translation(id.world_position() + vec3(0.5f));
+	block_selector::get_instance()->set_selected_face(face);
 }
 
 void						world::unselect_block()

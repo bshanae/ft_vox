@@ -7,12 +7,12 @@
 namespace				engine
 {
 	class 				layout;
-	class 				layout_storage;
+	class 				layout_manager;
 }
 
 class 					engine::layout
 {
-	friend class 		layout_storage;
+	friend class 		layout_manager;
 
 	using 				data_type = vector<shared_ptr<object>>;
 

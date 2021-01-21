@@ -27,7 +27,6 @@ class							game::block_selector  :
 
 {
 	friend class 				::game::block_selector_renderer;
-	friend class 				::game::world;
 
 public :
 								block_selector();

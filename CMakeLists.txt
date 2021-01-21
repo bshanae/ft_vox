@@ -40,7 +40,7 @@ set(SOURCES
 
 	# Engine : Rendering : Main
 	${SOURCES_DIRECTORY}/engine/rendering/main/layout/layout/layout.cpp
-	${SOURCES_DIRECTORY}/engine/rendering/main/layout/layout_storage/layout_storage.cpp
+	${SOURCES_DIRECTORY}/engine/rendering/main/layout/layout_manager/layout_manager.cpp
 	${SOURCES_DIRECTORY}/engine/rendering/main/camera/camera.cpp
 	${SOURCES_DIRECTORY}/engine/rendering/main/model/model/model.cpp
 	${SOURCES_DIRECTORY}/engine/rendering/main/model/texture/texture.cpp

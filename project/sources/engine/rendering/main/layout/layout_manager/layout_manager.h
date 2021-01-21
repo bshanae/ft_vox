@@ -9,20 +9,20 @@
 namespace						engine
 {
 	class 						object;
-	class 						layout_storage;
+	class 						layout_manager;
 }
 
-class							engine::layout_storage :
-									public singleton<layout_storage>,
+class							engine::layout_manager :
+									public singleton<layout_manager>,
 									public listener<object_storage_event>
 {
-	using						data_type = map<string, shared_ptr<layout>>;
+	using						data_type = list<shared_ptr<layout>>;
 
 public :
 
-	static data_type			&get_layouts();
+	static const data_type		&get_layouts();
 
-	static void 				define(const string &name, int options = 0);
+	static void 				add(const string &name, int options = 0);
 	static shared_ptr<layout>	find(const string &name);
 
 private :

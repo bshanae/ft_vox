@@ -6,7 +6,7 @@
 #include "engine/system/input/input.h"
 #include "engine/system/time/timer/timer.h"
 #include "engine/rendering/main/layout/layout/layout.h"
-#include "engine/rendering/main/layout/layout_storage/layout_storage.h"
+#include "engine/rendering/main/layout/layout_manager/layout_manager.h"
 #include "engine/processor/processor_settings.h"
 
 using namespace	engine;
@@ -22,16 +22,6 @@ void			processor::execute()
 	do
 	{
 		process_input();
-
-		if (window::get_instance()->is_closed())
-		{
-//			for (auto &[name, layout] : layouts)
-//			for (auto &object : layout->objects)
-				// TODO
-//				object_manipulator::deinitialize(object);
-				;
-		}
-
 		process_activation();
 		process_updating();
 		process_rendering();
@@ -59,7 +49,7 @@ void			processor::process_input()
 
 void			processor::process_activation()
 {
-	for (const auto &[name, layout] : layout_storage::get_layouts())
+	for (const auto &layout : layout_manager::get_layouts())
 	for (auto &object : layout->get_objects())
 	{
 		if (object->get_state() == object::state::initialized)
@@ -69,7 +59,7 @@ void			processor::process_activation()
 
 void			processor::process_updating()
 {
-	for (const auto &[name, layout] : layout_storage::get_layouts())
+	for (const auto &layout : layout_manager::get_layouts())
 	for (auto &object : layout->get_objects())
 	{
 		if (object->get_state() == object::state::activated)
@@ -85,7 +75,7 @@ void			processor::process_rendering()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	for (const auto &[name, layout] : layout_storage::get_layouts())
+	for (const auto &layout : layout_manager::get_layouts())
 	{
 		window::get_instance()->use_depth_test((layout->get_options() & (int)layout::use_depth_test) != 0);
 
