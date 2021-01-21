@@ -25,7 +25,7 @@
 
 void 				environment::execute()
 {
-	engine::processor::get_instance()->execute();
+	engine::processor::execute();
 }
 
 void 				environment::initialize_engine()

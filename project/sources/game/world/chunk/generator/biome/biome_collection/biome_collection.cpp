@@ -12,8 +12,9 @@ using namespace 	game;
 
 const biome			&biome_collection::get_biome(enum biome::type type)
 {
-	auto			iterator = collection.find(type);
+	const auto		instance = get_instance();
+	auto			iterator = instance->collection.find(type);
 
-	assert(iterator != collection.end());
+	assert(iterator != instance->collection.end());
 	return iterator->second;
 }

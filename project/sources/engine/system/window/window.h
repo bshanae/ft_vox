@@ -21,17 +21,17 @@ public :
 							~window() override;
 public :
 
-	vec2					get_mouse_position() const;
+	static vec2				get_mouse_position();
 
-	bool					is_closed() const;
-	void 					close();
+	static bool				is_closed();
+	static void 			close();
 
-	void 					swap_buffers();
-	void 					use_depth_test(bool state);
+	static void 			swap_buffers();
+	static void 			use_depth_test(bool state);
 
-	vec2					to_normal(const ivec2 &value) const;
-	ivec2					to_absolute(const vec2 &value) const;
-	ivec2					invert_y(const vec2 &value) const;
+	static vec2				to_normal(const ivec2 &value);
+	static ivec2			to_absolute(const vec2 &value);
+	static ivec2			invert_y(const vec2 &value);
 
 private :
 

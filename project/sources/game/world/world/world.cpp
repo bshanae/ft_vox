@@ -44,7 +44,7 @@ optional<block_alias>		world::world::find_block(const vec3 &position)
 
 	chunk_position.y = 0;
 
-	if (chunk = find_chunk(chunk_position); not chunk or not index)
+	if (chunk = get_instance()->find_chunk(chunk_position); not chunk or not index)
 		return {};
 	else
 		return block_alias(chunk, index);
@@ -53,20 +53,21 @@ optional<block_alias>		world::world::find_block(const vec3 &position)
 void						world::insert_block(const block_alias &id, enum block::type type)
 {
 	id().type = type;
-	rebuild_chunk(id.chunk, id.index);
+	get_instance()->rebuild_chunk(id.chunk, id.index);
 }
 
 void						world::remove_block(const block_alias &id)
 {
 	id().type = block::air;
-	rebuild_chunk(id.chunk, id.index);
+	get_instance()->rebuild_chunk(id.chunk, id.index);
 }
 
 void						world::select_block(const block_alias &id, block::face face)
 {
 	block_selector::get_instance()->activate();
-	block_selector::get_instance()->set_translation(id.world_position() + vec3(0.5f));
-	block_selector::get_instance()->set_selected_face(face);
+
+	block_selector::set_translation(id.world_position() + vec3(0.5f));
+	block_selector::set_selected_face(face);
 }
 
 void						world::unselect_block()
@@ -79,7 +80,7 @@ bool						world::does_collide(const aabb &aabb)
 	vec3 					min = glm::floor(aabb.min);
 	vec3 					max = glm::floor(aabb.max);
 
-	optional<block_alias>		block_iterator;
+	optional<block_alias>	block_iterator;
 
 	for (int x = (int)min.x; x <= (int)max.x; x++)
 	for (int y = (int)min.y; y <= (int)max.y; y++)
@@ -163,8 +164,8 @@ void						world::when_updated()
 {
 	update_timer.execute();
 
-	pivot.x = camera::get_instance()->get_position().x;
-	pivot.z = camera::get_instance()->get_position().z;
+	pivot.x = camera::get_position().x;
+	pivot.z = camera::get_position().z;
 
 	for (auto [position, chunk] : chunks)
 		if (update_timer.get_state() == timer::finished)
@@ -202,19 +203,19 @@ void						world::when_updated()
 
 void						world::when_rendered()
 {
-	if (auto camera_block = find_block((vec3)camera::get_instance()->get_position()))
-		chunk_renderer::get_instance()->set_apply_water_tint((*camera_block)().type == block::water);
+	if (auto camera_block = find_block((vec3)camera::get_position()))
+		chunk_renderer::set_apply_water_tint((*camera_block)().type == block::water);
 
 	for (auto [position, chunk] : chunks)
-		chunk_renderer::get_instance()->render(chunk, chunk::batch_purpose::opaque);
+		chunk_renderer::render(chunk, chunk::batch_purpose::opaque);
 
 	for (auto [position, chunk] : chunks)
 			sorted_chunks.emplace(distance(chunk), chunk);
 
 	for (auto iterator = sorted_chunks.rbegin(); iterator != sorted_chunks.rend(); ++iterator)
 	{
-		chunk_renderer::get_instance()->render(iterator->second, chunk::batch_purpose::partially_transparent);
-		chunk_renderer::get_instance()->render(iterator->second, chunk::batch_purpose::transparent);
+		chunk_renderer::render(iterator->second, chunk::batch_purpose::partially_transparent);
+		chunk_renderer::render(iterator->second, chunk::batch_purpose::transparent);
 	}
 
 	sorted_chunks.clear();

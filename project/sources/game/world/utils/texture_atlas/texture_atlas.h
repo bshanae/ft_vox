@@ -45,7 +45,6 @@ public :
 	};
 
 	static association		&association_for(enum block::type type);
-
 	static vec2 			get_texture_size();
 
 private :

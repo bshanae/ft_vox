@@ -32,24 +32,24 @@ public :
 							camera();
 							~camera() override = default;
 
-	vec3					get_position() const;
+	static vec3				get_position();
 
-	mat4					get_projection_matrix() const;
-	mat4					get_view_matrix() const;
+	static mat4				get_projection_matrix();
+	static mat4				get_view_matrix();
 
-	bool					did_change() const;
+	static bool				did_change();
 
-	vec3					get_front() const;
-	vec3					get_back() const;
-	vec3					get_up() const;
-	vec3					get_down() const;
-	vec3					get_left() const;
-	vec3					get_right() const;
+	static vec3				get_front();
+	static vec3				get_back();
+	static vec3				get_up();
+	static vec3				get_down();
+	static vec3				get_left();
+	static vec3				get_right();
 
-	void					set_position(const vec3 &value);
-	void					set_did_change(bool value);
+	static void				set_position(const vec3 &value);
+	static void				set_did_change(bool value);
 
-	optional<hit>			cast_ray();
+	static optional<hit>	cast_ray();
 
 	enum class				direction
 	{

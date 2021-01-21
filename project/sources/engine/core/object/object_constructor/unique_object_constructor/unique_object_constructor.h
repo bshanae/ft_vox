@@ -22,7 +22,7 @@ protected :
 	{
 		auto 			instance = singleton<type>::get_instance();
 
-		object_storage::get_instance()->add(instance);
+		object_storage::add(instance);
 		object_manipulator::initialize(instance);
 	}
 };

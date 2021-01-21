@@ -40,7 +40,7 @@ using namespace			game;
 
 void					chunk_renderer::set_apply_water_tint(bool value)
 {
-	apply_water_tint = value;
+	get_instance()->apply_water_tint = value;
 }
 
 void					chunk_renderer::render(const shared_ptr<chunk> &chunk, chunk::batch_purpose purpose)
@@ -77,7 +77,7 @@ void					chunk_renderer::render(const shared_ptr<chunk> &chunk, chunk::batch_pur
 	instance->uniform_projection.upload(camera::get_instance()->get_projection_matrix());
 	instance->uniform_view.upload(camera::get_instance()->get_view_matrix());
 	instance->uniform_alpha_discard_floor.upload(alpha_discard_floor);
-	instance->uniform_apply_water_tint.upload(apply_water_tint);
+	instance->uniform_apply_water_tint.upload(get_instance()->apply_water_tint);
 
 	model->bind(true);
 	texture_atlas::get_instance()->bind(true);

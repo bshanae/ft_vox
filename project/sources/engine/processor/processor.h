@@ -22,16 +22,16 @@ public :
 								processor();
 								~processor() override = default;
 
-	void						execute();
+	static void					execute();
 
 private :
 
 	stack<shared_ptr<object>>	added_objects;
 	stack<shared_ptr<object>>	removed_objects;
 
-	void						process_input();
+	static void					process_input();
 
-	void						process_activation();
-	void						process_updating();
-	void						process_rendering();
+	static void					process_activation();
+	static void					process_updating();
+	static void					process_rendering();
 };

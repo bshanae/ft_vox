@@ -32,11 +32,11 @@ public :
 								block_selector();
 								~block_selector() override = default;
 
-	vec3						get_translation() const;
-	block::face					get_selected_face() const;
+	static vec3					get_translation();
+	static block::face			get_selected_face();
 
-	void						set_translation(const vec3 &value);
-	void						set_selected_face(block::face face);
+	static void					set_translation(const vec3 &value);
+	static void					set_selected_face(block::face face);
 
 private :
 

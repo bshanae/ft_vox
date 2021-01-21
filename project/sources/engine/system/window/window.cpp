@@ -23,8 +23,8 @@ using namespace		engine;
 	glViewport(0, 0, size.x, size.y);
 
 	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetKeyCallback(glfw_window, input::callback_for_keyboard);
-	glfwSetMouseButtonCallback(glfw_window, input::callback_for_mouse_click);
+	glfwSetKeyCallback(glfw_window, input::get_callback_for_keyboard());
+	glfwSetMouseButtonCallback(glfw_window, input::get_callback_for_mouse());
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -38,28 +38,28 @@ using namespace		engine;
 	glfwTerminate();
 }
 
-vec2				window::get_mouse_position() const
+vec2				window::get_mouse_position()
 {
 	double			x;
 	double			y;
 
-	glfwGetCursorPos(glfw_window, &x, &y);
+	glfwGetCursorPos(get_instance()->glfw_window, &x, &y);
 	return (invert_y(vec2(x, y)));
 }
 
-bool				window::is_closed() const
+bool				window::is_closed()
 {
-	return (glfwWindowShouldClose(glfw_window));
+	return glfwWindowShouldClose(get_instance()->glfw_window);
 }
 
 void 				window::close()
 {
-	glfwSetWindowShouldClose(glfw_window, true);
+	glfwSetWindowShouldClose(get_instance()->glfw_window, true);
 }
 
 void				window::swap_buffers()
 {
-	glfwSwapBuffers(glfw_window);
+	glfwSwapBuffers(get_instance()->glfw_window);
 }
 
 void				window::use_depth_test(bool state)
@@ -70,17 +70,17 @@ void				window::use_depth_test(bool state)
 		glDisable(GL_DEPTH_TEST);
 }
 
-vec2				window::to_normal(const ivec2 &value) const
+vec2				window::to_normal(const ivec2 &value)
 {
 	return {value.x / size.x, value.y / size.y};
 }
 
-ivec2				window::to_absolute(const vec2 &value) const
+ivec2				window::to_absolute(const vec2 &value)
 {
 	return {value.x * size.x, value.y * size.y};
 }
 
-ivec2				window::invert_y(const vec2 &value) const
+ivec2				window::invert_y(const vec2 &value)
 {
 	return {value.x, size.y - value.y};
 }

@@ -25,15 +25,16 @@ public :
 								world();
 								~world() override = default;
 
+	static
 	optional<block_alias>		find_block(const vec3 &position);
 
-	void 						insert_block(const block_alias &id, enum block::type type);
-	void 						remove_block(const block_alias &id);
+	static void					insert_block(const block_alias &id, enum block::type type);
+	static void					remove_block(const block_alias &id);
 
-	void						select_block(const block_alias &id, block::face face);
-	void 						unselect_block();
+	static void					select_block(const block_alias &id, block::face face);
+	static void 				unselect_block();
 
-	bool						does_collide(const aabb &aabb);
+	static bool					does_collide(const aabb &aabb);
 
 private :
 

@@ -92,32 +92,34 @@ static vector<GLuint>	face_indices = {0, 1, 2, 3};
 	set_layout("Transparent");
 }
 
-vec3					block_selector::get_translation() const
+vec3					block_selector::get_translation()
 {
-	return translation;
+	return get_instance()->translation;
 }
 
-block::face				block_selector::get_selected_face() const
+block::face				block_selector::get_selected_face()
 {
-	return selected_face;
+	return get_instance()->selected_face;
 }
 
 void					block_selector::set_translation(const vec3 &value)
 {
-	translation = value;
+	const auto			instance = get_instance();
 
-	cube->set_translation(value);
-	left->set_translation(value);
-	right->set_translation(value);
-	front->set_translation(value);
-	back->set_translation(value);
-	top->set_translation(value);
-	bottom->set_translation(value);
+	instance->translation = value;
+
+	instance->cube->set_translation(value);
+	instance->left->set_translation(value);
+	instance->right->set_translation(value);
+	instance->front->set_translation(value);
+	instance->back->set_translation(value);
+	instance->top->set_translation(value);
+	instance->bottom->set_translation(value);
 }
 
 void					block_selector::set_selected_face(block::face face)
 {
-	selected_face = face;
+	get_instance()->selected_face = face;
 }
 
 void 					block_selector::when_initialized()

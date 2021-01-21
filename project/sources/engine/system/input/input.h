@@ -15,9 +15,6 @@ namespace						engine
 
 class							engine::input : public singleton<input>
 {
-	friend class				engine::processor;
-	friend class				engine::window;
-
 public :
 
 	enum class					key : int
@@ -81,16 +78,29 @@ public :
 								input();
 								~input() override = default;
 
-	vec2						get_mouse_offset() const;
-	vec2						get_last_mouse_position() const;
-	vec2						get_current_mouse_position() const;
+	static vec2					get_mouse_offset();
+	static vec2					get_last_mouse_position();
+	static vec2					get_current_mouse_position();
 
-	bool						is_pressed(enum key key) const;
-	bool						is_released(enum key key) const;
-	bool						is_held(enum key key) const;
-	bool						is_pressed_or_held(enum key key) const;
+	static bool					is_pressed(enum key key);
+	static bool					is_released(enum key key);
+	static bool					is_held(enum key key);
+	static bool					is_pressed_or_held(enum key key);
 
-	bool						did_mouse_move() const;
+	static bool					did_mouse_move();
+
+	static auto					get_callback_for_keyboard()
+	{
+		return callback_for_keyboard;
+	}
+
+	static auto					get_callback_for_mouse()
+	{
+		return callback_for_mouse;
+	}
+
+	static void					reset_keys();
+	static void					update_mouse();
 
 private :
 
@@ -103,8 +113,5 @@ private :
 	state						get_state_for_key(enum key key) const;
 
 	static void					callback_for_keyboard(GLFWwindow *window, int key, int code, int action, int mode);
-	static void					callback_for_mouse_click(GLFWwindow *window, int key, int action, int mode);
-
-	void						reset_keys();
-	void						update_mouse();
+	static void					callback_for_mouse(GLFWwindow *window, int key, int action, int mode);
 };

@@ -17,7 +17,7 @@ class 							object_constructor
 
 		instance_as_object = dynamic_pointer_cast<object>(instance);
 		assert(instance_as_object != nullptr);
-		object_storage::get_instance()->add(instance_as_object);
+		object_storage::add(instance_as_object);
 
 		return instance;
 	}

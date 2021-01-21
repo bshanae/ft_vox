@@ -16,21 +16,16 @@ class				engine::object_storage final :
 						public singleton<engine::object_storage>,
 						public notifier<object_storage_event>
 {
-	template		<typename>
-	friend class 	object_constructor;
-
-	template		<typename>
-	friend class 	unique_object_constructor;
-
 	using			data_type = unordered_map<intptr_t, shared_ptr<object>>;
 
 public :
 					object_storage() = default;
-					~object_storage();
-private :
+					~object_storage() override;
 
-	void			add(const shared_ptr<object> &object);
-	void			remove(const shared_ptr<object> &object);
+	static void		add(const shared_ptr<object> &object);
+	static void		remove(const shared_ptr<object> &object);
+
+private :
 
 	data_type		objects;
 };

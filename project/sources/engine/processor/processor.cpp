@@ -26,21 +26,21 @@ void			processor::execute()
 		process_updating();
 		process_rendering();
 	}
-	while (not window::get_instance()->is_closed());
+	while (not window::is_closed());
 }
 
 void			processor::process_input()
 {
 	static bool	empty_polygons = false;
 
-	input::get_instance()->reset_keys();
-	input::get_instance()->update_mouse();
+	input::reset_keys();
+	input::update_mouse();
 
 	glfwPollEvents();
 
-	if (input::get_instance()->is_pressed(input::key::escape))
-		window::get_instance()->close();
-	if (input::get_instance()->is_pressed(input::key::letter_p))
+	if (input::is_pressed(input::key::escape))
+		window::close();
+	if (input::is_pressed(input::key::letter_p))
 	{
 		empty_polygons = not empty_polygons;
 		glPolygonMode(GL_FRONT_AND_BACK, empty_polygons ? GL_LINE : GL_FILL);
@@ -77,7 +77,7 @@ void			processor::process_rendering()
 
 	for (const auto &layout : layout_manager::get_layouts())
 	{
-		window::get_instance()->use_depth_test((layout->get_options() & (int)layout::use_depth_test) != 0);
+		window::use_depth_test((layout->get_options() & (int)layout::use_depth_test) != 0);
 
 		for (auto &object : layout->get_objects())
 		{
@@ -86,5 +86,5 @@ void			processor::process_rendering()
 		}
 	}
 
-	window::get_instance()->swap_buffers();
+	window::swap_buffers();
 }

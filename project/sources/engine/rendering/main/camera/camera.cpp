@@ -14,65 +14,67 @@ using namespace			game; // TODO
 	position = camera_settings::initial_position;
 }
 
-vec3					camera::get_position() const
+vec3					camera::get_position()
 {
-	return position;
+	return get_instance()->position;
 }
 
-mat4					camera::get_projection_matrix() const
+mat4					camera::get_projection_matrix()
 {
-	return projection_matrix;
+	return get_instance()->projection_matrix;
 }
 
-mat4					camera::get_view_matrix() const
+mat4					camera::get_view_matrix()
 {
-	return view_matrix;
+	return get_instance()->view_matrix;
 }
 
-bool					camera::did_change() const
+bool					camera::did_change()
 {
-	return _did_change;
+	return get_instance()->_did_change;
 }
 
-vec3					camera::get_front() const
+vec3					camera::get_front()
 {
-	return front;
+	return get_instance()->front;
 }
 
-vec3					camera::get_back() const
+vec3					camera::get_back()
 {
-	return (vec3)get_front() * -1.f;
+	return get_front() * -1.f;
 }
 
-vec3					camera::get_up() const
+vec3					camera::get_up()
 {
-	return up;
+	return get_instance()->up;
 }
 
-vec3					camera::get_down() const
+vec3					camera::get_down()
 {
-	return (vec3)up * -1.f;
+	return get_instance()->up * -1.f;
 }
 
-vec3					camera::get_left() const
+vec3					camera::get_left()
 {
-	return ((vec3)right * -1.f);
+	return get_instance()->right * -1.f;
 }
 
-vec3					camera::get_right() const
+vec3					camera::get_right()
 {
-	return right;
+	return get_instance()->right;
 }
 
 void					camera::set_position(const vec3 &value)
 {
-	position = value;
-	recalculate();
+	auto				instance = get_instance();
+
+	instance->position = value;
+	instance->recalculate();
 }
 
 void					camera::set_did_change(bool value)
 {
-	_did_change = value;
+	get_instance()->_did_change = value;
 }
 
 // TODO Remove this
@@ -80,13 +82,15 @@ void					camera::set_did_change(bool value)
 
 optional<camera::hit>	camera::cast_ray()
 {
-	float				x = floor(position.x);
-	float				y = floor(position.y);
-	float				z = floor(position.z);
+	auto				instance = get_instance();
 
-	float 				delta_x = front.x;
-	float 				delta_y = front.y;
-	float 				delta_z = front.z;
+	float				x = floor(instance->position.x);
+	float				y = floor(instance->position.y);
+	float				z = floor(instance->position.z);
+
+	float 				delta_x = instance->front.x;
+	float 				delta_y = instance->front.y;
+	float 				delta_z = instance->front.z;
 
 	sign				step_x = delta_x >= 0 ? sign::plus : sign::minus;
 	sign				step_y = delta_y >= 0 ? sign::plus : sign::minus;
@@ -96,9 +100,9 @@ optional<camera::hit>	camera::cast_ray()
 	sign				inverted_step_y = delta_y >= 0 ? sign::minus : sign::plus;
 	sign				inverted_step_z = delta_z >= 0 ? sign::minus : sign::plus;
 
-	float				t_max_x = intbound(position.x, delta_x);
-	float				t_max_y = intbound(position.y, delta_y);
-	float				t_max_z = intbound(position.z, delta_z);
+	float				t_max_x = intbound(instance->position.x, delta_x);
+	float				t_max_y = intbound(instance->position.y, delta_y);
+	float				t_max_z = intbound(instance->position.z, delta_z);
 
 	float				t_delta_x = (float)step_x / delta_x;
 	float				t_delta_y = (float)step_y / delta_y;
@@ -143,7 +147,7 @@ optional<camera::hit>	camera::cast_ray()
 			face = block::from_axis_and_sign(axis::z, inverted_step_z);
 		}
 
-		if (auto block = game::world::get_instance()->find_block(vec3(x, y, z)))
+		if (auto block = game::world::find_block(vec3(x, y, z)))
 		{
 			assert(block);
 			if ((*block)().is_editable())
@@ -156,10 +160,10 @@ optional<camera::hit>	camera::cast_ray()
 
 void					camera::when_updated()
 {
-	_did_change = input::get_instance()->did_mouse_move();
+	_did_change = input::did_mouse_move();
 
-	yaw += input::get_instance()->get_mouse_offset().x * camera_settings::rotation_speed;
-	pitch += input::get_instance()->get_mouse_offset().y * camera_settings::rotation_speed;
+	yaw += input::get_mouse_offset().x * camera_settings::rotation_speed;
+	pitch += input::get_mouse_offset().y * camera_settings::rotation_speed;
 
 	if (_did_change)
 		recalculate();

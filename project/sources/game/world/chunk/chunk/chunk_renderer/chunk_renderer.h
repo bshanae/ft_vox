@@ -30,9 +30,9 @@ public :
 									chunk_renderer();
 									~chunk_renderer() override = default;
 
-	void							set_apply_water_tint(bool value);
+	static void						set_apply_water_tint(bool value);
 
-	void							render(const shared_ptr<chunk> &chunk, chunk::batch_purpose purpose);
+	static void						render(const shared_ptr<chunk> &chunk, chunk::batch_purpose purpose);
 
 private :
 

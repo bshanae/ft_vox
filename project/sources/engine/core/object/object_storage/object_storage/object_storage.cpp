@@ -14,13 +14,17 @@ using namespace		engine;
 
 void				object_storage::add(const shared_ptr<object> &object)
 {
-	objects.emplace((intptr_t)object.get(), object);
-	notify(make_shared<object_was_added>(object));
+	auto			instance = get_instance();
+
+	instance->objects.emplace((intptr_t)object.get(), object);
+	instance->notify(make_shared<object_was_added>(object));
 }
 
 void				object_storage::remove(const shared_ptr<object> &object)
 {
-	objects.erase((intptr_t)object.get());
-	notify(make_shared<object_was_removed>(object));
+	auto			instance = get_instance();
+
+	instance->objects.erase((intptr_t)object.get());
+	instance->notify(make_shared<object_was_removed>(object));
 	object_manipulator::deinitialize(object);
 }

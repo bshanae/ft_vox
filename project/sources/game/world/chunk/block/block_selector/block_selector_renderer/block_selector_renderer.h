@@ -29,7 +29,7 @@ public :
 								block_selector_renderer();
 								~block_selector_renderer() override = default;
 
-	void						render(const block_selector &selector);
+	static void					render(const block_selector &selector);
 
 private :
 

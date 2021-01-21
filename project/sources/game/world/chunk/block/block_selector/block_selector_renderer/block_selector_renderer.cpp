@@ -20,43 +20,45 @@ using namespace			game;
 
 void					block_selector_renderer::render(const block_selector &selector)
 {
+	const auto 			instance = get_instance();
+
 	float				distance;
 
-	distance = glm::distance(camera::get_instance()->get_position(), (vec3)selector.translation);
-	epsilon = (distance / 10.f) * 0.003f;
+	distance = glm::distance(camera::get_position(), (vec3)selector.translation);
+	instance->epsilon = (distance / 10.f) * 0.003f;
 
-	program->bind(true);
+	instance->program->bind(true);
 
-	render(selector.cube);
+	instance->render(selector.cube);
 
 	switch (selector.selected_face)
 	{
 		case (block::left) :
-			render(selector.left);
+			instance->render(selector.left);
 			break;
 
 		case (block::right) :
-			render(selector.right);
+			instance->render(selector.right);
 			break;
 
 		case (block::front) :
-			render(selector.front);
+			instance->render(selector.front);
 			break;
 
 		case (block::back) :
-			render(selector.back);
+			instance->render(selector.back);
 			break;
 
 		case (block::top) :
-				render(selector.top);
+			instance->render(selector.top);
 			break;
 
 		case (block::bottom) :
-			render(selector.bottom);
+			instance->render(selector.bottom);
 			break;
 	}
 
-	program->bind(false);
+	instance->program->bind(false);
 }
 
 void					block_selector_renderer::render(const shared_ptr<model> &model)
@@ -79,8 +81,8 @@ void					block_selector_renderer::render(const shared_ptr<model> &model, const v
 
 	model->set_translation(model->get_translation() + shift);
 
-	uniform_projection.upload(camera::get_instance()->get_projection_matrix());
-	uniform_view.upload(camera::get_instance()->get_view_matrix());
+	uniform_projection.upload(camera::get_projection_matrix());
+	uniform_view.upload(camera::get_view_matrix());
 
 	model->bind(true);
 
