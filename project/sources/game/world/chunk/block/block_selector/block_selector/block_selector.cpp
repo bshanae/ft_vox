@@ -1,6 +1,6 @@
 #include "block_selector.h"
 
-#include "engine/rendering/main/model/model/model.h"
+#include "engine/main/rendering/model/model/model.h"
 
 #include "game/world/chunk/block/block_selector/block_selector_renderer/block_selector_renderer.h"
 

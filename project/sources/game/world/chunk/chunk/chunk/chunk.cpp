@@ -1,6 +1,6 @@
 #include "chunk.h"
 
-#include "engine/rendering/main/model/model/model.h"
+#include "engine/main/rendering/model/model/model.h"
 
 #include "game/world/utils/texture_atlas/texture_atlas.h"
 #include "game/world/chunk/block/block/block_settings.h"

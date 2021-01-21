@@ -1,9 +1,9 @@
 #include "chunk_renderer.h"
 
-#include "engine/processor/processor_settings.h"
-#include "engine/rendering/main/model/model/model.h"
-#include "engine/rendering/main/camera/camera.h"
-#include "engine/rendering/main/program/program/program.h"
+#include "engine/main/processor/processor_settings.h"
+#include "engine/main/rendering/model/model/model.h"
+#include "engine/main/rendering/camera/camera.h"
+#include "engine/main/rendering/program/program/program.h"
 
 #include "game/world/utils/texture_atlas/texture_atlas.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "engine/core/object/object/object.h"
-#include "engine/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
-#include "engine/rendering/main/program/program/program.h"
-#include "engine/rendering/main/program/uniform/uniform.h"
+#include "engine/main/core/object/object/object.h"
+#include "engine/main/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
+#include "engine/main/rendering/program/program/program.h"
+#include "engine/main/rendering/program/uniform/uniform.h"
 
 #include "game/world/chunk/chunk/chunk/chunk.h"
 

@@ -1,7 +1,7 @@
 #include "block_selector_renderer.h"
 
-#include "engine/rendering/main/model/model/model.h"
-#include "engine/rendering/main/camera/camera.h"
+#include "engine/main/rendering/model/model/model.h"
+#include "engine/main/rendering/camera/camera.h"
 
 #include "game/world/chunk/block/block_selector/block_selector/block_selector.h"
 

@@ -34,33 +34,33 @@ set(SOURCES
 	${LIBRARIES_DIRECTORY}/glad/build/src/glad.c
 
 	# Engine : Core
-	${SOURCES_DIRECTORY}/engine/core/object/object/object.cpp
-	${SOURCES_DIRECTORY}/engine/core/object/object_manipulator/object_manipulator.cpp
-	${SOURCES_DIRECTORY}/engine/core/object/object_storage/object_storage/object_storage.cpp
+	${SOURCES_DIRECTORY}/engine/main/core/object/object/object.cpp
+	${SOURCES_DIRECTORY}/engine/main/core/object/object_manipulator/object_manipulator.cpp
+	${SOURCES_DIRECTORY}/engine/main/core/object/object_storage/object_storage/object_storage.cpp
 
 	# Engine : Rendering : Main
-	${SOURCES_DIRECTORY}/engine/rendering/main/layout/layout/layout.cpp
-	${SOURCES_DIRECTORY}/engine/rendering/main/layout/layout_manager/layout_manager.cpp
-	${SOURCES_DIRECTORY}/engine/rendering/main/camera/camera.cpp
-	${SOURCES_DIRECTORY}/engine/rendering/main/model/model/model.cpp
-	${SOURCES_DIRECTORY}/engine/rendering/main/model/texture/texture.cpp
-	${SOURCES_DIRECTORY}/engine/rendering/main/program/program/program.cpp
-	${SOURCES_DIRECTORY}/engine/rendering/main/program/shader/shader.cpp
-
-	# Engine : Rendering : Ui
-	${SOURCES_DIRECTORY}/engine/rendering/ui/text/text.cpp
-	${SOURCES_DIRECTORY}/engine/rendering/ui/font/symbol/symbol.cpp
-	${SOURCES_DIRECTORY}/engine/rendering/ui/font/symbol/symbol_renderer.cpp
-	${SOURCES_DIRECTORY}/engine/rendering/ui/font/font/font.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/layout/layout/layout.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/layout/layout_manager/layout_manager.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/camera/camera.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/model/model/model.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/model/texture/texture.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/program/program/program.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/program/shader/shader.cpp
 
 	# Engine : System
-	${SOURCES_DIRECTORY}/engine/system/input/input.cpp
-	${SOURCES_DIRECTORY}/engine/system/time/timer/timer.cpp
-	${SOURCES_DIRECTORY}/engine/system/time/timestamp/timestamp.cpp
-	${SOURCES_DIRECTORY}/engine/system/window/window.cpp
+	${SOURCES_DIRECTORY}/engine/main/system/input/input.cpp
+	${SOURCES_DIRECTORY}/engine/main/system/time/timer/timer.cpp
+	${SOURCES_DIRECTORY}/engine/main/system/time/timestamp/timestamp.cpp
+	${SOURCES_DIRECTORY}/engine/main/system/window/window.cpp
 
 	# Engine : Processor
-	${SOURCES_DIRECTORY}/engine/processor/processor.cpp
+	${SOURCES_DIRECTORY}/engine/main/processor/processor.cpp
+
+	# Engine : Extensions : UI
+	${SOURCES_DIRECTORY}/engine/extensions/ui/text/text.cpp
+	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol.cpp
+	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol_renderer.cpp
+	${SOURCES_DIRECTORY}/engine/extensions/ui/font/font/font.cpp
 
 	# Game : World
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk/chunk.cpp

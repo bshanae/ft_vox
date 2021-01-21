@@ -1,8 +1,8 @@
 #pragma once
 
-#include "engine/core/object/object/object.h"
-#include "engine/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
-#include "engine/system/time/timer/timer.h"
+#include "engine/main/core/object/object/object.h"
+#include "engine/main/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
+#include "engine/main/system/time/timer/timer.h"
 
 #include "game/world/chunk/block/block_alias/block_alias.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "engine/core/object/object/object.h"
-#include "engine/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
+#include "engine/main/core/object/object/object.h"
+#include "engine/main/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 
 #include "game/world/chunk/generator/biome/biome_collection/biome_collection.h"
 

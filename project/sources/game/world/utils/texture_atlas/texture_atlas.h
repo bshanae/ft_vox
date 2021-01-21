@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/rendering/main/model/texture/texture.h"
+#include "engine/main/rendering/model/texture/texture.h"
 
 #include "game/world/chunk/block/block/block.h"
 

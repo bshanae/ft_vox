@@ -1,7 +1,7 @@
 #include "player.h"
 
-#include "engine/system/input/input.h"
-#include "engine/rendering/main/camera/camera.h"
+#include "engine/main/system/input/input.h"
+#include "engine/main/rendering/camera/camera.h"
 
 #include "game/world/world/world.h"
 #include "game/player/player_settings.h"

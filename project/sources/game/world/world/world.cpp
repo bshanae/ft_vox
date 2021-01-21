@@ -1,8 +1,8 @@
 #include "world.h"
 
-#include "engine/core/object/object_manipulator/object_manipulator.h"
-#include "engine/system/time/timestamp/timestamp.h"
-#include "engine/rendering/main/camera/camera.h"
+#include "engine/main/core/object/object_manipulator/object_manipulator.h"
+#include "engine/main/system/time/timestamp/timestamp.h"
+#include "engine/main/rendering/camera/camera.h"
 
 #include "game/world/utils/aabb/aabb.h"
 #include "game/world/chunk/block/block_selector/block_selector/block_selector.h"
