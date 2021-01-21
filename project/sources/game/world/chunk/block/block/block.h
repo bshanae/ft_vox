@@ -15,8 +15,8 @@ namespace						game
 
 class							game::block
 {
-	friend class 				::game::chunk;
-	friend class 				::game::world;
+	friend class 				chunk;
+	friend class 				world;
 
 public :
 

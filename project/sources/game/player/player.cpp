@@ -15,42 +15,12 @@ using namespace 		game;
 						player::player()
 {
 	set_layout("System");
-	timer_for_second_space = timer(player_settings::second_space_wait);
 }
 
 void					player::when_updated()
 {
-	process_physics();
 	process_input();
 	process_selection();
-}
-
-void 					player::process_physics()
-{
-	vec3				position;
-
-#warning "TEMPORARY SOLUTION"
-	static bool 		dummy_lock = true;
-
-	if (input::is_pressed_or_held(input::key::number_1))
-		dummy_lock = false;
-
-	if (dummy_lock)
-		return ;
-
-	if (is_flying)
-		return ;
-
-	velocity += player_settings::gravity_force;
-	position = camera::get_position() + velocity;
-
-	if (world::world::does_collide(get_aabb(position)))
-	{
-		velocity = vec3();
-		is_jumping = false;
-	}
-	else
-		camera::get_position() = position;
 }
 
 void 					player::process_input()
@@ -58,65 +28,25 @@ void 					player::process_input()
 	vec3				movement = vec3(0.f);
 	float				speed_up;
 
-	speed_up = input::is_held(input::key::shift) and is_flying ? player_settings::speed_up : 1.f;
+	speed_up = input::is_held(input::key::shift)  ? player_settings::speed_up : 1.f;
 
-	if (is_flying)
-	{
-		if (input::is_pressed_or_held(input::key::letter_a))
-			movement += camera::get_left();
-		else if (input::is_pressed_or_held(input::key::letter_d))
-			movement += camera::get_right();
+	if (input::is_pressed_or_held(input::key::letter_a))
+		movement += camera::get_left();
+	else if (input::is_pressed_or_held(input::key::letter_d))
+		movement += camera::get_right();
 
-		if (input::is_pressed_or_held(input::key::letter_w))
-			movement += camera::get_front();
-		else if (input::is_pressed_or_held(input::key::letter_s))
-			movement += camera::get_back();
-	}
-	else if (not is_jumping)
-	{
-		if (input::is_pressed_or_held(input::key::letter_a))
-			movement += discard_y(camera::get_left());
-		else if (input::is_pressed_or_held(input::key::letter_d))
-			movement += discard_y(camera::get_right());
-
-		if (input::is_pressed_or_held(input::key::letter_w))
-			movement += discard_y(camera::get_front());
-		else if (input::is_pressed_or_held(input::key::letter_s))
-			movement += discard_y(camera::get_back());
-	}
+	if (input::is_pressed_or_held(input::key::letter_w))
+		movement += camera::get_front();
+	else if (input::is_pressed_or_held(input::key::letter_s))
+		movement += camera::get_back();
 
 	if (movement != vec3(0.f))
 	{
 		movement = normalize(movement) * player_settings::movement_speed * speed_up;
-		velocity += movement * player_settings::movement_force;
-
 		offset_camera_if_possible(movement);
 	}
 
-	if (input::is_pressed(input::key::space))
-	{
-		if (timer_for_second_space.get_state() == timer::running)
-		{
-			timer_for_second_space.reset();
-			is_flying = not is_flying;
-			is_jumping = false;
-			velocity = vec3();
-		}
-		else
-		{
-			timer_for_second_space.execute();
-
-			if (is_flying)
-				offset_camera_if_possible(player_settings::flight_lift * speed_up);
-			else if (not is_jumping)
-			{
-				velocity += player_settings::jump_force;
-				is_jumping = true;
-			}
-		}
-	}
-
-	if (input::is_held(input::key::space) and is_flying)
+	if (input::is_held(input::key::space))
 		offset_camera_if_possible(player_settings::flight_lift * speed_up);
 
 	if (input::is_pressed(input::key::mouse_left))
@@ -181,9 +111,4 @@ void					player::offset_camera_if_possible(const vec3 &offset) const
 	new_position = (vec3)camera::get_position() + offset;
 	if (not world::world::does_collide(get_aabb(new_position)))
 		camera::set_position(new_position);
-}
-
-vec3					player::discard_y(const vec3 &original)
-{
-	return (vec3(original.x, 0.f, original.z));
 }
