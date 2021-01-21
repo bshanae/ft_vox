@@ -13,7 +13,7 @@
 #include "game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.h"
 #include "game/world/chunk/chunk/chunk_renderer/chunk_renderer.h"
 #include "game/world/chunk/generator/generator/generator.h"
-#include "game/player/player.h"
+#include "game/player/player/player.h"
 
 					environment::environment()
 {

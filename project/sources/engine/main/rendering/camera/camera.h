@@ -22,13 +22,6 @@ class						engine::camera :
 								public engine::unique_object_constructor<engine::camera>
 {
 public :
-
-	struct					hit
-	{
-		game::block_alias	block;
-		game::block::face	face;
-	};
-
 							camera();
 							~camera() override = default;
 
@@ -48,8 +41,6 @@ public :
 
 	static void				set_position(const vec3 &value);
 	static void				set_did_change(bool value);
-
-	static optional<hit>	cast_ray();
 
 	enum class				direction
 	{

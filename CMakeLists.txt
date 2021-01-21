@@ -76,7 +76,8 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/game/world/utils/texture_atlas/texture_atlas.cpp
 
 	# Game : Player
-	${SOURCES_DIRECTORY}/game/player/player.cpp
+	${SOURCES_DIRECTORY}/game/player/ray_caster/ray_caster.cpp
+	${SOURCES_DIRECTORY}/game/player/player/player.cpp
 
 	# Application : Common
 	${SOURCES_DIRECTORY}/application/common/debug/logger/logger.cpp

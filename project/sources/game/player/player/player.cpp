@@ -4,7 +4,8 @@
 #include "engine/main/rendering/camera/camera.h"
 
 #include "game/world/world/world.h"
-#include "game/player/player_settings.h"
+#include "game/player/player/player_settings.h"
+#include "game/player/ray_caster/ray_caster.h"
 
 #include "application/common/debug/logger/logger.h"
 
@@ -51,7 +52,7 @@ void 					player::process_input()
 
 	if (input::is_pressed(input::key::mouse_left))
 	{
-		if (auto hit = camera::cast_ray(); hit)
+		if (auto hit = ray_caster::cast_ray(); hit)
 		{
 			world::world::remove_block(hit->block);
 			force_ray_cast = true;
@@ -60,7 +61,7 @@ void 					player::process_input()
 
 	if (input::is_pressed(input::key::mouse_right))
 	{
-		if (auto hit = camera::cast_ray(); hit)
+		if (auto hit = ray_caster::cast_ray(); hit)
 		{
 			auto 	axis_and_sign = block::to_axis_and_sign(hit->face);
 			auto	neighbor = hit->block.get_neighbor(axis_and_sign.first, axis_and_sign.second);
@@ -77,9 +78,9 @@ void 					player::process_selection()
 {
 	if (camera::did_change() or force_ray_cast)
 	{
-		if (auto hit = camera::cast_ray(); hit)
+		if (auto hit = ray_caster::cast_ray(); hit)
 		{
-			logger::log(logger::player, "Selected block : " + to_string(hit->block.world_position()));
+			logger::log(logger::player, "Selected block : " + to_string(hit->block.get_world_position()));
 			world::world::select_block(hit->block, hit->face);
 		}
 		else

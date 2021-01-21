@@ -53,20 +53,20 @@ optional<block_alias>		world::world::find_block(const vec3 &position)
 void						world::insert_block(const block_alias &id, enum block::type type)
 {
 	id().type = type;
-	get_instance()->rebuild_chunk(id.chunk, id.index);
+	get_instance()->rebuild_chunk(id.get_chunk(), id.get_index());
 }
 
 void						world::remove_block(const block_alias &id)
 {
 	id().type = block::air;
-	get_instance()->rebuild_chunk(id.chunk, id.index);
+	get_instance()->rebuild_chunk(id.get_chunk(), id.get_index());
 }
 
 void						world::select_block(const block_alias &id, block::face face)
 {
 	block_highlighter::get_instance()->activate();
 
-	block_highlighter::set_translation(id.world_position() + vec3(0.5f));
+	block_highlighter::set_translation(id.get_world_position() + vec3(0.5f));
 	block_highlighter::set_selected_face(face);
 }
 
@@ -88,7 +88,7 @@ bool						world::does_collide(const aabb &aabb)
 	{
 		if (not (block_iterator = find_block(vec3(x, y, z))))
 			continue ;
-		if ((*block_iterator)().is_solid() and aabb::do_collide(aabb, block_iterator->aabb()))
+		if ((*block_iterator)().is_solid() and aabb::do_collide(aabb, block_iterator->get_aabb()))
 			return true;
 	}
 

@@ -7,6 +7,22 @@
 
 using namespace			game;
 
+						block_alias::block_alias(const shared_ptr<::chunk> &chunk, const chunk::index &index)
+{
+	this->chunk = chunk;
+	this->index = index;
+}
+
+block_alias::chunk_type	block_alias::get_chunk() const
+{
+	return chunk;
+}
+
+block_alias::index_type	block_alias::get_index() const
+{
+	return index;
+}
+
 block					&block_alias::operator () () const
 {
 	return (chunk->at(index));
@@ -33,26 +49,20 @@ optional<block_alias>	block_alias::get_neighbor(axis axis, sign sign) const
 	}
 }
 
-vec3					block_alias::world_position() const
+vec3					block_alias::get_world_position() const
 {
 	return ((vec3)chunk->get_position() + (vec3)index);
 }
 
-aabb					block_alias::aabb() const
+aabb					block_alias::get_aabb() const
 {
 	static const vec3	epsilon = vec3(0.08f);
 
-	vec3				min = world_position();
-	vec3				max = world_position() + vec3(1.f);
+	vec3				min = get_world_position();
+	vec3				max = get_world_position() + vec3(1.f);
 
 	min -= epsilon;
 	max += epsilon;
 
 	return {min, max};
-}
-
-						block_alias::block_alias(const shared_ptr<::chunk> &chunk, const chunk::index &index)
-{
-	this->chunk = chunk;
-	this->index = index;
 }
