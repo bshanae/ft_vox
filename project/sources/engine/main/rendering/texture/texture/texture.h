@@ -9,15 +9,23 @@ namespace			engine
 
 class 				engine::texture
 {
+	friend class	texture_loader;
+
 public :
 					texture();
 					~texture();
 
-	GLuint			get_value() const;
+	texture			&operator = (const texture &other) = default;
 
-	void 			bind(bool state) const;
+	GLuint			get_value() const;
+	GLuint			get_width() const;
+	GLuint			get_height() const;
+
+	void 			bind(bool state);
 
 private :
 
 	GLuint			value;
+	int 			width;
+	int 			height;
 };

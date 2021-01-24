@@ -3,10 +3,7 @@
 #include "engine/main/system/window/window.h"
 #include "engine/main/system/input/input.h"
 
-#include "game/world/world/world.h"
-
 using namespace			engine;
-using namespace			game; // TODO
 
 						camera::camera()
 {
@@ -113,4 +110,3 @@ void					camera::recalculate()
 		camera_settings::far_plane
 	);
 }
-

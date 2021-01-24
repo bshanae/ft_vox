@@ -1,5 +1,7 @@
 #include "layout.h"
 
+#include "engine/main/system/window/window.h"
+
 using namespace 		engine;
 
 						layout::layout(const string &name, int options) :
@@ -7,14 +9,12 @@ using namespace 		engine;
 							options(options)
 {}
 
-[[nodiscard]]
-int 					layout::get_options() const
-{
-	return options;
-}
-
-[[nodiscard]]
 const layout::data_type	&layout::get_objects() const
 {
 	return objects;
+}
+
+void 					layout::apply_options() const
+{
+	window::use_depth_test((options & (int)layout::use_depth_test) != 0);
 }

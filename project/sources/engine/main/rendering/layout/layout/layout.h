@@ -27,10 +27,9 @@ public :
 						~layout() = default;
 
 	[[nodiscard]]
-	int 				get_options() const;
-
-	[[nodiscard]]
 	const data_type		&get_objects() const;
+
+	void 				apply_options() const;
 
 private :
 

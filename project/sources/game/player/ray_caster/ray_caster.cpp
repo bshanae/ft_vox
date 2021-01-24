@@ -2,6 +2,7 @@
 
 #include "engine/main/rendering/camera/camera.h"
 
+#include "game/player/ray_caster/ray_caster_settings.h"
 #include "game/world/world/world.h"
 
 using namespace				game;
@@ -48,7 +49,7 @@ optional<ray_caster::hit>	ray_caster::cast_ray()
 	block::face			face;
 	axis				choice;
 
-	for (int i = 0; i < camera_settings::ray_cast_limit; i++)
+	for (int i = 0; i < ray_caster_settings::ray_cast_limit; i++)
 	{
 		if (t_max_x < t_max_y)
 		{

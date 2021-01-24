@@ -17,7 +17,17 @@ GLuint				texture::get_value() const
 	return value;
 }
 
-void 				texture::bind(bool state) const
+GLuint				texture::get_width() const
+{
+	return width;
+}
+
+GLuint				texture::get_height() const
+{
+	return height;
+}
+
+void 				texture::bind(bool state)
 {
 	glBindTexture(GL_TEXTURE_2D, state ? value : 0);
 }

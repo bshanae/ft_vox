@@ -23,7 +23,8 @@ public :
 								symbol_renderer();
 								~symbol_renderer() override = default;
 
-	static void					render(const symbol &symbol, const ivec2 &position);
+								// TODO override?
+	static void					render(symbol &symbol, const ivec2 &position);
 
 private :
 

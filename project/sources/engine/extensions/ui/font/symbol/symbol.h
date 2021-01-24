@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/main/rendering/model/texture/texture.h"
+#include "engine/main/rendering/texture/texture/texture.h"
 
 #include "application/common/imports/opengl.h"
 #include "application/common/imports/glm.h"
@@ -10,7 +10,6 @@
 namespace				engine::ui
 {
 	class				font;
-
 	class				symbol;
 }
 
@@ -27,7 +26,7 @@ public :
 	ivec2				get_bearing() const;
 	int					get_advance() const;
 
-	void 				render(const ivec2 &position) const;
+	void 				render(const ivec2 &position);
 
 private :
 
@@ -37,5 +36,3 @@ private :
 
 	shared_ptr<font>	font;
 };
-
-

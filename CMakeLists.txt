@@ -43,7 +43,10 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/engine/main/rendering/layout/layout_manager/layout_manager.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/camera/camera.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/model/model/model.cpp
-	${SOURCES_DIRECTORY}/engine/main/rendering/model/texture/texture.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/texture/texture/texture.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/texture/texture_loader/texture_loader.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/texture/cubemap/cubemap.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/texture/cubemap_loader/cubemap_loader.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/program/program/program.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/program/shader/shader.cpp
 
@@ -72,8 +75,9 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block/block.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/texture_atlas/texture_atlas.cpp
 	${SOURCES_DIRECTORY}/game/world/world/world.cpp
-	${SOURCES_DIRECTORY}/game/world/utils/texture_atlas/texture_atlas.cpp
+	${SOURCES_DIRECTORY}/game/world/skybox/skybox.cpp
 
 	# Game : Player
 	${SOURCES_DIRECTORY}/game/player/ray_caster/ray_caster.cpp

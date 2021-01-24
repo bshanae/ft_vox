@@ -54,7 +54,7 @@ using namespace		engine::ui;
 	model->bind(false);
 }
 
-void				symbol_renderer::render(const symbol &symbol, const ivec2 &position)
+void				symbol_renderer::render(symbol &symbol, const ivec2 &position)
 {
 	auto			instance = get_instance();
 

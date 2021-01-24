@@ -77,7 +77,7 @@ void			processor::process_rendering()
 
 	for (const auto &layout : layout_manager::get_layouts())
 	{
-		window::use_depth_test((layout->get_options() & (int)layout::use_depth_test) != 0);
+		layout->apply_options();
 
 		for (auto &object : layout->get_objects())
 		{

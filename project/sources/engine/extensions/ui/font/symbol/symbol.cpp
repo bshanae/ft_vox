@@ -43,7 +43,7 @@ int					symbol::get_advance() const
 }
 
 
-void 				symbol::render(const ivec2 &position) const
+void 				symbol::render(const ivec2 &position)
 {
 	symbol_renderer::render(*this, position);
 }

@@ -5,7 +5,7 @@
 #include "engine/main/rendering/camera/camera.h"
 #include "engine/main/rendering/program/program/program.h"
 
-#include "game/world/utils/texture_atlas/texture_atlas.h"
+#include "game/world/chunk/texture_atlas/texture_atlas.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/world/world_settings.h"
 
@@ -80,12 +80,12 @@ void					chunk_renderer::render(const shared_ptr<chunk> &chunk, chunk::batch_pur
 	instance->uniform_apply_water_tint.upload(get_instance()->apply_water_tint);
 
 	model->bind(true);
-	texture_atlas::get_instance()->bind(true);
+	texture_atlas::get_texture()->bind(true);
 
 	instance->uniform_transformation.upload(model->get_transformation());
 	model->render();
 
-	texture_atlas::get_instance()->bind(false);
+	texture_atlas::get_texture()->bind(false);
 	model->bind(false);
 	instance->program->bind(false);
 }

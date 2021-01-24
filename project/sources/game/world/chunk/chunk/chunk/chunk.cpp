@@ -2,7 +2,7 @@
 
 #include "engine/main/rendering/model/model/model.h"
 
-#include "game/world/utils/texture_atlas/texture_atlas.h"
+#include "game/world/chunk/texture_atlas/texture_atlas.h"
 #include "game/world/chunk/block/block/block_settings.h"
 
 #include "application/common/imports/std.h"
@@ -439,7 +439,7 @@ void					chunk::build_quad(
 			append_to_vector(workspace.vertices, right_vertices);
 			append_to_vector(workspace.texture_coordinates, right_texture_coordinates);
 		}
-		texture_index = texture_atlas::association_for(at(index).type).right;
+		texture_index = texture_atlas::get_association(at(index).type).right;
 	}
 	else if (axis == axis::x and sign == sign::minus)
 	{
@@ -453,31 +453,31 @@ void					chunk::build_quad(
 			append_to_vector(workspace.vertices, left_vertices);
 			append_to_vector(workspace.texture_coordinates, left_texture_coordinates);
 		}
-		texture_index = texture_atlas::association_for(at(index).type).left;
+		texture_index = texture_atlas::get_association(at(index).type).left;
 	}
 	else if (axis == axis::y and sign == sign::plus)
 	{
 		append_to_vector(workspace.vertices, top_vertices);
 		append_to_vector(workspace.texture_coordinates, top_texture_coordinates);
-		texture_index = texture_atlas::association_for(at(index).type).top;
+		texture_index = texture_atlas::get_association(at(index).type).top;
 	}
 	else if (axis == axis::y and sign == sign::minus)
 	{
 		append_to_vector(workspace.vertices, bottom_vertices);
 		append_to_vector(workspace.texture_coordinates, bottom_texture_coordinates);
-		texture_index = texture_atlas::association_for(at(index).type).bottom;
+		texture_index = texture_atlas::get_association(at(index).type).bottom;
 	}
 	else if (axis == axis::z and sign == sign::plus)
 	{
 		append_to_vector(workspace.vertices, front_vertices);
 		append_to_vector(workspace.texture_coordinates, front_texture_coordinates);
-		texture_index = texture_atlas::association_for(at(index).type).front;
+		texture_index = texture_atlas::get_association(at(index).type).front;
 	}
 	else if (axis == axis::z and sign == sign::minus)
 	{
 		append_to_vector(workspace.vertices, back_vertices);
 		append_to_vector(workspace.texture_coordinates, back_texture_coordinates);
-		texture_index = texture_atlas::association_for(at(index).type).back;
+		texture_index = texture_atlas::get_association(at(index).type).back;
 	}
 	else
 		assert(false and "Can't build quad");
