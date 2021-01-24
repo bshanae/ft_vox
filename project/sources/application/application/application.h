@@ -2,11 +2,11 @@
 
 #include "application/common/templates/singleton/singleton.h"
 
-class				environment : public singleton<environment>
+class				application : public singleton<application>
 {
 public :
-					environment();
-					~environment() override = default;
+					application();
+					~application() override = default;
 
 	static void 	execute();
 

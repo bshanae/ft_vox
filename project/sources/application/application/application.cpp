@@ -1,4 +1,4 @@
-#include "environment.h"
+#include "application.h"
 
 #include "engine/main/rendering/layout/layout/layout.h"
 #include "engine/main/rendering/layout/layout_manager/layout_manager.h"
@@ -16,7 +16,7 @@
 #include "game/world/chunk/generator/generator/generator.h"
 #include "game/player/player/player.h"
 
-					environment::environment()
+					application::application()
 {
 	initialize_engine();
 	initialize_ui();
@@ -24,12 +24,12 @@
 	initialize_player();
 }
 
-void 				environment::execute()
+void 				application::execute()
 {
 	engine::processor::execute();
 }
 
-void 				environment::initialize_engine()
+void 				application::initialize_engine()
 {
 	engine::processor::construct();
 
@@ -40,13 +40,13 @@ void 				environment::initialize_engine()
 	engine::layout_manager::add("UI");
 }
 
-void 				environment::initialize_ui()
+void 				application::initialize_ui()
 {
 	engine::ui::font_library::construct();
 	engine::ui::symbol_renderer::construct();
 }
 
-void 				environment::initialize_game()
+void 				application::initialize_game()
 {
 	game::skybox::construct();
 	game::generator::construct();
@@ -59,7 +59,7 @@ void 				environment::initialize_game()
 	initialize_texture_atlas();
 }
 
-void 				environment::initialize_texture_atlas()
+void 				application::initialize_texture_atlas()
 {
 	game::texture_atlas::construct();
 
@@ -79,7 +79,7 @@ void 				environment::initialize_texture_atlas()
 	game::texture_atlas::get_association(game::block::blue_flower) = ivec2(12, 15);
 }
 
-void				environment::initialize_player()
+void				application::initialize_player()
 {
 	engine::camera::construct(); // TODO
 	game::player::construct();

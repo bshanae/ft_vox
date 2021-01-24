@@ -86,9 +86,9 @@ set(SOURCES
 	# Application : Common
 	${SOURCES_DIRECTORY}/application/common/debug/logger/logger.cpp
 
-	# Application : Environment
-	${SOURCES_DIRECTORY}/application/environment/environment.cpp
-	${SOURCES_DIRECTORY}/application/environment/main.cpp)
+	# Application : Application
+	${SOURCES_DIRECTORY}/application/application/application.cpp
+	${SOURCES_DIRECTORY}/application/application/main.cpp)
 
 # Executable
 
