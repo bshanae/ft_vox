@@ -2,6 +2,8 @@
 
 #include "engine/main/system/input/input.h"
 
+#include "application/common/debug/debug.h"
+
 using namespace		engine;
 
 					window::window()
@@ -13,11 +15,10 @@ using namespace		engine;
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
-	assert(glfw_window != nullptr and "Can't initialize window");
+	debug::check_critical(glfw_window != nullptr, "[engine::window] Can't initialize window");
 
 	glfwMakeContextCurrent(glfw_window);
-
-	assert(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) and "Can't initialize window");
+	debug::check_critical(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "[engine::window] Can't load OpenGL functions");
 
 	glfwGetFramebufferSize(glfw_window, &size.x, &size.y);
 	glViewport(0, 0, size.x, size.y);

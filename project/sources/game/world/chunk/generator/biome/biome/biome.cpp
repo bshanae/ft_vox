@@ -1,5 +1,7 @@
 #include "biome.h"
 
+#include "application/common/debug/debug.h"
+
 using namespace		game;
 
 					biome::biome(enum type type)
@@ -38,8 +40,19 @@ bool				::game::operator != (const biome &left, const biome &right)
 	return left.type != right.type;
 }
 
+enum biome::type	biome::get_type() const
+{
+	return type;
+}
+
+enum block::type	biome::get_first_layer() const
+{
+	debug::check_critical(type != biome::null, "[game::biome] Bad type");
+	return (first_layer);
+}
+
 int 				biome::generate_height(const vec3 &position) const
 {
-	assert(type != biome::null);
-	return (noise.generate(vec2(position.x, position.z)));
+	debug::check_critical(type != biome::null, "[game::biome] Bad type");
+	return (int)noise.generate(vec2(position.x, position.z));
 }

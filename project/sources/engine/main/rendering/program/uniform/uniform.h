@@ -1,5 +1,6 @@
 #pragma once
 
+#include "application/common/debug/debug.h"
 #include "application/common/imports/opengl.h"
 #include "application/common/imports/glm.h"
 #include "application/common/imports/std.h"
@@ -23,7 +24,7 @@ public :
 
 	void			upload(const type &data) const
 	{
-		assert(value != -1u and "Bad uniform");
+		debug::check_critical(value != -1u, "[engine::uniform] Uniform is not found");
 
 		if constexpr (is_same<type, int>::value)
 			glUniform1i(value, data);
@@ -36,7 +37,7 @@ public :
 		else if constexpr (is_same<type, mat4>::value)
 			glUniformMatrix4fv(value, 1, GL_FALSE, value_ptr(data));
 		else
-			assert(false and "Unexpected uniform type");
+			debug::raise_error("[engine::uniform] Unknown uniform type");
 	}
 
 private :

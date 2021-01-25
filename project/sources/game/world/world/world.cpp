@@ -1,7 +1,6 @@
 #include "world.h"
 
 #include "engine/main/core/object/object_manipulator/object_manipulator.h"
-#include "engine/main/system/time/timestamp/timestamp.h"
 #include "engine/main/rendering/camera/camera.h"
 
 #include "game/world/utils/aabb/aabb.h"
@@ -9,6 +8,8 @@
 #include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/chunk/chunk/chunk_renderer/chunk_renderer.h"
 #include "game/world/chunk/generator/generator/generator.h"
+
+#include "application/common/debug/debug.h"
 
 using namespace				engine;
 using namespace				game;
@@ -271,15 +272,15 @@ void						world::try_build_chunk(const shared_ptr<chunk> &chunk)
 
 	switch (chunk->build_phase)
 	{
-		case (chunk::build_phase::nothing_done) :
+		case chunk::build_phase::nothing_done :
 			chunk->build(chunk::build_request::light);
 			break ;
 
-		case (chunk::build_phase::light_in_process) :
+		case chunk::build_phase::light_in_process :
 			chunk->wait(chunk::build_request::light);
 			break ;
 
-		case (chunk::build_phase::light_done) :
+		case chunk::build_phase::light_done :
 			if
 			(
 				chunk_exist_and_has_light(chunk->get_position() + left) and
@@ -290,16 +291,16 @@ void						world::try_build_chunk(const shared_ptr<chunk> &chunk)
 				chunk->build(chunk::build_request::geometry);
 			break ;
 
-		case (chunk::build_phase::geometry_in_process) :
+		case chunk::build_phase::geometry_in_process :
 			chunk->wait(chunk::build_request::geometry);
 			break ;
 
-		case (chunk::build_phase::geometry_done) :
+		case chunk::build_phase::geometry_done :
 			chunk->build(chunk::build_request::model);
 			break ;
 
 		default :
-			assert(false and "Unexpected chunk build circumstances");
+			debug::raise_error("[game::world] Unknown chunk build state");
 	}
 }
 
@@ -309,8 +310,8 @@ void						world::rebuild_chunk(const shared_ptr<chunk> &chunk, const chunk::inde
 	{
 		auto				chunk = find_chunk(position);
 
-		assert(chunk);
-		chunk->build(chunk::build_request::reset);
+		if (debug::check(chunk != nullptr, "[game::world] Can't rebuild chunk"))
+			chunk->build(chunk::build_request::reset);
 	};
 
 	if (changed_block.x == 0)

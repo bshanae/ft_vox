@@ -2,21 +2,12 @@
 
 #include "engine/main/rendering/program/shader/shader.h"
 
+#include "application/common/debug/debug.h"
+
 using namespace		engine;
 
 					program::program(const path &vertex_source, const path &fragment_source)
 {
-	auto			log_error = [this]()
-	{
-		GLchar		log[1024];
-
-		glGetProgramInfoLog(value, 1024, nullptr, log);
-		cout << "DEBUG // GLSL OUTPUT" << endl << endl;
-		cout << log << endl << endl;
-
-		assert(false and "Program compilation error");
-	};
-
 	value = glCreateProgram();
 
 	shader			vertex_shader(shader::vertex, vertex_source);
@@ -30,7 +21,10 @@ using namespace		engine;
 	glGetProgramiv(value, GL_LINK_STATUS, &success);
 
 	if (not success)
+	{
 		log_error();
+		debug::raise_error("[engine::program] Compilation error");
+	}
 }
 
 					program::~program()
@@ -41,4 +35,13 @@ using namespace		engine;
 void				program::bind(bool state)
 {
 	glUseProgram(state ? value : 0);
+}
+
+void				program::log_error() const
+{
+	GLchar		log[1024];
+
+	glGetProgramInfoLog(value, 1024, nullptr, log);
+	cout << "DEBUG // GLSL OUTPUT" << endl << endl;
+	cout << log << endl << endl;
 }

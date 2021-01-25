@@ -2,14 +2,20 @@
 
 #include "engine/main/rendering/texture/texture_loader/texture_loader.h"
 
+#include "application/common/debug/debug.h"
+
 using namespace				game;
 
 							texture_atlas::texture_atlas()
 {
 	texture = engine::texture_loader::load("project/resources/atlases/default.png");
 
-	assert(texture->get_width() % texture_size_in_pixels[0] == 0 and "Can't index texture atlas");
-	assert(texture->get_height() % texture_size_in_pixels[1] == 0 and "Can't index texture atlas");
+	debug::check_critical
+	(
+		texture->get_width() % texture_size_in_pixels[0] == 0 &&
+		texture->get_height() % texture_size_in_pixels[1] == 0,
+		"[game::texture_atlas] Can't index texture atlas"
+	);
 
 	number_of_textures.x = texture->get_width() / texture_size_in_pixels[0];
 	number_of_textures.y = texture->get_height() / texture_size_in_pixels[1];

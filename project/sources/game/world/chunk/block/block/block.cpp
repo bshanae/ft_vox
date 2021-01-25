@@ -2,6 +2,8 @@
 
 #include "game/world/utils/array3/array3.h"
 
+#include "application/common/debug/debug.h"
+
 using namespace		game;
 
 block::face			block::from_axis_and_sign(axis axis, sign sign)
@@ -18,7 +20,9 @@ block::face			block::from_axis_and_sign(axis axis, sign sign)
 		 return face::top;
 	if (axis == axis::y and sign == sign::minus)
 		 return face::bottom;
-	assert(0);
+
+	debug::raise_warning("[game::block] Can't translate face from axis and sign");
+	return face::left;
 }
 
 pair<axis, sign>	block::to_axis_and_sign(face face)

@@ -1,5 +1,7 @@
 #include "model.h"
 
+#include "application/common/debug/debug.h"
+
 using namespace		engine;
 
 					model::model(enum model::draw_mode mode) : draw_mode(mode)
@@ -108,7 +110,11 @@ void				model::add_ebo(const vector<GLuint> &indices)
 {
 	GLuint			ebo;
 
-	assert(number_of_indices == 0 and "Can't add EBO more than once");
+	if (number_of_indices != 0)
+	{
+		debug::raise_warning("[engine::model] Can't add EBO more than once");
+		return;
+	}
 
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);

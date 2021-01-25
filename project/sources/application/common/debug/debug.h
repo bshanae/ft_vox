@@ -1,6 +1,22 @@
 #pragma once
 
-#define FT_DEBUG		1
+#include "application/common/imports/std.h"
 
-#define FT_LOG_ENGINE	1
-#define FT_LOG_PLAYER	1
+class				debug
+{
+public :
+					debug() = delete;
+
+	static void 	log(const string &message);
+
+	static void		raise_error(string message, ...);
+	static void		check_critical(bool statement, string message, ...);
+
+	static void		raise_warning(string message, ...);
+	static bool		check(bool statement, string message, ...);
+
+private :
+
+	static void 	write_error(const string &message, va_list arguments);
+	static void 	write_warning(const string &message, va_list arguments);
+};

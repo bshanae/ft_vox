@@ -6,6 +6,7 @@
 #include "game/world/chunk/block/block/block_settings.h"
 
 #include "application/common/imports/std.h"
+#include "application/common/debug/debug.h"
 
 using namespace			game;
 
@@ -184,7 +185,7 @@ void					chunk::build(build_request request)
 			break ;
 
 		case (build_request::geometry) :
-			assert(build_phase == build_phase::light_done);
+			debug::check_critical(build_phase == build_phase::light_done, "[game::chunk] Invalid chunk state");
 			build_phase = build_phase::geometry_in_process;
 
 			workspace_for_opaque.geometry_build_status = async(launch::async, &chunk::build_geometry, this, ref(workspace_for_opaque));
@@ -193,7 +194,8 @@ void					chunk::build(build_request request)
 			break ;
 
 		case (build_request::model) :
-			assert(build_phase == build_phase::geometry_done and "Unexpected build phase");
+			debug::check_critical(build_phase == build_phase::geometry_done, "[game::chunk] Invalid chunk state");
+
 			build_model(workspace_for_opaque);
 			build_model(workspace_for_transparent);
 			build_model(workspace_for_partially_transparent);
@@ -201,7 +203,7 @@ void					chunk::build(build_request request)
 			break ;
 
 		default :
-			assert(0);
+			debug::raise_error("[game::chunk] Unknown chunk state");
 	}
 }
 
@@ -209,17 +211,17 @@ void					chunk::wait(build_request request)
 {
 	switch (request)
 	{
-		case (build_request::reset) :
+		case build_request::reset :
 			build_phase = build_phase::nothing_done;
 			break ;
 
-		case (build_request::light) :
+		case build_request::light :
 			if (light_build_status.wait_for(chrono::seconds(0)) == future_status::ready)
 				build_phase = build_phase::light_done;
 			break ;
 
-		case (build_request::geometry) :
-			assert(build_phase == build_phase::geometry_in_process);
+		case build_request::geometry :
+			debug::check_critical(build_phase == build_phase::geometry_in_process, "[game::chunk] Unknown build request");
 
 			bool is_opaque_ready;
 			bool is_transparent_ready;
@@ -234,7 +236,7 @@ void					chunk::wait(build_request request)
 			break ;
 
 		default :
-			assert(0);
+			debug::raise_error("[game::chunk] Unknown build request");
 	}
 }
 
@@ -480,7 +482,7 @@ void					chunk::build_quad(
 		texture_index = texture_atlas::get_association(at(index).type).back;
 	}
 	else
-		assert(false and "Can't build quad");
+		debug::raise_error("[engine::chunk] Can't build quad");
 
 	for (int i = (int)workspace.vertices.size() - 12; i < (int)workspace.vertices.size(); i += 3)
 	{

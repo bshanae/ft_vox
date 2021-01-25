@@ -19,18 +19,8 @@ class				engine::ui::font_library :
 	friend class	font;
 
 public :
-					font_library()
-	{
-		set_layout("System");
-
-		assert(FT_Init_FreeType(&library) == 0);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	}
-
-					~font_library() override
-	{
-		FT_Done_FreeType(library);
-	}
+					font_library();
+					~font_library() override;
 
 private :
 

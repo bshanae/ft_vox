@@ -64,6 +64,7 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol_renderer.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/font/font.cpp
+	${SOURCES_DIRECTORY}/engine/extensions/ui/font/font_library/font_library.cpp
 
 	# Game : World
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk/chunk.cpp
@@ -83,8 +84,7 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/game/player/ray_caster/ray_caster.cpp
 	${SOURCES_DIRECTORY}/game/player/player/player.cpp
 
-	# Application : Common
-	${SOURCES_DIRECTORY}/application/common/debug/logger/logger.cpp
+	${SOURCES_DIRECTORY}/application/common/debug/debug.cpp
 
 	# Application : Application
 	${SOURCES_DIRECTORY}/application/application/application.cpp

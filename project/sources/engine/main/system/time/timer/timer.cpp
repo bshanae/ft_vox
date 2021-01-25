@@ -1,5 +1,7 @@
 #include "timer.h"
 
+#include "application/common/debug/debug.h"
+
 using namespace		engine;
 
 					timer::timer()
@@ -18,12 +20,14 @@ float				timer::get_progress() const
 		return (0.f);
 	if (left < 0.f)
 		return (1.f);
-	return ((*total - left) / *total);
+
+	return (*total - left) / *total;
 }
 
 void 				timer::execute()
 {
-	assert(total and "Can't start timer");
+	if (!debug::check(total != nullopt, "[engine::timer] Can't start timer"))
+		return;
 
 	left = *total;
 	last = (float)glfwGetTime();

@@ -3,6 +3,8 @@
 #include "engine/main/system/window/window.h"
 #include "engine/main/processor/processor.h"
 
+#include "application/common/debug/debug.h"
+
 using namespace		engine;
 
 					input::input()
@@ -138,7 +140,7 @@ input::state		input::get_state_for_key(enum key key) const
 {
 	const auto		iterator = states.find(key);
 
-	assert(iterator != states.end());
+	debug::check_critical(iterator != states.end(), "[engine::input] Can't find a key");
 	return iterator->second;
 }
 

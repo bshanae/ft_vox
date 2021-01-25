@@ -1,6 +1,7 @@
 #pragma once
 
 #include "application/common/imports/std.h"
+#include "application/common/debug/debug.h"
 
 template						<typename type>
 class							singleton
@@ -13,15 +14,12 @@ public :
 	{
 		shared_ptr<singleton>	instance_as_singleton;
 
-		assert(instance == nullptr and "Singleton instance is already constructed");
+		debug::check_critical(instance == nullptr, "[application::singleton] Instance is already constructed");
 		instance = make_shared<type>();
 
 		instance_as_singleton = dynamic_pointer_cast<singleton>(instance);
-		if (instance_as_singleton == nullptr)
-		{
+		debug::check_critical(instance_as_singleton != nullptr, "[application::singleton] Can't construct instance");
 
-		}
-		assert(instance_as_singleton != nullptr);
 		instance_as_singleton->when_constructed();
 	}
 

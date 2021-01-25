@@ -24,4 +24,7 @@ class				engine::shader
 private :
 
 	GLuint			value;
+
+	static void		write_file_to_stream(stringstream &stream, const path &path);
+	void			log_error(const string &shader_string) const;
 };

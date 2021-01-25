@@ -51,7 +51,11 @@ void				text::set_font(const shared_ptr<ui::font> &font)
 
 void 				text::when_rendered()
 {
-	assert(font);
+	if (font == nullptr)
+	{
+		debug::raise_warning("[engine::text] Can't render, because font is not set");
+		return;
+	}
 
 	ivec2			position_iterator = position;
 	vec3			position_of_symbol = vec3(0.f);
@@ -60,6 +64,9 @@ void 				text::when_rendered()
 	for (char character : string)
 	{
 		auto		symbol = font->find_symbol(character);
+
+		if (!symbol)
+			continue;
 
 		auto		bearing = symbol->get_bearing();
 		auto		advance = symbol->get_advance();
@@ -83,6 +90,9 @@ void				text::recalculate_size()
 	for (char character : string)
 	{
 		auto 		symbol = font->find_symbol(character);
+
+		if (!symbol)
+			continue;
 
 		new_size.x += symbol->get_size().x + symbol->get_advance() + symbol->get_bearing().x;
 		new_size.y = max(new_size.y, symbol->get_size().y);

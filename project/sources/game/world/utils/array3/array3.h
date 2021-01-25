@@ -3,6 +3,7 @@
 #include "game/world/utils/axis/axis.h"
 #include "game/world/utils/sign/sign.h"
 
+#include "application/common/debug/debug.h"
 #include "application/common/imports/glm.h"
 #include "application/common/imports/std.h"
 
@@ -248,7 +249,7 @@ public :
 
 		void 					validate() const
 		{
-			assert(operator bool () and "Index for 3D array is not valid");
+			debug::check_critical(operator bool (), "[application::array3] Index for 3D array is not valid");
 		}
 	};
 

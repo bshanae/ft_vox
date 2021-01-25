@@ -7,9 +7,8 @@
 #include "game/player/player/player_settings.h"
 #include "game/player/ray_caster/ray_caster.h"
 
-#include "application/common/debug/logger/logger.h"
+#include "application/common/debug/debug.h"
 
-using namespace 		debug;
 using namespace 		engine;
 using namespace 		game;
 
@@ -66,7 +65,9 @@ void 					player::process_input()
 			auto 	axis_and_sign = block::to_axis_and_sign(hit->face);
 			auto	neighbor = hit->block.get_neighbor(axis_and_sign.first, axis_and_sign.second);
 
-			assert(neighbor);
+			if (!debug::check(neighbor != nullopt, "[game::player] Can't put block"))
+				return;
+
 			world::world::insert_block(*neighbor, block::dirt_with_grass);
 
 			force_ray_cast = true;
@@ -80,7 +81,7 @@ void 					player::process_selection()
 	{
 		if (auto hit = ray_caster::cast_ray(); hit)
 		{
-			logger::log(logger::player, "Selected block : " + to_string(hit->block.get_world_position()));
+			debug::log("[game::player] Selected block : " + to_string(hit->block.get_world_position()));
 			world::world::select_block(hit->block, hit->face);
 		}
 		else

@@ -25,4 +25,6 @@ public :
 private :
 
 	GLuint 			value;
+
+	void			log_error() const;
 };

@@ -28,16 +28,8 @@ public :
 	friend bool 			operator == (const biome &left, const biome &right);
 	friend bool 			operator != (const biome &left, const biome &right);
 
-	enum type				get_type() const
-	{
-		return type;
-	}
-
-	enum block::type		get_first_layer() const
-	{
-		assert(this->type != biome::null);
-		return (first_layer);
-	}
+	enum type				get_type() const;
+	enum block::type		get_first_layer() const;
 
 	int 					generate_height(const vec3 &position) const;
 

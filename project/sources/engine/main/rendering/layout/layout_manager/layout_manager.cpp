@@ -24,7 +24,7 @@ shared_ptr<layout>				layout_manager::find(const string &name)
 			return layout;
 	}
 
-	assert("[layout_manager::add] Layout not found");
+	debug::raise_error("[engine::layout_manager] Layout not found");
 	return nullptr;
 }
 
@@ -40,7 +40,7 @@ void							layout_manager::when_notified(const shared_ptr<const object_storage_e
 	else if (dynamic_pointer_cast<const object_was_removed>(pocket))
 		get_instance()->remove(pocket->get_object());
 	else
-		assert(0);
+		debug::raise_warning("[engine::layout_manager] Can't parse 'object_storage_event'");
 }
 
 void							layout_manager::add(const shared_ptr<object> &object)
@@ -54,7 +54,7 @@ void							layout_manager::add(const shared_ptr<object> &object)
 		}
 	}
 
-	assert("[layout_manager::add] Can't find layout");
+	debug::raise_warning("[layout_manager::add] Can't add object to layout '%s'", object->get_layout().c_str());
 }
 
 void							layout_manager::remove(const shared_ptr<object> &object)
@@ -68,5 +68,5 @@ void							layout_manager::remove(const shared_ptr<object> &object)
 		}
 	}
 
-	assert("[layout_manager::add] Can't find layout");
+	debug::raise_warning("[layout_manager::add] Can't remove object from layout '%s'", object->get_layout().c_str());
 }

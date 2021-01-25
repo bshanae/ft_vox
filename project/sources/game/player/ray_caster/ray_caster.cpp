@@ -87,7 +87,9 @@ optional<ray_caster::hit>	ray_caster::cast_ray()
 
 		if (auto block = game::world::find_block(vec3(x, y, z)))
 		{
-			assert(block);
+			if (!block)
+				return {};
+
 			if ((*block)().is_editable())
 				return {(hit){*block, face}};
 		}

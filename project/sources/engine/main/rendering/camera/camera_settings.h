@@ -15,5 +15,5 @@ struct						engine::camera_settings
 	static inline float		far_plane = 100.f; // TODO Make this dynamic
 	static inline float 	fov = 50.f;
 
-	static inline vec3		initial_position = vec3(0.f, 0.0f, 0.f); // TODO Make this dynamic
+	static inline vec3		initial_position = vec3(0.f, 30.0f, 0.f); // TODO Make this dynamic
 };
