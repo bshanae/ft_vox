@@ -30,7 +30,7 @@ using namespace			game;
 	uniform_apply_water_tint = program->create_uniform<int>("uniform_apply_water_tint");
 
 	program->bind(true);
-	uniform_background.upload(core_settings::background);
+	uniform_background.upload(processor_settings::background);
 	uniform_texture.upload(0);
 	uniform_fog_density.upload(1.f / (world_settings::visibility_limit - chunk_settings::size[0] * 1.5f));
 	uniform_fog_gradient.upload(15.f);

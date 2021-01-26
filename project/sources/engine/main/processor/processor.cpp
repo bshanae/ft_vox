@@ -69,7 +69,7 @@ void			processor::process_updating()
 
 void			processor::process_rendering()
 {
-	auto 		&background = core_settings::background;
+	auto 		&background = processor_settings::background;
 
 	glClearColor(background.x, background.y, background.z, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
