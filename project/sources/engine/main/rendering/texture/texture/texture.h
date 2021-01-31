@@ -17,15 +17,14 @@ public :
 
 	texture			&operator = (const texture &other) = default;
 
-	GLuint			get_value() const;
 	GLuint			get_width() const;
 	GLuint			get_height() const;
 
-	void 			bind(bool state);
+	void 			use(bool state);
 
 private :
 
-	GLuint			value;
-	int 			width;
-	int 			height;
+	GLuint			_value;
+	int 			_width;
+	int 			_height;
 };

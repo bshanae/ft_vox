@@ -12,12 +12,7 @@ using namespace 	engine;
 	glDeleteTextures(1, &value);
 }
 
-GLuint				cubemap::get_value() const
-{
-	return value;
-}
-
-void 				cubemap::bind(bool state)
+void 				cubemap::use(bool state)
 {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, state ? value : 0);
 }

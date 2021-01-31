@@ -35,7 +35,7 @@ public:
 	void				add_vbo(int dimension, const vector<GLfloat> &data);
 	void				add_ebo(const vector<GLuint> &indices);
 
-	void				bind(bool state) const;
+	void				use(bool state) const;
 
 	void				render() const;
 

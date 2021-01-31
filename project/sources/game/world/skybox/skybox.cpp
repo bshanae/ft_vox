@@ -24,8 +24,8 @@ void					skybox::when_rendered()
 	mat4 				view_matrix;
 
 	program->bind(true);
-	model->bind(true);
-	cubemap->bind(true);
+	model->use(true);
+	cubemap->use(true);
 
 	view_matrix = mat4(mat3(engine::camera::get_view_matrix()));
 
@@ -34,8 +34,8 @@ void					skybox::when_rendered()
 
 	model->render();
 
-	cubemap->bind(false);
-	model->bind(false);
+	cubemap->use(false);
+	model->use(false);
 	program->bind(false);
 
 	program->bind(true);
@@ -76,10 +76,10 @@ void					skybox::build_model()
 
 	model = make_shared<engine::model>();
 
-	model->bind(true);
+	model->use(true);
 	model->add_vbo(3, vertices);
 	model->add_ebo(indices);
-	model->bind(false);
+	model->use(false);
 }
 
 void					skybox::build_cubemap()

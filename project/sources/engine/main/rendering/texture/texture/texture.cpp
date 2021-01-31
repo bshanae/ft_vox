@@ -4,30 +4,26 @@ using namespace		engine;
 
 					texture::texture()
 {
-	glGenTextures(1, &value);
+	glGenTextures(1, &_value);
 }
 
 					texture::~texture()
 {
-	glDeleteTextures(1, &value);
+	glDeleteTextures(1, &_value);
 }
 
-GLuint				texture::get_value() const
-{
-	return value;
-}
 
 GLuint				texture::get_width() const
 {
-	return width;
+	return _width;
 }
 
 GLuint				texture::get_height() const
 {
-	return height;
+	return _height;
 }
 
-void 				texture::bind(bool state)
+void 				texture::use(bool state)
 {
-	glBindTexture(GL_TEXTURE_2D, state ? value : 0);
+	glBindTexture(GL_TEXTURE_2D, state ? _value : 0);
 }

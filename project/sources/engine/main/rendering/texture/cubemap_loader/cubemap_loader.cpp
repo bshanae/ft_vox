@@ -25,7 +25,7 @@ shared_ptr<cubemap>		cubemap_loader::load
 	unsigned char		*data;
 
 	cubemap = make_shared<engine::cubemap>();
-	cubemap->bind(true);
+	cubemap->use(true);
 
 	for (GLuint i = 0; i < sources.size(); i++)
 	{
@@ -46,6 +46,6 @@ shared_ptr<cubemap>		cubemap_loader::load
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	cubemap->bind(false);
+	cubemap->use(false);
 	return cubemap;
 }

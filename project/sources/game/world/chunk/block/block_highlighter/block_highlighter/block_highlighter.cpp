@@ -125,46 +125,46 @@ void					block_highlighter::set_selected_face(block_face face)
 void 					block_highlighter::when_initialized()
 {
 	cube = make_shared<::model>(model::lines);
-	cube->bind(true);
+	cube->use(true);
 	cube->add_vbo(3, cube_vertices);
 	cube->add_ebo(cube_indices);
-	cube->bind(false);
+	cube->use(false);
 
 	left = make_shared<::model>(model::lines);
-	left->bind(true);
+	left->use(true);
 	left->add_vbo(3, left_vertices);
 	left->add_ebo(face_indices);
-	left->bind(false);
+	left->use(false);
 
 	right = make_shared<::model>(model::lines);
-	right->bind(true);
+	right->use(true);
 	right->add_vbo(3, right_vertices);
 	right->add_ebo(face_indices);
-	right->bind(false);
+	right->use(false);
 
 	front = make_shared<::model>(model::lines);
-	front->bind(true);
+	front->use(true);
 	front->add_vbo(3, front_vertices);
 	front->add_ebo(face_indices);
-	front->bind(false);
+	front->use(false);
 
 	back = make_shared<::model>(model::lines);
-	back->bind(true);
+	back->use(true);
 	back->add_vbo(3, back_vertices);
 	back->add_ebo(face_indices);
-	back->bind(false);
+	back->use(false);
 
 	top = make_shared<::model>(model::lines);
-	top->bind(true);
+	top->use(true);
 	top->add_vbo(3, top_vertices);
 	top->add_ebo(face_indices);
-	top->bind(false);
+	top->use(false);
 
 	bottom = make_shared<::model>(model::lines);
-	bottom->bind(true);
+	bottom->use(true);
 	bottom->add_vbo(3, bottom_vertices);
 	bottom->add_ebo(face_indices);
-	bottom->bind(false);
+	bottom->use(false);
 }
 
 void					block_highlighter::when_rendered()

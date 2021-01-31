@@ -65,7 +65,7 @@ void				model::set_rotation(const vec3 &value)
 	recalculate_transformation();
 }
 
-void				model::bind(bool state) const
+void				model::use(bool state) const
 {
 	glBindVertexArray(state ? vao : 0);
 }

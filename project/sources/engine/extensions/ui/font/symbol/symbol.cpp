@@ -10,7 +10,7 @@ using namespace		engine::ui;
 	bearing = ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
 	advance = (int)((unsigned int)face->glyph->advance.x >> 6u);
 
-	texture::bind(true);
+	texture::use(true);
 
 	glTexImage2D
 	(
@@ -24,7 +24,7 @@ using namespace		engine::ui;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	texture::bind(false);
+	texture::use(false);
 }
 
 ivec2				symbol::get_size() const

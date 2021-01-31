@@ -15,9 +15,7 @@ public :
 
 	cubemap			&operator = (const cubemap &other) = default;
 
-	GLuint			get_value() const;
-
-	void 			bind(bool state);
+	void 			use(bool state);
 
 private :
 

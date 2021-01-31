@@ -43,7 +43,7 @@ shared_ptr<texture>		texture_loader::load(const path &source)
 
 	}
 
-	texture->bind(true);
+	texture->use(true);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 
@@ -57,10 +57,10 @@ shared_ptr<texture>		texture_loader::load(const path &source)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	stbi_image_free(data);
-	texture->bind(false);
+	texture->use(false);
 
-	texture->width = width;
-	texture->height = height;
+	texture->_width = width;
+	texture->_height = height;
 
 	return texture;
 }

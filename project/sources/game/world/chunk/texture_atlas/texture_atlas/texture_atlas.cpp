@@ -22,11 +22,6 @@ using namespace				game;
 
 }
 
-shared_ptr<engine::texture>	texture_atlas::get_texture()
-{
-	return get_instance()->_texture;
-}
-
 vec2						texture_atlas::get_texture_size()
 {
 	return
@@ -45,4 +40,9 @@ game::texture_coordinates	&texture_atlas::get_coordinates(block_type type)
 		instance->_map.try_emplace(type);
 
 	return instance->_map.at(type);
+}
+
+void						texture_atlas::use(bool state)
+{
+	get_instance()->_texture->use(state);
 }

@@ -85,12 +85,12 @@ void					block_highlighter_renderer::render(const shared_ptr<model> &model, cons
 	uniform_projection.upload(camera::get_projection_matrix());
 	uniform_view.upload(camera::get_view_matrix());
 
-	model->bind(true);
+	model->use(true);
 
 	uniform_transformation.upload(model->get_transformation());
 	model->render();
 
-	model->bind(false);
+	model->use(false);
 
 	model->set_translation(original_translation);
 }

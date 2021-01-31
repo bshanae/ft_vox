@@ -79,13 +79,13 @@ void					chunk_renderer::render(const shared_ptr<chunk> &chunk, chunk::batch_pur
 	instance->uniform_alpha_discard_floor.upload(alpha_discard_floor);
 	instance->uniform_apply_water_tint.upload(get_instance()->apply_water_tint);
 
-	model->bind(true);
-	texture_atlas::get_texture()->bind(true);
+	model->use(true);
+	texture_atlas::use(true);
 
 	instance->uniform_transformation.upload(model->get_transformation());
 	model->render();
 
-	texture_atlas::get_texture()->bind(false);
-	model->bind(false);
+	texture_atlas::use(false);
+	model->use(false);
 	instance->program->bind(false);
 }

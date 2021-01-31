@@ -299,14 +299,14 @@ void						chunk::build_model(batch_workspace &workspace)
 
 //	vec3(0.5f) is block offset, so first block is on vec3(0, 0, 0)
 	workspace.model->set_translation((vec3)position + vec3(0.5f));
-	workspace.model->bind(true);
+	workspace.model->use(true);
 
 	workspace.model->add_vbo(3, workspace.vertices);
 	workspace.model->add_vbo(2, workspace.texture_coordinates);
 	workspace.model->add_vbo(1, workspace.light_levels);
 	workspace.model->add_ebo(workspace.indices);
 
-	workspace.model->bind(false);
+	workspace.model->use(false);
 }
 
 // ------------------------ Build helpers

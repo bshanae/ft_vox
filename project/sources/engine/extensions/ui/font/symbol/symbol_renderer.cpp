@@ -45,13 +45,13 @@ using namespace		engine::ui;
 
 	model = make_shared<::model>();
 
-	model->bind(true);
+	model->use(true);
 
 	model->add_vbo(3, vertices);
 	model->add_vbo(2, texture_coordinates);
 	model->add_ebo(indices);
 
-	model->bind(false);
+	model->use(false);
 }
 
 void				symbol_renderer::render(symbol &symbol, const ivec2 &position)
@@ -62,13 +62,13 @@ void				symbol_renderer::render(symbol &symbol, const ivec2 &position)
 	instance->model->set_scaling(vec3(symbol.get_size().x, symbol.get_size().y, 0));
 
 	instance->program->bind(true);
-	instance->model->bind(true);
-	symbol.bind(true);
+	instance->model->use(true);
+	symbol.use(true);
 
 	instance->uniform_transformation.upload(instance->model->get_transformation());
 	instance->model->render();
 
-	symbol.bind(false);
-	instance->model->bind(false);
+	symbol.use(false);
+	instance->model->use(false);
 	instance->program->bind(false);
 }

@@ -25,10 +25,10 @@ public :
 										texture_atlas();
 										~texture_atlas() override = default;
 
-	static shared_ptr<engine::texture>	get_texture();
 	static vec2 						get_texture_size();
-
 	static texture_coordinates			&get_coordinates(block_type type);
+
+	static void 						use(bool state);
 
 private :
 
