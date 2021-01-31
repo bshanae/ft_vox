@@ -51,7 +51,7 @@ optional<block_alias>	block_alias::get_neighbor(axis axis, sign sign) const
 
 vec3					block_alias::get_world_position() const
 {
-	return ((vec3)chunk->get_position() + (vec3)index);
+	return (vec3)chunk->get_position() + (vec3)index;
 }
 
 aabb					block_alias::get_aabb() const

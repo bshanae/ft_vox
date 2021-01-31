@@ -3,6 +3,7 @@
 #include "engine/main/system/input/input.h"
 #include "engine/main/rendering/camera/camera.h"
 
+#include "game/world/chunk/block/block_face/block_face.h"
 #include "game/world/world/world.h"
 #include "game/player/player/player_settings.h"
 #include "game/player/ray_caster/ray_caster.h"
@@ -62,13 +63,13 @@ void 					player::process_input()
 	{
 		if (auto hit = ray_caster::cast_ray(); hit)
 		{
-			auto 	axis_and_sign = block::to_axis_and_sign(hit->face);
+			auto 	axis_and_sign = to_axis_and_sign(hit->face);
 			auto	neighbor = hit->block.get_neighbor(axis_and_sign.first, axis_and_sign.second);
 
 			if (!debug::check(neighbor != nullopt, "[game::player] Can't put block"))
 				return;
 
-			world::world::insert_block(*neighbor, block::dirt_with_grass);
+			world::world::insert_block(*neighbor, block_type::dirt_with_grass);
 
 			force_ray_cast = true;
 		}

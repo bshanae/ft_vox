@@ -10,12 +10,12 @@ using namespace		game;
 	{
 		case (test_dirt) :
 			noise = perlin_noise(1.f, 0.01f, 10.f);
-			first_layer = block::dirt;
+			first_layer = block_type::dirt;
 			break ;
 
 		case (test_stone) :
 			noise = perlin_noise(1.f, 0.05f, 30.f);
-			first_layer = block::stone;
+			first_layer = block_type::stone;
 			break ;
 
 		default :
@@ -45,10 +45,10 @@ enum biome::type	biome::get_type() const
 	return type;
 }
 
-enum block::type	biome::get_first_layer() const
+enum block_type		biome::get_first_layer() const
 {
 	debug::check_critical(type != biome::null, "[game::biome] Bad type");
-	return (first_layer);
+	return first_layer;
 }
 
 int 				biome::generate_height(const vec3 &position) const

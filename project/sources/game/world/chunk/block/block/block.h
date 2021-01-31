@@ -1,5 +1,7 @@
 #pragma once
 
+#include "game/world/chunk/block/block_type/block_type/block_type.h"
+
 #include "application/common/imports/std.h"
 
 namespace						game
@@ -20,44 +22,11 @@ class							game::block
 
 public :
 
-	enum						type : char
-	{
-		air,
-		stone,
-		dirt,
-		dirt_with_grass,
-		water,
-		blue_flower
-	};
+	explicit					block(block_type type = block_type::air);
+								~block() = default;
 
-	enum						face : char
-	{
-		left,
-		right,
-		front,
-		back,
-		top,
-		bottom
-	};
+	friend ostream				&operator << (ostream &stream, enum game::block_type type);
 
-	static face					from_axis_and_sign(axis axis, sign sign);
-	static pair<axis, sign>		to_axis_and_sign(face face);
-
-	explicit					block(enum type type = air) : type(type) {}
-
-	friend ostream				&operator << (ostream &stream, enum game::block::type type);
-
-	bool						is_empty() const;
-
-	bool						is_opaque() const;
-	bool						is_transparent() const;
-	bool						is_partially_transparent() const;
-	bool						is_transparent_or_partially_transparent() const;
-	bool						is_diagonal() const;
-	bool						does_transmit_light() const;
-	bool						is_solid() const;
-	bool						is_editable() const;
-
-	type						type;
+	block_type					type;
 	char						light_level = 0;
 };

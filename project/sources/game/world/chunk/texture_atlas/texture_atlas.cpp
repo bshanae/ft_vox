@@ -22,9 +22,6 @@ using namespace				game;
 
 }
 
-							texture_atlas::association::association(enum block::type type) : type(type)
-{}
-
 texture_atlas::association	&texture_atlas::association::operator = (const ivec2 &value)
 {
 	left = value;
@@ -51,13 +48,13 @@ vec2						texture_atlas::get_texture_size()
 	};
 }
 
-texture_atlas::association	&texture_atlas::get_association(enum block::type type)
+texture_atlas::association	&texture_atlas::get_association(enum block_type type)
 {
 	auto 					instance = texture_atlas::get_instance();
 	auto 					iterator = instance->associations.find(type);
 
 	if (iterator == instance->associations.end())
-		instance->associations.emplace(type, type);
+		instance->associations.try_emplace(type);
 
 	return instance->associations.at(type);
 }

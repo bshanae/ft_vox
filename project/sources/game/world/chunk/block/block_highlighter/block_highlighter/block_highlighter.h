@@ -4,6 +4,7 @@
 #include "engine/main/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 
 #include "game/world/chunk/block/block/block.h"
+#include "game/world/chunk/block/block_face/block_face.h"
 
 #include "application/common/imports/glm.h"
 #include "application/common/imports/std.h"
@@ -15,10 +16,9 @@ namespace						engine
 
 namespace						game
 {
+	class						block_highlighter;
 	class						block_highlighter_renderer;
 	class						world;
-
-	class						block_highlighter;
 }
 
 class							game::block_highlighter  :
@@ -33,15 +33,15 @@ public :
 								~block_highlighter() override = default;
 
 	static vec3					get_translation();
-	static block::face			get_selected_face();
+	static block_face			get_selected_face();
 
 	static void					set_translation(const vec3 &value);
-	static void					set_selected_face(block::face face);
+	static void					set_selected_face(block_face face);
 
 private :
 
 	vec3						translation;
-	block::face					selected_face;
+	block_face					selected_face;
 
 	shared_ptr<engine::model>	cube;
 

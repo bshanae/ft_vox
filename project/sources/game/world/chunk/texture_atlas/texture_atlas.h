@@ -11,6 +11,7 @@
 
 namespace						game
 {
+	enum class					block_type;
 	class						chunk_renderer;
 	class						texture_atlas;
 }
@@ -25,8 +26,6 @@ public :
 
 	struct						association
 	{
-		explicit				association(enum block::type type);
-
 		association				&operator = (const ivec2 &value);
 
 		ivec2 					left;
@@ -35,21 +34,17 @@ public :
 		ivec2 					bottom;
 		ivec2 					back;
 		ivec2 					front;
-
-	private :
-
-		enum block::type		type;
 	};
 
 	static
 	shared_ptr<engine::texture>	get_texture();
 	static vec2 				get_texture_size();
 
-	static association			&get_association(enum block::type type);
+	static association			&get_association(enum block_type type);
 
 private :
 
-	using 						associations_type = map<enum block::type, association>;
+	using 						associations_type = map<block_type, association>;
 
 	static inline constexpr int	texture_size_in_pixels[2] = {48, 48};
 

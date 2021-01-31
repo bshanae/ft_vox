@@ -3,6 +3,7 @@
 #include "engine/main/rendering/model/model/model.h"
 #include "engine/main/rendering/camera/camera.h"
 
+#include "game/world/chunk/block/block_face/block_face.h"
 #include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
 
 using namespace			engine;
@@ -33,27 +34,27 @@ void					block_highlighter_renderer::render(const block_highlighter &selector)
 
 	switch (selector.selected_face)
 	{
-		case (block::left) :
+		case (block_face::left) :
 			instance->render(selector.left);
 			break;
 
-		case (block::right) :
+		case (block_face::right) :
 			instance->render(selector.right);
 			break;
 
-		case (block::front) :
+		case (block_face::front) :
 			instance->render(selector.front);
 			break;
 
-		case (block::back) :
+		case (block_face::back) :
 			instance->render(selector.back);
 			break;
 
-		case (block::top) :
+		case (block_face::top) :
 			instance->render(selector.top);
 			break;
 
-		case (block::bottom) :
+		case (block_face::bottom) :
 			instance->render(selector.bottom);
 			break;
 	}

@@ -24,7 +24,7 @@ public :
 
 	void			upload(const type &data) const
 	{
-		debug::check_critical(value != -1u, "[engine::uniform] Uniform is not found");
+		debug::check(value != -1u, "[engine::uniform] Uniform is not found");
 
 		if constexpr (is_same<type, int>::value)
 			glUniform1i(value, data);

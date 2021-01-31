@@ -150,9 +150,20 @@ static vector<GLuint>	indices =
 							position(position),
 							center(position + chunk_settings::size_as_vector / 2.f)
 {
-	workspace_for_opaque.predicate = [](block &block){ return (block.is_opaque()); };
-	workspace_for_transparent.predicate = [](block &block){ return (block.is_transparent()); };
-	workspace_for_partially_transparent.predicate = [](block &block){ return (block.is_partially_transparent()); };
+	workspace_for_opaque.predicate = [](block &block)
+	{
+		return is_opaque(get_meta_type(block.type));
+	};
+
+	workspace_for_transparent.predicate = [](block &block)
+	{
+		return is_transparent(get_meta_type(block.type));
+	};
+
+	workspace_for_partially_transparent.predicate = [](block &block)
+	{
+		return is_partially_transparent(get_meta_type(block.type));
+	};
 }
 
 vec3					chunk::get_position() const
@@ -262,7 +273,7 @@ void					chunk::build_light()
 
 		if (neighbor_index = index.get_neighbor(axis::y, sign::minus); not neighbor_index)
 			continue ;
-		if (not at(neighbor_index).does_transmit_light())
+		if (not does_transmit_light(get_meta_type(at(neighbor_index).type)))
 			continue ;
 		if (at(index).light_level - at(neighbor_index).light_level >= 2)
 		{
@@ -329,25 +340,25 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 				continue ;
 
 			for (int first_sign = -1; first_sign <= 1; first_sign++)
-				for (int second_sign = -1; second_sign <= 1; second_sign++)
+			for (int second_sign = -1; second_sign <= 1; second_sign++)
+			{
+				if (first_sign == 0 and second_sign == 0)
+					continue ;
+
+				occluder = central_neighbor;
+				if (first_sign != 0)
+					occluder = occluder->get_neighbor((::axis)first_axis, (::sign)first_sign);
+				if (second_sign != 0 and occluder)
+					occluder = occluder->get_neighbor((::axis)second_axis, (::sign)second_sign);
+
+				if (occluder and not does_transmit_light(get_meta_type((*occluder)().type)))
 				{
-					if (first_sign == 0 and second_sign == 0)
-						continue ;
-
-					occluder = central_neighbor;
-					if (first_sign != 0)
-						occluder = occluder->get_neighbor((::axis)first_axis, (::sign)first_sign);
-					if (second_sign != 0 and occluder)
-						occluder = occluder->get_neighbor((::axis)second_axis, (::sign)second_sign);
-
-					if (occluder and not (*occluder)().does_transmit_light())
-					{
-						if (first_sign == 0 or second_sign == 0)
-							occluders_count += 2;
-						else
-							occluders_count += 1;
-					}
+					if (first_sign == 0 or second_sign == 0)
+						occluders_count += 2;
+					else
+						occluders_count += 1;
 				}
+			}
 		}
 	}
 
@@ -361,25 +372,28 @@ char					chunk::apply_ao(char light_level, float ao)
 
 	const char			ao_result = (float)dynamic_part * (1.f - ao);
 
-	return (static_part + ao_result);
+	return static_part + ao_result;
 }
 
 void					chunk::build_block(batch_workspace &workspace, const index &index)
 {
 	auto 				try_build_quad = [this, &workspace, index](axis axis, sign sign)
 	{
-		auto			this_block_id = block_alias(shared_from_this(), index);
-		auto 			neighbor_block_id = this_block_id.get_neighbor(axis, sign);
+		const auto		this_block_id = block_alias(shared_from_this(), index);
+		const auto 		neighbor_block_id = this_block_id.get_neighbor(axis, sign);
 
 		if (neighbor_block_id)
 		{
-			auto 		this_block = this_block_id();
-			auto 		neighbor_block = (*neighbor_block_id)();
+			const auto 	this_block = this_block_id();
+			const auto 	neighbor_block = (*neighbor_block_id)();
 
-			if (this_block.is_opaque() and neighbor_block.is_transparent_or_partially_transparent());
-			else if (this_block.is_transparent() and neighbor_block.is_partially_transparent());
-			else if (this_block.is_partially_transparent() and neighbor_block.is_partially_transparent());
-			else if (neighbor_block.is_empty());
+			const auto 	this_block_meta_type = get_meta_type(this_block.type);
+			const auto 	neighbor_block_meta_type = get_meta_type(neighbor_block.type);
+
+			if (is_opaque(this_block_meta_type) and is_transparent_or_partially_transparent(neighbor_block_meta_type));
+			else if (is_transparent(this_block_meta_type) and is_partially_transparent(neighbor_block_meta_type));
+			else if (is_partially_transparent(this_block_meta_type) and is_partially_transparent(neighbor_block_meta_type));
+			else if (is_empty(neighbor_block_meta_type));
 			else
 				return ;
 
@@ -394,10 +408,10 @@ void					chunk::build_block(batch_workspace &workspace, const index &index)
 
 	auto				&this_block = at(index);
 
-	if (this_block.is_empty())
+	if (is_empty(get_meta_type((this_block.type))))
 		return ;
 
-	if (this_block.is_diagonal())
+	if (is_diagonal(get_meta_type((this_block.type))))
 	{
 		build_quad(workspace, index, axis::x, sign::minus, this_block.light_level - 1);
 		build_quad(workspace, index, axis::x, sign::plus, this_block.light_level - 1);
@@ -425,13 +439,15 @@ void					chunk::build_quad(
 							sign sign,
 							char light_level)
 {
-	auto				&block = at(index);
+	const auto			&block = at(index);
+	const auto			block_meta_type = get_meta_type(block.type);
+
 	auto				texture_index = ivec2(0);
 
 	light_level = max(block_settings::light_level_min, light_level);
 	if (axis == axis::x and sign == sign::plus)
 	{
-		if (block.is_diagonal())
+		if (is_diagonal(block_meta_type))
 		{
 			append_to_vector(workspace.vertices, first_diagonal_vertices);
 			append_to_vector(workspace.texture_coordinates, first_diagonal_texture_coordinates);
@@ -441,11 +457,12 @@ void					chunk::build_quad(
 			append_to_vector(workspace.vertices, right_vertices);
 			append_to_vector(workspace.texture_coordinates, right_texture_coordinates);
 		}
+
 		texture_index = texture_atlas::get_association(at(index).type).right;
 	}
 	else if (axis == axis::x and sign == sign::minus)
 	{
-		if (block.is_diagonal())
+		if (is_diagonal(block_meta_type))
 		{
 			append_to_vector(workspace.vertices, second_diagonal_vertices);
 			append_to_vector(workspace.texture_coordinates, second_diagonal_texture_coordinates);
@@ -455,6 +472,7 @@ void					chunk::build_quad(
 			append_to_vector(workspace.vertices, left_vertices);
 			append_to_vector(workspace.texture_coordinates, left_texture_coordinates);
 		}
+
 		texture_index = texture_atlas::get_association(at(index).type).left;
 	}
 	else if (axis == axis::y and sign == sign::plus)

@@ -63,20 +63,20 @@ void 				application::initialize_texture_atlas()
 {
 	game::texture_atlas::construct();
 
-	game::texture_atlas::get_association(game::block::stone) = ivec2(1, 15);
+	game::texture_atlas::get_association(game::block_type::stone) = ivec2(1, 15);
 
-	game::texture_atlas::get_association(game::block::dirt) = ivec2(2, 15);
+	game::texture_atlas::get_association(game::block_type::dirt) = ivec2(2, 15);
 
-	game::texture_atlas::get_association(game::block::dirt_with_grass).left = ivec2(3, 15);
-	game::texture_atlas::get_association(game::block::dirt_with_grass).right = ivec2(3, 15);
-	game::texture_atlas::get_association(game::block::dirt_with_grass).front = ivec2(3, 15);
-	game::texture_atlas::get_association(game::block::dirt_with_grass).back = ivec2(3, 15);
-	game::texture_atlas::get_association(game::block::dirt_with_grass).top = ivec2(12, 3);
-	game::texture_atlas::get_association(game::block::dirt_with_grass).bottom = ivec2(2, 15);
+	game::texture_atlas::get_association(game::block_type::dirt_with_grass).left = ivec2(3, 15);
+	game::texture_atlas::get_association(game::block_type::dirt_with_grass).right = ivec2(3, 15);
+	game::texture_atlas::get_association(game::block_type::dirt_with_grass).front = ivec2(3, 15);
+	game::texture_atlas::get_association(game::block_type::dirt_with_grass).back = ivec2(3, 15);
+	game::texture_atlas::get_association(game::block_type::dirt_with_grass).top = ivec2(12, 3);
+	game::texture_atlas::get_association(game::block_type::dirt_with_grass).bottom = ivec2(2, 15);
 
-	game::texture_atlas::get_association(game::block::water) = ivec2(13, 3);
+	game::texture_atlas::get_association(game::block_type::water) = ivec2(13, 3);
 
-	game::texture_atlas::get_association(game::block::blue_flower) = ivec2(12, 15);
+	game::texture_atlas::get_association(game::block_type::blue_flower) = ivec2(12, 15);
 }
 
 void				application::initialize_player()

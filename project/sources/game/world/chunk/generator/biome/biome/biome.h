@@ -29,14 +29,14 @@ public :
 	friend bool 			operator != (const biome &left, const biome &right);
 
 	enum type				get_type() const;
-	enum block::type		get_first_layer() const;
+	enum block_type			get_first_layer() const;
 
 	int 					generate_height(const vec3 &position) const;
 
 private :
 
 	enum type				type;
-	enum block::type		first_layer;
+	enum block_type			first_layer;
 
 	perlin_noise			noise;
 };

@@ -12,6 +12,7 @@
 
 namespace						game
 {
+	enum class					block_face;
 	class						world;
 }
 
@@ -28,10 +29,10 @@ public :
 	static
 	optional<block_alias>		find_block(const vec3 &position);
 
-	static void					insert_block(const block_alias &id, enum block::type type);
+	static void					insert_block(const block_alias &id, enum block_type type);
 	static void					remove_block(const block_alias &id);
 
-	static void					select_block(const block_alias &id, block::face face);
+	static void					select_block(const block_alias &id, block_face face);
 	static void 				unselect_block();
 
 	static bool					does_collide(const aabb &aabb);

@@ -27,14 +27,14 @@ void					generator::generate(const shared_ptr<chunk> &chunk)
 
 			const auto	&workspace = instance->workspace;
 
-			const auto	block_type = (enum block::type)workspace.biome.get_first_layer();
+			const auto	block_type = (enum block_type)workspace.biome.get_first_layer();
 			const auto	height_limit = min(chunk_settings::size[1], max(water_level, workspace.height));
 
 			for (index.y = 0; index.y < height_limit; index.y++)
 				if (index.y <= workspace.height)
 					chunk->at(index).type = block_type;
 				else if (index.y <= water_level)
-					chunk->at(index).type = block::water;
+					chunk->at(index).type = block_type::water;
 		}
 }
 

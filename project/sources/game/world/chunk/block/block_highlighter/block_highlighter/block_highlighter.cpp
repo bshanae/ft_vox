@@ -97,7 +97,7 @@ vec3					block_highlighter::get_translation()
 	return get_instance()->translation;
 }
 
-block::face				block_highlighter::get_selected_face()
+block_face				block_highlighter::get_selected_face()
 {
 	return get_instance()->selected_face;
 }
@@ -117,7 +117,7 @@ void					block_highlighter::set_translation(const vec3 &value)
 	instance->bottom->set_translation(value);
 }
 
-void					block_highlighter::set_selected_face(block::face face)
+void					block_highlighter::set_selected_face(block_face face)
 {
 	get_instance()->selected_face = face;
 }

@@ -2,6 +2,7 @@
 
 #include "engine/main/rendering/camera/camera.h"
 
+#include "game/world/chunk/block/block_face/block_face.h"
 #include "game/player/ray_caster/ray_caster_settings.h"
 #include "game/world/world/world.h"
 
@@ -46,7 +47,7 @@ optional<ray_caster::hit>	ray_caster::cast_ray()
 	const float				t_delta_y = (float)step_y / delta_y;
 	const float				t_delta_z = (float)step_z / delta_z;
 
-	block::face			face;
+	block_face			face;
 	axis				choice;
 
 	for (int i = 0; i < ray_caster_settings::ray_cast_limit; i++)
@@ -70,19 +71,19 @@ optional<ray_caster::hit>	ray_caster::cast_ray()
 		{
 			x += (float)step_x;
 			t_max_x += t_delta_x;
-			face = block::from_axis_and_sign(axis::x, inverted_step_x);
+			face = from_axis_and_sign(axis::x, inverted_step_x);
 		}
 		else if (choice == axis::y)
 		{
 			y += (float)step_y;
 			t_max_y += t_delta_y;
-			face = block::from_axis_and_sign(axis::y, inverted_step_y);
+			face = from_axis_and_sign(axis::y, inverted_step_y);
 		}
 		else if (choice == axis::z)
 		{
 			z += (float)step_z;
 			t_max_z += t_delta_z;
-			face = block::from_axis_and_sign(axis::z, inverted_step_z);
+			face = from_axis_and_sign(axis::z, inverted_step_z);
 		}
 
 		if (auto block = game::world::find_block(vec3(x, y, z)))
@@ -90,7 +91,7 @@ optional<ray_caster::hit>	ray_caster::cast_ray()
 			if (!block)
 				return {};
 
-			if ((*block)().is_editable())
+			if (is_editable(get_meta_type((*block)().type)))
 				return {(hit){*block, face}};
 		}
 	}
