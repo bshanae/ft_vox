@@ -30,7 +30,7 @@ private :
 	data_type					data;
 
 	void 						when_constructed() override;
-	void						when_notified(const shared_ptr<const object_storage_event> &pocket) override;
+	void						when_notified(const object_storage_event &pocket) override;
 
 	void						add(const shared_ptr<object> &object);
 	void						remove(const shared_ptr<object> &object);

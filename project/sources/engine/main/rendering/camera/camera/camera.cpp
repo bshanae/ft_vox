@@ -2,6 +2,8 @@
 
 #include "engine/main/system/window/window.h"
 #include "engine/main/system/input/input.h"
+#include "engine/main/rendering/camera/camera_event/camera_position_changed_event.h"
+#include "engine/main/rendering/camera/camera_event/camera_direction_changed_event.h"
 
 using namespace			engine;
 
@@ -24,11 +26,6 @@ mat4					camera::get_projection_matrix()
 mat4					camera::get_view_matrix()
 {
 	return get_instance()->view_matrix;
-}
-
-bool					camera::did_change()
-{
-	return get_instance()->_did_change;
 }
 
 vec3					camera::get_front()
@@ -67,22 +64,23 @@ void					camera::set_position(const vec3 &value)
 
 	instance->position = value;
 	instance->recalculate();
-}
 
-void					camera::set_did_change(bool value)
-{
-	get_instance()->_did_change = value;
+	instance->notify(camera_position_changed_event());
 }
 
 void					camera::when_updated()
 {
-	_did_change = input::did_mouse_move();
+	const float			yaw_change = input::get_mouse_offset().x * camera_settings::rotation_speed;
+	const float			pitch_change = input::get_mouse_offset().y * camera_settings::rotation_speed;
 
-	yaw += input::get_mouse_offset().x * camera_settings::rotation_speed;
-	pitch += input::get_mouse_offset().y * camera_settings::rotation_speed;
+	if (abs(yaw_change) > epsilon || abs(pitch_change) > epsilon)
+	{
+		yaw += yaw_change;
+		pitch += pitch_change;
 
-	if (_did_change)
 		recalculate();
+		notify(camera_direction_changed_event());
+	}
 }
 
 void					camera::recalculate()
@@ -98,10 +96,10 @@ void					camera::recalculate()
 	local_front.y = sin(radians(pitch));
 	local_front.z = sin(radians(yaw)) * cos(radians(pitch));
 	front = normalize(local_front);
-	right = normalize(cross((vec3)front, (vec3)up_const));
-	up = normalize(cross((vec3)right, (vec3)front));
+	right = normalize(cross(front, up_const));
+	up = normalize(cross(right, front));
 
-	view_matrix = lookAt((vec3)position, (vec3)position + (vec3)front, (vec3)up);
+	view_matrix = lookAt(position, position + front, up);
 	projection_matrix = perspective
 	(
 		radians(camera_settings::fov),

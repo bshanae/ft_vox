@@ -4,7 +4,7 @@
 #include "engine/main/rendering/layout/layout_manager/layout_manager.h"
 #include "engine/extensions/ui/font/font_library/font_library.h"
 #include "engine/extensions/ui/font/symbol/symbol_renderer.h"
-#include "engine/main/rendering/camera/camera.h"
+#include "engine/main/rendering/camera/camera/camera.h"
 #include "engine/main/processor/processor.h"
 
 #include "game/world/skybox/skybox.h"

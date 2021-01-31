@@ -1,6 +1,6 @@
 #include "ray_caster.h"
 
-#include "engine/main/rendering/camera/camera.h"
+#include "engine/main/rendering/camera/camera/camera.h"
 
 #include "game/world/chunk/block/block_face/block_face.h"
 #include "game/player/ray_caster/ray_caster_settings.h"
@@ -47,8 +47,8 @@ optional<ray_caster::hit>	ray_caster::cast_ray()
 	const float				t_delta_y = (float)step_y / delta_y;
 	const float				t_delta_z = (float)step_z / delta_z;
 
-	block_face			face;
-	axis				choice;
+	block_face				face;
+	axis					choice;
 
 	for (int i = 0; i < ray_caster_settings::ray_cast_limit; i++)
 	{

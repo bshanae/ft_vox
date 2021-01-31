@@ -13,7 +13,7 @@ using namespace			game;
 
 void					generator::generate(const shared_ptr<chunk> &chunk)
 {
-	static const int	water_level = 1;
+	static const int	water_level = 10;
 
 	auto 				instance = get_instance();
 	const vec3			position = chunk->get_position();
@@ -21,21 +21,23 @@ void					generator::generate(const shared_ptr<chunk> &chunk)
 	chunk::index		index;
 
 	for (index.x = 0; index.x < chunk_settings::size[0]; index.x++)
-		for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
+	for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
+	{
+		instance->process_column(vec3(position.x + (float)index.x, 0, position.z + (float)index.z));
+
+		const auto		&workspace = instance->workspace;
+
+		const auto		block_type = (enum block_type)workspace.biome.get_first_layer();
+		const auto		height_limit = min(chunk_settings::size[1], max(water_level, workspace.height));
+
+		for (index.y = 0; index.y < height_limit; index.y++)
 		{
-			instance->process_column(vec3(position.x + index.x, 0, position.z + index.z));
-
-			const auto	&workspace = instance->workspace;
-
-			const auto	block_type = (enum block_type)workspace.biome.get_first_layer();
-			const auto	height_limit = min(chunk_settings::size[1], max(water_level, workspace.height));
-
-			for (index.y = 0; index.y < height_limit; index.y++)
-				if (index.y <= workspace.height)
-					chunk->at(index).set_type(block_type);
-				else if (index.y <= water_level)
-					chunk->at(index).set_type(block_type::water);
+			if (index.y <= workspace.height)
+				chunk->at(index).set_type(block_type);
+			else if (index.y <= water_level)
+				chunk->at(index).set_type(block_type::water);
 		}
+	}
 }
 
 void					generator::process_column(const vec3 &position)

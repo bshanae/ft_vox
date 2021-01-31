@@ -1,5 +1,7 @@
 #include "layout_manager.h"
 
+#include "application/common/utilities/type_utility.h"
+
 #include "engine/main/core/object/object_storage/object_storage/object_storage.h"
 #include "engine/main/core/object/object_storage/object_storage_event/object_was_added.h"
 #include "engine/main/core/object/object_storage/object_storage_event/object_was_removed.h"
@@ -30,15 +32,15 @@ shared_ptr<layout>				layout_manager::find(const string &name)
 
 void 							layout_manager::when_constructed()
 {
-	object_storage::get_instance()->subscribe(get_instance());
+	object_storage::get_instance()->subscribe(*this);
 }
 
-void							layout_manager::when_notified(const shared_ptr<const object_storage_event> &pocket)
+void							layout_manager::when_notified(const object_storage_event &pocket)
 {
-	if (dynamic_pointer_cast<const object_was_added>(pocket))
-		get_instance()->add(pocket->get_object());
-	else if (dynamic_pointer_cast<const object_was_removed>(pocket))
-		get_instance()->remove(pocket->get_object());
+	if (type_utility::check_type<object_was_added>(pocket))
+		get_instance()->add(pocket.get_object());
+	else if (type_utility::check_type<object_was_removed>(pocket))
+		get_instance()->remove(pocket.get_object());
 	else
 		debug::raise_warning("[engine::layout_manager] Can't parse 'object_storage_event'");
 }

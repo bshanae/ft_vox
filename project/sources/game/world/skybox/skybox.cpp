@@ -1,6 +1,6 @@
 #include "skybox.h"
 
-#include "engine/main/rendering/camera/camera.h"
+#include "engine/main/rendering/camera/camera/camera.h"
 #include "engine/main/rendering/model/model/model.h"
 #include "engine/main/rendering/texture/cubemap/cubemap.h"
 #include "engine/main/rendering/texture/cubemap_loader/cubemap_loader.h"

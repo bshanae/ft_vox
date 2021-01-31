@@ -1,14 +1,15 @@
 #include "player.h"
 
+#include "application/common/debug/debug.h"
+#include "application/common/utilities/type_utility.h"
+
 #include "engine/main/system/input/input.h"
-#include "engine/main/rendering/camera/camera.h"
+#include "engine/main/rendering/camera/camera/camera.h"
 
 #include "game/world/chunk/block/block_face/block_face.h"
 #include "game/world/world/world.h"
 #include "game/player/player/player_settings.h"
 #include "game/player/ray_caster/ray_caster.h"
-
-#include "application/common/debug/debug.h"
 
 using namespace 		engine;
 using namespace 		game;
@@ -16,12 +17,18 @@ using namespace 		game;
 						player::player()
 {
 	set_layout("System");
+	camera::get_instance()->subscribe(*this);
 }
 
 void					player::when_updated()
 {
 	process_input();
 	process_selection();
+}
+
+void 					player::when_notified(const engine::camera_event &event)
+{
+	should_cast_ray = true;
 }
 
 void 					player::process_input()
@@ -55,7 +62,7 @@ void 					player::process_input()
 		if (auto hit = ray_caster::cast_ray(); hit)
 		{
 			world::world::remove_block(hit->block);
-			force_ray_cast = true;
+			should_cast_ray = true;
 		}
 	}
 
@@ -71,14 +78,14 @@ void 					player::process_input()
 
 			world::world::insert_block(*neighbor, block_type::dirt_with_grass);
 
-			force_ray_cast = true;
+			should_cast_ray = true;
 		}
 	}
 }
 
 void 					player::process_selection()
 {
-	if (camera::did_change() or force_ray_cast)
+	if (should_cast_ray)
 	{
 		if (auto hit = ray_caster::cast_ray(); hit)
 		{
@@ -88,7 +95,7 @@ void 					player::process_selection()
 		else
 			world::world::unselect_block();
 
-		force_ray_cast = false;
+		should_cast_ray = false;
 	}
 }
 

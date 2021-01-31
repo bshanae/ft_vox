@@ -2,7 +2,7 @@
 
 #include "engine/main/processor/processor_settings.h"
 #include "engine/main/rendering/model/model/model.h"
-#include "engine/main/rendering/camera/camera.h"
+#include "engine/main/rendering/camera/camera/camera.h"
 #include "engine/main/rendering/program/program/program.h"
 
 #include "game/world/chunk/texture_atlas/texture_atlas/texture_atlas.h"

@@ -6,33 +6,34 @@
 template			<typename type>
 class 				notifier
 {
-	using			listeners_type = list<shared_ptr<listener<type>>>;
+	using			listener_type = reference_wrapper<listener<type>>;
+	using			listeners_type = list<listener_type>;
 
 public :
 
-	void			subscribe(const shared_ptr<listener<type>> &listener)
+	void			subscribe(listener<type> &listener)
 	{
-		listeners.push_back(listener);
+		listeners.push_back(reference_wrapper(listener));
 	}
 
-	void			unsubscribe(const shared_ptr<listener<type>> &listener)
+	void			unsubscribe(listener<type> &listener)
 	{
 		erase_if
 		(
 			listeners,
-			[listener](const shared_ptr<::listener<type>> &item)
+			[listener](const listener_type &item)
 			{
-				return item.get() == listener.get();
+				return &item.get() == &listener.get();
 			}
 		);
 	}
 
 protected :
 
-	void			notify(const shared_ptr<const type> &pocket)
+	void			notify(const type &pocket)
 	{
 		for (const auto &listener : listeners)
-			listener->notify(pocket);
+			listener.get().notify(pocket);
 	}
 
 private :

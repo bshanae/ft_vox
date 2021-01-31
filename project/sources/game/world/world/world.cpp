@@ -1,7 +1,7 @@
 #include "world.h"
 
 #include "engine/main/core/object/object_manipulator/object_manipulator.h"
-#include "engine/main/rendering/camera/camera.h"
+#include "engine/main/rendering/camera/camera/camera.h"
 
 #include "game/world/tools/aabb/aabb.h"
 #include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"

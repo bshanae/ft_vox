@@ -17,7 +17,7 @@ void				object_storage::add(const shared_ptr<object> &object)
 	auto			instance = get_instance();
 
 	instance->objects.emplace((intptr_t)object.get(), object);
-	instance->notify(make_shared<object_was_added>(object));
+	instance->notify(object_was_added(object));
 }
 
 void				object_storage::remove(const shared_ptr<object> &object)
@@ -25,6 +25,6 @@ void				object_storage::remove(const shared_ptr<object> &object)
 	auto			instance = get_instance();
 
 	instance->objects.erase((intptr_t)object.get());
-	instance->notify(make_shared<object_was_removed>(object));
+	instance->notify(object_was_removed(object));
 	object_manipulator::deinitialize(object);
 }

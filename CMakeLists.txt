@@ -41,7 +41,7 @@ set(SOURCES
 	# Engine : Rendering
 	${SOURCES_DIRECTORY}/engine/main/rendering/layout/layout/layout.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/layout/layout_manager/layout_manager.cpp
-	${SOURCES_DIRECTORY}/engine/main/rendering/camera/camera.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/camera/camera/camera.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/model/model/model.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/texture/texture/texture.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/texture/texture_loader/texture_loader.cpp

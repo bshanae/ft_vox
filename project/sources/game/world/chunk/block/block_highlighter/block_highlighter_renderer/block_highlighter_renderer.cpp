@@ -1,7 +1,7 @@
 #include "block_highlighter_renderer.h"
 
 #include "engine/main/rendering/model/model/model.h"
-#include "engine/main/rendering/camera/camera.h"
+#include "engine/main/rendering/camera/camera/camera.h"
 
 #include "game/world/chunk/block/block_face/block_face.h"
 #include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"

@@ -7,12 +7,12 @@ class 				listener
 {
 public :
 
-	void 			notify(const shared_ptr<const type> &pocket)
+	void 			notify(const type &event)
 	{
-		when_notified(pocket);
+		when_notified(event);
 	}
 
 protected :
 
-	virtual void	when_notified(const shared_ptr<const type> &pocket) = 0;
+	virtual void	when_notified(const type &event) = 0;
 };

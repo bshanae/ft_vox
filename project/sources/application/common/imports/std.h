@@ -47,6 +47,7 @@ using 				std::dynamic_pointer_cast;
 using 				std::enable_shared_from_this;
 using 				std::addressof;
 using 				std::ref;
+using 				std::reference_wrapper;
 
 #pragma endregion
 
