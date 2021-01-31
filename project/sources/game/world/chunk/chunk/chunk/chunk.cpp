@@ -2,7 +2,7 @@
 
 #include "engine/main/rendering/model/model/model.h"
 
-#include "game/world/chunk/texture_atlas/texture_atlas.h"
+#include "game/world/chunk/texture_atlas/texture_atlas/texture_atlas.h"
 #include "game/world/chunk/block/block/block_settings.h"
 
 #include "application/common/imports/std.h"
@@ -152,17 +152,17 @@ static vector<GLuint>	indices =
 {
 	workspace_for_opaque.predicate = [](block &block)
 	{
-		return is_opaque(get_meta_type(block.type));
+		return is_opaque(get_meta_type(block.get_type()));
 	};
 
 	workspace_for_transparent.predicate = [](block &block)
 	{
-		return is_transparent(get_meta_type(block.type));
+		return is_transparent(get_meta_type(block.get_type()));
 	};
 
 	workspace_for_partially_transparent.predicate = [](block &block)
 	{
-		return is_partially_transparent(get_meta_type(block.type));
+		return is_partially_transparent(get_meta_type(block.get_type()));
 	};
 }
 
@@ -262,7 +262,7 @@ void					chunk::build_light()
 	for (index.x = 0; index.x < chunk_settings::size[0]; index.x++)
 		for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
 		{
-			at(index).light_level = block_settings::sun_light_level;
+			at(index).set_light_level(block_settings::sun_light_level);
 			queue.push(index);
 		}
 
@@ -273,11 +273,11 @@ void					chunk::build_light()
 
 		if (neighbor_index = index.get_neighbor(axis::y, sign::minus); not neighbor_index)
 			continue ;
-		if (not does_transmit_light(get_meta_type(at(neighbor_index).type)))
+		if (not does_transmit_light(get_meta_type(at(neighbor_index).get_type())))
 			continue ;
-		if (at(index).light_level - at(neighbor_index).light_level >= 2)
+		if (at(index).get_light_level() - at(neighbor_index).get_light_level() >= 2)
 		{
-			at(neighbor_index).light_level = (char)(at(index).light_level);
+			at(neighbor_index).set_light_level((char)(at(index).get_light_level()));
 			queue.push(neighbor_index);
 		}
 	}
@@ -351,7 +351,7 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 				if (second_sign != 0 and occluder)
 					occluder = occluder->get_neighbor((::axis)second_axis, (::sign)second_sign);
 
-				if (occluder and not does_transmit_light(get_meta_type((*occluder)().type)))
+				if (occluder and not does_transmit_light(get_meta_type((*occluder)().get_type())))
 				{
 					if (first_sign == 0 or second_sign == 0)
 						occluders_count += 2;
@@ -387,8 +387,8 @@ void					chunk::build_block(batch_workspace &workspace, const index &index)
 			const auto 	this_block = this_block_id();
 			const auto 	neighbor_block = (*neighbor_block_id)();
 
-			const auto 	this_block_meta_type = get_meta_type(this_block.type);
-			const auto 	neighbor_block_meta_type = get_meta_type(neighbor_block.type);
+			const auto 	this_block_meta_type = get_meta_type(this_block.get_type());
+			const auto 	neighbor_block_meta_type = get_meta_type(neighbor_block.get_type());
 
 			if (is_opaque(this_block_meta_type) and is_transparent_or_partially_transparent(neighbor_block_meta_type));
 			else if (is_transparent(this_block_meta_type) and is_partially_transparent(neighbor_block_meta_type));
@@ -398,7 +398,7 @@ void					chunk::build_block(batch_workspace &workspace, const index &index)
 				return ;
 
 			auto		ao = calculate_ao(index, axis, sign);
-			auto		light_level = apply_ao(neighbor_block.light_level, ao);
+			auto		light_level = apply_ao(neighbor_block.get_light_level(), ao);
 
 			build_quad(workspace, index, (::axis)axis, (::sign)sign, light_level);
 		}
@@ -408,13 +408,13 @@ void					chunk::build_block(batch_workspace &workspace, const index &index)
 
 	auto				&this_block = at(index);
 
-	if (is_empty(get_meta_type((this_block.type))))
+	if (is_empty(get_meta_type((this_block.get_type()))))
 		return ;
 
-	if (is_diagonal(get_meta_type((this_block.type))))
+	if (is_diagonal(get_meta_type((this_block.get_type()))))
 	{
-		build_quad(workspace, index, axis::x, sign::minus, this_block.light_level - 1);
-		build_quad(workspace, index, axis::x, sign::plus, this_block.light_level - 1);
+		build_quad(workspace, index, axis::x, sign::minus, (char)(this_block.get_light_level() - 1));
+		build_quad(workspace, index, axis::x, sign::plus, (char)(this_block.get_light_level() - 1));
 	}
 	else
 	{
@@ -440,7 +440,7 @@ void					chunk::build_quad(
 							char light_level)
 {
 	const auto			&block = at(index);
-	const auto			block_meta_type = get_meta_type(block.type);
+	const auto			block_meta_type = get_meta_type(block.get_type());
 
 	auto				texture_index = ivec2(0);
 
@@ -458,7 +458,7 @@ void					chunk::build_quad(
 			append_to_vector(workspace.texture_coordinates, right_texture_coordinates);
 		}
 
-		texture_index = texture_atlas::get_association(at(index).type).right;
+		texture_index = texture_atlas::get_coordinates(at(index).get_type()).get_right();
 	}
 	else if (axis == axis::x and sign == sign::minus)
 	{
@@ -473,31 +473,31 @@ void					chunk::build_quad(
 			append_to_vector(workspace.texture_coordinates, left_texture_coordinates);
 		}
 
-		texture_index = texture_atlas::get_association(at(index).type).left;
+		texture_index = texture_atlas::get_coordinates(at(index).get_type()).get_left();
 	}
 	else if (axis == axis::y and sign == sign::plus)
 	{
 		append_to_vector(workspace.vertices, top_vertices);
 		append_to_vector(workspace.texture_coordinates, top_texture_coordinates);
-		texture_index = texture_atlas::get_association(at(index).type).top;
+		texture_index = texture_atlas::get_coordinates(at(index).get_type()).get_top();
 	}
 	else if (axis == axis::y and sign == sign::minus)
 	{
 		append_to_vector(workspace.vertices, bottom_vertices);
 		append_to_vector(workspace.texture_coordinates, bottom_texture_coordinates);
-		texture_index = texture_atlas::get_association(at(index).type).bottom;
+		texture_index = texture_atlas::get_coordinates(at(index).get_type()).get_bottom();
 	}
 	else if (axis == axis::z and sign == sign::plus)
 	{
 		append_to_vector(workspace.vertices, front_vertices);
 		append_to_vector(workspace.texture_coordinates, front_texture_coordinates);
-		texture_index = texture_atlas::get_association(at(index).type).front;
+		texture_index = texture_atlas::get_coordinates(at(index).get_type()).get_front();
 	}
 	else if (axis == axis::z and sign == sign::minus)
 	{
 		append_to_vector(workspace.vertices, back_vertices);
 		append_to_vector(workspace.texture_coordinates, back_texture_coordinates);
-		texture_index = texture_atlas::get_association(at(index).type).back;
+		texture_index = texture_atlas::get_coordinates(at(index).get_type()).get_back();
 	}
 	else
 		debug::raise_error("[engine::chunk] Can't build quad");

@@ -32,9 +32,9 @@ void					generator::generate(const shared_ptr<chunk> &chunk)
 
 			for (index.y = 0; index.y < height_limit; index.y++)
 				if (index.y <= workspace.height)
-					chunk->at(index).type = block_type;
+					chunk->at(index).set_type(block_type);
 				else if (index.y <= water_level)
-					chunk->at(index).type = block_type::water;
+					chunk->at(index).set_type(block_type::water);
 		}
 }
 

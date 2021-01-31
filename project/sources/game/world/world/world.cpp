@@ -53,13 +53,13 @@ optional<block_alias>		world::world::find_block(const vec3 &position)
 
 void						world::insert_block(const block_alias &id, enum block_type type)
 {
-	id().type = type;
+	id().set_type(type);
 	get_instance()->rebuild_chunk(id.get_chunk(), id.get_index());
 }
 
 void						world::remove_block(const block_alias &id)
 {
-	id().type = block_type::air;
+	id().set_type(block_type::air);
 	get_instance()->rebuild_chunk(id.get_chunk(), id.get_index());
 }
 
@@ -92,7 +92,7 @@ bool						world::does_collide(const aabb &aabb)
 
 		if
 		(
-			is_solid(get_meta_type((*block_iterator)().type)) and
+			is_solid(get_meta_type((*block_iterator)().get_type())) and
 			aabb::do_collide(aabb, block_iterator->get_aabb())
 		)
 		{
@@ -212,7 +212,7 @@ void						world::when_updated()
 void						world::when_rendered()
 {
 	if (auto camera_block = find_block((vec3)camera::get_position()))
-		chunk_renderer::set_apply_water_tint((*camera_block)().type == block_type::water);
+		chunk_renderer::set_apply_water_tint((*camera_block)().get_type() == block_type::water);
 
 	for (auto [position, chunk] : chunks)
 		chunk_renderer::render(chunk, chunk::batch_purpose::opaque);

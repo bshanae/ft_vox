@@ -78,8 +78,9 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block/block.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/texture_atlas/texture_coordinates/texture_coordinates.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/texture_atlas/texture_atlas/texture_atlas.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/generator/generator/generator.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/texture_atlas/texture_atlas.cpp
 	${SOURCES_DIRECTORY}/game/world/world/world.cpp
 	${SOURCES_DIRECTORY}/game/world/skybox/skybox.cpp
 

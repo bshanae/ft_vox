@@ -17,9 +17,6 @@ namespace						game
 
 class							game::block
 {
-	friend class 				chunk;
-	friend class 				world;
-
 public :
 
 	explicit					block(block_type type = block_type::air);
@@ -27,6 +24,14 @@ public :
 
 	friend ostream				&operator << (ostream &stream, enum game::block_type type);
 
-	block_type					type;
-	char						light_level = 0;
+	block_type					get_type() const;
+	char						get_light_level() const;
+
+	void						set_type(block_type type);
+	void						set_light_level(char light_level);
+
+private :
+
+	block_type					_type;
+	char						_light_level = 0;
 };

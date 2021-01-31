@@ -5,7 +5,7 @@
 #include "engine/main/rendering/camera/camera.h"
 #include "engine/main/rendering/program/program/program.h"
 
-#include "game/world/chunk/texture_atlas/texture_atlas.h"
+#include "game/world/chunk/texture_atlas/texture_atlas/texture_atlas.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/world/world_settings.h"
 

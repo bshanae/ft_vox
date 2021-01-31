@@ -9,7 +9,7 @@
 
 #include "game/world/skybox/skybox.h"
 #include "game/world/world/world.h"
-#include "game/world/chunk/texture_atlas/texture_atlas.h"
+#include "game/world/chunk/texture_atlas/texture_atlas/texture_atlas.h"
 #include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
 #include "game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.h"
 #include "game/world/chunk/chunk/chunk_renderer/chunk_renderer.h"
@@ -63,20 +63,20 @@ void 				application::initialize_texture_atlas()
 {
 	game::texture_atlas::construct();
 
-	game::texture_atlas::get_association(game::block_type::stone) = ivec2(1, 15);
+	game::texture_atlas::get_coordinates(game::block_type::stone).set_all(ivec2(1, 15));
 
-	game::texture_atlas::get_association(game::block_type::dirt) = ivec2(2, 15);
+	game::texture_atlas::get_coordinates(game::block_type::dirt).set_all(ivec2(2, 15));
 
-	game::texture_atlas::get_association(game::block_type::dirt_with_grass).left = ivec2(3, 15);
-	game::texture_atlas::get_association(game::block_type::dirt_with_grass).right = ivec2(3, 15);
-	game::texture_atlas::get_association(game::block_type::dirt_with_grass).front = ivec2(3, 15);
-	game::texture_atlas::get_association(game::block_type::dirt_with_grass).back = ivec2(3, 15);
-	game::texture_atlas::get_association(game::block_type::dirt_with_grass).top = ivec2(12, 3);
-	game::texture_atlas::get_association(game::block_type::dirt_with_grass).bottom = ivec2(2, 15);
+	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_left(ivec2(3, 15));
+	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_right(ivec2(3, 15));
+	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_front(ivec2(3, 15));
+	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_back(ivec2(3, 15));
+	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_top(ivec2(12, 3));
+	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_bottom(ivec2(2, 15));
 
-	game::texture_atlas::get_association(game::block_type::water) = ivec2(13, 3);
+	game::texture_atlas::get_coordinates(game::block_type::water).set_all(ivec2(13, 3));
 
-	game::texture_atlas::get_association(game::block_type::blue_flower) = ivec2(12, 15);
+	game::texture_atlas::get_coordinates(game::block_type::blue_flower).set_all(ivec2(12, 15));
 }
 
 void				application::initialize_player()

@@ -91,7 +91,7 @@ optional<ray_caster::hit>	ray_caster::cast_ray()
 			if (!block)
 				return {};
 
-			if (is_editable(get_meta_type((*block)().type)))
+			if (is_editable(get_meta_type((*block)().get_type())))
 				return {(hit){*block, face}};
 		}
 	}
