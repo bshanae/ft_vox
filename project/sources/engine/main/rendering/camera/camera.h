@@ -4,9 +4,6 @@
 #include "engine/main/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 #include "engine/main/rendering/camera/camera_settings.h"
 
-// TODO Remove dependency
-#include "game/world/chunk/block/block_alias/block_alias.h"
-
 #include "application/common/imports/opengl.h"
 #include "application/common/imports/std.h"
 #include "application/common/imports/glm.h"

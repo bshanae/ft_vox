@@ -74,7 +74,7 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_face/block_face.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_type/block_type/block_type.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_type/block_meta_type/block_meta_type.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block_alias/block_alias.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/block/block_pointer/block_pointer.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block/block.cpp

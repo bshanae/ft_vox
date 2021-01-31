@@ -25,7 +25,7 @@ static const vec3			back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 	update_timer = timer(world_settings::chunk_generation_time_limit);
 }
 
-optional<block_alias>		world::world::find_block(const vec3 &position)
+optional<block_pointer>		world::world::find_block(const vec3 &position)
 {
 	chunk::index			index;
 	vec3					chunk_position;
@@ -48,22 +48,22 @@ optional<block_alias>		world::world::find_block(const vec3 &position)
 	if (chunk = get_instance()->find_chunk(chunk_position); not chunk or not index)
 		return {};
 	else
-		return block_alias(chunk, index);
+		return block_pointer(chunk, index);
 }
 
-void						world::insert_block(const block_alias &id, enum block_type type)
+void						world::insert_block(const block_pointer &id, enum block_type type)
 {
 	id().set_type(type);
 	get_instance()->rebuild_chunk(id.get_chunk(), id.get_index());
 }
 
-void						world::remove_block(const block_alias &id)
+void						world::remove_block(const block_pointer &id)
 {
 	id().set_type(block_type::air);
 	get_instance()->rebuild_chunk(id.get_chunk(), id.get_index());
 }
 
-void						world::select_block(const block_alias &id, block_face face)
+void						world::select_block(const block_pointer &id, block_face face)
 {
 	block_highlighter::get_instance()->activate();
 
@@ -81,7 +81,7 @@ bool						world::does_collide(const aabb &aabb)
 	vec3 					min = glm::floor(aabb.min);
 	vec3 					max = glm::floor(aabb.max);
 
-	optional<block_alias>	block_iterator;
+	optional<block_pointer>	block_iterator;
 
 	for (int x = (int)min.x; x <= (int)max.x; x++)
 	for (int y = (int)min.y; y <= (int)max.y; y++)
@@ -92,7 +92,7 @@ bool						world::does_collide(const aabb &aabb)
 
 		if
 		(
-			is_solid(get_meta_type((*block_iterator)().get_type())) and
+			is_solid(get_meta_type(block_iterator.value()().get_type())) and
 			aabb::do_collide(aabb, block_iterator->get_aabb())
 		)
 		{
@@ -212,7 +212,7 @@ void						world::when_updated()
 void						world::when_rendered()
 {
 	if (auto camera_block = find_block((vec3)camera::get_position()))
-		chunk_renderer::set_apply_water_tint((*camera_block)().get_type() == block_type::water);
+		chunk_renderer::set_apply_water_tint(camera_block.value()().get_type() == block_type::water);
 
 	for (auto [position, chunk] : chunks)
 		chunk_renderer::render(chunk, chunk::batch_purpose::opaque);

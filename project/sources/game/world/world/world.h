@@ -4,7 +4,7 @@
 #include "engine/main/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 #include "engine/main/system/time/timer/timer.h"
 
-#include "game/world/chunk/block/block_alias/block_alias.h"
+#include "game/world/chunk/block/block_pointer/block_pointer.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/world/world_settings.h"
 
@@ -20,19 +20,19 @@ class							game::world :
 									public engine::object,
 									public engine::unique_object_constructor<world>
 {
-	friend class 				block_alias;
+	friend class 				block_pointer;
 
 public :
 								world();
 								~world() override = default;
 
 	static
-	optional<block_alias>		find_block(const vec3 &position);
+	optional<block_pointer>		find_block(const vec3 &position);
 
-	static void					insert_block(const block_alias &id, enum block_type type);
-	static void					remove_block(const block_alias &id);
+	static void					insert_block(const block_pointer &id, enum block_type type);
+	static void					remove_block(const block_pointer &id);
 
-	static void					select_block(const block_alias &id, block_face face);
+	static void					select_block(const block_pointer &id, block_face face);
 	static void 				unselect_block();
 
 	static bool					does_collide(const aabb &aabb);

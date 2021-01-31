@@ -8,11 +8,11 @@
 #include "application/common/imports/std.h"
 #include "application/common/debug/debug.h"
 
-using namespace			game;
+using namespace				game;
 
-static const float		epsilon = 0.005f;
+static const float			epsilon = 0.005f;
 
-static vector<GLfloat>	front_vertices =
+static vector<GLfloat>		front_vertices =
 {
 	+0.5f, +0.5f, +0.5f,
 	-0.5f, +0.5f, +0.5f,
@@ -20,7 +20,7 @@ static vector<GLfloat>	front_vertices =
 	+0.5f, -0.5f, +0.5f
 };
 
-static vector<GLfloat>	front_texture_coordinates =
+static vector<GLfloat>		front_texture_coordinates =
 {
 	1.f - epsilon, 1.f - epsilon,
 	0.f + epsilon, 1.f - epsilon,
@@ -28,7 +28,7 @@ static vector<GLfloat>	front_texture_coordinates =
 	1.f - epsilon, 0.f + epsilon,
 };
 
-static vector<GLfloat>	back_vertices =
+static vector<GLfloat>		back_vertices =
 {
 	+0.5f, +0.5f, -0.5f,
 	+0.5f, -0.5f, -0.5f,
@@ -36,7 +36,7 @@ static vector<GLfloat>	back_vertices =
 	-0.5f, +0.5f, -0.5f
 };
 
-static vector<GLfloat>	back_texture_coordinates =
+static vector<GLfloat>		back_texture_coordinates =
 {
 	0.f + epsilon, 1.f - epsilon,
 	0.f + epsilon, 0.f + epsilon,
@@ -44,7 +44,7 @@ static vector<GLfloat>	back_texture_coordinates =
 	1.f - epsilon, 1.f - epsilon,
 };
 
-static vector<GLfloat>	top_vertices =
+static vector<GLfloat>		top_vertices =
 {
 	-0.5f, +0.5f, +0.5f,
 	+0.5f, +0.5f, +0.5f,
@@ -52,7 +52,7 @@ static vector<GLfloat>	top_vertices =
 	-0.5f, +0.5f, -0.5f
 };
 
-static vector<GLfloat>	top_texture_coordinates =
+static vector<GLfloat>		top_texture_coordinates =
 {
 	0.f + epsilon, 0.f + epsilon,
 	1.f - epsilon, 0.f + epsilon,
@@ -60,7 +60,7 @@ static vector<GLfloat>	top_texture_coordinates =
 	0.f + epsilon, 1.f - epsilon,
 };
 
-static vector<GLfloat>	bottom_vertices =
+static vector<GLfloat>		bottom_vertices =
 {
 	-0.5f, -0.5f, +0.5f,
 	-0.5f, -0.5f, -0.5f,
@@ -68,7 +68,7 @@ static vector<GLfloat>	bottom_vertices =
 	+0.5f, -0.5f, +0.5f
 };
 
-static vector<GLfloat>	bottom_texture_coordinates =
+static vector<GLfloat>		bottom_texture_coordinates =
 {
 	0.f + epsilon, 0.f + epsilon,
 	0.f + epsilon, 1.f - epsilon,
@@ -76,7 +76,7 @@ static vector<GLfloat>	bottom_texture_coordinates =
 	1.f - epsilon, 0.f + epsilon,
 };
 
-static vector<GLfloat>	right_vertices =
+static vector<GLfloat>		right_vertices =
 {
 	+0.5f, +0.5f, +0.5f,
 	+0.5f, -0.5f, +0.5f,
@@ -84,7 +84,7 @@ static vector<GLfloat>	right_vertices =
 	+0.5f, +0.5f, -0.5f
 };
 
-static vector<GLfloat>	right_texture_coordinates =
+static vector<GLfloat>		right_texture_coordinates =
 {
 	0.f + epsilon, 1.f - epsilon,
 	0.f + epsilon, 0.f + epsilon,
@@ -92,7 +92,7 @@ static vector<GLfloat>	right_texture_coordinates =
 	1.f - epsilon, 1.f - epsilon,
 };
 
-static vector<GLfloat>	left_vertices =
+static vector<GLfloat>		left_vertices =
 {
 	-0.5f, -0.5f, -0.5f,
 	-0.5f, -0.5f, +0.5f,
@@ -100,7 +100,7 @@ static vector<GLfloat>	left_vertices =
 	-0.5f, +0.5f, -0.5f,
 };
 
-static vector<GLfloat>	left_texture_coordinates =
+static vector<GLfloat>		left_texture_coordinates =
 {
 	0.f + epsilon, 0.f + epsilon,
 	1.f - epsilon, 0.f + epsilon,
@@ -108,7 +108,7 @@ static vector<GLfloat>	left_texture_coordinates =
 	0.f + epsilon, 1.f - epsilon
 };
 
-static vector<GLfloat>	first_diagonal_vertices =
+static vector<GLfloat>		first_diagonal_vertices =
 {
 	+0.5f, +0.5f, +0.5f,
 	-0.5f, +0.5f, -0.5f,
@@ -116,7 +116,7 @@ static vector<GLfloat>	first_diagonal_vertices =
 	+0.5f, -0.5f, +0.5f,
 };
 
-static vector<GLfloat>	first_diagonal_texture_coordinates =
+static vector<GLfloat>		first_diagonal_texture_coordinates =
 {
 	1.f - epsilon, 1.f - epsilon,
 	0.f + epsilon, 1.f - epsilon,
@@ -124,7 +124,7 @@ static vector<GLfloat>	first_diagonal_texture_coordinates =
 	1.f - epsilon, 0.f + epsilon,
 };
 
-static vector<GLfloat>	second_diagonal_vertices =
+static vector<GLfloat>		second_diagonal_vertices =
 {
 	+0.5f, +0.5f, -0.5f,
 	-0.5f, +0.5f, +0.5f,
@@ -132,7 +132,7 @@ static vector<GLfloat>	second_diagonal_vertices =
 	+0.5f, -0.5f, -0.5f,
 };
 
-static vector<GLfloat>	second_diagonal_texture_coordinates =
+static vector<GLfloat>		second_diagonal_texture_coordinates =
 {
 	1.f - epsilon, 1.f - epsilon,
 	0.f + epsilon, 1.f - epsilon,
@@ -140,15 +140,15 @@ static vector<GLfloat>	second_diagonal_texture_coordinates =
 	1.f - epsilon, 0.f + epsilon,
 };
 
-static vector<GLuint>	indices =
+static vector<GLuint>		indices =
 {
 	0, 1, 3,
 	1, 2, 3
 };
 
-						chunk::chunk(const vec3 &position) :
-							position(position),
-							center(position + chunk_settings::size_as_vector / 2.f)
+							chunk::chunk(const vec3 &position) :
+								position(position),
+								center(position + chunk_settings::size_as_vector / 2.f)
 {
 	workspace_for_opaque.predicate = [](block &block)
 	{
@@ -166,24 +166,20 @@ static vector<GLuint>	indices =
 	};
 }
 
-vec3					chunk::get_position() const
+vec3						chunk::get_position() const
 {
 	return position;
 }
 
-vec3					chunk::get_center() const
+vec3						chunk::get_center() const
 {
 	return center;
 }
 
-// -------------------- Build functions
+// ------------------------ Build functions
 
-std::thread::id			main_thread;
-
-void					chunk::build(build_request request)
+void						chunk::build(build_request request)
 {
-	main_thread = this_thread::get_id();
-
 	switch (request)
 	{
 		case (build_request::reset) :
@@ -218,7 +214,7 @@ void					chunk::build(build_request request)
 	}
 }
 
-void					chunk::wait(build_request request)
+void						chunk::wait(build_request request)
 {
 	switch (request)
 	{
@@ -251,12 +247,12 @@ void					chunk::wait(build_request request)
 	}
 }
 
-void					chunk::build_light()
+void						chunk::build_light()
 {
-	queue<index>		queue;
+	queue<index>			queue;
 
-	chunk::index		index;
-	chunk::index		neighbor_index;
+	chunk::index			index;
+	chunk::index			neighbor_index;
 
 	index.y = chunk_settings::size[1] - 1;
 	for (index.x = 0; index.x < chunk_settings::size[0]; index.x++)
@@ -283,7 +279,7 @@ void					chunk::build_light()
 	}
 }
 
-void					chunk::build_geometry(batch_workspace &workspace)
+void						chunk::build_geometry(batch_workspace &workspace)
 {
 	workspace.vertices.clear();
 	workspace.texture_coordinates.clear();
@@ -297,7 +293,7 @@ void					chunk::build_geometry(batch_workspace &workspace)
 	}
 }
 
-void					chunk::build_model(batch_workspace &workspace)
+void						chunk::build_model(batch_workspace &workspace)
 {
 	workspace.model = make_shared<engine::model>();
 
@@ -313,20 +309,20 @@ void					chunk::build_model(batch_workspace &workspace)
 	workspace.model->bind(false);
 }
 
-// -------------------- Build helpers
+// ------------------------ Build helpers
 
-float					chunk::calculate_ao(const index &index, axis axis, sign sign)
+float						chunk::calculate_ao(const index &index, axis axis, sign sign)
 {
-	optional<block_alias>	central_neighbor;
+	optional<block_pointer>	central_neighbor;
 
-	central_neighbor = block_alias(shared_from_this(), index).get_neighbor(axis, sign);
+	central_neighbor = block_pointer(shared_from_this(), index).get_neighbor(axis, sign);
 	if (not central_neighbor)
 		return (0.f);
 
-	int					occluders_count = 0;
-	const int 			occluders_max_count = 8 * 2;
+	int						occluders_count = 0;
+	const int 				occluders_max_count = 8 * 2;
 
-	optional<block_alias>	occluder;
+	optional<block_pointer>	occluder;
 	for (int first_axis = (int)axis::x; first_axis <= (int)axis::z; first_axis++)
 	{
 		if ((::axis)first_axis == axis)
@@ -362,33 +358,33 @@ float					chunk::calculate_ao(const index &index, axis axis, sign sign)
 		}
 	}
 
-	return ((float)occluders_count / occluders_max_count);
+	return (float)occluders_count / occluders_max_count;
 }
 
-char					chunk::apply_ao(char light_level, float ao)
+char						chunk::apply_ao(char light_level, float ao)
 {
-	const char			dynamic_part = (float)light_level * 0.4f;
-	const char			static_part = light_level - dynamic_part;
+	const char				dynamic_part = (float)light_level * 0.4f;
+	const char				static_part = light_level - dynamic_part;
 
-	const char			ao_result = (float)dynamic_part * (1.f - ao);
+	const char				ao_result = (float)dynamic_part * (1.f - ao);
 
 	return static_part + ao_result;
 }
 
-void					chunk::build_block(batch_workspace &workspace, const index &index)
+void						chunk::build_block(batch_workspace &workspace, const index &index)
 {
-	auto 				try_build_quad = [this, &workspace, index](axis axis, sign sign)
+	auto 					try_build_quad = [this, &workspace, index](axis axis, sign sign)
 	{
-		const auto		this_block_id = block_alias(shared_from_this(), index);
-		const auto 		neighbor_block_id = this_block_id.get_neighbor(axis, sign);
+		const auto			this_block_id = block_pointer(shared_from_this(), index);
+		const auto 			neighbor_block_id = this_block_id.get_neighbor(axis, sign);
 
 		if (neighbor_block_id)
 		{
-			const auto 	this_block = this_block_id();
-			const auto 	neighbor_block = (*neighbor_block_id)();
+			const auto 		this_block = this_block_id();
+			const auto 		neighbor_block = neighbor_block_id.value()();
 
-			const auto 	this_block_meta_type = get_meta_type(this_block.get_type());
-			const auto 	neighbor_block_meta_type = get_meta_type(neighbor_block.get_type());
+			const auto 		this_block_meta_type = get_meta_type(this_block.get_type());
+			const auto 		neighbor_block_meta_type = get_meta_type(neighbor_block.get_type());
 
 			if (is_opaque(this_block_meta_type) and is_transparent_or_partially_transparent(neighbor_block_meta_type));
 			else if (is_transparent(this_block_meta_type) and is_partially_transparent(neighbor_block_meta_type));
@@ -397,8 +393,8 @@ void					chunk::build_block(batch_workspace &workspace, const index &index)
 			else
 				return ;
 
-			auto		ao = calculate_ao(index, axis, sign);
-			auto		light_level = apply_ao(neighbor_block.get_light_level(), ao);
+			const auto		ao = calculate_ao(index, axis, sign);
+			const auto		light_level = apply_ao(neighbor_block.get_light_level(), ao);
 
 			build_quad(workspace, index, (::axis)axis, (::sign)sign, light_level);
 		}
@@ -406,7 +402,7 @@ void					chunk::build_block(batch_workspace &workspace, const index &index)
 			build_quad(workspace, index, (::axis)axis, (::sign)sign, block_settings::default_light_level);
 	};
 
-	auto				&this_block = at(index);
+	auto					&this_block = at(index);
 
 	if (is_empty(get_meta_type((this_block.get_type()))))
 		return ;
@@ -426,23 +422,23 @@ void					chunk::build_block(batch_workspace &workspace, const index &index)
 	}
 }
 
-template				<typename type>
-void					append_to_vector(vector<type> &target, const vector<type> &source)
+template					<typename type>
+void						append_to_vector(vector<type> &target, const vector<type> &source)
 {
 	target.insert(target.end(), source.begin(), source.end());
 }
 
-void					chunk::build_quad(
-							batch_workspace &workspace,
-							const index &index,
-							axis axis,
-							sign sign,
-							char light_level)
+void						chunk::build_quad(
+								batch_workspace &workspace,
+								const index &index,
+								axis axis,
+								sign sign,
+								char light_level)
 {
-	const auto			&block = at(index);
-	const auto			block_meta_type = get_meta_type(block.get_type());
+	const auto				&block = at(index);
+	const auto				block_meta_type = get_meta_type(block.get_type());
 
-	auto				texture_index = ivec2(0);
+	auto					texture_index = ivec2(0);
 
 	light_level = max(block_settings::light_level_min, light_level);
 	if (axis == axis::x and sign == sign::plus)
@@ -509,9 +505,9 @@ void					chunk::build_quad(
 		workspace.vertices[i + 2] += (float)index.z;
 	}
 
-	auto				transform_texture_coordinate = [texture_index](float &x, float &y)
+	auto					transform_texture_coordinate = [texture_index](float &x, float &y)
 	{
-		static vec2 	size = texture_atlas::get_texture_size();
+		static vec2 		size = texture_atlas::get_texture_size();
 
 		x = size.x *((float)texture_index.x + x);
 		y = size.y *((float)texture_index.y + y);
@@ -520,13 +516,13 @@ void					chunk::build_quad(
 	for (int i = (int)workspace.texture_coordinates.size() - 8; i < (int)workspace.texture_coordinates.size(); i += 2)
 		transform_texture_coordinate(workspace.texture_coordinates[i + 0], workspace.texture_coordinates[i + 1]);
 
-	const int			offset = (int)workspace.indices.size() / 6 * 4;
+	const int				offset = (int)workspace.indices.size() / 6 * 4;
 
 	append_to_vector(workspace.indices, indices);
 	for (int i = (int)workspace.indices.size() - 6; i < (int)workspace.indices.size(); i++)
 		workspace.indices[i] += offset;
 
-	auto 				normalized_light_level = (float)light_level / block_settings::light_level_max;
+	auto 					normalized_light_level = (float)light_level / block_settings::light_level_max;
 
 	for (int i = 0; i < 4; i++)
 		workspace.light_levels.push_back(normalized_light_level);

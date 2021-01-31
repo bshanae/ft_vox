@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/world/chunk/block/block_alias/block_alias.h"
+#include "game/world/chunk/block/block_pointer/block_pointer.h"
 
 namespace				game
 {

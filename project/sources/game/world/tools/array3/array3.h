@@ -34,7 +34,7 @@ public :
 
 	virtual						~array3() = default;
 
-	struct						index
+	struct						index final
 	{
 		friend class			array3;
 

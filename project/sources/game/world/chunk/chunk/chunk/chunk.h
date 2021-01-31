@@ -2,7 +2,7 @@
 
 #include "game/world/tools/array3/array3.h"
 #include "game/world/chunk/block/block/block.h"
-#include "game/world/chunk/block/block_alias/block_alias.h"
+#include "game/world/chunk/block/block_pointer/block_pointer.h"
 #include "game/world/chunk/chunk/chunk/chunk_settings.h"
 
 #include "application/common/imports/opengl.h"
@@ -15,7 +15,7 @@ namespace							engine
 
 namespace							game
 {
-	class							block_alias;
+	class							block_pointer;
 	class							world;
 	class							chunk_renderer;
 
@@ -26,7 +26,7 @@ class								game::chunk :
 										public chunk_settings::underlying_array,
 										public enable_shared_from_this<chunk>
 {
-	friend class					block_alias;
+	friend class					block_pointer;
 	friend class 					world;
 	friend class 					chunk_renderer;
 
