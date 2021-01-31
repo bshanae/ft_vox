@@ -1,6 +1,6 @@
 #include "block.h"
 
-#include "game/world/utils/array3/array3.h"
+#include "game/world/tools/array3/array3.h"
 
 #include "application/common/debug/debug.h"
 

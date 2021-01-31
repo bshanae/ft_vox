@@ -1,7 +1,7 @@
 #include "block_alias.h"
 
-#include "game/world/utils/aabb/aabb.h"
-#include "game/world/utils/array3/array3.h"
+#include "game/world/tools/aabb/aabb.h"
+#include "game/world/tools/array3/array3.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/world/world.h"
 

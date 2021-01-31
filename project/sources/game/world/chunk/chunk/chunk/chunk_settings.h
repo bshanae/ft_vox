@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/world/utils/array3/array3.h"
+#include "game/world/tools/array3/array3.h"
 #include "game/world/chunk/block/block/block.h"
 
 #include "application/common/imports/opengl.h"

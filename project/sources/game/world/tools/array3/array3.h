@@ -1,7 +1,7 @@
 #pragma once
 
-#include "game/world/utils/axis/axis.h"
-#include "game/world/utils/sign/sign.h"
+#include "game/world/tools/axis/axis.h"
+#include "game/world/tools/sign/sign.h"
 
 #include "application/common/debug/debug.h"
 #include "application/common/imports/glm.h"

@@ -3,7 +3,7 @@
 #include "engine/main/core/object/object_manipulator/object_manipulator.h"
 #include "engine/main/rendering/camera/camera.h"
 
-#include "game/world/utils/aabb/aabb.h"
+#include "game/world/tools/aabb/aabb.h"
 #include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/chunk/chunk/chunk_renderer/chunk_renderer.h"
