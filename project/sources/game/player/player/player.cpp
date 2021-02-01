@@ -58,29 +58,10 @@ void 					player::process_input()
 		offset_camera_if_possible(player_settings::flight_lift * speed_up);
 
 	if (input::is_pressed(input::key::mouse_left))
-	{
-		if (auto hit = ray_caster::cast_ray(); hit)
-		{
-			world::world::remove_block(hit->block);
-			should_cast_ray = true;
-		}
-	}
+		try_remove_block();
 
 	if (input::is_pressed(input::key::mouse_right))
-	{
-		if (auto hit = ray_caster::cast_ray(); hit)
-		{
-			auto 	axis_and_sign = to_axis_and_sign(hit->face);
-			auto	neighbor = hit->block.get_neighbor(axis_and_sign.first, axis_and_sign.second);
-
-			if (!debug::check(neighbor != nullopt, "[game::player] Can't put block"))
-				return;
-
-			world::world::insert_block(*neighbor, block_type::dirt_with_grass);
-
-			should_cast_ray = true;
-		}
-	}
+		try_place_block();
 }
 
 void 					player::process_selection()
@@ -96,6 +77,34 @@ void 					player::process_selection()
 			world::world::unselect_block();
 
 		should_cast_ray = false;
+	}
+}
+
+void					player::try_place_block()
+{
+	if (auto hit = ray_caster::cast_ray(); hit)
+	{
+		auto 			axis_and_sign = to_axis_and_sign(hit->face);
+		auto			neighbor = hit->block.get_neighbor(axis_and_sign.first, axis_and_sign.second);
+
+		if (!debug::check(neighbor != nullopt, "[game::player] Can't put block"))
+			return;
+
+		world::world::insert_block(*neighbor, block_type::dirt_with_grass);
+
+		if (world::world::does_collide(get_aabb(camera::get_position())))
+			world::world::remove_block(*neighbor);
+		else
+			should_cast_ray = true;
+	}
+}
+
+void					player::try_remove_block()
+{
+	if (auto hit = ray_caster::cast_ray(); hit)
+	{
+		world::world::remove_block(hit->block);
+		should_cast_ray = true;
 	}
 }
 

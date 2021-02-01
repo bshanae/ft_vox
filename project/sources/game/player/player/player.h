@@ -30,6 +30,9 @@ private :
 	void 			process_input();
 	void 			process_selection();
 
+	void			try_place_block();
+	void			try_remove_block();
+
 	aabb			get_aabb(const vec3 &position) const;
 	void			offset_camera_if_possible(const vec3 &offset) const;
 };
