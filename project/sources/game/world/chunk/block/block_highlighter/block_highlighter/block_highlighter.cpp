@@ -89,7 +89,7 @@ static vector<GLuint>	face_indices = {0, 1, 2, 3};
 
 						block_highlighter::block_highlighter()
 {
-	set_layout("Transparent");
+	set_layout("Opaque");
 }
 
 vec3					block_highlighter::get_translation()
