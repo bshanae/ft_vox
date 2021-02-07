@@ -40,7 +40,8 @@ public :
 
 	vec3							get_position() const;
 	vec3							get_center() const;
-	bool							is_built() const;
+
+	bool							is_valid() const;
 
 	void							set_visible(bool state);
 
@@ -57,5 +58,6 @@ private :
 	shared_ptr<engine::model>		model_for_transparent;
 	shared_ptr<engine::model>		model_for_partially_transparent;
 
-	bool							is_visible = true;
+	bool							is_built;
+	bool							is_visible;
 };

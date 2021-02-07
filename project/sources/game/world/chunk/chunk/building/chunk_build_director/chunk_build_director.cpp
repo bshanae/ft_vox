@@ -12,38 +12,50 @@ using							build_type = chunk_build_director::build;
 
 optional<build_type>			chunk_build_director::process_build(const shared_ptr<chunk> &chunk)
 {
-	shared_ptr<chunk_workspace>	workspace;
+	auto 						instance = get_instance();
+	shared_ptr<chunk_workspace>	workspace = instance->get_or_create_workspace(chunk);
 
-	workspace = get_instance()->get_or_create_workspace(chunk);
-	switch (workspace->state)
+	engine::timer				timer(2 / 60.f);
+
+	while (true)
 	{
-		case chunk_workspace::nothing_done:
-			log_requesting_light_build(chunk);
-			chunk_light_builder::launch(workspace);
-			break;
+		if (timer.did_finish())
+			return nullopt;
 
-		case chunk_workspace::light_done:
-			if (are_all_neighbors_present_and_have_light(chunk))
-			{
-				log_requesting_geometry_build(chunk);
-				chunk_geometry_builder::launch(workspace);
-			}
-			break;
+		switch (workspace->state)
+		{
+			case chunk_workspace::nothing_done:
+				log_requesting_light_build(chunk);
+				chunk_light_builder::launch(workspace);
+				break;
 
-		case chunk_workspace::geometry_in_process:
-			chunk_geometry_builder::wait(workspace);
-			break;
+			case chunk_workspace::light_done:
+				if (are_all_neighbors_present_and_have_light(chunk))
+				{
+					log_requesting_geometry_build(chunk);
+					chunk_geometry_builder::launch(workspace);
+				}
+				break;
 
-		case chunk_workspace::geometry_done:
-			log_requesting_model_build(chunk);
-			chunk_model_builder::launch(workspace);
-			break;
+			case chunk_workspace::geometry_in_process:
+				chunk_geometry_builder::wait(workspace);
+				break;
 
-		case chunk_workspace::model_done:
-			return optional<chunk_build_director::build>(package_build(workspace));
+			case chunk_workspace::geometry_done:
+				log_requesting_model_build(chunk);
+				chunk_model_builder::launch(workspace);
+				break;
 
-		case chunk_workspace::light_in_process:
-		case chunk_workspace::model_in_process:
+			case chunk_workspace::model_done:
+				workspace->build_at_once = false;
+				return optional<chunk_build_director::build>(package_build(workspace));
+
+			case chunk_workspace::light_in_process:
+			case chunk_workspace::model_in_process:
+				break;
+		}
+
+		if (not workspace->build_at_once)
 			break;
 	}
 
@@ -54,6 +66,10 @@ void							chunk_build_director::invalidate_build(const shared_ptr<chunk> &chunk
 {
 	if (auto workspace = get_instance()->get_workspace(chunk); workspace != nullptr)
 		workspace->reset();
+}
+void							chunk_build_director::do_build_at_once(const shared_ptr<chunk> &chunk)
+{
+	get_instance()->get_or_create_workspace(chunk)->build_at_once = true;
 }
 
 shared_ptr<chunk_workspace>		chunk_build_director::get_workspace(const shared_ptr<chunk> &chunk) const

@@ -4,7 +4,8 @@ using namespace				game;
 
 							chunk_workspace::chunk_workspace(const shared_ptr<game::chunk> &chunk) :
 								chunk(chunk),
-								state(nothing_done)
+								state(nothing_done),
+								build_at_once(false)
 {}
 
 void						chunk_workspace::reset()

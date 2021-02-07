@@ -58,4 +58,6 @@ public :
 	batch							batch_for_opaque;
 	batch							batch_for_transparent;
  	batch							batch_for_partially_transparent;
+
+ 	bool							build_at_once;
 };

@@ -28,6 +28,7 @@ public :
 
 	static optional<build>		process_build(const shared_ptr<chunk> &chunk);
 	static void 				invalidate_build(const shared_ptr<chunk> &chunk);
+	static void					do_build_at_once(const shared_ptr<chunk> &chunk);
 
 private :
 

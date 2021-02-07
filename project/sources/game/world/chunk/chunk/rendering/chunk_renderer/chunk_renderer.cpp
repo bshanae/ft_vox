@@ -45,7 +45,7 @@ void					chunk_renderer::set_apply_water_tint(bool value)
 
 void					chunk_renderer::render(const shared_ptr<chunk> &chunk, group group)
 {
-	if (not chunk->is_built() or not chunk->is_visible)
+	if (not chunk->is_valid() or not chunk->is_visible)
 		return ;
 
 	switch (group)

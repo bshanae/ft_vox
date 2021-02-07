@@ -8,7 +8,9 @@ using namespace				game;
 
 							chunk::chunk(const vec3 &position) :
 								position(position),
-								center(position + chunk_settings::size_as_vector / 2.f)
+								center(position + chunk_settings::size_as_vector / 2.f),
+								is_built(false),
+								is_visible(true)
 {}
 
 vec3						chunk::get_position() const
@@ -21,7 +23,7 @@ vec3						chunk::get_center() const
 	return center;
 }
 
-bool						chunk::is_built() const
+bool						chunk::is_valid() const
 {
 	return
 	(
@@ -48,20 +50,22 @@ void						chunk::update_build()
 		model_for_opaque = build->model_for_opaque;
 		model_for_transparent = build->model_for_transparent;
 		model_for_partially_transparent = build->model_for_partially_transparent;
+		is_built = true;
 	}
 }
 
 void						chunk::update_build_if_needed()
 {
-	if (!is_built())
+	if (!is_built)
 		update_build();
 }
 
 void						chunk::reset_build()
 {
-	model_for_opaque = nullptr;
-	model_for_transparent = nullptr;
-	model_for_partially_transparent = nullptr;
+	const auto				pointer = shared_from_this();
 
-	chunk_build_director::invalidate_build(shared_from_this());
+	is_built = false;
+
+	chunk_build_director::do_build_at_once(pointer);
+	chunk_build_director::invalidate_build(pointer);
 }

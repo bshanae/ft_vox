@@ -86,12 +86,17 @@ private :
 // ----------------------------	Object methods
 
 	void						when_initialized() override;
-	void						when_deinitialized() override;
 
 	void						when_updated() override;
 	void						when_rendered() override;
 
 // ----------------------------	Additional methods
+
+	void						update_pivot();
+	void						update_chunks_builds();
+	void						destroy_far_chunks();
+	void						process_new_chunks();
+	void						process_old_chunks();
 
 	bool						create_chunk_if_needed(const vec3 &position);
 	bool						destroy_chunk_if_needed(const shared_ptr<chunk> &chunk);

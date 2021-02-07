@@ -21,7 +21,6 @@ static const vec3			back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 							world::world()
 {
 	set_layout("Opaque");
-	update_timer = timer(world_settings::chunks_generation_time_limit);
 }
 
 optional<block_pointer>		world::world::find_block(const vec3 &position)
@@ -165,49 +164,18 @@ void						world::when_initialized()
 	create_chunk(back);
 }
 
-void						world::when_deinitialized() {}
-
 void						world::when_updated()
 {
-	update_timer.execute();
+	update_timer = timer(world_settings::chunks_generation_time_limit);
 
-	pivot.x = camera::get_position().x;
-	pivot.z = camera::get_position().z;
+	update_pivot();
 
-	for (auto [position, chunk] : chunks)
-	{
-		if (update_timer.get_state() == timer::finished)
-			break;
+	update_chunks_builds();
 
-		request_build(chunk);
-	}
+	destroy_far_chunks();
 
-	for (auto [position, chunk] : chunks)
-	{
-		chunk->set_visible(distance(chunk) < world_settings::visibility_limit);
-
-		if (update_timer.get_state() == timer::running)
-		{
-			create_chunk_if_needed(position + left);
-			create_chunk_if_needed(position + right);
-			create_chunk_if_needed(position + forward);
-			create_chunk_if_needed(position + back);
-
-			destroy_chunk_if_needed(chunk);
-		}
-	}
-
-	unique_lock				lock(map_mutex);
-
-	for (auto [position, chunk] : new_chunks)
-		chunks[position] = chunk;
-	new_chunks.clear();
-
-	for (auto &chunk : old_chunks)
-		chunks.erase(chunk->get_position());
-	old_chunks.clear();
-
-	lock.unlock();
+	process_new_chunks();
+	process_old_chunks();
 }
 
 void						world::when_rendered()
@@ -231,6 +199,62 @@ void						world::when_rendered()
 }
 
 // ------------------------ Additional methods
+
+void						world::update_pivot()
+{
+	pivot.x = camera::get_position().x;
+	pivot.z = camera::get_position().z;
+}
+
+void						world::update_chunks_builds()
+{
+	for (auto [position, chunk] : chunks)
+	{
+		if (update_timer.did_finish())
+			break;
+
+		request_build(chunk);
+	}
+}
+
+void						world::destroy_far_chunks()
+{
+	for (auto [position, chunk] : chunks)
+	{
+		if (update_timer.did_finish())
+			break;
+
+		chunk->set_visible(distance(chunk) < world_settings::visibility_limit);
+
+		if (update_timer.is_running())
+		{
+			create_chunk_if_needed(position + left);
+			create_chunk_if_needed(position + right);
+			create_chunk_if_needed(position + forward);
+			create_chunk_if_needed(position + back);
+
+			destroy_chunk_if_needed(chunk);
+		}
+	}
+}
+
+void						world::process_new_chunks()
+{
+	lock_guard				lock(map_mutex);
+
+	for (auto [position, chunk] : new_chunks)
+		chunks[position] = chunk;
+	new_chunks.clear();
+}
+
+void						world::process_old_chunks()
+{
+	lock_guard				lock(map_mutex);
+
+	for (auto &chunk : old_chunks)
+		chunks.erase(chunk->get_position());
+	old_chunks.clear();
+}
 
 bool						world::create_chunk_if_needed(const vec3 &position)
 {

@@ -12,34 +12,17 @@ class				engine::timer
 {
 public :
 
-	enum			state
-	{
-		waiting,
-		running,
-		finished
-	};
-
 					timer();
 	explicit		timer(float value);
-	virtual			~timer() = default;
+					~timer() = default;
 
-	enum state		get_state() const
-	{
-		return state;
-	}
-
-	float			get_progress() const;
-
-	void 			execute();
-	void 			reset();
-
-	void			update();
+	bool 			is_running() const;
+	bool 			did_finish() const;
 
 private :
 
-	state			state;
-	optional<float>	total;
+	void			update() const;
 
-	float			last = 0.f;
-	float			left = 0.f;
+	mutable float	last = 0.f;
+	mutable float	left = 0.f;
 };
