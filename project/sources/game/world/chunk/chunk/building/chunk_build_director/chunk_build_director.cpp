@@ -15,12 +15,12 @@ optional<build_type>			chunk_build_director::process_build(const shared_ptr<chun
 	auto 						instance = get_instance();
 	shared_ptr<chunk_workspace>	workspace = instance->get_or_create_workspace(chunk);
 
-	engine::timer				timer(2 / 60.f);
+	engine::timer				timer(10 / 60.f);
 
 	while (true)
 	{
 		if (timer.did_finish())
-			return nullopt;
+			break;
 
 		switch (workspace->state)
 		{
@@ -58,6 +58,10 @@ optional<build_type>			chunk_build_director::process_build(const shared_ptr<chun
 		if (not workspace->build_at_once)
 			break;
 	}
+
+	// If we can't build workspace in one frame, that means that, neighbor chunks are not ready
+	// So we shouldn't try to build the chunk
+	workspace->build_at_once = false;
 
 	return nullopt;
 }

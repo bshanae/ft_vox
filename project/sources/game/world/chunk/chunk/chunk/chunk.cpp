@@ -1,5 +1,7 @@
 #include "chunk.h"
 
+#include "application/common/debug/defines.h"
+
 #include "engine/main/rendering/model/model/model.h"
 
 #include "game/world/chunk/chunk/building/chunk_build_director/chunk_build_director.h"
@@ -65,6 +67,12 @@ void						chunk::reset_build()
 	const auto				pointer = shared_from_this();
 
 	is_built = false;
+
+#if FT_VOX_DEBUG // Makes chunk disappear if it wasn't rebuilt in one frame
+	model_for_opaque = nullptr;
+	model_for_transparent = nullptr;
+	model_for_partially_transparent = nullptr;
+#endif
 
 	chunk_build_director::do_build_at_once(pointer);
 	chunk_build_director::invalidate_build(pointer);
