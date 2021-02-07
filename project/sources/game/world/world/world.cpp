@@ -41,8 +41,6 @@ optional<block_pointer>		world::world::find_block(const vec3 &position)
 	index.y = (int)(position.y - chunk_position.y);
 	index.z = (int)(position.z - chunk_position.z);
 
-	chunk_position.y = 0;
-
 	if (chunk = get_instance()->find_chunk(chunk_position); not chunk or not index)
 		return nullopt;
 	else
