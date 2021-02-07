@@ -23,7 +23,7 @@ using namespace		engine;
 	if (not success)
 	{
 		log_error();
-		debug::raise_error("[engine::program] Compilation error");
+		debug::raise_error("[program] Compilation error");
 	}
 }
 

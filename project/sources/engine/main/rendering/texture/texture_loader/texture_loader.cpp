@@ -21,7 +21,7 @@ shared_ptr<texture>		texture_loader::load(const path &source)
 	texture = make_shared<engine::texture>();
 
 	data = stbi_load(source.c_str(), &width, &height, &number_of_components, 0);
-	debug::check_critical(data != nullptr, "[engine::texture_loader] Can't create texture_atlas");
+	debug::check_critical(data != nullptr, "[texture_loader] Can't create texture_atlas");
 
 	switch (number_of_components)
 	{
@@ -38,7 +38,7 @@ shared_ptr<texture>		texture_loader::load(const path &source)
 			break ;
 
 		default :
-			debug::raise_error("[engine::texture_loader] Unknown texture format");
+			debug::raise_error("[texture_loader] Unknown texture format");
 			return nullptr;
 
 	}

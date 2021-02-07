@@ -53,7 +53,7 @@ void 				text::when_rendered()
 {
 	if (font == nullptr)
 	{
-		debug::raise_warning("[engine::text] Can't render, because font is not set");
+		debug::raise_warning("[text] Can't render, because font is not set");
 		return;
 	}
 

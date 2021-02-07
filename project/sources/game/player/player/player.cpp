@@ -70,7 +70,7 @@ void 					player::process_selection()
 	{
 		if (auto hit = ray_caster::cast_ray(); hit)
 		{
-			debug::log("[game::player] Selected block : " + to_string(hit->block.get_world_position()));
+			debug::log("[player] Selected block at " + to_string(hit->block.get_world_position()));
 			world::world::select_block(hit->block, hit->face);
 		}
 		else
@@ -87,7 +87,7 @@ void					player::try_place_block()
 		auto 			axis_and_sign = to_axis_and_sign(hit->face);
 		auto			neighbor = hit->block.get_neighbor(axis_and_sign.first, axis_and_sign.second);
 
-		if (!debug::check(neighbor != nullopt, "[game::player] Can't put block"))
+		if (!debug::check(neighbor != nullopt, "[player] Can't put block"))
 			return;
 
 		world::world::insert_block(*neighbor, block_type::dirt_with_grass);

@@ -8,17 +8,17 @@ using namespace				game;
 
 							texture_atlas::texture_atlas()
 {
-	_texture = engine::texture_loader::load("project/resources/atlases/default.png");
+	texture = engine::texture_loader::load("project/resources/atlases/default.png");
 
 	debug::check_critical
 	(
-		_texture->get_width() % texture_size_in_pixels[0] == 0 &&
-		_texture->get_height() % texture_size_in_pixels[1] == 0,
-		"[game::texture_atlas] Can't index texture atlas"
+		texture->get_width() % texture_size_in_pixels[0] == 0 &&
+		texture->get_height() % texture_size_in_pixels[1] == 0,
+		"[texture_atlas] Can't index texture atlas"
 	);
 
-	_number_of_textures.x = _texture->get_width() / texture_size_in_pixels[0];
-	_number_of_textures.y = _texture->get_height() / texture_size_in_pixels[1];
+	number_of_textures.x = texture->get_width() / texture_size_in_pixels[0];
+	number_of_textures.y = texture->get_height() / texture_size_in_pixels[1];
 
 }
 
@@ -26,23 +26,25 @@ vec2						texture_atlas::get_texture_size()
 {
 	return
 	{
-		1.f / (float)get_instance()->_number_of_textures.x,
-		1.f / (float)get_instance()->_number_of_textures.y
+		1.f / (float)get_instance()->number_of_textures.x,
+		1.f / (float)get_instance()->number_of_textures.y
 	};
 }
 
 game::texture_coordinates	&texture_atlas::get_coordinates(block_type type)
 {
-	auto 					instance = texture_atlas::get_instance();
-	auto 					iterator = instance->_map.find(type);
+	const auto 				instance = texture_atlas::get_instance();
+	const auto				lock_guard = std::lock_guard(instance->mutex);
 
-	if (iterator == instance->_map.end())
-		instance->_map.try_emplace(type);
+	const auto 				iterator = instance->map.find(type);
 
-	return instance->_map.at(type);
+	if (iterator == instance->map.end())
+		instance->map.try_emplace(type);
+
+	return instance->map.at(type);
 }
 
 void						texture_atlas::use(bool state)
 {
-	get_instance()->_texture->use(state);
+	get_instance()->texture->use(state);
 }

@@ -112,7 +112,7 @@ void				model::add_ebo(const vector<GLuint> &indices)
 
 	if (number_of_indices != 0)
 	{
-		debug::raise_warning("[engine::model] Can't add EBO more than once");
+		debug::raise_warning("[model] Can't add EBO more than once");
 		return;
 	}
 

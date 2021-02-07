@@ -24,7 +24,7 @@ public :
 
 	void			upload(const type &data) const
 	{
-		debug::check(value != -1u, "[engine::uniform] Uniform is not found");
+		debug::check(value != -1u, "[uniform] Uniform is not found");
 
 		if constexpr (is_same<type, int>::value)
 			glUniform1i(value, data);
@@ -37,7 +37,7 @@ public :
 		else if constexpr (is_same<type, mat4>::value)
 			glUniformMatrix4fv(value, 1, GL_FALSE, value_ptr(data));
 		else
-			debug::raise_error("[engine::uniform] Unknown uniform type");
+			debug::raise_error("[uniform] Unknown uniform type");
 	}
 
 private :

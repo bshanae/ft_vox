@@ -26,7 +26,7 @@ shared_ptr<layout>				layout_manager::find(const string &name)
 			return layout;
 	}
 
-	debug::raise_error("[engine::layout_manager] Layout not found");
+	debug::raise_error("[layout_manager] Layout not found");
 	return nullptr;
 }
 
@@ -42,7 +42,7 @@ void							layout_manager::when_notified(const object_storage_event &pocket)
 	else if (type_utility::check_type<object_was_removed>(pocket))
 		get_instance()->remove(pocket.get_object());
 	else
-		debug::raise_warning("[engine::layout_manager] Can't parse 'object_storage_event'");
+		debug::raise_warning("[layout_manager] Can't parse 'object_storage_event'");
 }
 
 void							layout_manager::add(const shared_ptr<object> &object)

@@ -47,12 +47,12 @@ enum biome::type	biome::get_type() const
 
 enum block_type		biome::get_first_layer() const
 {
-	debug::check_critical(type != biome::null, "[game::biome] Bad type");
+	debug::check_critical(type != biome::null, "[biome] Bad type");
 	return first_layer;
 }
 
 int 				biome::generate_height(const vec3 &position) const
 {
-	debug::check_critical(type != biome::null, "[game::biome] Bad type");
+	debug::check_critical(type != biome::null, "[biome] Bad type");
 	return (int)noise.generate(vec2(position.x, position.z));
 }

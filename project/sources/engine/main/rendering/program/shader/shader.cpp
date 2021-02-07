@@ -25,7 +25,7 @@ using namespace			engine;
 	if (not success)
 	{
 		log_error(raw_string);
-		debug::raise_error("[engine::shader] Compilation error");
+		debug::raise_error("[shader] Compilation error");
 	}
 }
 
@@ -39,7 +39,7 @@ void					shader::write_file_to_stream(stringstream &stream, const path &path)
 	ifstream			file;
 
 	file.open(path);
-	debug::check_critical(file.is_open(), "[engine::shader] Can't read file at '%s'", path.c_str());
+	debug::check_critical(file.is_open(), "[shader] Can't read file at '%s'", path.c_str());
 
 	stream << file.rdbuf();
 	file.close();

@@ -27,12 +27,20 @@ class								game::chunk_renderer :
 										public engine::unique_object_constructor<game::chunk_renderer>
 {
 public :
+
+	enum class						group
+	{
+		opaque,
+		transparent,
+		partially_transparent
+	};
+
 									chunk_renderer();
 									~chunk_renderer() override = default;
 
 	static void						set_apply_water_tint(bool value);
 
-	static void						render(const shared_ptr<chunk> &chunk, chunk::batch_purpose purpose);
+	static void						render(const shared_ptr<chunk> &chunk, group group);
 
 private :
 
@@ -51,4 +59,10 @@ private :
 	engine::uniform<float>			uniform_fog_density;
 	engine::uniform<float>			uniform_fog_gradient;
 	engine::uniform<int>			uniform_apply_water_tint;
+
+	static void						render
+									(
+										const shared_ptr<engine::model> &model,
+										float alpha_discard_floor = 0.f
+									);
 };

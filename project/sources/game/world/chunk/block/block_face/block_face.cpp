@@ -19,7 +19,7 @@ block_face			game::from_axis_and_sign(axis axis, sign sign)
 	if (axis == axis::y and sign == sign::minus)
 		return block_face::bottom;
 
-	debug::raise_warning("[game::block] Can't translate face from axis and sign");
+	debug::raise_warning("[block] Can't translate face from axis and sign");
 	return block_face::left;
 }
 

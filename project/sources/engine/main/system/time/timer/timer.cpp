@@ -26,7 +26,7 @@ float				timer::get_progress() const
 
 void 				timer::execute()
 {
-	if (!debug::check(total != nullopt, "[engine::timer] Can't start timer"))
+	if (!debug::check(total != nullopt, "[timer] Can't start timer"))
 		return;
 
 	left = *total;

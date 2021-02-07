@@ -43,34 +43,37 @@ void					chunk_renderer::set_apply_water_tint(bool value)
 	get_instance()->apply_water_tint = value;
 }
 
-void					chunk_renderer::render(const shared_ptr<chunk> &chunk, chunk::batch_purpose purpose)
+void					chunk_renderer::render(const shared_ptr<chunk> &chunk, group group)
 {
-	auto 				instance = get_instance();
-
-	shared_ptr<model>	model;
-	float				alpha_discard_floor = 0.f;
-
-	if (not chunk->is_visible)
+	if (not chunk->is_built() or not chunk->is_visible)
 		return ;
 
-	switch (purpose)
+	switch (group)
 	{
-		case (chunk::batch_purpose::opaque) :
-			model = chunk->workspace_for_opaque.model;
+		case (group::opaque) :
+			render(chunk->model_for_opaque);
 			break ;
 
-		case (chunk::batch_purpose::transparent) :
-			model = chunk->workspace_for_transparent.model;
+		case (group::transparent) :
+			render(chunk->model_for_transparent);
 			break ;
 
-		case (chunk::batch_purpose::partially_transparent) :
-			model = chunk->workspace_for_partially_transparent.model;
-			alpha_discard_floor = 0.8f;
+		case (group::partially_transparent) :
+			render(chunk->model_for_partially_transparent, 0.8f);
 			break ;
 	}
+}
 
-	if (not model)
-		return ;
+void					chunk_renderer::render
+						(
+							const shared_ptr<engine::model> &model,
+							float alpha_discard_floor
+						)
+{
+	const auto 			instance = get_instance();
+
+	if (!debug::check(model != nullptr, "[chunk_renderer] Model is nullptr"))
+		return;
 
 	instance->program->bind(true);
 

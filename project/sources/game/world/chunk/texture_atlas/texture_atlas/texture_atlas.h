@@ -36,7 +36,8 @@ private :
 
 	static inline constexpr int			texture_size_in_pixels[2] = {48, 48};
 
-	shared_ptr<engine::texture>			_texture;
-	ivec2 								_number_of_textures = ivec2(0);
-	map_type							_map;
+	shared_ptr<engine::texture>			texture;
+	ivec2 								number_of_textures = ivec2(0);
+	map_type							map;
+	shared_mutex						mutex;
 };

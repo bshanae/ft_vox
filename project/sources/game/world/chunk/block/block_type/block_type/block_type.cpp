@@ -23,5 +23,5 @@ block_meta_type		game::get_meta_type(block_type type)
 			return block_meta_type::diagonal;
 	}
 
-	debug::raise_error("[game::block_type] Unexpected code branch");
+	debug::raise_error("[block_type] Unexpected code branch");
 }

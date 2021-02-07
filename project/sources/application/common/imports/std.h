@@ -78,15 +78,19 @@ using				std::ios;
 #include <future>
 
 using				std::mutex;
+using				std::lock_guard;
 using				std::shared_mutex;
 using				std::shared_lock;
 using				std::unique_lock;
 
+using				std::thread;
 using				std::async;
 using				std::launch;
 using				std::future;
 using				std::future_status;
 using				std::promise;
+
+using				std::atomic;
 
 namespace			this_thread = std::this_thread;
 
@@ -123,5 +127,6 @@ using				std::filesystem::exists;
 using				std::min;
 using				std::max;
 using				std::hash;
+using				std::make_optional;
 
 #pragma endregion

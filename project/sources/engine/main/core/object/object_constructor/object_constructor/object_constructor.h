@@ -17,7 +17,7 @@ class 							object_constructor
 		instance = make_shared<type>(args...);
 
 		instance_as_object = dynamic_pointer_cast<object>(instance);
-		debug::check_critical(instance_as_object != nullptr, "[engine::object_constructor] Target type doesn't derive from engine::object");
+		debug::check_critical(instance_as_object != nullptr, "[object_constructor] Target type doesn't derive from engine::object");
 
 		object_storage::add(instance_as_object);
 		return instance;

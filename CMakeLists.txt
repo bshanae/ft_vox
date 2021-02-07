@@ -67,10 +67,6 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/font_library/font_library.cpp
 
 	# Game : World
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk/chunk.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk_renderer/chunk_renderer.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome/biome_collection/biome_collection.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome/biome/biome.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_face/block_face.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_type/block_type/block_type.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block_type/block_meta_type/block_meta_type.cpp
@@ -80,6 +76,15 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/game/world/chunk/block/block/block.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/texture_atlas/texture_coordinates/texture_coordinates.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/texture_atlas/texture_atlas/texture_atlas.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/building/chunk_workspace/chunk_workspace.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/building/builders/chunk_light_builder/chunk_light_builder.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/building/builders/chunk_geometry_builder/chunk_geometry_builder.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/building/builders/chunk_model_builder/chunk_model_builder.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/building/chunk_build_director/chunk_build_director.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/rendering/chunk_renderer/chunk_renderer.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk/chunk.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome/biome_collection/biome_collection.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/generator/biome/biome/biome.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/generator/generator/generator.cpp
 	${SOURCES_DIRECTORY}/game/world/world/world.cpp
 	${SOURCES_DIRECTORY}/game/world/skybox/skybox.cpp

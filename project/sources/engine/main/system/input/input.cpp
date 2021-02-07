@@ -140,7 +140,7 @@ input::state		input::get_state_for_key(enum key key) const
 {
 	const auto		iterator = states.find(key);
 
-	debug::check_critical(iterator != states.end(), "[engine::input] Can't find a key");
+	debug::check_critical(iterator != states.end(), "[input] Can't find a key");
 	return iterator->second;
 }
 

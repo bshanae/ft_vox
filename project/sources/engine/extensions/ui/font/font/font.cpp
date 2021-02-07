@@ -11,7 +11,7 @@ using namespace			engine::ui;
 {
 	auto				library = font_library::get_instance()->library;
 
-	debug::check_critical(FT_New_Face(library, source.c_str(), 0, &face) == 0, "[engine::font] Can't initialize instance");
+	debug::check_critical(FT_New_Face(library, source.c_str(), 0, &face) == 0, "[font] Can't initialize instance");
 	FT_Set_Pixel_Sizes(face, 0, width);
 }
 
@@ -21,7 +21,7 @@ shared_ptr<symbol>		font::find_symbol(char task) const
 
 	if (result == map.end())
 	{
-		debug::raise_warning("[engine::font] Symbol '%c' not found", task);
+		debug::raise_warning("[font] Symbol '%c' not found", task);
 		return nullptr;
 	}
 
@@ -38,7 +38,7 @@ shared_ptr<symbol>		font::build_symbol(char task)
 {
 	shared_ptr<symbol>	new_symbol;
 
-	debug::check_critical(FT_Load_Char(face, task, FT_LOAD_RENDER) != 0, "[engine::font] Can't build symbol '%c'", task);
+	debug::check_critical(FT_Load_Char(face, task, FT_LOAD_RENDER) != 0, "[font] Can't build symbol '%c'", task);
 
 	new_symbol = make_shared<symbol>(face);
 	new_symbol->font = shared_from_this();

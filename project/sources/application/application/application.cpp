@@ -12,7 +12,7 @@
 #include "game/world/chunk/texture_atlas/texture_atlas/texture_atlas.h"
 #include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
 #include "game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.h"
-#include "game/world/chunk/chunk/chunk_renderer/chunk_renderer.h"
+#include "game/world/chunk/chunk/rendering/chunk_renderer/chunk_renderer.h"
 #include "game/world/chunk/generator/generator/generator.h"
 #include "game/player/player/player.h"
 

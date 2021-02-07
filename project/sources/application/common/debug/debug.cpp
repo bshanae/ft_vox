@@ -7,7 +7,9 @@
 
 void				debug::log(const string &message)
 {
-	cout << "[Engine] " << message << endl;
+#if FT_VOX_DEBUG
+	cout << message << endl;
+#endif
 }
 
 void				debug::raise_error(string message, ...)
@@ -60,13 +62,9 @@ void				debug::write_error(const string &message, va_list arguments)
 	char			buffer[1024];
 	string			format;
 
-#if FT_DEBUG
-	format = "[ft_vox warning] " + message;
-#else
-	format = "[ft_vox] Critical error : " + message;
-#endif
-
+	format = "(Error) " + message;
 	vsprintf(buffer, format.c_str(), arguments);
+
 	cerr << buffer << endl;
 }
 
@@ -75,10 +73,8 @@ void				debug::write_warning(const string &message, va_list arguments)
 	char			buffer[1024];
 	string			format;
 
-#if FT_DEBUG
-	format = "[ft_vox warning] " + message;
-#endif
-
+	format = "(Warning) " + message;
 	vsprintf(buffer, format.c_str(), arguments);
+
 	cerr << buffer << endl;
 }

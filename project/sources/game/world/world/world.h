@@ -29,6 +29,9 @@ public :
 	static
 	optional<block_pointer>		find_block(const vec3 &position);
 
+	static shared_ptr<chunk>	find_chunk(const vec3 &position);
+	static shared_ptr<chunk>	find_new_chunk(const vec3 &position);
+
 	static void					insert_block(const block_pointer &id, enum block_type type);
 	static void					remove_block(const block_pointer &id);
 
@@ -71,9 +74,6 @@ private :
 
 // ----------------------------	Chunks
 
-	shared_ptr<chunk>			find_chunk(const vec3 &position);
-	shared_ptr<chunk>			find_new_chunk(const vec3 &position);
-
 	shared_ptr<chunk>			find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign);
 
 // ----------------------------	Pivot
@@ -99,7 +99,6 @@ private :
 	void						create_chunk(const vec3 &position);
 	void						destroy_chunk(const shared_ptr<chunk> &chunk);
 
-	void 						try_build_chunk(const shared_ptr<chunk> &chunk);
-
-	void						rebuild_chunk(const shared_ptr<chunk> &chunk, const chunk::index &changed_block);
+	void 						request_build(const shared_ptr<chunk> &chunk);
+	void						request_rebuild(const shared_ptr<chunk> &chunk, const chunk::index &changed_block);
 };

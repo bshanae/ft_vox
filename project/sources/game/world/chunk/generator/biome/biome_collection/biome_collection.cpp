@@ -17,6 +17,6 @@ const biome			&biome_collection::get_biome(enum biome::type type)
 	const auto		instance = get_instance();
 	auto			iterator = instance->collection.find(type);
 
-	debug::check_critical(iterator != instance->collection.end(), "[game::biome_collection] Can't find biome");
+	debug::check_critical(iterator != instance->collection.end(), "[biome_collection] Can't find biome");
 	return iterator->second;
 }

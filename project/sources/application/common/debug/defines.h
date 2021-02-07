@@ -1,3 +1,3 @@
 #pragma once
 
-#define FT_DEBUG	1
+#define FT_VOX_DEBUG	1

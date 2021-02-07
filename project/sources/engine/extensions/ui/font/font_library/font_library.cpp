@@ -8,7 +8,7 @@ using namespace		engine::ui;
 {
 	set_layout("System");
 
-	debug::check_critical(FT_Init_FreeType(&library) == 0, "[engine::font_library] Can't initialize instance");
+	debug::check_critical(FT_Init_FreeType(&library) == 0, "[font_library] Can't initialize instance");
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
