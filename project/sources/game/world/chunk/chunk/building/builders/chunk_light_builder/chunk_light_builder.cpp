@@ -48,13 +48,13 @@ void							chunk_light_builder::spread_light(const shared_ptr<chunk_workspace> &
 
 	for (index.y = chunk_settings::size[1] - 2; index.y >= 0; index.y--)
 	{
-		spread_light_vertically(workspace, lighted_blocks, index.y);
-		spread_light_horizontally(workspace, lighted_blocks);
+		spread_light_straight_down(workspace, lighted_blocks, index.y);
+		spread_light_in_all_directions(workspace, lighted_blocks);
 		lighted_blocks.clear();
 	}
 }
 
-void							chunk_light_builder::spread_light_vertically
+void							chunk_light_builder::spread_light_straight_down
 								(
 									const shared_ptr<chunk_workspace> &workspace,
 									vector<chunk::index> &lighted_blocks,
@@ -79,17 +79,17 @@ void							chunk_light_builder::spread_light_vertically
 	}
 }
 
-void 							chunk_light_builder::spread_light_horizontally
+void 							chunk_light_builder::spread_light_in_all_directions
 								(
 									const shared_ptr<chunk_workspace> &workspace,
 									vector<chunk::index> &lighted_blocks
 								)
 {
 	for (const chunk::index &lighted_block : lighted_blocks)
-		spread_light_horizontally_from_block(workspace, lighted_block);
+		spread_light_in_all_directions_from_block(workspace, lighted_block);
 }
 
-void							chunk_light_builder::spread_light_horizontally_from_block
+void							chunk_light_builder::spread_light_in_all_directions_from_block
 								(
 									const shared_ptr<chunk_workspace> &workspace,
 									const chunk::index &index
@@ -99,6 +99,9 @@ void							chunk_light_builder::spread_light_horizontally_from_block
 	{
 		chunk::index(-1, 0, 0),
 		chunk::index(+1, 0, 0),
+
+		chunk::index(0, +1, 0),
+
 		chunk::index(0, 0, -1),
 		chunk::index(0, 0, +1)
 	};
@@ -106,7 +109,7 @@ void							chunk_light_builder::spread_light_horizontally_from_block
 	const char				light_level = workspace->chunk->at(index).get_light_level();
 	chunk::index			neighbor_index;
 
-	if (light_level == 0)
+	if (light_level == 1)
 		return;
 
 	for (const auto &offset : offsets)
@@ -122,7 +125,7 @@ void							chunk_light_builder::spread_light_horizontally_from_block
 				continue;
 
 			workspace->chunk->at(neighbor_index).set_light_level((char)(light_level - 1));
-			spread_light_horizontally_from_block(workspace, neighbor_index);
+			spread_light_in_all_directions_from_block(workspace, neighbor_index);
 		}
 	}
 

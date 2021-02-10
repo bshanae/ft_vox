@@ -32,6 +32,6 @@ public :
 
 private :
 
-	block_type					_type;
-	char						_light_level = 0;
+	block_type					type;
+	char						light_level;
 };

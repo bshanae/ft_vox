@@ -25,20 +25,20 @@ private :
 	static void				initialize_light(const shared_ptr<chunk_workspace> &workspace);
 	static void				spread_light(const shared_ptr<chunk_workspace> &workspace);
 
-	static void				spread_light_vertically
+	static void				spread_light_straight_down
 							(
 								const shared_ptr<chunk_workspace> &workspace,
 								vector<chunk::index> &lighted_blocks,
 								int y
 							);
 
-	static void				spread_light_horizontally
+	static void				spread_light_in_all_directions
 							(
 								const shared_ptr<chunk_workspace> &workspace,
 								vector<chunk::index> &lighted_blocks
 							);
 
-	static void				spread_light_horizontally_from_block
+	static void				spread_light_in_all_directions_from_block
 							(
 								const shared_ptr<chunk_workspace> &workspace,
 								const chunk::index &index
