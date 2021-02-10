@@ -43,18 +43,19 @@ private :
 					(
 						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
-						const chunk::index &index,
-						axis axis,
-						sign sign
+						const block_pointer &this_block_pointer,
+						const block_pointer &neighbor_block_pointer
 					);
 
 	static void		build_quad
 					(
 						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
+						const block &this_block,
 						const chunk::index &index,
 						axis axis,
-						sign sign
+						sign sign,
+						char light_level
 					);
 
 	template		<typename type>

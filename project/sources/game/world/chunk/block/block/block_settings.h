@@ -7,7 +7,7 @@ namespace						game
 
 struct							game::block_settings
 {
-	static inline const char	light_level_min = 10;
+	static inline const char	light_level_min = 2;
 	static inline const char 	light_level_max = 16;
 
 	static inline const char 	default_light_level = 10;

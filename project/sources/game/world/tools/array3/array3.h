@@ -1,11 +1,12 @@
 #pragma once
 
-#include "game/world/tools/axis/axis.h"
-#include "game/world/tools/sign/sign.h"
-
+#include "application/common/debug/defines.h"
 #include "application/common/debug/debug.h"
 #include "application/common/imports/glm.h"
 #include "application/common/imports/std.h"
+
+#include "game/world/tools/axis/axis.h"
+#include "game/world/tools/sign/sign.h"
 
 namespace						game
 {
@@ -17,10 +18,6 @@ template 						<typename type, int size_x, int size_y, int size_z>
 class							game::array3
 {
 private :
-
-	static
-	inline
-	constexpr bool				validate_indices = true;
 
 	using 						internal_type = array<array<array<type, size_z>, size_y>, size_x>;
 	using 						internal_pointer_type = shared_ptr<internal_type>;
@@ -51,12 +48,12 @@ public :
 
 								operator ivec3() const
 		{
-			return (ivec3(x, y, z));
+			return ivec3(x, y, z);
 		}
 
 								operator vec3() const
 		{
-			return (vec3(x, y, z));
+			return vec3(x, y, z);
 		}
 
 		index					operator + (const index &that) const
@@ -67,7 +64,7 @@ public :
 			result.y = this->y + that.y;
 			result.z = this->z + that.z;
 
-			return (result);
+			return result;
 		}
 
 		index					operator - (const index &that) const
@@ -149,6 +146,7 @@ public :
 				return (false);
 			if (z < 0 or z >= size_z)
 				return (false);
+
 			return (true);
 		}
 
@@ -255,30 +253,38 @@ public :
 
 	auto						&at(const index &index)
 	{
-		if constexpr (validate_indices)
-			index.validate();
-		return ((*data)[index.x][index.y][index.z]);
+#if FT_VOX_DEBUG
+		index.validate();
+#endif
+
+		return (*data)[index.x][index.y][index.z];
 	}
 
 	const auto					&at(const index &index) const
 	{
-		if constexpr (validate_indices)
-			index.validate();
-		return ((*data)[index.x][index.y][index.z]);
+#if FT_VOX_DEBUG
+		index.validate();
+#endif
+
+		return (*data)[index.x][index.y][index.z];
 	}
 
 	auto						&at(int x, int y, int z)
 	{
-		if constexpr (validate_indices)
-			index(x, y, z).validate();
-		return ((*data)[x][y][z]);
+#if FT_VOX_DEBUG
+		index(x, y, z).validate();
+#endif
+
+		return (*data)[x][y][z];
 	}
 
 	const auto					&at(int x, int y, int z) const
 	{
-		if constexpr (validate_indices)
-			index(x, y, z).validate();
-		return ((*data)[x][y][z]);
+#if FT_VOX_DEBUG
+		index(x, y, z).validate();
+#endif
+
+		return (*data)[x][y][z];
 	}
 
 	class						iterator

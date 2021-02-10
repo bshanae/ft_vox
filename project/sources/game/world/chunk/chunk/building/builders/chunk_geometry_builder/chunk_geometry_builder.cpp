@@ -98,22 +98,28 @@ void				chunk_geometry_builder::process_block
 					)
 {
 	const auto		&this_block = workspace->chunk->at(index);
+	const auto 		this_block_pointer = block_pointer(workspace->chunk, index);
 
 	if (is_empty(get_meta_type((this_block.get_type()))))
 		return ;
 
 	if (is_diagonal(get_meta_type((this_block.get_type()))))
 	{
-		build_quad(workspace, batch, index, axis::x, sign::minus);
-		build_quad(workspace, batch, index, axis::x, sign::plus);
+		build_quad(workspace, batch, this_block, index, axis::x, sign::minus, this_block.get_light_level());
+		build_quad(workspace, batch, this_block, index, axis::x, sign::plus, this_block.get_light_level());
 	}
 	else
 	{
 		for (axis axis : {axis::x, axis::y, axis::z})
 		for (sign sign : {sign::minus, sign::plus})
 		{
-			if (should_build_quad(workspace, batch, index, axis, sign))
-				build_quad(workspace, batch, index, axis, sign);
+			auto	neighbor_block_pointer = this_block_pointer.get_neighbor(axis, sign);
+
+			// If there is no neighbor block, therefore this block is end of world, so we need to draw it
+			if (not neighbor_block_pointer)
+				build_quad(workspace, batch, this_block, index, axis, sign, block_settings::default_light_level);
+			else if (should_build_quad(workspace, batch, this_block_pointer, *neighbor_block_pointer))
+				build_quad(workspace, batch, this_block, index, axis, sign, (*neighbor_block_pointer)().get_light_level());
 		}
 	}
 }
@@ -122,19 +128,13 @@ bool				chunk_geometry_builder::should_build_quad
 					(
 						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
-						const chunk::index &index,
-						axis axis,
-						sign sign
+						const block_pointer &this_block_pointer,
+						const block_pointer &neighbor_block_pointer
 					)
 {
-	const auto		this_block_pointer = block_pointer(workspace->chunk, index);
-	const auto 		neighbor_block_pointer = this_block_pointer.get_neighbor(axis, sign);
-
-	if (not neighbor_block_pointer) // If there is no neighbor block, therefore this block is end of world, so we need to draw it
-		return true;
 
 	const auto		this_block = this_block_pointer();
-	const auto		neighbor_block = neighbor_block_pointer.value()();
+	const auto		neighbor_block = neighbor_block_pointer();
 
 	const auto		this_block_meta_type = get_meta_type(this_block.get_type());
 	const auto		neighbor_block_meta_type = get_meta_type(neighbor_block.get_type());
@@ -153,18 +153,18 @@ void				chunk_geometry_builder::build_quad
 					(
 						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
+						const block &this_block,
 						const chunk::index &index,
 						axis axis,
-						sign sign
+						sign sign,
+						char light_level
 					)
 {
-	const auto		&block = workspace->chunk->at(index);
-	const auto		block_meta_type = get_meta_type(block.get_type());
+	const auto		block_type = this_block.get_type();
+	const auto		block_meta_type = get_meta_type(block_type);
 
-	char			light_level;
 	ivec2			texture_coordinates = ivec2(0);
 
-	light_level = workspace->light_levels.at(index.x, index.y, index.z);
 	light_level = max(light_level, block_settings::light_level_min);
 
 	if (axis == axis::x and sign == sign::plus)
@@ -180,7 +180,7 @@ void				chunk_geometry_builder::build_quad
 			append_to_vector(batch.texture_coordinates, right_texture_coordinates);
 		}
 
-		texture_coordinates = texture_atlas::get_coordinates(workspace->chunk->at(index).get_type()).get_right();
+		texture_coordinates = texture_atlas::get_coordinates(block_type).get_right();
 	}
 	else if (axis == axis::x and sign == sign::minus)
 	{
@@ -195,31 +195,31 @@ void				chunk_geometry_builder::build_quad
 			append_to_vector(batch.texture_coordinates, left_texture_coordinates);
 		}
 
-		texture_coordinates = texture_atlas::get_coordinates(workspace->chunk->at(index).get_type()).get_left();
+		texture_coordinates = texture_atlas::get_coordinates(block_type).get_left();
 	}
 	else if (axis == axis::y and sign == sign::plus)
 	{
 		append_to_vector(batch.vertices, top_vertices);
 		append_to_vector(batch.texture_coordinates, top_texture_coordinates);
-		texture_coordinates = texture_atlas::get_coordinates(workspace->chunk->at(index).get_type()).get_top();
+		texture_coordinates = texture_atlas::get_coordinates(block_type).get_top();
 	}
 	else if (axis == axis::y and sign == sign::minus)
 	{
 		append_to_vector(batch.vertices, bottom_vertices);
 		append_to_vector(batch.texture_coordinates, bottom_texture_coordinates);
-		texture_coordinates = texture_atlas::get_coordinates(workspace->chunk->at(index).get_type()).get_bottom();
+		texture_coordinates = texture_atlas::get_coordinates(block_type).get_bottom();
 	}
 	else if (axis == axis::z and sign == sign::plus)
 	{
 		append_to_vector(batch.vertices, front_vertices);
 		append_to_vector(batch.texture_coordinates, front_texture_coordinates);
-		texture_coordinates = texture_atlas::get_coordinates(workspace->chunk->at(index).get_type()).get_front();
+		texture_coordinates = texture_atlas::get_coordinates(block_type).get_front();
 	}
 	else if (axis == axis::z and sign == sign::minus)
 	{
 		append_to_vector(batch.vertices, back_vertices);
 		append_to_vector(batch.texture_coordinates, back_texture_coordinates);
-		texture_coordinates = texture_atlas::get_coordinates(workspace->chunk->at(index).get_type()).get_back();
+		texture_coordinates = texture_atlas::get_coordinates(block_type).get_back();
 	}
 	else
 		debug::raise_error("[chunk_geometry_builder] Can't build quad");
