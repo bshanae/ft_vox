@@ -2,7 +2,6 @@
 
 #include "game/world/tools/array3/array3.h"
 #include "game/world/chunk/block/block/block.h"
-#include "game/world/chunk/block/block_pointer/block_pointer.h"
 #include "game/world/chunk/chunk/chunk/chunk_settings.h"
 
 #include "application/common/imports/opengl.h"

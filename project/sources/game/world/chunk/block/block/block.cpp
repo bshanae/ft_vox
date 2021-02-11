@@ -9,7 +9,7 @@ using namespace		game;
 					block::block(block_type type)
 {
 	this->type = type;
-	this->light_level = 0;
+	this->light_level = 0.f;
 }
 
 ostream				&operator << (ostream &stream, block_type type)
@@ -48,7 +48,7 @@ block_type			block::get_type() const
 	return type;
 }
 
-char				block::get_light_level() const
+float				block::get_light_level() const
 {
 	return light_level;
 }
@@ -58,7 +58,7 @@ void				block::set_type(block_type type)
 	this->type = type;
 }
 
-void				block::set_light_level(char light_level)
+void				block::set_light_level(float light_level)
 {
 	this->light_level = light_level;
 }

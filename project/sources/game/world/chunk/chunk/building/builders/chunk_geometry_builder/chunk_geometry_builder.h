@@ -55,11 +55,26 @@ private :
 						const chunk::index &index,
 						axis axis,
 						sign sign,
-						char light_level
+						float light_level
 					);
 
 	template		<typename type>
 	static void		append_to_vector(vector<type> &target, const vector<type> &source);
+
+	static void		calculate_ao_for_quad
+					(
+						const block_pointer &block,
+						const chunk::index (&occluders_offsets)[4][3],
+						float (&ao_levels)[4]
+					);
+
+	static float	calculate_ao_for_vertex
+					(
+						const block_pointer &block,
+						const chunk::index (&occluders_offsets)[3]
+					);
+
+	static float	combine_light_and_ao(float light, float ao);
 };
 
 

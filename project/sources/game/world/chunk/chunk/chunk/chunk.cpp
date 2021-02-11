@@ -5,6 +5,7 @@
 #include "engine/main/rendering/model/model/model.h"
 
 #include "game/world/chunk/chunk/building/chunk_build_director/chunk_build_director.h"
+#include "game/world/chunk/block/block_pointer/block_pointer.h"
 
 using namespace				game;
 

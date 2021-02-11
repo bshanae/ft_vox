@@ -2,21 +2,29 @@
 
 #include "game/world/tools/aabb/aabb.h"
 #include "game/world/tools/array3/array3.h"
-#include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/world/world.h"
 
 using namespace				game;
 
+							block_pointer::block_pointer()
+{
+	this->chunk = nullptr;
+	this->index = chunk::index();
+	this->raw_pointer = nullptr;
+}
+
 							block_pointer::block_pointer(const shared_ptr<::chunk> &chunk, const chunk::index &index)
 {
-	_chunk = chunk;
-	_index = index;
+	this->chunk = chunk;
+	this->index = index;
+	this->raw_pointer = &chunk->at(index);
 }
 
 							block_pointer::block_pointer(const block_pointer &other)
 {
-	this->_chunk = other._chunk;
-	this->_index = other._index;
+	this->chunk = other.chunk;
+	this->index = other.index;
+	this->raw_pointer = other.raw_pointer;
 }
 
 block_pointer				&block_pointer::operator = (const block_pointer &other)
@@ -24,51 +32,61 @@ block_pointer				&block_pointer::operator = (const block_pointer &other)
 	if (this == &other)
 		return *this;
 
-	this->_chunk = other._chunk;
-	this->_index = other._index;
+	this->chunk = other.chunk;
+	this->index = other.index;
+	this->raw_pointer = other.raw_pointer;
 
 	return *this;
 }
 
+block						&block_pointer::operator * () const
+{
+	return *raw_pointer;
+}
+
+block						*block_pointer::operator -> () const
+{
+	return raw_pointer;
+}
+
+							block_pointer::operator bool () const
+{
+	return chunk != nullptr;
+}
+
 block_pointer::chunk_type	block_pointer::get_chunk() const
 {
-	return _chunk;
+	return chunk;
 }
 
 block_pointer::index_type	block_pointer::get_index() const
 {
-	return _index;
+	return index;
 }
 
-block						&block_pointer::operator () () const
+block_pointer				block_pointer::get_neighbor(axis axis, sign sign) const
 {
-	return (_chunk->at(_index));
-}
-
-optional<block_pointer>		block_pointer::get_neighbor(axis axis, sign sign) const
-{
-	auto					neighbor_index = _index.get_neighbor((::axis)axis, (::sign)sign);
+	auto					neighbor_index = index.get_neighbor((::axis)axis, (::sign)sign);
 
 	if (neighbor_index)
-		return block_pointer(_chunk, neighbor_index);
+		return block_pointer(chunk, neighbor_index);
 	else
-	{
-		chunk::index		reflected_index;
-		chunk_type			neighbor_chunk;
+		return world::find_block(chunk->get_position() + (vec3)neighbor_index);
+}
 
-		if ((neighbor_chunk = world::get_instance()->find_neighbor_chunk(_chunk, axis, sign)) == nullptr)
-			return {};
+block_pointer				block_pointer::get_neighbor(const chunk::index &offset) const
+{
+	auto					neighbor_index = index + offset;
 
-		neighbor_index = _index.get_neighbor(axis, sign);
-		reflected_index = neighbor_index.reflect();
-
-		return block_pointer(neighbor_chunk, reflected_index);
-	}
+	if (neighbor_index)
+		return block_pointer(chunk, neighbor_index);
+	else
+		return world::find_block(chunk->get_position() + (vec3)neighbor_index);
 }
 
 vec3						block_pointer::get_world_position() const
 {
-	return _chunk->get_position() + (vec3)_index;
+	return chunk->get_position() + (vec3)index;
 }
 
 aabb						block_pointer::get_aabb() const

@@ -23,7 +23,7 @@ static const vec3			back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 	set_layout("Opaque");
 }
 
-optional<block_pointer>		world::world::find_block(const vec3 &position)
+block_pointer				world::world::find_block(const vec3 &position)
 {
 	chunk::index			index;
 	vec3					chunk_position;
@@ -42,7 +42,7 @@ optional<block_pointer>		world::world::find_block(const vec3 &position)
 	index.z = (int)(position.z - chunk_position.z);
 
 	if (chunk = get_instance()->find_chunk(chunk_position); not chunk or not index)
-		return nullopt;
+		return block_pointer();
 	else
 		return block_pointer(chunk, index);
 }
@@ -69,23 +69,23 @@ shared_ptr<chunk>			world::find_new_chunk(const vec3 &position)
 		return nullptr;
 }
 
-void						world::insert_block(const block_pointer &id, enum block_type type)
+void						world::insert_block(const block_pointer &block, enum block_type type)
 {
-	id().set_type(type);
-	get_instance()->request_rebuild(id.get_chunk(), id.get_index());
+	block->set_type(type);
+	get_instance()->request_rebuild(block.get_chunk(), block.get_index());
 }
 
-void						world::remove_block(const block_pointer &id)
+void						world::remove_block(const block_pointer &block)
 {
-	id().set_type(block_type::air);
-	get_instance()->request_rebuild(id.get_chunk(), id.get_index());
+	block->set_type(block_type::air);
+	get_instance()->request_rebuild(block.get_chunk(), block.get_index());
 }
 
-void						world::select_block(const block_pointer &id, block_face face)
+void						world::select_block(const block_pointer &block, block_face face)
 {
 	block_highlighter::get_instance()->activate();
 
-	block_highlighter::set_translation(id.get_world_position() + vec3(0.5f));
+	block_highlighter::set_translation(block.get_world_position() + vec3(0.5f));
 	block_highlighter::set_selected_face(face);
 }
 
@@ -99,7 +99,7 @@ bool						world::does_collide(const aabb &aabb)
 	vec3 					min = glm::floor(aabb.min);
 	vec3 					max = glm::floor(aabb.max);
 
-	optional<block_pointer>	block_iterator;
+	block_pointer			block_iterator;
 
 	for (int x = (int)min.x; x <= (int)max.x; x++)
 	for (int y = (int)min.y; y <= (int)max.y; y++)
@@ -110,8 +110,8 @@ bool						world::does_collide(const aabb &aabb)
 
 		if
 		(
-			is_solid(get_meta_type(block_iterator.value()().get_type())) and
-			aabb::do_collide(aabb, block_iterator->get_aabb())
+			is_solid(get_meta_type(block_iterator->get_type())) and
+			aabb::do_collide(aabb, block_iterator.get_aabb())
 		)
 		{
 			return true;
@@ -179,7 +179,7 @@ void						world::when_updated()
 void						world::when_rendered()
 {
 	if (auto camera_block = find_block(camera::get_position()))
-		chunk_renderer::set_apply_water_tint(camera_block.value()().get_type() == block_type::water);
+		chunk_renderer::set_apply_water_tint(camera_block->get_type() == block_type::water);
 
 	for (auto [position, chunk] : chunks)
 		chunk_renderer::render(chunk, chunk_renderer::group::opaque);

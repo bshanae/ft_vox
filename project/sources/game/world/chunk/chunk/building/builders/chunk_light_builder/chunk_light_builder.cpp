@@ -2,9 +2,11 @@
 
 #include "game/world/chunk/block/block/block_settings.h"
 #include "game/world/chunk/chunk/building/chunk_workspace/chunk_workspace.h"
-#include "game/world/world/world.h"
 
 using namespace					game;
+
+constexpr float 				lowest_light_level_for_recursion = 0.1f;
+constexpr float 				light_level_delta = 0.15f;
 
 void							chunk_light_builder::launch(const shared_ptr<chunk_workspace> &workspace)
 {
@@ -35,9 +37,9 @@ void							chunk_light_builder::initialize_light(const shared_ptr<chunk_workspac
 	for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
 	{
 		if (index.y == chunk_settings::size[1] - 1)
-			workspace->chunk->at(index).set_light_level(block_settings::sun_light_level);
+			workspace->chunk->at(index).set_light_level(block_settings::sun_light);
 		else
-			workspace->chunk->at(index).set_light_level(0);
+			workspace->chunk->at(index).set_light_level(0.f);
 	}
 }
 
@@ -106,10 +108,10 @@ void							chunk_light_builder::spread_light_in_all_directions_from_block
 		chunk::index(0, 0, +1)
 	};
 
-	const char				light_level = workspace->chunk->at(index).get_light_level();
+	const float				light_level = workspace->chunk->at(index).get_light_level();
 	chunk::index			neighbor_index;
 
-	if (light_level == 1)
+	if (light_level <= lowest_light_level_for_recursion)
 		return;
 
 	for (const auto &offset : offsets)
@@ -124,9 +126,8 @@ void							chunk_light_builder::spread_light_in_all_directions_from_block
 			if (neighbor_block.get_light_level() >= light_level)
 				continue;
 
-			workspace->chunk->at(neighbor_index).set_light_level((char)(light_level - 1));
+			workspace->chunk->at(neighbor_index).set_light_level(light_level - light_level_delta);
 			spread_light_in_all_directions_from_block(workspace, neighbor_index);
 		}
 	}
-
 }

@@ -87,13 +87,13 @@ void					player::try_place_block()
 		auto 			axis_and_sign = to_axis_and_sign(hit->face);
 		auto			neighbor = hit->block.get_neighbor(axis_and_sign.first, axis_and_sign.second);
 
-		if (!debug::check(neighbor != nullopt, "[player] Can't put block"))
+		if (!debug::check((bool)neighbor, "[player] Can't put block"))
 			return;
 
-		world::world::insert_block(*neighbor, block_type::dirt_with_grass);
+		world::world::insert_block(neighbor, block_type::dirt_with_grass);
 
 		if (world::world::does_collide(get_aabb(camera::get_position())))
-			world::world::remove_block(*neighbor);
+			world::world::remove_block(neighbor);
 		else
 			should_cast_ray = true;
 	}

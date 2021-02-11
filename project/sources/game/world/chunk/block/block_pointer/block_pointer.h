@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/world/chunk/chunk/chunk/chunk_settings.h"
+#include "game/world/chunk/chunk/chunk/chunk.h"
 
 namespace					game
 {
@@ -10,7 +11,6 @@ namespace					game
 	class					aabb;
 
 	class					block;
-	class					chunk;
 	class					world;
 
 	class					block_pointer;
@@ -22,26 +22,28 @@ class						game::block_pointer final
 	using					index_type = chunk_settings::underlying_array::index;
 
 public :
+							block_pointer();
 							block_pointer(const shared_ptr<::game::chunk> &chunk, const index_type &index);
 							block_pointer(const block_pointer &other);
 
 	block_pointer			&operator = (const block_pointer &other);
-	block					&operator () () const;
 
-	[[nodiscard]]
+	block					&operator * () const;
+	block					*operator -> () const;
+
+							operator bool () const;
+
 	chunk_type				get_chunk() const;
-
-	[[nodiscard]]
 	index_type				get_index() const;
-
-	[[nodiscard]]
-	optional<block_pointer>	get_neighbor(axis axis, sign sign) const;
-
-	[[nodiscard]] vec3		get_world_position() const;
-	[[nodiscard]] aabb		get_aabb() const;
+	block_pointer			get_neighbor(axis axis, sign sign) const;
+	block_pointer			get_neighbor(const chunk::index &offset) const;
+	vec3					get_world_position() const;
+	aabb					get_aabb() const;
 
 private :
 
-	chunk_type				_chunk;
-	index_type				_index;
+	block					*raw_pointer;
+
+	chunk_type				chunk;
+	index_type				index;
 };

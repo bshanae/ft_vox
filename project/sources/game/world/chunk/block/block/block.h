@@ -25,13 +25,13 @@ public :
 	friend ostream				&operator << (ostream &stream, enum game::block_type type);
 
 	block_type					get_type() const;
-	char						get_light_level() const;
+	float						get_light_level() const;
 
 	void						set_type(block_type type);
-	void						set_light_level(char light_level);
+	void						set_light_level(float light_level);
 
 private :
 
 	block_type					type;
-	char						light_level;
+	float						light_level;
 };

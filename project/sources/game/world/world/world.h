@@ -26,16 +26,15 @@ public :
 								world();
 								~world() override = default;
 
-	static
-	optional<block_pointer>		find_block(const vec3 &position);
+	static block_pointer		find_block(const vec3 &position);
 
 	static shared_ptr<chunk>	find_chunk(const vec3 &position);
 	static shared_ptr<chunk>	find_new_chunk(const vec3 &position);
 
-	static void					insert_block(const block_pointer &id, enum block_type type);
-	static void					remove_block(const block_pointer &id);
+	static void					insert_block(const block_pointer &block, enum block_type type);
+	static void					remove_block(const block_pointer &block);
 
-	static void					select_block(const block_pointer &id, block_face face);
+	static void					select_block(const block_pointer &block, block_face face);
 	static void 				unselect_block();
 
 	static bool					does_collide(const aabb &aabb);
