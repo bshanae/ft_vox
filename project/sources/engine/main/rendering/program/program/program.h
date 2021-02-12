@@ -14,7 +14,7 @@ public :
 					program(const path &vertex_source, const path &fragment_source);
 					~program();
 
-	void			bind(bool state);
+	void			use(bool state);
 
 	template		<typename type>
 	auto			create_uniform(const string &name)

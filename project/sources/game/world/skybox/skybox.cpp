@@ -23,7 +23,7 @@ void					skybox::when_rendered()
 {
 	mat4 				view_matrix;
 
-	program->bind(true);
+	program->use(true);
 	model->use(true);
 	cubemap->use(true);
 
@@ -36,9 +36,9 @@ void					skybox::when_rendered()
 
 	cubemap->use(false);
 	model->use(false);
-	program->bind(false);
+	program->use(false);
 
-	program->bind(true);
+	program->use(true);
 }
 
 void					skybox::build_model()
@@ -105,7 +105,7 @@ void					skybox::build_program()
 
 void					skybox::initialize_program()
 {
-	program->bind(true);
+	program->use(true);
 	uniform_cubemap.upload(0);
-	program->bind(true);
+	program->use(true);
 }

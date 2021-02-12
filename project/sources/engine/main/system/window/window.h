@@ -27,6 +27,7 @@ public :
 	static void 			close();
 
 	static void 			swap_buffers();
+
 	static void 			use_depth_test(bool state);
 
 	static vec2				to_normal(const ivec2 &value);

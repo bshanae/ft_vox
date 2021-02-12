@@ -28,10 +28,12 @@ void				debug::check_critical(bool statement, string message, ...)
 {
 	va_list			arguments;
 
-	va_start(arguments, message);
 	if (!statement)
+	{
+		va_start(arguments, message);
 		raise_error(message, arguments);
-	va_end(arguments);
+		va_end(arguments);
+	}
 }
 
 
@@ -49,10 +51,12 @@ bool				debug::check(bool statement, string message, ...)
 {
 	va_list			arguments;
 
-	va_start(arguments, message);
 	if (!statement)
+	{
+		va_start(arguments, message);
 		raise_warning(message, arguments);
-	va_end(arguments);
+		va_end(arguments);
+	}
 
 	return statement;
 }

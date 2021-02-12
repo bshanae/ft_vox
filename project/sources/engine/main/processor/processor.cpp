@@ -71,9 +71,9 @@ void			processor::process_rendering()
 {
 	auto 		&background = processor_settings::background;
 
+	// TODO Move to window
 	glClearColor(background.x, background.y, background.z, 1.f);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClear(GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	for (const auto &layout : layout_manager::get_layouts())
 	{

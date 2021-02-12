@@ -32,7 +32,7 @@ using namespace		engine;
 	glDeleteProgram(value);
 }
 
-void				program::bind(bool state)
+void				program::use(bool state)
 {
 	glUseProgram(state ? value : 0);
 }

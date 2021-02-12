@@ -28,7 +28,7 @@ void					block_highlighter_renderer::render(const block_highlighter &selector)
 	distance = glm::distance(camera::get_position(), (vec3)selector.translation);
 	instance->epsilon = (distance / 10.f) * 0.003f;
 
-	instance->program->bind(true);
+	instance->program->use(true);
 
 	instance->render(selector.cube);
 
@@ -59,7 +59,7 @@ void					block_highlighter_renderer::render(const block_highlighter &selector)
 			break;
 	}
 
-	instance->program->bind(false);
+	instance->program->use(false);
 }
 
 void					block_highlighter_renderer::render(const shared_ptr<model> &model)

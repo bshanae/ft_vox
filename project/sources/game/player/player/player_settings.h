@@ -7,11 +7,11 @@ namespace						game
 
 struct							game::player_settings
 {
-	static inline const float	movement_speed = 0.15f;
+	static constexpr float		movement_speed = 1.f / 6.f;
 
-	static inline const vec3	flight_lift = vec3(0.f, movement_speed, 0.f);
-	static inline const float	speed_up = 12.f;
+	static constexpr vec3		flight_lift = vec3(0.f, movement_speed, 0.f);
+	static constexpr float		speed_up = 12.f;
 
-	static inline const vec3	aabb_size = vec3(0.3f, 1.5f, 0.3f);
+	static constexpr vec3		aabb_size = vec3(0.3f, 1.5f, 0.3f);
 };
 

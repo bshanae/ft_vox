@@ -16,10 +16,10 @@ using namespace		engine::ui;
 	uniform_transformation = program->create_uniform<mat4>("uniform_transformation");
 	uniform_texture = program->create_uniform<int>("uniform_texture");
 
-	program->bind(true);
+	program->use(true);
 	uniform_projection.upload(ortho(0.f, (float)window::size.x, (float)window::size.y, 0.f));
 	uniform_texture.upload(0);
-	program->bind(false);
+	program->use(false);
 
 	vector<GLfloat>	vertices =
 	{
@@ -61,7 +61,7 @@ void				symbol_renderer::render(symbol &symbol, const ivec2 &position)
 	instance->model->set_translation(vec3(position.x, position.y, 0));
 	instance->model->set_scaling(vec3(symbol.get_size().x, symbol.get_size().y, 0));
 
-	instance->program->bind(true);
+	instance->program->use(true);
 	instance->model->use(true);
 	symbol.use(true);
 
@@ -70,5 +70,5 @@ void				symbol_renderer::render(symbol &symbol, const ivec2 &position)
 
 	symbol.use(false);
 	instance->model->use(false);
-	instance->program->bind(false);
+	instance->program->use(false);
 }

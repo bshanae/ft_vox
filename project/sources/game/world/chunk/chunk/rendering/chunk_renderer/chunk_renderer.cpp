@@ -29,13 +29,13 @@ using namespace			game;
 	uniform_fog_gradient = program->create_uniform<float>("uniform_fog_gradient");
 	uniform_apply_water_tint = program->create_uniform<int>("uniform_apply_water_tint");
 
-	program->bind(true);
+	program->use(true);
 	uniform_background.upload(processor_settings::background);
 	uniform_texture.upload(0);
 	uniform_fog_density.upload(1.f / (world_settings::visibility_limit - chunk_settings::size[0] * 1.5f));
 	uniform_fog_gradient.upload(15.f);
 	uniform_apply_water_tint.upload(0);
-	program->bind(false);
+	program->use(false);
 }
 
 void					chunk_renderer::set_apply_water_tint(bool value)
@@ -75,7 +75,7 @@ void					chunk_renderer::render
 	if (!debug::check(model != nullptr, "[chunk_renderer] Model is nullptr"))
 		return;
 
-	instance->program->bind(true);
+	instance->program->use(true);
 
 	instance->uniform_projection.upload(camera::get_instance()->get_projection_matrix());
 	instance->uniform_view.upload(camera::get_instance()->get_view_matrix());
@@ -90,5 +90,5 @@ void					chunk_renderer::render
 
 	texture_atlas::use(false);
 	model->use(false);
-	instance->program->bind(false);
+	instance->program->use(false);
 }
