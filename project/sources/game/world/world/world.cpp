@@ -306,12 +306,15 @@ void						world::request_rebuild(const shared_ptr<chunk> &chunk, const chunk::in
 			chunk->reset_build();
 	};
 
-	// TODO
-//	find_and_rebuild(chunk->get_position() + left);
-//	find_and_rebuild(chunk->get_position() + right);
+	if (changed_block.x == 0)
+		find_and_rebuild(chunk->get_position() + left);
+	else if (changed_block.x == chunk_settings::size[0] - 1)
+		find_and_rebuild(chunk->get_position() + right);
 
-//	find_and_rebuild(chunk->get_position() + back);
-//	find_and_rebuild(chunk->get_position() + forward);
+	if (changed_block.z == 0)
+		find_and_rebuild(chunk->get_position() + back);
+	else if (changed_block.z == chunk_settings::size[2] - 1)
+		find_and_rebuild(chunk->get_position() + forward);
 
 	chunk->reset_build();
 }
