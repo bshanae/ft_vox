@@ -13,21 +13,17 @@ namespace					engine
 class						engine::window : public singleton<window>
 {
 public :
-
-	static inline string	title = "";
-	static inline ivec2		size = ivec2(1280, 720);
-
 							window();
 							~window() override;
 public :
 
+	static ivec2			get_size();
 	static vec2				get_mouse_position();
 
 	static bool				is_closed();
 	static void 			close();
 
 	static void 			swap_buffers();
-
 	static void 			use_depth_test(bool state);
 
 	static vec2				to_normal(const ivec2 &value);
@@ -36,5 +32,8 @@ public :
 
 private :
 
+	const string			title = "ft_vox";
+
+	ivec2					size = ivec2(-1, -1);
 	GLFWwindow				*glfw_window = nullptr;
 };

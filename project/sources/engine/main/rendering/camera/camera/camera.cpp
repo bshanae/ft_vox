@@ -127,7 +127,7 @@ void					camera::recalculate()
 	projection_matrix = perspective
 	(
 		radians(fov),
-		(float)window::size.x / (float)window::size.y,
+		(float)window::get_size().x / (float)window::get_size().y,
 		camera_settings::near_plane,
 		camera_settings::far_plane
 	);

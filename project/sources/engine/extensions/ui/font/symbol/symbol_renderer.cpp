@@ -17,7 +17,7 @@ using namespace		engine::ui;
 	uniform_texture = program->create_uniform<int>("uniform_texture");
 
 	program->use(true);
-	uniform_projection.upload(ortho(0.f, (float)window::size.x, (float)window::size.y, 0.f));
+	uniform_projection.upload(ortho(0.f, (float)window::get_size().x, (float)window::get_size().y, 0.f));
 	uniform_texture.upload(0);
 	program->use(false);
 

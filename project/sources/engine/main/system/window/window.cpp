@@ -4,9 +4,9 @@
 
 #include "application/common/debug/debug.h"
 
-using namespace		engine;
+using namespace			engine;
 
-					window::window()
+						window::window()
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -14,7 +14,12 @@ using namespace		engine;
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
+	GLFWmonitor			*monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode	*mode = glfwGetVideoMode(monitor);
+
+	size = ivec2(mode->width, mode->height);
+
+	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), monitor, nullptr);
 	debug::check_critical(glfw_window != nullptr, "[window] Can't initialize window");
 
 	glfwMakeContextCurrent(glfw_window);
@@ -33,37 +38,42 @@ using namespace		engine;
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-					window::~window()
+						window::~window()
 {
 	glfwDestroyWindow(glfw_window);
 	glfwTerminate();
 }
 
-vec2				window::get_mouse_position()
+ivec2					window::get_size()
 {
-	double			x;
-	double			y;
+	return get_instance()->size;
+}
+
+vec2					window::get_mouse_position()
+{
+	double				x;
+	double				y;
 
 	glfwGetCursorPos(get_instance()->glfw_window, &x, &y);
 	return (invert_y(vec2(x, y)));
 }
 
-bool				window::is_closed()
+bool					window::is_closed()
 {
 	return glfwWindowShouldClose(get_instance()->glfw_window);
 }
 
-void 				window::close()
+void 					window::close()
 {
 	glfwSetWindowShouldClose(get_instance()->glfw_window, true);
 }
 
-void				window::swap_buffers()
+void					window::swap_buffers()
 {
 	glfwSwapBuffers(get_instance()->glfw_window);
 }
 
-void				window::use_depth_test(bool state)
+void					window::use_depth_test(bool state)
 {
 	if (state)
 		glEnable(GL_DEPTH_TEST);
@@ -71,17 +81,21 @@ void				window::use_depth_test(bool state)
 		glDisable(GL_DEPTH_TEST);
 }
 
-vec2				window::to_normal(const ivec2 &value)
+vec2					window::to_normal(const ivec2 &value)
 {
+	const ivec2			size = get_instance()->size;
+
 	return {value.x / size.x, value.y / size.y};
 }
 
-ivec2				window::to_absolute(const vec2 &value)
+ivec2					window::to_absolute(const vec2 &value)
 {
+	const ivec2			size = get_instance()->size;
+
 	return {value.x * size.x, value.y * size.y};
 }
 
-ivec2				window::invert_y(const vec2 &value)
+ivec2					window::invert_y(const vec2 &value)
 {
-	return {value.x, size.y - value.y};
+	return {value.x, get_instance()->size.y - value.y};
 }
