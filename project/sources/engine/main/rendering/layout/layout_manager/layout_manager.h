@@ -27,6 +27,8 @@ public :
 
 private :
 
+	static constexpr const char	*default_layout = "System";
+
 	data_type					data;
 
 	void 						when_constructed() override;

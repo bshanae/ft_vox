@@ -59,6 +59,9 @@ set(SOURCES
 	# Engine : Processor
 	${SOURCES_DIRECTORY}/engine/main/processor/processor.cpp
 
+	# Engine : Daemon
+	${SOURCES_DIRECTORY}/engine/daemon/daemon.cpp
+
 	# Engine : UI
 	${SOURCES_DIRECTORY}/engine/extensions/ui/text/text.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol.cpp
@@ -93,11 +96,12 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/game/player/ray_caster/ray_caster.cpp
 	${SOURCES_DIRECTORY}/game/player/player/player.cpp
 
-	${SOURCES_DIRECTORY}/application/common/debug/debug.cpp
+	# Game : Daemon
+	${SOURCES_DIRECTORY}/game/daemon/daemon.cpp
 
 	# Application : Application
-	${SOURCES_DIRECTORY}/application/application/application.cpp
-	${SOURCES_DIRECTORY}/application/application/main.cpp)
+	${SOURCES_DIRECTORY}/application/common/debug/debug.cpp
+	${SOURCES_DIRECTORY}/application/main.cpp)
 
 # Executable
 

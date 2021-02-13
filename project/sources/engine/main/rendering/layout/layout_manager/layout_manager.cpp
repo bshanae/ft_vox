@@ -32,6 +32,7 @@ shared_ptr<layout>				layout_manager::find(const string &name)
 
 void 							layout_manager::when_constructed()
 {
+	add(default_layout);
 	object_storage::get_instance()->subscribe(*this);
 }
 

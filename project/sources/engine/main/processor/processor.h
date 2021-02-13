@@ -1,11 +1,11 @@
 #pragma once
 
-#include "engine/main/core/object/object/object.h"
-#include "engine/main/core/object/object_storage/object_storage_event/object_storage_event.h"
-
 #include "application/common/templates/singleton/singleton.h"
 #include "application/common/templates/notifier_listener/listener.h"
 #include "application/common/imports/std.h"
+
+#include "engine/main/core/object/object/object.h"
+#include "engine/main/core/object/object_storage/object_storage_event/object_storage_event.h"
 
 namespace						engine
 {
@@ -19,15 +19,12 @@ namespace						engine
 class 							engine::processor final : public singleton<processor>
 {
 public :
-								processor();
+								processor() = default;
 								~processor() override = default;
 
 	static void					execute();
 
 private :
-
-	stack<shared_ptr<object>>	added_objects;
-	stack<shared_ptr<object>>	removed_objects;
 
 	static void					process_input();
 

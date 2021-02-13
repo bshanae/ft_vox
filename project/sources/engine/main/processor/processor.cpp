@@ -11,12 +11,6 @@
 
 using namespace	engine;
 
-				processor::processor()
-{
-	window::construct();
-	input::construct();
-}
-
 void			processor::execute()
 {
 	do
