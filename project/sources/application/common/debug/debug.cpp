@@ -2,9 +2,6 @@
 
 #include "application/common/debug/defines.h"
 
-#include <cstdio>
-#include <cstdarg>
-
 void				debug::log(const string &message)
 {
 #if FT_VOX_DEBUG
@@ -12,73 +9,30 @@ void				debug::log(const string &message)
 #endif
 }
 
-void				debug::raise_error(string message, ...)
+void				debug::raise_error(const string &message)
 {
-	va_list			arguments;
-
-	va_start(arguments, message);
-	write_error(message, arguments);
-	va_end(arguments);
-
+	cerr << "(Warning) " << message << endl;
 	exit(0);
 }
 
 
-void				debug::check_critical(bool statement, string message, ...)
+void				debug::check_critical(bool statement, const string &message)
 {
-	va_list			arguments;
-
 	if (!statement)
-	{
-		va_start(arguments, message);
-		raise_error(message, arguments);
-		va_end(arguments);
-	}
+		raise_error(message);
 }
 
 
-void				debug::raise_warning(string message, ...)
+void				debug::raise_warning(const string &message)
 {
-	va_list			arguments;
-
-	va_start(arguments, message);
-	write_warning(message, arguments);
-	va_end(arguments);
+	cerr << "(Error) " << message << endl;
 }
 
 
-bool				debug::check(bool statement, string message, ...)
+bool				debug::check(bool statement, const string &message)
 {
-	va_list			arguments;
-
 	if (!statement)
-	{
-		va_start(arguments, message);
-		raise_warning(message, arguments);
-		va_end(arguments);
-	}
+		raise_warning(message);
 
 	return statement;
-}
-
-void				debug::write_error(const string &message, va_list arguments)
-{
-	char			buffer[1024];
-	string			format;
-
-	format = "(Error) " + message;
-	vsprintf(buffer, format.c_str(), arguments);
-
-	cerr << buffer << endl;
-}
-
-void				debug::write_warning(const string &message, va_list arguments)
-{
-	char			buffer[1024];
-	string			format;
-
-	format = "(Warning) " + message;
-	vsprintf(buffer, format.c_str(), arguments);
-
-	cerr << buffer << endl;
 }

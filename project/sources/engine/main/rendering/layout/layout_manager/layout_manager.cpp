@@ -57,7 +57,7 @@ void							layout_manager::add(const shared_ptr<object> &object)
 		}
 	}
 
-	debug::raise_warning("[layout_manager::add] Can't add object to layout '%s'", object->get_layout().c_str());
+	debug::raise_warning("[layout_manager::add] Can't add object to layout '" + object->get_layout() + "'");
 }
 
 void							layout_manager::remove(const shared_ptr<object> &object)
@@ -71,5 +71,5 @@ void							layout_manager::remove(const shared_ptr<object> &object)
 		}
 	}
 
-	debug::raise_warning("[layout_manager::add] Can't remove object from layout '%s'", object->get_layout().c_str());
+	debug::raise_warning("[layout_manager::add] Can't remove object from layout '" + object->get_layout() + "'");
 }
