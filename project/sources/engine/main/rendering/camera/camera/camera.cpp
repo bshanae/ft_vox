@@ -11,6 +11,8 @@ using namespace			engine;
 {
 	set_layout("System");
 	position = camera_settings::initial_position;
+
+	recalculate();
 }
 
 vec3					camera::get_position()
