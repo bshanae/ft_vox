@@ -6,8 +6,6 @@
 #include "engine/main/rendering/layout/layout_manager/layout_manager.h"
 #include "engine/main/rendering/camera/camera/camera.h"
 #include "engine/main/processor/processor.h"
-#include "engine/extensions/ui/font/font_library/font_library.h"
-#include "engine/extensions/ui/font/symbol/symbol_renderer.h"
 
 using namespace		engine;
 
@@ -22,9 +20,6 @@ void				daemon::construct_mandatory_objects()
 
 	processor::construct();
 	camera::construct();
-
-	ui::font_library::construct();
-	ui::symbol_renderer::construct();
 }
 
 void				daemon::start_game_loop()

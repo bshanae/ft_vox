@@ -1,6 +1,9 @@
 #include "daemon.h"
 
 #include "engine/main/rendering/layout/layout_manager/layout_manager.h"
+#include "engine/extensions/utilities/fps_counter/fps_counter.h"
+#include "engine/extensions/ui/font/font_library/font_library.h"
+#include "engine/extensions/ui/font/symbol/symbol_renderer.h"
 
 #include "game/world/skybox/skybox.h"
 #include "game/world/world/world.h"
@@ -12,6 +15,14 @@
 #include "game/player/player/player.h"
 
 using namespace 	game;
+
+void 				daemon::construct_engine_extension_objects()
+{
+	engine::utilities::fps_counter::construct();
+
+	engine::ui::font_library::construct();
+	engine::ui::symbol_renderer::construct();
+}
 
 void				daemon::setup_layouts()
 {

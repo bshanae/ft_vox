@@ -62,7 +62,9 @@ set(SOURCES
 	# Engine : Daemon
 	${SOURCES_DIRECTORY}/engine/daemon/daemon.cpp
 
-	# Engine : UI
+	# Engine : Extensions
+	${SOURCES_DIRECTORY}/engine/extensions/utilities/fps_counter/fps_counter.cpp
+
 	${SOURCES_DIRECTORY}/engine/extensions/ui/text/text.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol_renderer.cpp

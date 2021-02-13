@@ -5,6 +5,7 @@ int					main()
 {
 	engine::daemon::construct_mandatory_objects();
 
+	game::daemon::construct_engine_extension_objects();
 	game::daemon::setup_layouts();
 	game::daemon::construct_objects();
 	game::daemon::setup_texture_atlas();
