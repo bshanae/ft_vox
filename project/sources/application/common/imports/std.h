@@ -126,6 +126,7 @@ using				std::to_string;
 using				std::filesystem::exists;
 using				std::min;
 using				std::max;
+using				std::clamp;
 using				std::hash;
 using				std::make_optional;
 

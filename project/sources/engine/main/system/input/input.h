@@ -63,6 +63,8 @@ public :
 		up = GLFW_KEY_UP,
 		right = GLFW_KEY_RIGHT,
 		down = GLFW_KEY_DOWN,
+		plus = GLFW_KEY_EQUAL,
+		minus = GLFW_KEY_MINUS,
 		mouse_left = GLFW_MOUSE_BUTTON_LEFT,
 		mouse_right = GLFW_MOUSE_BUTTON_RIGHT,
 	};

@@ -60,6 +60,11 @@ vec3					camera::get_right()
 	return get_instance()->right;
 }
 
+float					camera::get_fov()
+{
+	return get_instance()->fov;
+}
+
 void					camera::set_position(const vec3 &value)
 {
 	auto				instance = get_instance();
@@ -75,6 +80,8 @@ void					camera::when_updated()
 	const float			yaw_change = input::get_mouse_offset().x * camera_settings::rotation_speed;
 	const float			pitch_change = input::get_mouse_offset().y * camera_settings::rotation_speed;
 
+	float				new_fov = fov;
+
 	if (abs(yaw_change) > epsilon || abs(pitch_change) > epsilon)
 	{
 		yaw += yaw_change;
@@ -82,6 +89,21 @@ void					camera::when_updated()
 
 		recalculate();
 		notify(camera_direction_changed_event());
+	}
+
+	if (input::is_held(input::key::letter_f))
+	{
+		if (input::is_pressed_or_held(input::key::plus))
+			new_fov += camera_settings::fov_delta;
+		else if (input::is_pressed_or_held(input::key::minus))
+			new_fov -= camera_settings::fov_delta;
+	}
+
+	new_fov = clamp(new_fov, camera_settings::minimum_fov, camera_settings::maximum_fov);
+	if (new_fov != fov)
+	{
+		fov = new_fov;
+		recalculate();
 	}
 }
 
@@ -104,7 +126,7 @@ void					camera::recalculate()
 	view_matrix = lookAt(position, position + front, up);
 	projection_matrix = perspective
 	(
-		radians(camera_settings::fov),
+		radians(fov),
 		(float)window::size.x / (float)window::size.y,
 		camera_settings::near_plane,
 		camera_settings::far_plane

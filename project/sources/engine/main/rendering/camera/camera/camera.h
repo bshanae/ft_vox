@@ -36,6 +36,7 @@ public :
 	static vec3			get_down();
 	static vec3			get_left();
 	static vec3			get_right();
+	static float		get_fov();
 
 	static void			set_position(const vec3 &value);
 
@@ -53,6 +54,8 @@ private :
 	vec3				front;
 	vec3				up;
 	vec3				right;
+
+	float				fov = camera_settings::default_fov;
 
 	float				yaw = -90.f;
 	float				pitch = 0.f;

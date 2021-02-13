@@ -53,6 +53,8 @@ using namespace		engine;
 	states[key::up] = state::waiting;
 	states[key::right] = state::waiting;
 	states[key::down] = state::waiting;
+	states[key::plus] = state::waiting;
+	states[key::minus] = state::waiting;
 	states[key::mouse_left] = state::waiting;
 	states[key::mouse_right] = state::waiting;
 
