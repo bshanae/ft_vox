@@ -18,6 +18,8 @@ static const vec3			right = vec3(+chunk_settings::size[0], 0.f, 0.f);
 static const vec3			forward = vec3(0.f, 0.f, chunk_settings::size[2]);
 static const vec3			back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 
+#pragma region Main methods
+
 							world::world()
 {
 	set_layout("Opaque");
@@ -139,7 +141,9 @@ shared_ptr<chunk>			world::find_neighbor_chunk(const shared_ptr<chunk> &main, ax
 	return find_chunk(neighbor_position);
 }
 
-// ------------------------ Pivot
+#pragma endregion
+
+#pragma region Pivot
 
 float						world::distance(const vec3 &position)
 {
@@ -151,7 +155,9 @@ float						world::distance(const shared_ptr<chunk> &chunk)
 	return glm::distance(pivot, chunk->get_center());
 }
 
-// ------------------------ Object methods
+#pragma endregion
+
+#pragma region Object methods
 
 void						world::when_initialized()
 {
@@ -160,6 +166,9 @@ void						world::when_initialized()
 	create_chunk(right);
 	create_chunk(forward);
 	create_chunk(back);
+
+	// Immediately add first chunks
+	process_new_chunks();
 }
 
 void						world::when_updated()
@@ -196,7 +205,9 @@ void						world::when_rendered()
 	sorted_chunks.clear();
 }
 
-// ------------------------ Additional methods
+#pragma endregion
+
+#pragma region Additional methods
 
 void						world::update_pivot()
 {
@@ -318,3 +329,5 @@ void						world::request_rebuild(const shared_ptr<chunk> &chunk, const chunk::in
 
 	chunk->reset_build();
 }
+
+#pragma endregion

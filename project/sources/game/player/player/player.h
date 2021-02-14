@@ -24,6 +24,7 @@ private :
 
 	bool			should_cast_ray = false;
 
+	void			when_initialized() override;
 	void			when_updated() override;
 	void			when_notified(const engine::camera_event &event) override;
 
@@ -32,6 +33,8 @@ private :
 
 	void			try_place_block();
 	void			try_remove_block();
+
+	static vec3		calculate_initial_position();
 
 	aabb			get_aabb(const vec3 &position) const;
 	void			offset_camera_if_possible(const vec3 &offset) const;

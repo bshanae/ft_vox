@@ -26,6 +26,11 @@ void					player::when_updated()
 	process_selection();
 }
 
+void					player::when_initialized()
+{
+	camera::set_position(calculate_initial_position());
+}
+
 void 					player::when_notified(const engine::camera_event &event)
 {
 	should_cast_ray = true;
@@ -106,6 +111,33 @@ void					player::try_remove_block()
 		world::world::remove_block(hit->block);
 		should_cast_ray = true;
 	}
+}
+
+vec3					player::calculate_initial_position()
+{
+	// We believe, that player is initialized after world
+	// So we can access blocks in this methods
+
+	vec3				point = vec3();
+	block_pointer		block = world::find_block(point);
+
+	while (true)
+	{
+		if (not block)
+			break;
+
+		if (is_empty(get_meta_type(block->get_type())))
+			break;
+
+		point += vec3(0, 1, 0);
+		block = world::find_block(point);
+	}
+
+	point.y += player_settings::aabb_size.y;
+	point.x = 0.5f;
+	point.z = 0.5f;
+
+	return point;
 }
 
 aabb					player::get_aabb(const vec3 &position) const

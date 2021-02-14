@@ -18,6 +18,4 @@ struct						engine::camera_settings
 	static inline float 	minimum_fov = 40.f;
 	static inline float 	maximum_fov = 120.f;
 	static inline float 	fov_delta = 2.f;
-
-	static inline vec3		initial_position = vec3(0.f, 30.0f, 0.f); // TODO Make this dynamic
 };

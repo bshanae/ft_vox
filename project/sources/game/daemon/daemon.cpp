@@ -35,8 +35,6 @@ void				daemon::setup_layouts()
 
 void				daemon::construct_objects()
 {
-	game::player::construct();
-
 	game::skybox::construct();
 
 	game::texture_atlas::construct();
@@ -47,6 +45,8 @@ void				daemon::construct_objects()
 	game::block_highlighter_renderer::construct();
 	game::chunk_renderer::construct();
 	game::world::construct();
+
+	game::player::construct();
 }
 
 void				daemon::setup_texture_atlas()

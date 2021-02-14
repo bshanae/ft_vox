@@ -10,8 +10,6 @@ using namespace			engine;
 						camera::camera()
 {
 	set_layout("System");
-	position = camera_settings::initial_position;
-
 	recalculate();
 }
 

@@ -41,7 +41,7 @@ public :
 
 private :
 
-// ----------------------------	Types
+#pragma region Nested types
 
 	struct						vec3_hasher
 	{
@@ -55,7 +55,9 @@ private :
 		}
 	};
 
-// ----------------------------	Attributes
+#pragma endregion
+
+#pragma region Attributes
 
 	using						chunks_type = std::unordered_map<vec3, shared_ptr<chunk>, vec3_hasher>;
 
@@ -71,25 +73,33 @@ private :
 
 	engine::timer				update_timer;
 
-// ----------------------------	Chunks
+#pragma endregion
+
+#pragma region Chunks
 
 	shared_ptr<chunk>			find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign);
 
-// ----------------------------	Pivot
+#pragma endregion
+
+#pragma region Pivot
 
 	vec3						pivot = vec3(0.f);
 
 	float						distance(const vec3 &position);
 	float						distance(const shared_ptr<chunk> &chunk);
 
-// ----------------------------	Object methods
+#pragma endregion
+
+#pragma region Object methods
 
 	void						when_initialized() override;
 
 	void						when_updated() override;
 	void						when_rendered() override;
 
-// ----------------------------	Additional methods
+#pragma endregion
+
+#pragma region Additional methods
 
 	void						update_pivot();
 	void						update_chunks_builds();
@@ -105,4 +115,6 @@ private :
 
 	void 						request_build(const shared_ptr<chunk> &chunk);
 	void						request_rebuild(const shared_ptr<chunk> &chunk, const chunk::index &changed_block);
+
+#pragma endregion
 };
