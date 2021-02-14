@@ -41,6 +41,6 @@ private :
 	static void				spread_light_in_all_directions_from_block
 							(
 								const shared_ptr<chunk_workspace> &workspace,
-								const chunk::index &index
+								const block_pointer &block
 							);
 };

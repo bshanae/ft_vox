@@ -1,6 +1,7 @@
 #include "chunk_light_builder.h"
 
 #include "game/world/chunk/block/block/block_settings.h"
+#include "game/world/chunk/block/block_pointer/block_pointer.h"
 #include "game/world/chunk/chunk/building/chunk_workspace/chunk_workspace.h"
 
 using namespace					game;
@@ -87,14 +88,14 @@ void 							chunk_light_builder::spread_light_in_all_directions
 									vector<chunk::index> &lighted_blocks
 								)
 {
-	for (const chunk::index &lighted_block : lighted_blocks)
-		spread_light_in_all_directions_from_block(workspace, lighted_block);
+	for (const chunk::index &index : lighted_blocks)
+		spread_light_in_all_directions_from_block(workspace, block_pointer(workspace->chunk, index));
 }
 
 void							chunk_light_builder::spread_light_in_all_directions_from_block
 								(
 									const shared_ptr<chunk_workspace> &workspace,
-									const chunk::index &index
+									const block_pointer &block
 								)
 {
 	static const chunk::index	offsets[] =
@@ -108,26 +109,23 @@ void							chunk_light_builder::spread_light_in_all_directions_from_block
 		chunk::index(0, 0, +1)
 	};
 
-	const float				light_level = workspace->chunk->at(index).get_light_level();
-	chunk::index			neighbor_index;
+	const float				light_level = block->get_light_level();
+	block_pointer			neighbor;
 
 	if (light_level <= lowest_light_level_for_recursion)
 		return;
 
 	for (const auto &offset : offsets)
 	{
-		// TODO What about neighbor chunks?
-		if (neighbor_index = index + offset; neighbor_index)
+		if (neighbor = block.get_neighbor(offset); neighbor)
 		{
-			block			&neighbor_block = workspace->chunk->at(neighbor_index);
-
-			if (!does_transmit_light(get_meta_type(neighbor_block.get_type())))
+			if (!does_transmit_light(get_meta_type(neighbor->get_type())))
 				continue;
-			if (neighbor_block.get_light_level() >= light_level)
+			if (neighbor->get_light_level() >= light_level)
 				continue;
 
-			workspace->chunk->at(neighbor_index).set_light_level(light_level - light_level_delta);
-			spread_light_in_all_directions_from_block(workspace, neighbor_index);
+			neighbor->set_light_level(light_level - light_level_delta);
+			spread_light_in_all_directions_from_block(workspace, neighbor);
 		}
 	}
 }
