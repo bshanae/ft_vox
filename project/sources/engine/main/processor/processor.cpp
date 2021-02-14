@@ -21,6 +21,8 @@ void			processor::execute()
 		process_rendering();
 	}
 	while (not window::is_closed());
+
+	object_storage::clean();
 }
 
 void			processor::process_input()

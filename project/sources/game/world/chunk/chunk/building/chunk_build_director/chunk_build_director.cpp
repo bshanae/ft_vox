@@ -10,12 +10,20 @@ using namespace					game;
 
 using							build_type = chunk_build_director::build;
 
+								chunk_build_director::chunk_build_director()
+{
+	set_layout("System");
+}
+
 optional<build_type>			chunk_build_director::process_build(const shared_ptr<chunk> &chunk)
 {
 	auto 						instance = get_instance();
 	shared_ptr<chunk_workspace>	workspace = instance->get_or_create_workspace(chunk);
 
 	engine::timer				timer(10 / 60.f);
+
+	if (instance->get_state() == state::deinitialized)
+		return nullopt;
 
 	while (true)
 	{
@@ -73,7 +81,21 @@ void							chunk_build_director::invalidate_build(const shared_ptr<chunk> &chunk
 }
 void							chunk_build_director::do_build_at_once(const shared_ptr<chunk> &chunk)
 {
+	if (get_instance()->get_state() == state::deinitialized)
+		return;
+
 	get_instance()->get_or_create_workspace(chunk)->build_at_once = true;
+}
+
+void 							chunk_build_director::when_deinitialized()
+{
+	auto 						instance = get_instance();
+
+	for (auto iterator = instance->data.cbegin(); iterator != instance->data.cend();)
+	{
+		iterator->second->wait();
+		instance->data.erase(iterator++);
+	}
 }
 
 shared_ptr<chunk_workspace>		chunk_build_director::get_workspace(const shared_ptr<chunk> &chunk) const

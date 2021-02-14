@@ -2,6 +2,9 @@
 
 #include "application/common/templates/singleton/singleton.h"
 
+#include "engine/main/core/object/object/object.h"
+#include "engine/main/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
+
 #include "game/world/chunk/chunk/building/chunk_workspace/chunk_workspace.h"
 
 namespace						game
@@ -9,12 +12,14 @@ namespace						game
 	class						chunk_build_director;
 }
 
-class							game::chunk_build_director : public singleton<game::chunk_build_director>
+class							game::chunk_build_director :
+									public engine::object,
+									public engine::unique_object_constructor<game::chunk_build_director>
 {
 	using						data_type = unordered_map<shared_ptr<chunk>, shared_ptr<chunk_workspace>>;
 
 public :
-								chunk_build_director() = default;
+								chunk_build_director();
 								~chunk_build_director() override = default;
 
 	struct 						build
@@ -32,7 +37,9 @@ public :
 
 private :
 
-	 data_type					data;
+	data_type					data;
+
+	void 						when_deinitialized() override;
 
 	shared_ptr<chunk_workspace>	get_workspace(const shared_ptr<chunk> &chunk) const;
 	shared_ptr<chunk_workspace>	get_or_create_workspace(const shared_ptr<chunk> &chunk);

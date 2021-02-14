@@ -49,6 +49,9 @@ protected :
 	virtual void 			when_updated() {}
 	virtual void 			when_rendered() {}
 
+	void 					check_if_initialized();
+	void 					check_if_deinitialized();
+
 private :
 
 	enum state				state;

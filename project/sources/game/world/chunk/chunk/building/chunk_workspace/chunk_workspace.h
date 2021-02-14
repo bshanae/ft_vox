@@ -46,6 +46,8 @@ public :
 	};
 
 	explicit						chunk_workspace(const shared_ptr<chunk> &chunk);
+
+	void 							wait();
 	void							reset();
 
 	const shared_ptr<chunk>			chunk;

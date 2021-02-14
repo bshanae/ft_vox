@@ -8,6 +8,22 @@ using namespace				game;
 								build_at_once(false)
 {}
 
+void 						chunk_workspace::wait()
+{
+	switch (state)
+	{
+		case light_in_process:
+			light_build_future->wait();
+			break;
+
+		case geometry_in_process:
+			batch_for_opaque.geometry_future->wait();
+			batch_for_transparent.geometry_future->wait();
+			batch_for_partially_transparent.geometry_future->wait();
+			break;
+	}
+}
+
 void						chunk_workspace::reset()
 {
 	auto 					reset_batch = [](batch &batch)

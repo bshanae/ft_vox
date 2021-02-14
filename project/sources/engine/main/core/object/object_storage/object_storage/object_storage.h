@@ -24,10 +24,13 @@ public :
 
 	static void		add(const shared_ptr<object> &object);
 	static void		remove(const shared_ptr<object> &object);
+	static void 	clean();
 
 private :
 
 	data_type		objects;
+
+	static void		do_remove(const shared_ptr<object> &object);
 };
 
 
