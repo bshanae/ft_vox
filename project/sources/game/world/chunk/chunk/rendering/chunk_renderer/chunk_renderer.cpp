@@ -33,7 +33,7 @@ using namespace			game;
 	uniform_background.upload(processor_settings::background);
 	uniform_texture.upload(0);
 	uniform_fog_density.upload(1.f / (world_settings::fog_limit));
-	uniform_fog_gradient.upload(12.f);
+	uniform_fog_gradient.upload(15.f);
 	uniform_apply_water_tint.upload(0);
 	program->use(false);
 }

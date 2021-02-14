@@ -304,8 +304,7 @@ float						chunk_geometry_builder::calculate_ao_for_vertex
 
 float						chunk_geometry_builder::combine_light_and_ao(float light_level, float ao_level)
 {
-	static constexpr float	light_weight = 0.6f;
-	static constexpr float	ao_weight = 1.f - light_weight;
+	static constexpr float	ao_weight = 0.4f;
 
-	return light_level * light_weight - ao_level * light_level * ao_weight;
+	return light_level - ao_level * light_level * ao_weight;
 }
