@@ -1,5 +1,6 @@
 #include "skybox.h"
 
+#include "engine/main/system/input/input.h"
 #include "engine/main/rendering/camera/camera/camera.h"
 #include "engine/main/rendering/model/model/model.h"
 #include "engine/main/rendering/texture/cubemap/cubemap.h"
@@ -17,11 +18,28 @@ using namespace			game;
 	build_cubemap();
 	build_program();
 	initialize_program();
+
+	is_enabled = false;
+}
+
+void					skybox::when_updated()
+{
+	if
+	(
+		engine::input::is_held(engine::input::key::command) and
+		engine::input::is_pressed(engine::input::key::letter_s)
+	)
+	{
+		is_enabled = not is_enabled;
+	}
 }
 
 void					skybox::when_rendered()
 {
 	mat4 				view_matrix;
+
+	if (not is_enabled)
+		return;
 
 	program->use(true);
 	model->use(true);

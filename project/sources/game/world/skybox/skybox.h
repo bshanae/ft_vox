@@ -30,6 +30,8 @@ private :
 	inline static const path	path_to_vertex_shader = "project/resources/shaders/skybox.vertex.glsl";
 	inline static const path	path_to_fragment_shader = "project/resources/shaders/skybox.fragment.glsl";
 
+	bool						is_enabled;
+
 	shared_ptr<engine::model>	model;
 	shared_ptr<engine::cubemap>	cubemap;
 
@@ -38,6 +40,7 @@ private :
 	engine::uniform<mat4>		uniform_view;
 	engine::uniform<int>		uniform_cubemap;
 
+	void						when_updated() override;
 	void						when_rendered() override;
 
 	void						build_model();

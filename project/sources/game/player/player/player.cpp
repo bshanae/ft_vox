@@ -41,6 +41,9 @@ void 					player::process_input()
 	vec3				movement = vec3(0.f);
 	float				speed_up;
 
+	if (engine::input::is_held(engine::input::key::command))
+		return;
+
 	speed_up = input::is_held(input::key::shift)  ? player_settings::speed_up : 1.f;
 
 	if (input::is_pressed_or_held(input::key::letter_a))

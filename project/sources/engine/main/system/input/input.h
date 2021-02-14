@@ -59,6 +59,7 @@ public :
 		enter = GLFW_KEY_ENTER,
 		space = GLFW_KEY_SPACE,
 		shift = GLFW_KEY_LEFT_SHIFT,
+		command = GLFW_KEY_LEFT_SUPER,
 		left = GLFW_KEY_LEFT,
 		up = GLFW_KEY_UP,
 		right = GLFW_KEY_RIGHT,
