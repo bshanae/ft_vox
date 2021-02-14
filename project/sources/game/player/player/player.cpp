@@ -95,7 +95,7 @@ void					player::try_place_block()
 		if (!debug::check((bool)neighbor, "[player] Can't put block"))
 			return;
 
-		world::world::insert_block(neighbor, block_type::dirt_with_grass);
+		world::world::insert_block(neighbor, last_removed_block_type);
 
 		if (world::world::does_collide(get_aabb(camera::get_position())))
 			world::world::remove_block(neighbor);
@@ -108,8 +108,10 @@ void					player::try_remove_block()
 {
 	if (auto hit = ray_caster::cast_ray(); hit)
 	{
-		world::world::remove_block(hit->block);
+		last_removed_block_type = hit->block->get_type();
 		should_cast_ray = true;
+
+		world::world::remove_block(hit->block);
 	}
 }
 

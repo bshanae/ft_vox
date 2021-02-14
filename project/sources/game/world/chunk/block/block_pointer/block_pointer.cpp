@@ -66,7 +66,7 @@ block_pointer::index_type	block_pointer::get_index() const
 
 block_pointer				block_pointer::get_neighbor(axis axis, sign sign) const
 {
-	auto					neighbor_index = index.get_neighbor((::axis)axis, (::sign)sign);
+	auto					neighbor_index = index.get_neighbor(axis, sign);
 
 	if (neighbor_index)
 		return block_pointer(chunk, neighbor_index);

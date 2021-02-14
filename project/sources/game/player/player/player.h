@@ -6,6 +6,7 @@
 #include "engine/main/system/time/timer/timer.h"
 
 #include "game/world/tools/aabb/aabb.h"
+#include "game/world/chunk/block/block_type/block_type/block_type.h"
 
 namespace			game
 {
@@ -23,6 +24,7 @@ public :
 private :
 
 	bool			should_cast_ray = false;
+	block_type		last_removed_block_type = block_type::air;
 
 	void			when_initialized() override;
 	void			when_updated() override;
