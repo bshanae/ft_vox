@@ -4,7 +4,7 @@
 
 void				debug::log(const string &message)
 {
-#if FT_VOX_DEBUG
+#if FT_VOX_LOG
 	cout << message << endl;
 #endif
 }
