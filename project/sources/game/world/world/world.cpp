@@ -107,7 +107,7 @@ bool						world::does_collide(const aabb &aabb)
 	for (int y = (int)min.y; y <= (int)max.y; y++)
 	for (int z = (int)min.z; z <= (int)max.z; z++)
 	{
-		if (not (block_iterator = find_block(vec3(x, y, z))))
+		if (block_iterator = find_block(vec3(x, y, z)); not block_iterator.is_valid())
 			continue ;
 
 		if
@@ -187,8 +187,10 @@ void						world::when_updated()
 
 void						world::when_rendered()
 {
-	if (auto camera_block = find_block(camera::get_position()))
+	if (auto camera_block = find_block(camera::get_position()); camera_block.is_valid())
 		chunk_renderer::set_apply_water_tint(camera_block->get_type() == block_type::water);
+	else
+		chunk_renderer::set_apply_water_tint(false);
 
 	for (auto [position, chunk] : chunks)
 		chunk_renderer::render(chunk, chunk_renderer::group::opaque);

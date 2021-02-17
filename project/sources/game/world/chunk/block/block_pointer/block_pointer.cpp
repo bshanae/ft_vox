@@ -49,7 +49,7 @@ block						*block_pointer::operator -> () const
 	return raw_pointer;
 }
 
-							block_pointer::operator bool () const
+bool						block_pointer::is_valid() const
 {
 	return chunk != nullptr;
 }

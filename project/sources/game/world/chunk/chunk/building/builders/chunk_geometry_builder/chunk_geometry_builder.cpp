@@ -119,7 +119,7 @@ void				chunk_geometry_builder::process_block
 			auto	neighbor_block_pointer = this_block_pointer.get_neighbor(axis, sign);
 
 			// If there is no neighbor block, therefore this block is end of world, so we need to draw it
-			if (not neighbor_block_pointer)
+			if (not neighbor_block_pointer.is_valid())
 				build_quad(workspace, batch, this_block, index, axis, sign, block_settings::default_light);
 			else if (should_build_quad(workspace, batch, this_block_pointer, neighbor_block_pointer))
 				build_quad(workspace, batch, this_block, index, axis, sign, (*neighbor_block_pointer).get_light_level());
@@ -296,7 +296,7 @@ float						chunk_geometry_builder::calculate_ao_for_vertex
 	for (const auto &occluder_offset : occluders_offsets)
 	{
 		neighbor_block = block.get_neighbor(occluder_offset);
-		count += (bool)neighbor_block and not does_transmit_light(get_meta_type(neighbor_block->get_type()));
+		count += neighbor_block.is_valid() and not does_transmit_light(get_meta_type(neighbor_block->get_type()));
 	}
 
 	return (float)count / 3;

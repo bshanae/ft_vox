@@ -117,7 +117,7 @@ void							chunk_light_builder::spread_light_in_all_directions_from_block
 
 	for (const auto &offset : offsets)
 	{
-		if (neighbor = block.get_neighbor(offset); neighbor)
+		if (neighbor = block.get_neighbor(offset); neighbor.is_valid())
 		{
 			if (!does_transmit_light(get_meta_type(neighbor->get_type())))
 				continue;

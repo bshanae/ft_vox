@@ -31,7 +31,7 @@ public :
 	block					&operator * () const;
 	block					*operator -> () const;
 
-							operator bool () const;
+	bool					is_valid() const;
 
 	chunk_type				get_chunk() const;
 	index_type				get_index() const;

@@ -86,11 +86,8 @@ optional<ray_caster::hit>	ray_caster::cast_ray()
 			face = from_axis_and_sign(axis::z, inverted_step_z);
 		}
 
-		if (auto block = game::world::find_block(vec3(x, y, z)))
+		if (auto block = game::world::find_block(vec3(x, y, z)); block.is_valid())
 		{
-			if (!block)
-				return {};
-
 			if (is_editable(get_meta_type(block->get_type())))
 				return {(hit){block, face}};
 		}

@@ -95,7 +95,7 @@ void					player::try_place_block()
 		auto 			axis_and_sign = to_axis_and_sign(hit->face);
 		auto			neighbor = hit->block.get_neighbor(axis_and_sign.first, axis_and_sign.second);
 
-		if (!debug::check((bool)neighbor, "[player] Can't put block"))
+		if (not debug::check(neighbor.is_valid(), "[player] Can't put block"))
 			return;
 
 		world::world::insert_block(neighbor, last_removed_block_type);
@@ -128,7 +128,7 @@ vec3					player::calculate_initial_position()
 
 	while (true)
 	{
-		if (not block)
+		if (not block.is_valid())
 			break;
 
 		if (is_empty(get_meta_type(block->get_type())))
