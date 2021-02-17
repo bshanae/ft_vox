@@ -1,6 +1,6 @@
 #pragma once
 
-#include "application/common/debug/defines.h"
+#include "application/common/defines.h"
 #include "application/common/debug/debug.h"
 #include "application/common/imports/glm.h"
 #include "application/common/imports/std.h"
@@ -130,24 +130,12 @@ public :
 
 		bool					operator == (const index& that) const
 		{
-			return (this->x == that.x and this->y == that.y and this->z == that.z);
+			return this->x == that.x and this->y == that.y and this->z == that.z;
 		}
 
 		bool					operator != (const index& that) const
 		{
-			return (this->x != that.x or this->y != that.y or this->z != that.z);
-		}
-
-		explicit				operator bool () const
-		{
-			if (x < 0 or x >= size_x)
-				return (false);
-			if (y < 0 or y >= size_y)
-				return (false);
-			if (z < 0 or z >= size_z)
-				return (false);
-
-			return (true);
+			return this->x != that.x or this->y != that.y or this->z != that.z;
 		}
 
 		friend ostream 			&operator << (ostream &stream, const index &index)
@@ -156,38 +144,29 @@ public :
 			return (stream);
 		}
 
+		bool					is_valid() const
+		{
+			return
+			(
+				x >= 0 and x < size_x and
+				y >= 0 and y < size_y and
+				z >= 0 and z < size_z
+			);
+		}
+
 		index					get_neighbor(axis axis, sign sign) const
 		{
 			switch (axis)
 			{
 				case (axis::x) :
-					return (*this + index(1, 0, 0) * (int)sign);
+					return *this + index(1, 0, 0) * (int)sign;
 
 				case (axis::y) :
-					return (*this + index(0, 1, 0) * (int)sign);
+					return *this + index(0, 1, 0) * (int)sign;
 
 				case (axis::z) :
-					return (*this + index(0, 0, 1) * (int)sign);
+					return *this + index(0, 0, 1) * (int)sign;
 			}
-		}
-
-		index					reflect() const
-		{
-			index				result = *this;
-
-			auto 				reflect_component = [](int &component, const int &bound)
-			{
-				if (component < 0)
-					component = bound - 1;
-				else if (component >= bound)
-					component = 0;
-			};
-
-			reflect_component(result.x, size_x);
-			reflect_component(result.y, size_y);
-			reflect_component(result.z, size_z);
-
-			return (result);
 		}
 
 	private :
@@ -247,13 +226,13 @@ public :
 
 		void 					validate() const
 		{
-			debug::check_critical(operator bool (), "[application::array3] Index for 3D array is not valid");
+			debug::check_critical(is_valid(), "[application::array3] Index for 3D array is not valid");
 		}
 	};
 
 	auto						&at(const index &index)
 	{
-#if FT_VOX_DEBUG
+#if FT_VOX_SAFE
 		index.validate();
 #endif
 
@@ -262,7 +241,7 @@ public :
 
 	const auto					&at(const index &index) const
 	{
-#if FT_VOX_DEBUG
+#if FT_VOX_SAFE
 		index.validate();
 #endif
 
@@ -271,7 +250,7 @@ public :
 
 	auto						&at(int x, int y, int z)
 	{
-#if FT_VOX_DEBUG
+#if FT_VOX_SAFE
 		index(x, y, z).validate();
 #endif
 
@@ -280,7 +259,7 @@ public :
 
 	const auto					&at(int x, int y, int z) const
 	{
-#if FT_VOX_DEBUG
+#if FT_VOX_SAFE
 		index(x, y, z).validate();
 #endif
 
@@ -329,17 +308,17 @@ public :
 		iterator				operator ++ (int)
 		{
 			internal_index++;
-			return (*this);
+			return *this;
 		}
 
 		reference				operator * ()
 		{
-			return (*this);
+			return *this;
 		}
 
 		pointer					operator -> ()
 		{
-			return (this);
+			return this;
 		}
 
 		bool					operator == (const iterator& that) const
@@ -347,17 +326,17 @@ public :
 			return data == that.data and internal_index == that.internal_index;
 		}
 
-		auto					&value()
+		auto					&get_value()
 		{
 			return (*data)[internal_index.x][internal_index.y][internal_index.z];
 		}
 
-		const auto				&value() const
+		const auto				&get_value() const
 		{
 			return (*data)[internal_index.x][internal_index.y][internal_index.z];
 		}
 
-		index					&index()
+		index					&get_index()
 		{
 			return (internal_index);
 		}

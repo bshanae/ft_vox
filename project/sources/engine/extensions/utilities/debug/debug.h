@@ -20,7 +20,7 @@ private :
 
 	static constexpr bool	print_average_fps = true;
 	static constexpr bool	exit_after_some_time = true;
-	static constexpr float	exit_time = 10.f;
+	static constexpr float	exit_time = 5.f;
 
 	int 					total_frames_count;
 	timestamp				start_timestamp;

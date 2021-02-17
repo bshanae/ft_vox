@@ -1,6 +1,6 @@
 #include "chunk.h"
 
-#include "application/common/debug/defines.h"
+#include "application/common/defines.h"
 
 #include "engine/main/rendering/model/model/model.h"
 

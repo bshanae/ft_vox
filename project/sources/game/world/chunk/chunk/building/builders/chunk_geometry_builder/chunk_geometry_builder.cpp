@@ -88,8 +88,8 @@ void				chunk_geometry_builder::process_batch
 {
 	for (auto &iterator : *workspace->chunk)
 	{
-		if (batch.filter(iterator->value()))
-			process_block(workspace, batch, iterator.index());
+		if (batch.filter(iterator->get_value()))
+			process_block(workspace, batch, iterator.get_index());
 	}
 }
 

@@ -43,7 +43,7 @@ block_pointer				world::world::find_block(const vec3 &position)
 	index.y = (int)(position.y - chunk_position.y);
 	index.z = (int)(position.z - chunk_position.z);
 
-	if (chunk = get_instance()->find_chunk(chunk_position); not chunk or not index)
+	if (chunk = get_instance()->find_chunk(chunk_position); chunk == nullptr or not index.is_valid())
 		return block_pointer();
 	else
 		return block_pointer(chunk, index);

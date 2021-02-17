@@ -1,6 +1,6 @@
 #include "debug.h"
 
-#include "application/common/debug/defines.h"
+#include "application/common/defines.h"
 
 void				debug::log(const string &message)
 {

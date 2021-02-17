@@ -68,7 +68,7 @@ block_pointer				block_pointer::get_neighbor(axis axis, sign sign) const
 {
 	auto					neighbor_index = index.get_neighbor(axis, sign);
 
-	if (neighbor_index)
+	if (neighbor_index.is_valid())
 		return block_pointer(chunk, neighbor_index);
 	else
 		return world::find_block(chunk->get_position() + (vec3)neighbor_index);
@@ -78,7 +78,7 @@ block_pointer				block_pointer::get_neighbor(const chunk::index &offset) const
 {
 	auto					neighbor_index = index + offset;
 
-	if (neighbor_index)
+	if (neighbor_index.is_valid())
 		return block_pointer(chunk, neighbor_index);
 	else
 		return world::find_block(chunk->get_position() + (vec3)neighbor_index);
