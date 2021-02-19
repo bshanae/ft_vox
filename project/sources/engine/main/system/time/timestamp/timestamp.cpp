@@ -4,7 +4,7 @@ using namespace		engine;
 
 					timestamp::timestamp()
 {
-	value = glfwGetTime();
+	value = (float)glfwGetTime();
 }
 
 float 				timestamp::get_value() const
@@ -17,13 +17,18 @@ float 				timestamp::get_value() const
 	return get_value();
 }
 
-float				timestamp::operator - (const timestamp &that)
+float				timestamp::operator - (const timestamp &that) const
 {
 	return this->value - that.value;
 }
 
-ostream				&operator << (ostream &stream, const timestamp &timestamp)
+ostream				&engine::operator << (ostream &stream, const timestamp &timestamp)
 {
-	stream << (float)timestamp << "s.";
+	stream << (float)timestamp << " s.";
 	return stream;
+}
+
+string				engine::to_string(const timestamp &timestamp)
+{
+	return std::to_string((float)timestamp) + " s.";
 }

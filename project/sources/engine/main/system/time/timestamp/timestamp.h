@@ -17,8 +17,10 @@ public :
 	float 				get_value() const;
 
 						operator float () const;
-	float				operator - (const timestamp &that);
+	float				operator - (const timestamp &that) const;
+
 	friend ostream		&operator << (ostream &stream, const timestamp &timestamp);
+	friend string 		to_string(const timestamp &timestamp);
 
 private :
 
