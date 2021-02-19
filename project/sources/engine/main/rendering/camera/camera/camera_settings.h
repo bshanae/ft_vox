@@ -12,7 +12,7 @@ struct						engine::camera_settings
 	static constexpr float	rotation_speed = 0.05f;
 
 	static inline float		near_plane = 0.05f;
-	static inline float		far_plane = 250.f;
+	static inline float		far_plane = 300.f;
 
 	static inline float 	default_fov = 50.f;
 	static inline float 	minimum_fov = 40.f;
