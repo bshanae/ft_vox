@@ -38,6 +38,8 @@ void 					player::when_notified(const engine::camera_event &event)
 
 void 					player::process_input()
 {
+	static const float	speed_transformation = 1.f / 60.f;
+
 	vec3				movement = vec3(0.f);
 	float				speed_up;
 
@@ -58,12 +60,12 @@ void 					player::process_input()
 
 	if (movement != vec3(0.f))
 	{
-		movement = normalize(movement) * player_settings::movement_speed * speed_up;
+		movement = normalize(movement) * player_settings::movement_speed * speed_transformation * speed_up;
 		offset_camera_if_possible(movement);
 	}
 
 	if (input::is_held(input::key::space))
-		offset_camera_if_possible(player_settings::flight_lift * speed_up);
+		offset_camera_if_possible(player_settings::flight_lift * speed_transformation  * speed_up);
 
 	if (input::is_pressed(input::key::mouse_left))
 		try_remove_block();
