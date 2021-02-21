@@ -64,7 +64,6 @@ set(SOURCES
 
 	# Engine : Extensions
 	${SOURCES_DIRECTORY}/engine/extensions/utilities/fps_counter/fps_counter.cpp
-	${SOURCES_DIRECTORY}/engine/extensions/utilities/debug/debug.cpp
 
 	${SOURCES_DIRECTORY}/engine/extensions/ui/text/text.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol.cpp

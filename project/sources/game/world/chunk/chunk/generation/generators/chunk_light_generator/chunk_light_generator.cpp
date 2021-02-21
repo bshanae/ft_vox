@@ -47,7 +47,7 @@ void							chunk_light_generator::initialize_light(const shared_ptr<chunk_worksp
 	for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
 	{
 		if (index.y == chunk_settings::size[1] - 1)
-			workspace->chunk->at(index).set_light_level(block_settings::sun_light);
+			workspace->chunk->at(index).set_light_level(block_settings::sun_light_level);
 		else
 			workspace->chunk->at(index).set_light_level(initial_light_level);
 	}

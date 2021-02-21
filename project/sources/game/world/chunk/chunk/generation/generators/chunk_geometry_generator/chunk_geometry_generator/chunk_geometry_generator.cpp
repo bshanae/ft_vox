@@ -120,7 +120,7 @@ void				chunk_geometry_generator::process_block
 
 			// If there is no neighbor block, therefore this block is end of world, so we need to draw it
 			if (not neighbor_block_pointer.is_valid())
-				build_quad(workspace, batch, this_block, index, axis, sign, block_settings::default_light);
+				build_quad(workspace, batch, this_block, index, axis, sign, block_settings::default_light_level);
 			else if (should_build_quad(workspace, batch, this_block_pointer, neighbor_block_pointer))
 				build_quad(workspace, batch, this_block, index, axis, sign, (*neighbor_block_pointer).get_light_level());
 		}
@@ -170,7 +170,7 @@ void				chunk_geometry_generator::build_quad
 	float			ao_levels[4] = {0.f, 0.f, 0.f, 0.f };
 
 	// TODO Use block_pointer
-	light_level = max(light_level, block_settings::min_light);
+	light_level = clamp(light_level, block_settings::min_light_level, block_settings::max_light_level);
 	block_pointer	block = block_pointer(workspace->chunk, index);
 
 	if (axis == axis::x and sign == sign::plus)

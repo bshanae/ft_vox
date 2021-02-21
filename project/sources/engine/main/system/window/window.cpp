@@ -20,7 +20,7 @@ using namespace			engine;
 	const GLFWvidmode	*mode = glfwGetVideoMode(monitor);
 
 	size = ivec2(mode->width, mode->height);
-	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), monitor, nullptr);
+	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
 #else
 	size = ivec2(1024, 720);
 	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);

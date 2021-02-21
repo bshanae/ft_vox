@@ -42,12 +42,12 @@ void						chunk::set_visible(bool state)
 
 void						chunk::update_build()
 {
-	using					build_type = optional<chunk_build_director::build>;
+	using					build_type = optional<chunk_generation_controller::build>;
 
 	shared_ptr<chunk>		pointer = shared_from_this();
 	build_type				build;
 
-	if ((build = chunk_build_director::process_build(pointer)))
+	if ((build = chunk_generation_controller::process_build(pointer)))
 	{
 		model_for_opaque = build->model_for_opaque;
 		model_for_transparent = build->model_for_transparent;
@@ -74,6 +74,6 @@ void						chunk::reset_build()
 	model_for_partially_transparent = nullptr;
 #endif
 
-	chunk_build_director::do_build_at_once(pointer);
-	chunk_build_director::invalidate_build(pointer);
+	chunk_generation_controller::do_build_at_once(pointer);
+	chunk_generation_controller::invalidate_build(pointer);
 }

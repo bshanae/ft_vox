@@ -9,9 +9,9 @@
 
 using namespace					game;
 
-using							build_type = chunk_build_director::build;
+using							build_type = chunk_generation_controller::build;
 
-								chunk_build_director::chunk_build_director()
+								chunk_generation_controller::chunk_generation_controller()
 {
 	set_layout("System");
 
@@ -21,7 +21,7 @@ using							build_type = chunk_build_director::build;
 	chunk_model_generator::construct();
 }
 
-optional<build_type>			chunk_build_director::process_build(const shared_ptr<chunk> &chunk)
+optional<build_type>			chunk_generation_controller::process_build(const shared_ptr<chunk> &chunk)
 {
 	auto 						instance = get_instance();
 	shared_ptr<chunk_workspace>	workspace = instance->get_or_create_workspace(chunk);
@@ -67,7 +67,7 @@ optional<build_type>			chunk_build_director::process_build(const shared_ptr<chun
 
 			case chunk_workspace::model_done:
 				workspace->build_at_once = false;
-				return optional<chunk_build_director::build>(package_build(workspace));
+				return optional<chunk_generation_controller::build>(package_build(workspace));
 
 			case chunk_workspace::landscape_in_process:
 			case chunk_workspace::light_in_process:
@@ -86,12 +86,12 @@ optional<build_type>			chunk_build_director::process_build(const shared_ptr<chun
 	return nullopt;
 }
 
-void							chunk_build_director::invalidate_build(const shared_ptr<chunk> &chunk)
+void							chunk_generation_controller::invalidate_build(const shared_ptr<chunk> &chunk)
 {
 	if (auto workspace = get_instance()->get_workspace(chunk); workspace != nullptr)
 		workspace->reset();
 }
-void							chunk_build_director::do_build_at_once(const shared_ptr<chunk> &chunk)
+void							chunk_generation_controller::do_build_at_once(const shared_ptr<chunk> &chunk)
 {
 	if (get_instance()->get_state() == state::deinitialized)
 		return;
@@ -99,7 +99,7 @@ void							chunk_build_director::do_build_at_once(const shared_ptr<chunk> &chunk
 	get_instance()->get_or_create_workspace(chunk)->build_at_once = true;
 }
 
-void 							chunk_build_director::when_deinitialized()
+void 							chunk_generation_controller::when_deinitialized()
 {
 	auto 						instance = get_instance();
 
@@ -112,7 +112,7 @@ void 							chunk_build_director::when_deinitialized()
 #endif
 }
 
-shared_ptr<chunk_workspace>		chunk_build_director::get_workspace(const shared_ptr<chunk> &chunk) const
+shared_ptr<chunk_workspace>		chunk_generation_controller::get_workspace(const shared_ptr<chunk> &chunk) const
 {
 	if (!data.contains(chunk))
 		return nullptr;
@@ -120,7 +120,7 @@ shared_ptr<chunk_workspace>		chunk_build_director::get_workspace(const shared_pt
 	return data.at(chunk);
 }
 
-shared_ptr<chunk_workspace>		chunk_build_director::get_or_create_workspace(const shared_ptr<chunk> &chunk)
+shared_ptr<chunk_workspace>		chunk_generation_controller::get_or_create_workspace(const shared_ptr<chunk> &chunk)
 {
 	if (!data.contains(chunk))
 		data.emplace(chunk, make_shared<chunk_workspace>(chunk));
@@ -128,7 +128,7 @@ shared_ptr<chunk_workspace>		chunk_build_director::get_or_create_workspace(const
 	return data.at(chunk);
 }
 
-build_type						chunk_build_director::package_build(const shared_ptr<chunk_workspace> &workspace)
+build_type						chunk_generation_controller::package_build(const shared_ptr<chunk_workspace> &workspace)
 {
 	return build
 	{
@@ -138,7 +138,7 @@ build_type						chunk_build_director::package_build(const shared_ptr<chunk_works
 	};
 }
 
-bool							chunk_build_director::is_chunk_present_and_has_light(const vec3 &position)
+bool							chunk_generation_controller::is_chunk_present_and_has_light(const vec3 &position)
 {
 	shared_ptr<chunk>			chunk;
 	shared_ptr<chunk_workspace>	workspace;
@@ -154,7 +154,7 @@ bool							chunk_build_director::is_chunk_present_and_has_light(const vec3 &posi
 	return workspace->state >= chunk_workspace::light_done;
 }
 
-bool							chunk_build_director::are_all_neighbors_present_and_have_light(const shared_ptr<chunk> &chunk)
+bool							chunk_generation_controller::are_all_neighbors_present_and_have_light(const shared_ptr<chunk> &chunk)
 {
 	static const vec3			left = vec3(-chunk_settings::size[0], 0.f, 0.f);
 	static const vec3			right = vec3(+chunk_settings::size[0], 0.f, 0.f);
@@ -170,22 +170,22 @@ bool							chunk_build_director::are_all_neighbors_present_and_have_light(const 
 	);
 }
 
-void							chunk_build_director::log_requesting_landscape(const shared_ptr<chunk> &chunk)
+void							chunk_generation_controller::log_requesting_landscape(const shared_ptr<chunk> &chunk)
 {
 	debug::log("[chunk_build_director] Requesting landscape for chunk at " + to_string(chunk->get_position()));
 }
 
-void							chunk_build_director::log_requesting_light_build(const shared_ptr<chunk> &chunk)
+void							chunk_generation_controller::log_requesting_light_build(const shared_ptr<chunk> &chunk)
 {
 	debug::log("[chunk_build_director] Requesting light build for chunk at " + to_string(chunk->get_position()));
 }
 
-void							chunk_build_director::log_requesting_geometry_build(const shared_ptr<chunk> &chunk)
+void							chunk_generation_controller::log_requesting_geometry_build(const shared_ptr<chunk> &chunk)
 {
 	debug::log("[chunk_build_director] Requesting geometry build for chunk at " + to_string(chunk->get_position()));
 }
 
-void							chunk_build_director::log_requesting_model_build(const shared_ptr<chunk> &chunk)
+void							chunk_generation_controller::log_requesting_model_build(const shared_ptr<chunk> &chunk)
 {
 	debug::log("[chunk_build_director] Requesting model build for chunk at " + to_string(chunk->get_position()));
 }

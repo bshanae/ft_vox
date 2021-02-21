@@ -9,18 +9,18 @@
 
 namespace						game
 {
-	class						chunk_build_director;
+	class						chunk_generation_controller;
 }
 
-class							game::chunk_build_director :
+class							game::chunk_generation_controller :
 									public engine::object,
-									public engine::unique_object_constructor<game::chunk_build_director>
+									public engine::unique_object_constructor<game::chunk_generation_controller>
 {
 	using						data_type = unordered_map<shared_ptr<chunk>, shared_ptr<chunk_workspace>>;
 
 public :
-								chunk_build_director();
-								~chunk_build_director() override = default;
+								chunk_generation_controller();
+								~chunk_generation_controller() override = default;
 
 	struct 						build
 	{
