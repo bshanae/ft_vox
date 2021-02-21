@@ -89,7 +89,7 @@ optional<ray_caster::hit>	ray_caster::cast_ray()
 		if (auto block = game::world::find_block(vec3(x, y, z)); block.is_valid())
 		{
 			if (is_editable(get_meta_type(block->get_type())))
-				return {(hit){block, face}};
+				return {{block, face}};
 		}
 	}
 
