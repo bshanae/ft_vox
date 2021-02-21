@@ -2,6 +2,7 @@
 
 #include "engine/main/system/input/input.h"
 
+#include "application/common/defines.h"
 #include "application/common/debug/debug.h"
 
 using namespace			engine;
@@ -14,12 +15,17 @@ using namespace			engine;
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
+#if FT_VOX_FULL_SCREEN
 	GLFWmonitor			*monitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode	*mode = glfwGetVideoMode(monitor);
 
 	size = ivec2(mode->width, mode->height);
-
 	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), monitor, nullptr);
+#else
+	size = ivec2(1024, 720);
+	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
+#endif
+
 	debug::check_critical(glfw_window != nullptr, "[window] Can't initialize window");
 
 	glfwMakeContextCurrent(glfw_window);

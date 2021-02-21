@@ -168,6 +168,7 @@ void						world::when_initialized()
 	create_chunk(forward);
 	create_chunk(back);
 
+	// TODO This doesn't work, because landscape generation is now async
 	// Immediately add first chunks
 	process_new_chunks();
 }
@@ -221,8 +222,8 @@ void						world::update_chunks_builds()
 {
 	for (auto [position, chunk] : chunks)
 	{
-		if (update_timer.did_finish())
-			break;
+//		if (update_timer.did_finish())
+//			break;
 
 		request_build(chunk);
 	}
@@ -232,8 +233,8 @@ void						world::destroy_far_chunks()
 {
 	for (auto [position, chunk] : chunks)
 	{
-		if (update_timer.did_finish())
-			break;
+//		if (update_timer.did_finish())
+//			break;
 
 		chunk->set_visible(distance(chunk) < world_settings::visibility_limit);
 

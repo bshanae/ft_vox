@@ -10,12 +10,8 @@ using namespace 	game;
 	collection.emplace(biome::test_stone, biome(biome::test_stone));
 }
 
-mutex mutex;
-
 const biome			&biome_collection::get_biome(enum biome::type type) const
 {
-//	lock_guard		lock(mutex);
-
 	const auto		iterator = collection.find(type);
 
 	debug::check_critical(iterator != collection.cend(), "[biome_collection] Can't find biome");
