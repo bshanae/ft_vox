@@ -35,3 +35,24 @@ private :
 	block_type					type;
 	float						light_level;
 };
+
+
+inline game::block_type			game::block::get_type() const
+{
+	return type;
+}
+
+inline float					game::block::get_light_level() const
+{
+	return light_level;
+}
+
+inline void						game::block::set_type(block_type type)
+{
+	this->type = type;
+}
+
+inline void						game::block::set_light_level(float light_level)
+{
+	this->light_level = light_level;
+}

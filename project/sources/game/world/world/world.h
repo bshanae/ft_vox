@@ -102,8 +102,9 @@ private :
 #pragma region Additional methods
 
 	void						update_pivot();
-	void						update_chunks_builds();
 	void						destroy_far_chunks();
+	void						update_chunks_builds();
+
 	void						process_new_chunks();
 	void						process_old_chunks();
 

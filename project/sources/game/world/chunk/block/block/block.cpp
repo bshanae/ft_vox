@@ -41,24 +41,3 @@ ostream				&operator << (ostream &stream, block_type type)
 	}
 	return (stream);
 }
-
-
-block_type			block::get_type() const
-{
-	return type;
-}
-
-float				block::get_light_level() const
-{
-	return light_level;
-}
-
-void				block::set_type(block_type type)
-{
-	this->type = type;
-}
-
-void				block::set_light_level(float light_level)
-{
-	this->light_level = light_level;
-}

@@ -232,7 +232,7 @@ public :
 
 	auto						&at(const index &index)
 	{
-#if FT_VOX_SAFE
+#if FT_VOX_ARRAY3_VALIDATION
 		index.validate();
 #endif
 
@@ -241,7 +241,7 @@ public :
 
 	const auto					&at(const index &index) const
 	{
-#if FT_VOX_SAFE
+#if FT_VOX_ARRAY3_VALIDATION
 		index.validate();
 #endif
 
@@ -250,7 +250,7 @@ public :
 
 	auto						&at(int x, int y, int z)
 	{
-#if FT_VOX_SAFE
+#if FT_VOX_ARRAY3_VALIDATION
 		index(x, y, z).validate();
 #endif
 
@@ -259,7 +259,7 @@ public :
 
 	const auto					&at(int x, int y, int z) const
 	{
-#if FT_VOX_SAFE
+#if FT_VOX_ARRAY3_VALIDATION
 		index(x, y, z).validate();
 #endif
 

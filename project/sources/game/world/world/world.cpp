@@ -43,10 +43,10 @@ block_pointer				world::world::find_block(const vec3 &position)
 	index.y = (int)(position.y - chunk_position.y);
 	index.z = (int)(position.z - chunk_position.z);
 
-	if (chunk = get_instance()->find_chunk(chunk_position); chunk == nullptr or not index.is_valid())
-		return block_pointer();
-	else
+	if (chunk = get_instance()->find_chunk(chunk_position); chunk != nullptr and index.is_valid())
 		return block_pointer(chunk, index);
+	else
+		return block_pointer();
 }
 
 shared_ptr<chunk>			world::find_chunk(const vec3 &position)
@@ -87,6 +87,7 @@ void						world::select_block(const block_pointer &block, block_face face)
 {
 	block_highlighter::get_instance()->activate();
 
+	// TODO Move to block_highlighter
 	block_highlighter::set_translation(block.get_world_position() + vec3(0.5f));
 	block_highlighter::set_selected_face(face);
 }
@@ -123,6 +124,7 @@ bool						world::does_collide(const aabb &aabb)
 	return false;
 }
 
+// TODO Remove
 shared_ptr<chunk>			world::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
 {
 	vec3					neighbor_position = main->get_position();
@@ -178,7 +180,6 @@ void						world::when_updated()
 	update_pivot();
 
 	update_chunks_builds();
-
 	destroy_far_chunks();
 
 	process_new_chunks();

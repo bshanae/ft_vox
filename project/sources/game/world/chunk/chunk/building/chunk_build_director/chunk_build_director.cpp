@@ -91,11 +91,13 @@ void 							chunk_build_director::when_deinitialized()
 {
 	auto 						instance = get_instance();
 
+#if !FT_VOX_FORCE_EXIT
 	for (auto iterator = instance->data.cbegin(); iterator != instance->data.cend();)
 	{
 		iterator->second->wait();
 		instance->data.erase(iterator++);
 	}
+#endif
 }
 
 shared_ptr<chunk_workspace>		chunk_build_director::get_workspace(const shared_ptr<chunk> &chunk) const

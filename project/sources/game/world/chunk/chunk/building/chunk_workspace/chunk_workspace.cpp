@@ -21,6 +21,9 @@ void 						chunk_workspace::wait()
 			batch_for_transparent.geometry_future->wait();
 			batch_for_partially_transparent.geometry_future->wait();
 			break;
+
+		default:
+			break;
 	}
 }
 
