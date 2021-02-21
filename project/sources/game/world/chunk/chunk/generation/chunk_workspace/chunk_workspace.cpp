@@ -45,6 +45,9 @@ void						chunk_workspace::reset()
 
 	state = nothing_done;
 
+	landscape_future.reset();
+	light_build_future.reset();
+
 	reset_batch(batch_for_opaque);
 	reset_batch(batch_for_transparent);
 	reset_batch(batch_for_partially_transparent);

@@ -37,6 +37,8 @@ public :
 	enum							state
 	{
 		nothing_done,
+		landscape_in_process,
+		landscape_done,
 		light_in_process,
 		light_done,
 		geometry_in_process,
@@ -53,6 +55,7 @@ public :
 	const shared_ptr<chunk>			chunk;
 	atomic<state>					state;
 
+	optional<future<void>>			landscape_future;
 	optional<future<void>>			light_build_future;
 
 	batch							batch_for_opaque;

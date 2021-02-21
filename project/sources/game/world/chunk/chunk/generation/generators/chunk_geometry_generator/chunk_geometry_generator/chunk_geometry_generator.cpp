@@ -1,19 +1,19 @@
-#include "chunk_geometry_builder.h"
+#include "chunk_geometry_generator.h"
 
 #include "game/world/chunk/texture_atlas/texture_atlas/texture_atlas.h"
 #include "game/world/chunk/block/block/block_settings.h"
 #include "game/world/chunk/block/block/block.h"
 #include "game/world/chunk/block/block_pointer/block_pointer.h"
-#include "game/world/chunk/chunk/building/chunk_workspace/chunk_workspace.h"
+#include "game/world/chunk/chunk/generation/chunk_workspace/chunk_workspace.h"
 
-#include "vertices.h"
-#include "texture_coordinates.h"
-#include "indices.h"
-#include "occluders_offsets.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/data/vertices.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/data/texture_coordinates.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/data/indices.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/data/occluders_offsets.h"
 
 using namespace		game;
 
-void				chunk_geometry_builder::launch(const shared_ptr<chunk_workspace> &workspace)
+void				chunk_geometry_generator::process(const shared_ptr<chunk_workspace> &workspace)
 {
 	debug::check_critical
 	(
@@ -23,7 +23,7 @@ void				chunk_geometry_builder::launch(const shared_ptr<chunk_workspace> &worksp
 
 	workspace->state = chunk_workspace::geometry_in_process;
 
-	workspace->batch_for_opaque.filter = &chunk_geometry_builder::filter_for_opaque;
+	workspace->batch_for_opaque.filter = &chunk_geometry_generator::filter_for_opaque;
 	workspace->batch_for_opaque.geometry_future = async
 	(
 		launch::async,
@@ -32,7 +32,7 @@ void				chunk_geometry_builder::launch(const shared_ptr<chunk_workspace> &worksp
 		ref(workspace->batch_for_opaque)
 	);
 
-	workspace->batch_for_transparent.filter = &chunk_geometry_builder::filter_for_transparent;
+	workspace->batch_for_transparent.filter = &chunk_geometry_generator::filter_for_transparent;
 	workspace->batch_for_transparent.geometry_future = async
 	(
 		launch::async,
@@ -41,7 +41,7 @@ void				chunk_geometry_builder::launch(const shared_ptr<chunk_workspace> &worksp
 		ref(workspace->batch_for_transparent)
 	);
 
-	workspace->batch_for_partially_transparent.filter = &chunk_geometry_builder::filter_for_partially_transparent;
+	workspace->batch_for_partially_transparent.filter = &chunk_geometry_generator::filter_for_partially_transparent;
 	workspace->batch_for_partially_transparent.geometry_future = async
 	(
 		launch::async,
@@ -51,7 +51,7 @@ void				chunk_geometry_builder::launch(const shared_ptr<chunk_workspace> &worksp
 	);
 }
 
-void				chunk_geometry_builder::wait(const shared_ptr<chunk_workspace> &workspace)
+void				chunk_geometry_generator::wait(const shared_ptr<chunk_workspace> &workspace)
 {
 	if
 	(
@@ -65,22 +65,22 @@ void				chunk_geometry_builder::wait(const shared_ptr<chunk_workspace> &workspac
 	}
 }
 
-bool				chunk_geometry_builder::filter_for_opaque(const block &block)
+bool				chunk_geometry_generator::filter_for_opaque(const block &block)
 {
 	return is_opaque(get_meta_type(block.get_type()));
 }
 
-bool				chunk_geometry_builder::filter_for_transparent(const block &block)
+bool				chunk_geometry_generator::filter_for_transparent(const block &block)
 {
 	return is_transparent(get_meta_type(block.get_type()));
 }
 
-bool				chunk_geometry_builder::filter_for_partially_transparent(const block &block)
+bool				chunk_geometry_generator::filter_for_partially_transparent(const block &block)
 {
 	return is_partially_transparent(get_meta_type(block.get_type()));
 }
 
-void				chunk_geometry_builder::process_batch
+void				chunk_geometry_generator::process_batch
 					(
 						shared_ptr<chunk_workspace> workspace,
 						chunk_workspace::batch &batch
@@ -93,7 +93,7 @@ void				chunk_geometry_builder::process_batch
 	}
 }
 
-void				chunk_geometry_builder::process_block
+void				chunk_geometry_generator::process_block
 					(
 						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
@@ -127,7 +127,7 @@ void				chunk_geometry_builder::process_block
 	}
 }
 
-bool				chunk_geometry_builder::should_build_quad
+bool				chunk_geometry_generator::should_build_quad
 					(
 						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
@@ -152,7 +152,7 @@ bool				chunk_geometry_builder::should_build_quad
 	return true;
 }
 
-void				chunk_geometry_builder::build_quad
+void				chunk_geometry_generator::build_quad
 					(
 						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
@@ -268,12 +268,12 @@ void				chunk_geometry_builder::build_quad
 }
 
 template					<typename type>
-void						chunk_geometry_builder::append_to_vector(vector<type> &target, const vector<type> &source)
+void						chunk_geometry_generator::append_to_vector(vector<type> &target, const vector<type> &source)
 {
 	target.insert(target.end(), source.begin(), source.end());
 }
 
-void						chunk_geometry_builder::calculate_ao_for_quad
+void						chunk_geometry_generator::calculate_ao_for_quad
 							(
 								const block_pointer &block,
 								const chunk::index (&occluders_offsets)[4][3],
@@ -284,7 +284,7 @@ void						chunk_geometry_builder::calculate_ao_for_quad
 		ao_values[i] = calculate_ao_for_vertex(block, occluders_offsets[i]);
 }
 
-float						chunk_geometry_builder::calculate_ao_for_vertex
+float						chunk_geometry_generator::calculate_ao_for_vertex
 							(
 								const block_pointer &block,
 								const chunk::index (&occluders_offsets)[3]
@@ -302,7 +302,7 @@ float						chunk_geometry_builder::calculate_ao_for_vertex
 	return (float)count / 3;
 }
 
-float						chunk_geometry_builder::combine_light_and_ao(float light_level, float ao_level)
+float						chunk_geometry_generator::combine_light_and_ao(float light_level, float ao_level)
 {
 	static constexpr float	ao_weight = 0.4f;
 

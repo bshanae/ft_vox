@@ -1,9 +1,10 @@
-#include "chunk_build_director.h"
+#include "chunk_generation_controller.h"
 
-#include "game/world/chunk/chunk/building/chunk_workspace/chunk_workspace.h"
-#include "game/world/chunk/chunk/building/builders/chunk_light_builder/chunk_light_builder.h"
-#include "game/world/chunk/chunk/building/builders/chunk_geometry_builder/chunk_geometry_builder.h"
-#include "game/world/chunk/chunk/building/builders/chunk_model_builder/chunk_model_builder.h"
+#include "game/world/chunk/chunk/generation/chunk_workspace/chunk_workspace.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_landscape_generator/chunk_landscape_generator/chunk_landscape_generator.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_light_generator/chunk_light_generator.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/chunk_geometry_generator/chunk_geometry_generator.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_model_generator/chunk_model_generator.h"
 #include "game/world/world/world.h"
 
 using namespace					game;
@@ -13,6 +14,11 @@ using							build_type = chunk_build_director::build;
 								chunk_build_director::chunk_build_director()
 {
 	set_layout("System");
+
+	chunk_landscape_generator::construct();
+	chunk_light_generator::construct();
+	chunk_geometry_generator::construct();
+	chunk_model_generator::construct();
 }
 
 optional<build_type>			chunk_build_director::process_build(const shared_ptr<chunk> &chunk)
@@ -33,31 +39,37 @@ optional<build_type>			chunk_build_director::process_build(const shared_ptr<chun
 		switch (workspace->state)
 		{
 			case chunk_workspace::nothing_done:
+				log_requesting_landscape(chunk);
+				chunk_landscape_generator::process(workspace);
+				break;;
+
+			case chunk_workspace::landscape_done:
 				log_requesting_light_build(chunk);
-				chunk_light_builder::launch(workspace);
+				chunk_light_generator::process(workspace);
 				break;
 
 			case chunk_workspace::light_done:
 				if (are_all_neighbors_present_and_have_light(chunk))
 				{
 					log_requesting_geometry_build(chunk);
-					chunk_geometry_builder::launch(workspace);
+					chunk_geometry_generator::process(workspace);
 				}
 				break;
 
 			case chunk_workspace::geometry_in_process:
-				chunk_geometry_builder::wait(workspace);
+				chunk_geometry_generator::wait(workspace);
 				break;
 
 			case chunk_workspace::geometry_done:
 				log_requesting_model_build(chunk);
-				chunk_model_builder::launch(workspace);
+				chunk_model_generator::process(workspace);
 				break;
 
 			case chunk_workspace::model_done:
 				workspace->build_at_once = false;
 				return optional<chunk_build_director::build>(package_build(workspace));
 
+			case chunk_workspace::landscape_in_process:
 			case chunk_workspace::light_in_process:
 			case chunk_workspace::model_in_process:
 				break;
@@ -156,6 +168,11 @@ bool							chunk_build_director::are_all_neighbors_present_and_have_light(const 
 		is_chunk_present_and_has_light(chunk->get_position() + forward) and
 		is_chunk_present_and_has_light(chunk->get_position() + back)
 	);
+}
+
+void							chunk_build_director::log_requesting_landscape(const shared_ptr<chunk> &chunk)
+{
+	debug::log("[chunk_build_director] Requesting landscape for chunk at " + to_string(chunk->get_position()));
 }
 
 void							chunk_build_director::log_requesting_light_build(const shared_ptr<chunk> &chunk)

@@ -11,7 +11,6 @@
 #include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
 #include "game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.h"
 #include "game/world/chunk/chunk/rendering/chunk_renderer/chunk_renderer.h"
-#include "game/world/chunk/generator/generator/generator.h"
 #include "game/player/player/player.h"
 
 using namespace 	game;
@@ -36,10 +35,7 @@ void				daemon::setup_layouts()
 void				daemon::construct_objects()
 {
 	game::skybox::construct();
-
 	game::texture_atlas::construct();
-	game::biome_collection::construct();
-	game::generator::construct();
 
 	game::block_highlighter::construct();
 	game::block_highlighter_renderer::construct();

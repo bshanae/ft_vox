@@ -1,13 +1,13 @@
-#include "chunk_model_builder.h"
+#include "chunk_model_generator.h"
 
 #include "engine/main/rendering/model/model/model.h"
 
-#include "game/world/chunk/chunk/building/chunk_workspace/chunk_workspace.h"
+#include "game/world/chunk/chunk/generation/chunk_workspace/chunk_workspace.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
 
 using namespace		game;
 
-void				chunk_model_builder::launch(const shared_ptr<chunk_workspace> &workspace)
+void				chunk_model_generator::process(const shared_ptr<chunk_workspace> &workspace)
 {
 	debug::check_critical
 	(
@@ -24,7 +24,7 @@ void				chunk_model_builder::launch(const shared_ptr<chunk_workspace> &workspace
 	workspace->state = chunk_workspace::model_done;
 }
 
-void				chunk_model_builder::process_batch
+void				chunk_model_generator::process_batch
 					(
 						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch

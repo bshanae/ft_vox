@@ -1,7 +1,6 @@
 #include "player.h"
 
 #include "application/common/debug/debug.h"
-#include "application/common/utilities/type_utility.h"
 
 #include "engine/main/system/input/input.h"
 #include "engine/main/rendering/camera/camera/camera.h"
@@ -164,9 +163,12 @@ aabb					player::get_aabb(const vec3 &position) const
 
 void					player::offset_camera_if_possible(const vec3 &offset) const
 {
-	vec3				new_position;
+	const vec3			new_position = (vec3)camera::get_position() + offset;
 
-	new_position = (vec3)camera::get_position() + offset;
+#if FT_VOX_COLLISION_CHECK
 	if (not world::world::does_collide(get_aabb(new_position)))
 		camera::set_position(new_position);
+#else
+	camera::set_position(new_position);
+#endif
 }

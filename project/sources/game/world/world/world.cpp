@@ -8,7 +8,6 @@
 #include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/chunk/chunk/rendering/chunk_renderer/chunk_renderer.h"
-#include "game/world/chunk/generator/generator/generator.h"
 
 using namespace				engine;
 using namespace				game;
@@ -294,10 +293,7 @@ bool						world::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 
 void						world::create_chunk(const vec3 &position)
 {
-	auto					chunk = make_shared<game::chunk>(position);
-
-	generator::generate(chunk);
-	new_chunks.emplace(position, chunk);
+	new_chunks.emplace(position, make_shared<game::chunk>(position));
 }
 
 void						world::destroy_chunk(const shared_ptr<chunk> &chunk)

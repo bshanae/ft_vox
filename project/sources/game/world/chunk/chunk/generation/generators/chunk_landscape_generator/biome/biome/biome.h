@@ -1,10 +1,10 @@
 #pragma once
 
-#include "game/world/chunk/block/block/block.h"
-#include "game/world/chunk/generator/noise/perlin_noise.h"
-#include "game/world/chunk/generator/noise/cellular_noise.h"
-
 #include "application/common/imports/std.h"
+
+#include "game/world/chunk/block/block/block.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_landscape_generator/noise/perlin_noise.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_landscape_generator/noise/cellular_noise.h"
 
 namespace					game
 {

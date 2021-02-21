@@ -1,46 +1,57 @@
-#include "generator.h"
+#include "chunk_landscape_generator.h"
 
 #include "game/world/chunk/chunk/chunk/chunk.h"
 
 using namespace			game;
 
-						generator::generator()
+						chunk_landscape_generator::chunk_landscape_generator()
 {
-	set_layout("System");
-
+	biome_collection::construct();
 	noise_for_biome = cellular_noise(0.01f);
 }
 
-void					generator::generate(const shared_ptr<chunk> &chunk)
+void					chunk_landscape_generator::process(const shared_ptr<chunk_workspace> &workspace)
+{
+	debug::check_critical
+	(
+		workspace->state == chunk_workspace::nothing_done,
+		"[generator] Chunk workspace has unexpected state"
+	);
+
+	workspace->state = chunk_workspace::landscape_in_process;
+	workspace->landscape_future = async(launch::async, &chunk_landscape_generator::do_process, get_instance(), workspace);
+}
+
+void					chunk_landscape_generator::do_process(const shared_ptr<chunk_workspace> &workspace)
 {
 	static const int	water_level = 10;
 
-	auto 				instance = get_instance();
-	const vec3			position = chunk->get_position();
+	const vec3			position = workspace->chunk->get_position();
 
 	chunk::index		index;
 
 	for (index.x = 0; index.x < chunk_settings::size[0]; index.x++)
 	for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
 	{
-		instance->process_column(vec3(position.x + (float)index.x, 0, position.z + (float)index.z));
+		const auto		column_position = vec3(position.x + (float)index.x, 0, position.z + (float)index.z);
+		const auto		column_info = process_column(column_position);
 
-		const auto		&workspace = instance->workspace;
-
-		const auto		block_type = (enum block_type)workspace.biome.get_first_layer();
-		const auto		height_limit = min(chunk_settings::size[1], max(water_level, workspace.height));
+		const auto		block_type = (enum block_type)column_info.biome.get_first_layer();
+		const auto		height_limit = min(chunk_settings::size[1], max(water_level, column_info.height));
 
 		for (index.y = 0; index.y < height_limit; index.y++)
 		{
-			if (index.y <= workspace.height)
-				chunk->at(index).set_type(block_type);
+			if (index.y <= column_info.height)
+				workspace->chunk->at(index).set_type(block_type);
 			else if (index.y <= water_level)
-				chunk->at(index).set_type(block_type::water);
+				workspace->chunk->at(index).set_type(block_type::water);
 		}
 	}
+
+	workspace->state = chunk_workspace::state::landscape_done;
 }
 
-void					generator::process_column(const vec3 &position)
+chunk_landscape_generator::column_info	chunk_landscape_generator::process_column(const vec3 &position)
 {
 	auto				result = noise_for_biome.generate(position);
 
@@ -102,12 +113,10 @@ void					generator::process_column(const vec3 &position)
 
 	height /= total_influence;
 
-	workspace.position = position;
-	workspace.biome = choose_biome(nearest.noise_value);
-	workspace.height = (int)floor(height);
+	return {choose_biome(nearest.noise_value), (int)floor(height)};
 }
 
-const biome				&generator::choose_biome(float noise_value)
+const biome				&chunk_landscape_generator::choose_biome(float noise_value)
 {
 	if (noise_value > 0.5f)
 		return (biome_collection::get_instance()->get_biome(biome::test_dirt));

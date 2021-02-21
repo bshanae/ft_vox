@@ -5,7 +5,7 @@
 #include "engine/main/core/object/object/object.h"
 #include "engine/main/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 
-#include "game/world/chunk/chunk/building/chunk_workspace/chunk_workspace.h"
+#include "game/world/chunk/chunk/generation/chunk_workspace/chunk_workspace.h"
 
 namespace						game
 {
@@ -49,6 +49,7 @@ private :
 	static bool					is_chunk_present_and_has_light(const vec3 &position);
 	static bool					are_all_neighbors_present_and_have_light(const shared_ptr<chunk> &chunk);
 
+	static void					log_requesting_landscape(const shared_ptr<chunk> &chunk);
 	static void					log_requesting_light_build(const shared_ptr<chunk> &chunk);
 	static void					log_requesting_geometry_build(const shared_ptr<chunk> &chunk);
 	static void					log_requesting_model_build(const shared_ptr<chunk> &chunk);

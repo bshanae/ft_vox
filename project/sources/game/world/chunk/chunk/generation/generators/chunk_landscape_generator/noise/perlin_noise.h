@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/world/chunk/generator/noise/random_noise.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_landscape_generator/noise/random_noise.h"
 
 namespace					game
 {

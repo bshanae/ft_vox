@@ -7,20 +7,20 @@
 namespace					game
 {
 	class					chunk_workspace;
-	class					chunk_light_builder;
+	class					chunk_light_generator;
 }
 
-class						game::chunk_light_builder : public singleton<game::chunk_light_builder>
+class						game::chunk_light_generator : public singleton<game::chunk_light_generator>
 {
 public :
-							chunk_light_builder() = default;
-							~chunk_light_builder() override = default;
+							chunk_light_generator() = default;
+							~chunk_light_generator() override = default;
 
-	static void				launch(const shared_ptr<chunk_workspace> &workspace);
+	static void				process(const shared_ptr<chunk_workspace> &workspace);
 
 private :
 
-	static void 			do_launch(const shared_ptr<chunk_workspace> &workspace);
+	static void 			do_process(const shared_ptr<chunk_workspace> &workspace);
 
 	static void				initialize_light(const shared_ptr<chunk_workspace> &workspace);
 	static void				spread_light(const shared_ptr<chunk_workspace> &workspace);
