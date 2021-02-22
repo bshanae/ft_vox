@@ -84,16 +84,12 @@ void						world::remove_block(const block_pointer &block)
 
 void						world::select_block(const block_pointer &block, block_face face)
 {
-	block_highlighter::get_instance()->activate();
-
-	// TODO Move to block_highlighter
-	block_highlighter::set_translation(block.get_world_position() + vec3(0.5f));
-	block_highlighter::set_selected_face(face);
+	block_highlighter::highlight(block, face);
 }
 
 void						world::unselect_block()
 {
-	block_highlighter::get_instance()->deactivate();
+	block_highlighter::reset();
 }
 
 bool						world::does_collide(const aabb &aabb)
@@ -121,25 +117,6 @@ bool						world::does_collide(const aabb &aabb)
 	}
 
 	return false;
-}
-
-// TODO Remove
-shared_ptr<chunk>			world::find_neighbor_chunk(const shared_ptr<chunk> &main, axis axis, sign sign)
-{
-	vec3					neighbor_position = main->get_position();
-
-	if (axis == axis::x and sign == sign::minus)
-		neighbor_position += left;
-	else if (axis == axis::x and sign == sign::plus)
-		neighbor_position += right;
-	else if (axis == axis::z and sign == sign::minus)
-		neighbor_position += back;
-	else if (axis == axis::z and sign == sign::plus)
-		neighbor_position += forward;
-	else
-		return nullptr;
-
-	return find_chunk(neighbor_position);
 }
 
 #pragma endregion

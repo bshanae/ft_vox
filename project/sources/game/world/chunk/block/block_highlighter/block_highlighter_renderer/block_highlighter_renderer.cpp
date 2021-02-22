@@ -19,43 +19,43 @@ using namespace			game;
 	uniform_transformation = program->create_uniform<mat4>("uniform_transformation");
 }
 
-void					block_highlighter_renderer::render(const block_highlighter &selector)
+void					block_highlighter_renderer::render(const block_highlighter &highlighter)
 {
 	const auto 			instance = get_instance();
 
 	float				distance;
 
-	distance = glm::distance(camera::get_position(), (vec3)selector.translation);
+	distance = glm::distance(camera::get_position(), highlighter.translation);
 	instance->epsilon = (distance / 10.f) * 0.003f;
 
 	instance->program->use(true);
 
-	instance->render(selector.cube);
+	instance->render(highlighter.cube);
 
-	switch (selector.selected_face)
+	switch (highlighter.highlighted_face)
 	{
 		case (block_face::left) :
-			instance->render(selector.left);
+			instance->render(highlighter.left);
 			break;
 
 		case (block_face::right) :
-			instance->render(selector.right);
+			instance->render(highlighter.right);
 			break;
 
 		case (block_face::front) :
-			instance->render(selector.front);
+			instance->render(highlighter.front);
 			break;
 
 		case (block_face::back) :
-			instance->render(selector.back);
+			instance->render(highlighter.back);
 			break;
 
 		case (block_face::top) :
-			instance->render(selector.top);
+			instance->render(highlighter.top);
 			break;
 
 		case (block_face::bottom) :
-			instance->render(selector.bottom);
+			instance->render(highlighter.bottom);
 			break;
 	}
 

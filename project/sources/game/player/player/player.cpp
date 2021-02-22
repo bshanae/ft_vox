@@ -75,7 +75,11 @@ void 					player::process_input()
 
 void 					player::process_selection()
 {
-	if (should_cast_ray)
+	if (world::world::does_collide(get_aabb(camera::get_position())))
+	{
+		world::world::unselect_block();
+	}
+	else if (should_cast_ray)
 	{
 		if (auto hit = ray_caster::cast_ray(); hit)
 		{

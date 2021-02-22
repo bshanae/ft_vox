@@ -2,6 +2,7 @@
 
 #include "engine/main/rendering/model/model/model.h"
 
+#include "game/world/chunk/block/block_pointer/block_pointer.h"
 #include "game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.h"
 
 using namespace			engine;
@@ -90,36 +91,35 @@ static vector<GLuint>	face_indices = {0, 1, 2, 3};
 						block_highlighter::block_highlighter()
 {
 	set_layout("Opaque");
+
+	translation = vec3(0);
+	highlighted_face = block_face::left;
+	should_render = false;
 }
 
-vec3					block_highlighter::get_translation()
+void					block_highlighter::highlight(const block_pointer &block, block_face face)
 {
-	return get_instance()->translation;
+	const auto 			instance = get_instance();
+	const auto 			translation = block.get_world_position() + vec3(0.5f);
+
+	instance->translation = translation;
+
+	instance->cube->set_translation(translation);
+	instance->left->set_translation(translation);
+	instance->right->set_translation(translation);
+	instance->front->set_translation(translation);
+	instance->back->set_translation(translation);
+	instance->top->set_translation(translation);
+	instance->bottom->set_translation(translation);
+
+	instance->highlighted_face = face;
+
+	instance->should_render = true;
 }
 
-block_face				block_highlighter::get_selected_face()
+void					block_highlighter::reset()
 {
-	return get_instance()->selected_face;
-}
-
-void					block_highlighter::set_translation(const vec3 &value)
-{
-	const auto			instance = get_instance();
-
-	instance->translation = value;
-
-	instance->cube->set_translation(value);
-	instance->left->set_translation(value);
-	instance->right->set_translation(value);
-	instance->front->set_translation(value);
-	instance->back->set_translation(value);
-	instance->top->set_translation(value);
-	instance->bottom->set_translation(value);
-}
-
-void					block_highlighter::set_selected_face(block_face face)
-{
-	get_instance()->selected_face = face;
+	get_instance()->should_render = false;
 }
 
 void 					block_highlighter::when_initialized()
@@ -169,5 +169,6 @@ void 					block_highlighter::when_initialized()
 
 void					block_highlighter::when_rendered()
 {
-	block_highlighter_renderer::get_instance()->render(*this);
+	if (should_render)
+		block_highlighter_renderer::get_instance()->render(*this);
 }

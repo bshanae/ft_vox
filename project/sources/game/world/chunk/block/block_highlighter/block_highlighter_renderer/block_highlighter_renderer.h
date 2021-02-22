@@ -28,7 +28,7 @@ public :
 								block_highlighter_renderer();
 								~block_highlighter_renderer() override = default;
 
-	static void					render(const block_highlighter &selector);
+	static void					render(const block_highlighter &highlighter);
 
 private :
 

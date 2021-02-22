@@ -16,6 +16,7 @@ namespace						engine
 
 namespace						game
 {
+	class						block_pointer;
 	class						block_highlighter;
 	class						block_highlighter_renderer;
 	class						world;
@@ -32,25 +33,23 @@ public :
 								block_highlighter();
 								~block_highlighter() override = default;
 
-	static vec3					get_translation();
-	static block_face			get_selected_face();
-
-	static void					set_translation(const vec3 &value);
-	static void					set_selected_face(block_face face);
+	static void 				highlight(const block_pointer &block, block_face face);
+	static void 				reset();
 
 private :
 
 	vec3						translation;
-	block_face					selected_face;
+	block_face					highlighted_face;
 
 	shared_ptr<engine::model>	cube;
-
 	shared_ptr<engine::model>	left;
 	shared_ptr<engine::model>	right;
 	shared_ptr<engine::model>	front;
 	shared_ptr<engine::model>	back;
 	shared_ptr<engine::model>	top;
 	shared_ptr<engine::model>	bottom;
+
+	bool 						should_render;
 
 	void 						when_initialized() override;
 	void						when_rendered() override;
