@@ -2,7 +2,7 @@
 
 #include "engine/main/rendering/model/model/model.h"
 #include "engine/extensions/ui/font/symbol/symbol.h"
-#include "engine/main/system/window/window.h"
+#include "engine/main/system/window/window/window.h"
 
 using namespace		engine;
 using namespace		engine::ui;

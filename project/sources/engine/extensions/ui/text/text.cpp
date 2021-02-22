@@ -2,7 +2,8 @@
 
 #include "engine/extensions/ui/font/font/font.h"
 #include "engine/extensions/ui/font/symbol/symbol.h"
-#include "engine/main/system/window/window.h"
+#include "engine/main/system/window/window/window.h"
+#include "engine/main/system/window/window_tools/window_tools.h"
 
 using namespace		engine;
 using namespace		engine::ui;
@@ -60,7 +61,7 @@ void 				text::when_rendered()
 	ivec2			position_iterator = position;
 	vec3			position_of_symbol = vec3(0.f);
 
-	position_iterator = window::get_instance()->invert_y(position_iterator);
+	position_iterator = window_tools::invert_y(position_iterator);
 	for (char character : string)
 	{
 		auto		symbol = font->find_symbol(character);

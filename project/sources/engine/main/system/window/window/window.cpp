@@ -60,7 +60,7 @@ vec2					window::get_mouse_position()
 	double				y;
 
 	glfwGetCursorPos(get_instance()->glfw_window, &x, &y);
-	return (invert_y(vec2(x, y)));
+	return {x, y};
 }
 
 bool					window::is_closed()
@@ -90,23 +90,4 @@ void					window::clear(const vec3 &color)
 {
 	glClearColor(color.x, color.y, color.z, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-vec2					window::to_normal(const ivec2 &value)
-{
-	const ivec2			size = get_instance()->size;
-
-	return {value.x / size.x, value.y / size.y};
-}
-
-ivec2					window::to_absolute(const vec2 &value)
-{
-	const ivec2			size = get_instance()->size;
-
-	return {value.x * size.x, value.y * size.y};
-}
-
-ivec2					window::invert_y(const vec2 &value)
-{
-	return {value.x, get_instance()->size.y - value.y};
 }

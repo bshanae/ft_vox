@@ -57,7 +57,8 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/engine/main/system/input/input.cpp
 	${SOURCES_DIRECTORY}/engine/main/system/time/timer/timer.cpp
 	${SOURCES_DIRECTORY}/engine/main/system/time/timestamp/timestamp.cpp
-	${SOURCES_DIRECTORY}/engine/main/system/window/window.cpp
+	${SOURCES_DIRECTORY}/engine/main/system/window/window/window.cpp
+	project/sources/engine/main/system/window/window_tools/window_tools.cpp
 
 	# Engine : Processor
 	${SOURCES_DIRECTORY}/engine/main/processor/processor.cpp

@@ -1,6 +1,6 @@
 #include "camera.h"
 
-#include "engine/main/system/window/window.h"
+#include "engine/main/system/window/window/window.h"
 #include "engine/main/system/input/input.h"
 #include "engine/main/rendering/camera/camera_event/camera_position_changed_event.h"
 #include "engine/main/rendering/camera/camera_event/camera_direction_changed_event.h"

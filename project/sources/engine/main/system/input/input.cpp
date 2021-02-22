@@ -1,9 +1,10 @@
 #include "input.h"
 
-#include "engine/main/system/window/window.h"
-#include "engine/main/processor/processor.h"
-
 #include "application/common/debug/debug.h"
+
+#include "engine/main/system/window/window/window.h"
+#include "engine/main/system/window/window_tools/window_tools.h"
+#include "engine/main/processor/processor.h"
 
 using namespace		engine;
 
@@ -123,7 +124,7 @@ void				input::update_mouse()
 	const auto 		instance = get_instance();
 	static bool 	first_call = true;
 
-	vec2 			position = window::get_mouse_position();
+	const vec2 		position = window_tools::invert_y(window::get_mouse_position());
 
 	if (first_call)
 	{
