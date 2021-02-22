@@ -2,6 +2,7 @@
 
 #include "application/common/templates/singleton/singleton.h"
 
+#include "game/world/chunk/block/block_face/block_face.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
 #include "game/world/chunk/chunk/generation/chunk_workspace/chunk_workspace.h"
 
@@ -39,42 +40,44 @@ private :
 						const chunk::index &index
 					);
 
-	static bool		should_build_quad
+	static bool		should_generate_quad
 					(
-						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
 						const block_pointer &this_block_pointer,
 						const block_pointer &neighbor_block_pointer
 					);
 
-	static void		build_quad
+	static void 	generate_quad
 					(
-						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
-						const block &this_block,
-						const chunk::index &index,
-						axis axis,
-						sign sign,
+						const block_pointer &block,
+						block_face face,
 						float light_level
 					);
 
-	template		<typename type>
-	static void		append_to_vector(vector<type> &target, const vector<type> &source);
+	static void		generate_indices(chunk_workspace::batch &batch);
 
-	static void		calculate_ao_for_quad
+	static void		generate_vertices
 					(
+						chunk_workspace::batch &batch,
 						const block_pointer &block,
-						const chunk::index (&occluders_offsets)[4][3],
-						float (&ao_levels)[4]
+						block_face face
 					);
 
-	static float	calculate_ao_for_vertex
+	static void 	generate_texture_coordinates
 					(
+						chunk_workspace::batch &batch,
 						const block_pointer &block,
-						const chunk::index (&occluders_offsets)[3]
+						block_face face
 					);
 
-	static float	combine_light_and_ao(float light, float ao);
+	static void 	generate_light_levels
+					(
+						chunk_workspace::batch &batch,
+						const block_pointer &block,
+						block_face face,
+						float light_level
+					);
 };
 
 

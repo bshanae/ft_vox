@@ -20,12 +20,11 @@ using namespace			engine;
 	const GLFWvidmode	*mode = glfwGetVideoMode(monitor);
 
 	size = ivec2(mode->width, mode->height);
-	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
 #else
 	size = ivec2(1024, 720);
-	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
 #endif
 
+	glfw_window = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, nullptr);
 	debug::check_critical(glfw_window != nullptr, "[window] Can't initialize window");
 
 	glfwMakeContextCurrent(glfw_window);
@@ -85,6 +84,12 @@ void					window::use_depth_test(bool state)
 		glEnable(GL_DEPTH_TEST);
 	else
 		glDisable(GL_DEPTH_TEST);
+}
+
+void					window::clear(const vec3 &color)
+{
+	glClearColor(color.x, color.y, color.z, 1.f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 vec2					window::to_normal(const ivec2 &value)

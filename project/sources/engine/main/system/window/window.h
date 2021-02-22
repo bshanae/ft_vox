@@ -25,6 +25,7 @@ public :
 
 	static void 			swap_buffers();
 	static void 			use_depth_test(bool state);
+	static void 			clear(const vec3 &color);
 
 	static vec2				to_normal(const ivec2 &value);
 	static ivec2			to_absolute(const vec2 &value);

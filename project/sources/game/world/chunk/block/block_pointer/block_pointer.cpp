@@ -64,6 +64,13 @@ block_pointer::index_type	block_pointer::get_index() const
 	return index;
 }
 
+block_pointer				block_pointer::get_neighbor(block_face face) const
+{
+	const auto 				[axis, sign] = to_axis_and_sign(face);
+
+	return get_neighbor(axis, sign);
+}
+
 block_pointer				block_pointer::get_neighbor(axis axis, sign sign) const
 {
 	auto					neighbor_index = index.get_neighbor(axis, sign);

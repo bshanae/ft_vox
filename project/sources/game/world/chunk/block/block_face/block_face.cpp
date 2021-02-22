@@ -2,9 +2,25 @@
 
 #include "application/common/debug/debug.h"
 
-using namespace		game;
+using namespace				game;
 
-block_face			game::from_axis_and_sign(axis axis, sign sign)
+const vector<block_face>	&game::get_all_block_faces()
+{
+	static const
+	vector<block_face>		faces =
+	{
+		block_face::left,
+		block_face::right,
+		block_face::front,
+		block_face::back,
+		block_face::top,
+		block_face::bottom
+	};
+
+	return faces;
+}
+
+block_face					game::from_axis_and_sign(axis axis, sign sign)
 {
 	if (axis == axis::x and sign == sign::minus)
 		return block_face::left;
@@ -23,7 +39,7 @@ block_face			game::from_axis_and_sign(axis axis, sign sign)
 	return block_face::left;
 }
 
-pair<axis, sign>	game::to_axis_and_sign(block_face face)
+pair<axis, sign>			game::to_axis_and_sign(block_face face)
 {
 	switch (face)
 	{

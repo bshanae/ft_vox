@@ -62,5 +62,6 @@ public :
 	batch							batch_for_transparent;
  	batch							batch_for_partially_transparent;
 
+ 	// TODO Maybe redo this logic
  	bool							build_at_once;
 };

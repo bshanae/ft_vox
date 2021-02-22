@@ -9,7 +9,8 @@
 #include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/data/vertices.h"
 #include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/data/texture_coordinates.h"
 #include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/data/indices.h"
-#include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/data/occluders_offsets.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/tools/vector_tools/vector_tools.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_geometry_generator/tools/ao_calculator/ao_calculator.h"
 
 using namespace		game;
 
@@ -100,36 +101,36 @@ void				chunk_geometry_generator::process_block
 						const chunk::index &index
 					)
 {
-	const auto		&this_block = workspace->chunk->at(index);
-	const auto 		this_block_pointer = block_pointer(workspace->chunk, index);
+	const auto 		this_block = block_pointer(workspace->chunk, index);
 
-	if (is_empty(get_meta_type((this_block.get_type()))))
+	if (is_empty(get_meta_type((this_block->get_type()))))
 		return ;
 
-	if (is_diagonal(get_meta_type((this_block.get_type()))))
+	if (is_diagonal(get_meta_type((this_block->get_type()))))
 	{
-		build_quad(workspace, batch, this_block, index, axis::x, sign::minus, this_block.get_light_level());
-		build_quad(workspace, batch, this_block, index, axis::x, sign::plus, this_block.get_light_level());
+		generate_quad(batch, this_block, block_face::left, this_block->get_light_level());
+		generate_quad(batch, this_block, block_face::right, this_block->get_light_level());
 	}
 	else
 	{
-		for (axis axis : {axis::x, axis::y, axis::z})
-		for (sign sign : {sign::minus, sign::plus})
+		for (block_face face : get_all_block_faces())
 		{
-			auto	neighbor_block_pointer = this_block_pointer.get_neighbor(axis, sign);
-
-			// If there is no neighbor block, therefore this block is end of world, so we need to draw it
-			if (not neighbor_block_pointer.is_valid())
-				build_quad(workspace, batch, this_block, index, axis, sign, block_settings::default_light_level);
-			else if (should_build_quad(workspace, batch, this_block_pointer, neighbor_block_pointer))
-				build_quad(workspace, batch, this_block, index, axis, sign, (*neighbor_block_pointer).get_light_level());
+			if (auto neighbor_block = this_block.get_neighbor(face); neighbor_block.is_valid())
+			{
+				if (should_generate_quad(batch, this_block, neighbor_block))
+					generate_quad(batch, this_block, face, neighbor_block->get_light_level());
+			}
+			else
+			{
+				// If there is no neighbor block, therefore this block is end of world, so we need to draw it
+				generate_quad(batch, this_block, face, block_settings::default_light_level);
+			}
 		}
 	}
 }
 
-bool				chunk_geometry_generator::should_build_quad
+bool				chunk_geometry_generator::should_generate_quad
 					(
-						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
 						const block_pointer &this_block_pointer,
 						const block_pointer &neighbor_block_pointer
@@ -152,159 +153,169 @@ bool				chunk_geometry_generator::should_build_quad
 	return true;
 }
 
-void				chunk_geometry_generator::build_quad
+void 				chunk_geometry_generator::generate_quad
 					(
-						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
-						const block &this_block,
-						const chunk::index &index,
-						axis axis,
-						sign sign,
+						const block_pointer &block,
+						block_face face,
 						float light_level
 					)
 {
-	const auto		block_type = this_block.get_type();
+	generate_indices(batch);
+	generate_vertices(batch, block, face);
+	generate_texture_coordinates(batch, block, face);
+	generate_light_levels(batch, block, face, light_level);
+}
+
+void				chunk_geometry_generator::generate_indices(chunk_workspace::batch &batch)
+{
+	const int		offset = (int)batch.indices.size() / 6 * 4;
+
+	vector_tools::append(batch.indices, indices);
+	for (int i = (int)batch.indices.size() - 6; i < (int)batch.indices.size(); i++)
+		batch.indices[i] += offset;
+}
+
+void				chunk_geometry_generator::generate_vertices
+					(
+						chunk_workspace::batch &batch,
+						const block_pointer &block,
+						block_face face
+					)
+{
+	const auto		block_type = block->get_type();
 	const auto		block_meta_type = get_meta_type(block_type);
 
-	auto			texture_coordinates = ivec2(0);
-	float			ao_levels[4] = {0.f, 0.f, 0.f, 0.f };
-
-	// TODO Use block_pointer
-	light_level = clamp(light_level, block_settings::min_light_level, block_settings::max_light_level);
-	block_pointer	block = block_pointer(workspace->chunk, index);
-
-	if (axis == axis::x and sign == sign::plus)
+	if (face == block_face::right)
 	{
 		if (is_diagonal(block_meta_type))
 		{
-			append_to_vector(batch.vertices, first_diagonal_vertices);
-			append_to_vector(batch.texture_coordinates, first_diagonal_texture_coordinates);
+			vector_tools::append(batch.vertices, first_diagonal_vertices);
+			vector_tools::append(batch.texture_coordinates, first_diagonal_texture_coordinates);
 		}
 		else
 		{
-			append_to_vector(batch.vertices, right_vertices);
-			append_to_vector(batch.texture_coordinates, right_texture_coordinates);
-			calculate_ao_for_quad(block, right_occluders_offsets, ao_levels);
+			vector_tools::append(batch.vertices, right_vertices);
+			vector_tools::append(batch.texture_coordinates, right_texture_coordinates);
 		}
-
-		texture_coordinates = texture_atlas::get_coordinates(block_type).get_right();
 	}
-	else if (axis == axis::x and sign == sign::minus)
+	else if (face == block_face::left)
 	{
 		if (is_diagonal(block_meta_type))
 		{
-			append_to_vector(batch.vertices, second_diagonal_vertices);
-			append_to_vector(batch.texture_coordinates, second_diagonal_texture_coordinates);
+			vector_tools::append(batch.vertices, second_diagonal_vertices);
+			vector_tools::append(batch.texture_coordinates, second_diagonal_texture_coordinates);
 		}
 		else
 		{
-			append_to_vector(batch.vertices, left_vertices);
-			append_to_vector(batch.texture_coordinates, left_texture_coordinates);
-			calculate_ao_for_quad(block, left_occluders_offsets, ao_levels);
+			vector_tools::append(batch.vertices, left_vertices);
+			vector_tools::append(batch.texture_coordinates, left_texture_coordinates);
 		}
-
-		texture_coordinates = texture_atlas::get_coordinates(block_type).get_left();
 	}
-	else if (axis == axis::y and sign == sign::plus)
+	else if (face == block_face::top)
 	{
-		append_to_vector(batch.vertices, top_vertices);
-		append_to_vector(batch.texture_coordinates, top_texture_coordinates);
-		texture_coordinates = texture_atlas::get_coordinates(block_type).get_top();
-		calculate_ao_for_quad(block, top_occluders_offsets, ao_levels);
+		vector_tools::append(batch.vertices, top_vertices);
+		vector_tools::append(batch.texture_coordinates, top_texture_coordinates);
 	}
-	else if (axis == axis::y and sign == sign::minus)
+	else if (face == block_face::bottom)
 	{
-		append_to_vector(batch.vertices, bottom_vertices);
-		append_to_vector(batch.texture_coordinates, bottom_texture_coordinates);
-		texture_coordinates = texture_atlas::get_coordinates(block_type).get_bottom();
-		calculate_ao_for_quad(block, bottom_occluders_offsets, ao_levels);
+		vector_tools::append(batch.vertices, bottom_vertices);
+		vector_tools::append(batch.texture_coordinates, bottom_texture_coordinates);
 	}
-	else if (axis == axis::z and sign == sign::plus)
+	else if (face == block_face::front)
 	{
-		append_to_vector(batch.vertices, front_vertices);
-		append_to_vector(batch.texture_coordinates, front_texture_coordinates);
-		texture_coordinates = texture_atlas::get_coordinates(block_type).get_front();
-		calculate_ao_for_quad(block, front_occluders_offsets, ao_levels);
+		vector_tools::append(batch.vertices, front_vertices);
+		vector_tools::append(batch.texture_coordinates, front_texture_coordinates);
 	}
-	else if (axis == axis::z and sign == sign::minus)
+	else if (face == block_face::back)
 	{
-		append_to_vector(batch.vertices, back_vertices);
-		append_to_vector(batch.texture_coordinates, back_texture_coordinates);
-		texture_coordinates = texture_atlas::get_coordinates(block_type).get_back();
-		calculate_ao_for_quad(block, back_occluders_offsets, ao_levels);
+		vector_tools::append(batch.vertices, back_vertices);
+		vector_tools::append(batch.texture_coordinates, back_texture_coordinates);
 	}
 	else
-		debug::raise_error("[chunk_geometry_builder] Can't build quad");
+		debug::raise_error("[chunk_geometry_builder] Can't generate vertices");
 
 	for (int i = (int)batch.vertices.size() - 12; i < (int)batch.vertices.size(); i += 3)
 	{
-		batch.vertices[i + 0] += (float)index.x;
-		batch.vertices[i + 1] += (float)index.y;
-		batch.vertices[i + 2] += (float)index.z;
+		batch.vertices[i + 0] += (float)block.get_index().x;
+		batch.vertices[i + 1] += (float)block.get_index().y;
+		batch.vertices[i + 2] += (float)block.get_index().z;
 	}
 
-	// TODO Delegate to another method
-	auto					transform_texture_coordinate = [texture_coordinates](float &x, float &y)
+}
+
+void				chunk_geometry_generator::generate_texture_coordinates
+					(
+						chunk_workspace::batch &batch,
+						const block_pointer &block,
+						block_face face
+					)
+{
+	static const
+	auto			transform_texture_coordinate = [](const ivec2 &texture_coordinates, float &x, float &y)
 	{
-		static vec2 		size = texture_atlas::get_texture_size();
+		static const
+		vec2		size = texture_atlas::get_texture_size();
 
 		x = size.x * ((float)texture_coordinates.x + x);
 		y = size.y * ((float)texture_coordinates.y + y);
 	};
 
-	for (int i = (int)batch.texture_coordinates.size() - 8; i < (int)batch.texture_coordinates.size(); i += 2)
-		transform_texture_coordinate(batch.texture_coordinates[i + 0], batch.texture_coordinates[i + 1]);
+	auto					texture_coordinates = ivec2(0);
 
-	// TODO Delegate to another method
-	const int				offset = (int)batch.indices.size() / 6 * 4;
-
-	append_to_vector(batch.indices, indices);
-	for (int i = (int)batch.indices.size() - 6; i < (int)batch.indices.size(); i++)
-		batch.indices[i] += offset;
-
-	// TODO Delegate to another method
-	for (float & ao : ao_levels)
-		batch.light_levels.push_back(combine_light_and_ao(light_level, ao));
-}
-
-template					<typename type>
-void						chunk_geometry_generator::append_to_vector(vector<type> &target, const vector<type> &source)
-{
-	target.insert(target.end(), source.begin(), source.end());
-}
-
-void						chunk_geometry_generator::calculate_ao_for_quad
-							(
-								const block_pointer &block,
-								const chunk::index (&occluders_offsets)[4][3],
-								float (&ao_values)[4]
-							)
-{
-	for (int i = 0; i < 4; i++)
-		ao_values[i] = calculate_ao_for_vertex(block, occluders_offsets[i]);
-}
-
-float						chunk_geometry_generator::calculate_ao_for_vertex
-							(
-								const block_pointer &block,
-								const chunk::index (&occluders_offsets)[3]
-							)
-{
-	int						count = 0;
-	block_pointer			neighbor_block;
-
-	for (const auto &occluder_offset : occluders_offsets)
+	switch (face)
 	{
-		neighbor_block = block.get_neighbor(occluder_offset);
-		count += neighbor_block.is_valid() and not does_transmit_light(get_meta_type(neighbor_block->get_type()));
+		case block_face::right:
+			texture_coordinates = texture_atlas::get_coordinates(block->get_type()).get_right();
+			break;
+
+		case block_face::left:
+			texture_coordinates = texture_atlas::get_coordinates(block->get_type()).get_left();
+			break;
+
+		case block_face::top:
+			texture_coordinates = texture_atlas::get_coordinates(block->get_type()).get_top();
+			break;
+
+		case block_face::bottom:
+			texture_coordinates = texture_atlas::get_coordinates(block->get_type()).get_bottom();
+			break;
+
+		case block_face::front:
+			texture_coordinates = texture_atlas::get_coordinates(block->get_type()).get_front();
+			break;
+
+		case block_face::back:
+			texture_coordinates = texture_atlas::get_coordinates(block->get_type()).get_back();
+			break;
+
+		default :
+			debug::raise_error("[chunk_geometry_builder] Can't generate texture coordinates");
 	}
 
-	return (float)count / 3;
+	for (int i = (int)batch.texture_coordinates.size() - 8; i < (int)batch.texture_coordinates.size(); i += 2)
+		transform_texture_coordinate(texture_coordinates, batch.texture_coordinates[i + 0], batch.texture_coordinates[i + 1]);
 }
 
-float						chunk_geometry_generator::combine_light_and_ao(float light_level, float ao_level)
+void 				chunk_geometry_generator::generate_light_levels
+					(
+						chunk_workspace::batch &batch,
+						const block_pointer &block,
+						block_face face,
+						float light_level
+					)
 {
-	static constexpr float	ao_weight = 0.4f;
+	static const
+	auto			combine_light_and_ao = [](float light_level, float ao_level)
+	{
+		constexpr
+		auto		ao_weight = 0.4f;
 
-	return light_level - ao_level * light_level * ao_weight;
+		return light_level - ao_level * light_level * ao_weight;
+	};
+
+	light_level = clamp(light_level, block_settings::min_light_level, block_settings::max_light_level);
+
+	for (float &ao : ao_calculator::calculate(block, face))
+		batch.light_levels.push_back(combine_light_and_ao(light_level, ao));
 }

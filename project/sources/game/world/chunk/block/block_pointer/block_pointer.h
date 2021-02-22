@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/world/chunk/block/block_face/block_face.h"
 #include "game/world/chunk/chunk/chunk/chunk_settings.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
 
@@ -35,6 +36,7 @@ public :
 
 	chunk_type				get_chunk() const;
 	index_type				get_index() const;
+	block_pointer			get_neighbor(block_face face) const;
 	block_pointer			get_neighbor(axis axis, sign sign) const;
 	block_pointer			get_neighbor(const chunk::index &offset) const;
 	vec3					get_world_position() const;

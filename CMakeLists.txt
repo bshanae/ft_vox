@@ -88,6 +88,7 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_landscape_generator/biome/biome/biome.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_landscape_generator/chunk_landscape_generator/chunk_landscape_generator.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_light_generator/chunk_light_generator.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_geometry_generator/tools/ao_calculator/ao_calculator.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_geometry_generator/chunk_geometry_generator/chunk_geometry_generator.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_model_generator/chunk_model_generator.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/chunk_generation_controller/chunk_generation_controller.cpp
@@ -105,7 +106,7 @@ set(SOURCES
 
 	# Application : Application
 	${SOURCES_DIRECTORY}/application/common/debug/debug.cpp
-	${SOURCES_DIRECTORY}/application/main.cpp project/sources/application/common/imports/FastNoise.h)
+	${SOURCES_DIRECTORY}/application/main.cpp)
 
 # Executable
 
