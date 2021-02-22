@@ -86,7 +86,7 @@ optional<build_type>			chunk_generation_controller::process_build(const shared_p
 	return nullopt;
 }
 
-void							chunk_generation_controller::invalidate_build(const shared_ptr<chunk> &chunk)
+void							chunk_generation_controller::reset_build(const shared_ptr<chunk> &chunk)
 {
 	if (auto workspace = get_instance()->get_workspace(chunk); workspace != nullptr)
 		workspace->reset();

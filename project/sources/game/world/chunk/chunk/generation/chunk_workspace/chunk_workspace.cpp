@@ -43,7 +43,7 @@ void						chunk_workspace::reset()
 		batch.model = nullptr;
 	};
 
-	state = nothing_done;
+	state = landscape_done;
 
 	landscape_future.reset();
 	light_build_future.reset();

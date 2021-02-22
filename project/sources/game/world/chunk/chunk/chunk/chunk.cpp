@@ -75,5 +75,5 @@ void						chunk::reset_build()
 #endif
 
 	chunk_generation_controller::do_build_at_once(pointer);
-	chunk_generation_controller::invalidate_build(pointer);
+	chunk_generation_controller::reset_build(pointer);
 }
