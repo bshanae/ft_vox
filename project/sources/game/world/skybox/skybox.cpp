@@ -19,7 +19,7 @@ using namespace			game;
 	build_program();
 	initialize_program();
 
-	is_enabled = false;
+	should_render = false;
 }
 
 void					skybox::when_updated()
@@ -30,7 +30,7 @@ void					skybox::when_updated()
 		engine::input::is_pressed(engine::input::key::letter_s)
 	)
 	{
-		is_enabled = not is_enabled;
+		should_render = not should_render;
 	}
 }
 
@@ -38,7 +38,7 @@ void					skybox::when_rendered()
 {
 	mat4 				view_matrix;
 
-	if (not is_enabled)
+	if (not should_render)
 		return;
 
 	program->use(true);

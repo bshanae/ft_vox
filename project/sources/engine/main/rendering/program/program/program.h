@@ -19,7 +19,10 @@ public :
 	template		<typename type>
 	auto			create_uniform(const string &name)
 	{
-		return (uniform<type>(glGetUniformLocation(value, name.c_str())));
+		auto 		new_uniform = uniform<type>(glGetUniformLocation(value, name.c_str()));
+
+		debug::check(new_uniform.is_valid(), "[program] Uniform for name '" + name + "' is invalid");
+		return new_uniform;
 	}
 
 private :

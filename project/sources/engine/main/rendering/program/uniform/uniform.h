@@ -22,9 +22,14 @@ public :
 					uniform() = default;
 					~uniform() = default;
 
+	bool 			is_valid() const
+	{
+		return value != 1u;
+	}
+
 	void			upload(const type &data) const
 	{
-		debug::check(value != -1u, "[uniform] Uniform is not found");
+		debug::check(is_valid(), "[uniform] Uniform is not found");
 
 		if constexpr (is_same<type, int>::value)
 			glUniform1i(value, data);
