@@ -16,40 +16,9 @@ using namespace		game;
 
 void				chunk_geometry_generator::process(const shared_ptr<chunk_workspace> &workspace)
 {
-	debug::check_critical
-	(
-		workspace->state == chunk_workspace::light_done,
-		"[chunk_geometry_builder] Chunk workspace has unexpected state"
-	);
-
-	workspace->state = chunk_workspace::geometry_in_process;
-
-	workspace->batch_for_opaque.filter = &chunk_geometry_generator::filter_for_opaque;
-	workspace->batch_for_opaque.geometry_future = async
-	(
-		launch::async,
-		process_batch,
-		workspace,
-		ref(workspace->batch_for_opaque)
-	);
-
-	workspace->batch_for_transparent.filter = &chunk_geometry_generator::filter_for_transparent;
-	workspace->batch_for_transparent.geometry_future = async
-	(
-		launch::async,
-		process_batch,
-		workspace,
-		ref(workspace->batch_for_transparent)
-	);
-
-	workspace->batch_for_partially_transparent.filter = &chunk_geometry_generator::filter_for_partially_transparent;
-	workspace->batch_for_partially_transparent.geometry_future = async
-	(
-		launch::async,
-		process_batch,
-		workspace,
-		ref(workspace->batch_for_partially_transparent)
-	);
+	setup_workspace_state(workspace);
+	filter_blocks_and_save_to_batches(workspace);
+	launch_batches_processing(workspace);
 }
 
 void				chunk_geometry_generator::wait(const shared_ptr<chunk_workspace> &workspace)
@@ -66,64 +35,94 @@ void				chunk_geometry_generator::wait(const shared_ptr<chunk_workspace> &worksp
 	}
 }
 
-bool				chunk_geometry_generator::filter_for_opaque(const block &block)
+void				chunk_geometry_generator::setup_workspace_state(const shared_ptr<chunk_workspace> &workspace)
 {
-	return is_opaque(get_meta_type(block.get_type()));
+	debug::check_critical
+	(
+			workspace->state == chunk_workspace::light_done,
+			"[chunk_geometry_builder] Chunk workspace has unexpected state"
+	);
+
+	workspace->state = chunk_workspace::geometry_in_process;
 }
 
-bool				chunk_geometry_generator::filter_for_transparent(const block &block)
-{
-	return is_transparent(get_meta_type(block.get_type()));
-}
-
-bool				chunk_geometry_generator::filter_for_partially_transparent(const block &block)
-{
-	return is_partially_transparent(get_meta_type(block.get_type()));
-}
-
-void				chunk_geometry_generator::process_batch
-					(
-						shared_ptr<chunk_workspace> workspace,
-						chunk_workspace::batch &batch
-					)
+void				chunk_geometry_generator::filter_blocks_and_save_to_batches(const shared_ptr<chunk_workspace> &workspace)
 {
 	for (auto &iterator : *workspace->chunk)
 	{
-		if (batch.filter(iterator->get_value()))
-			process_block(workspace, batch, iterator.get_index());
+		const auto	block = block_pointer(workspace->chunk, iterator->get_index());
+		const auto	block_meta_type = get_meta_type(block->get_type());
+
+		if (is_empty(block_meta_type))
+			;
+		else if (is_opaque(block_meta_type))
+			workspace->batch_for_opaque.blocks.push_back(block);
+		else if (is_transparent(block_meta_type))
+			workspace->batch_for_transparent.blocks.push_back(block);
+		else if (is_partially_transparent(block_meta_type))
+			workspace->batch_for_partially_transparent.blocks.push_back(block);
+		else
+			debug::raise_error("[chunk_geometry_generator] Unexpected code branch");
 	}
+}
+
+void 				chunk_geometry_generator::launch_batches_processing(const shared_ptr<chunk_workspace> &workspace)
+{
+	workspace->batch_for_opaque.geometry_future = async
+	(
+		launch::async,
+		process_batch,
+		ref(workspace->batch_for_opaque)
+	);
+
+	workspace->batch_for_transparent.geometry_future = async
+	(
+		launch::async,
+		process_batch,
+		ref(workspace->batch_for_transparent)
+	);
+
+	workspace->batch_for_partially_transparent.geometry_future = async
+	(
+		launch::async,
+		process_batch,
+		ref(workspace->batch_for_partially_transparent)
+	);
+}
+
+void				chunk_geometry_generator::process_batch(chunk_workspace::batch &batch)
+{
+	for (const auto &block : batch.blocks)
+		process_block(batch, block);
 }
 
 void				chunk_geometry_generator::process_block
 					(
-						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
-						const chunk::index &index
+						const block_pointer &block
 					)
 {
-	const auto 		this_block = block_pointer(workspace->chunk, index);
-
-	if (is_empty(get_meta_type((this_block->get_type()))))
+	if (is_empty(get_meta_type((block->get_type()))))
 		return ;
 
-	if (is_diagonal(get_meta_type((this_block->get_type()))))
+	if (is_diagonal(get_meta_type((block->get_type()))))
 	{
-		generate_quad(batch, this_block, block_face::left, this_block->get_light_level());
-		generate_quad(batch, this_block, block_face::right, this_block->get_light_level());
+		generate_quad(batch, block, block_face::left, block->get_light_level());
+		generate_quad(batch, block, block_face::right, block->get_light_level());
 	}
 	else
 	{
 		for (block_face face : get_all_block_faces())
 		{
-			if (auto neighbor_block = this_block.get_neighbor(face); neighbor_block.is_valid())
+			if (auto neighbor_block = block.get_neighbor(face); neighbor_block.is_valid())
 			{
-				if (should_generate_quad(batch, this_block, neighbor_block))
-					generate_quad(batch, this_block, face, neighbor_block->get_light_level());
+				if (should_generate_quad(batch, block, neighbor_block))
+					generate_quad(batch, block, face, neighbor_block->get_light_level());
 			}
 			else
 			{
 				// If there is no neighbor block, therefore this block is end of world, so we need to draw it
-				generate_quad(batch, this_block, face, block_settings::default_light_level);
+				generate_quad(batch, block, face, block_settings::default_light_level);
 			}
 		}
 	}

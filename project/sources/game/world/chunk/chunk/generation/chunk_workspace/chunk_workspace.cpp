@@ -31,7 +31,7 @@ void						chunk_workspace::reset()
 {
 	auto 					reset_batch = [](batch &batch)
 	{
-		batch.filter = nullptr;
+		batch.blocks.clear();
 
 		batch.geometry_future.reset();
 

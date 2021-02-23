@@ -23,21 +23,16 @@ public :
 
 private :
 
-	static bool		filter_for_opaque(const block &block);
-	static bool		filter_for_transparent(const block &block);
-	static bool		filter_for_partially_transparent(const block &block);
+	static void 	setup_workspace_state(const shared_ptr<chunk_workspace> &workspace);
+	static void 	filter_blocks_and_save_to_batches(const shared_ptr<chunk_workspace> &workspace);
+	static void 	launch_batches_processing(const shared_ptr<chunk_workspace> &workspace);
 
-	static void 	process_batch
-					(
-						shared_ptr<chunk_workspace> workspace,
-						chunk_workspace::batch &batch
-					);
+	static void 	process_batch(chunk_workspace::batch &batch);
 
 	static void		process_block
 					(
-						const shared_ptr<chunk_workspace> &workspace,
 						chunk_workspace::batch &batch,
-						const chunk::index &index
+						const block_pointer &block
 					);
 
 	static bool		should_generate_quad

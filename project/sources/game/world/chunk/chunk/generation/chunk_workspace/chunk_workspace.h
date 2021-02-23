@@ -2,6 +2,7 @@
 
 #include "application/common/imports/std.h"
 
+#include "game/world/chunk/block/block_pointer/block_pointer.h"
 #include "game/world/chunk/chunk/chunk/chunk_settings.h"
 
 namespace							engine
@@ -22,7 +23,7 @@ public :
 
 	struct							batch
 	{
-		function<bool(block &)>		filter;
+		vector<block_pointer>		blocks;
 
 		optional<future<void>>		geometry_future;
 
