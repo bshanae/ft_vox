@@ -6,6 +6,7 @@
 #include "engine/main/rendering/camera/camera/camera.h"
 
 #include "game/world/chunk/block/block_face/block_face.h"
+#include "game/world/chunk/chunk/generation/generators/chunk_landscape_generator/chunk_landscape_generator/chunk_landscape_generator.h"
 #include "game/world/world/world.h"
 #include "game/player/player/player_settings.h"
 #include "game/player/ray_caster/ray_caster.h"
@@ -125,29 +126,14 @@ void					player::try_remove_block()
 
 vec3					player::calculate_initial_position()
 {
-	// We believe, that player is initialized after world
-	// So we can access blocks in this methods
+	const auto 			column_info = chunk_landscape_generator::generate_column(vec2());
+	vec3				position;
 
-	vec3				point = vec3();
-	block_pointer		block = world::find_block(point);
+	position.x = 0.5f;
+	position.z = 0.5f;
+	position.y = (float)column_info.height + 1.f + player_settings::aabb_size.y;
 
-	while (true)
-	{
-		if (not block.is_valid())
-			break;
-
-		if (is_empty(get_meta_type(block->get_type())))
-			break;
-
-		point += vec3(0, 1, 0);
-		block = world::find_block(point);
-	}
-
-	point.y += player_settings::aabb_size.y;
-	point.x = 0.5f;
-	point.z = 0.5f;
-
-	return point;
+	return position;
 }
 
 aabb					player::get_aabb(const vec3 &position) const

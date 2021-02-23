@@ -134,10 +134,6 @@ void						world::when_initialized()
 	create_chunk(right);
 	create_chunk(forward);
 	create_chunk(back);
-
-	// TODO This doesn't work, because landscape generation is now async
-	// Immediately add first chunks
-	process_new_chunks();
 }
 
 void						world::when_updated()

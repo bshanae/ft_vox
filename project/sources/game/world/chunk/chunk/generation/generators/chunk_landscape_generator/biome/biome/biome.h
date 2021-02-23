@@ -31,7 +31,7 @@ public :
 	enum type				get_type() const;
 	enum block_type			get_first_layer() const;
 
-	int 					generate_height(const vec3 &position) const;
+	int 					generate_height(const vec2 &position) const;
 
 private :
 

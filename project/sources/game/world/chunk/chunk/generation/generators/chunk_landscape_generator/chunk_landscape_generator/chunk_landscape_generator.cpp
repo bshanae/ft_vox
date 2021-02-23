@@ -10,13 +10,80 @@ using namespace			game;
 	noise_for_biome = cellular_noise(0.01f);
 }
 
+						chunk_landscape_generator::column_info
+						chunk_landscape_generator::generate_column(const ivec2 &position)
+{
+	const auto			instance = get_instance();
+	const auto			result = instance->noise_for_biome.generate(position);
+
+	const auto 			&nearest = result.nearest;
+	const auto 			&furthest = result.furthest;
+
+	const auto			&central_cell = result.central;
+	const auto			&left_cell = result.left;
+	const auto			&right_cell = result.right;
+	const auto			&top_cell = result.top;
+	const auto			&bottom_cell = result.bottom;
+	const auto			&top_left_cell = result.top_left;
+	const auto			&top_right_cell = result.top_right;
+	const auto			&bottom_left_cell = result.bottom_left;
+	const auto			&bottom_right_cell = result.bottom_right;
+
+	const auto			central_cell_height = instance->choose_biome(central_cell.noise_value).generate_height(position);
+	const auto			left_cell_height = instance->choose_biome(left_cell.noise_value).generate_height(position);
+	const auto			right_cell_height = instance->choose_biome(right_cell.noise_value).generate_height(position);
+	const auto			top_cell_height = instance->choose_biome(top_cell.noise_value).generate_height(position);
+	const auto			bottom_cell_height = instance->choose_biome(bottom_cell.noise_value).generate_height(position);
+	const auto			top_left_cell_height = instance->choose_biome(top_left_cell.noise_value).generate_height(position);
+	const auto			top_right_cell_height = instance->choose_biome(top_right_cell.noise_value).generate_height(position);
+	const auto			bottom_left_cell_height = instance->choose_biome(bottom_left_cell.noise_value).generate_height(position);
+	const auto			bottom_right_cell_height = instance->choose_biome(bottom_right_cell.noise_value).generate_height(position);
+
+	const float			central_cell_influence = 1.f - central_cell.distance / furthest.distance;
+	const float			left_cell_influence = 1.f - left_cell.distance / furthest.distance;
+	const float			right_cell_influence = 1.f - right_cell.distance / furthest.distance;
+	const float			top_cell_influence = 1.f - top_cell.distance / furthest.distance;
+	const float			bottom_cell_influence = 1.f - bottom_cell.distance / furthest.distance;
+	const float			top_left_cell_influence = 1.f - top_left_cell.distance / furthest.distance;
+	const float			top_right_cell_influence = 1.f - top_right_cell.distance / furthest.distance;
+	const float			bottom_left_cell_influence = 1.f - bottom_left_cell.distance / furthest.distance;
+	const float			bottom_right_cell_influence = 1.f - bottom_right_cell.distance / furthest.distance;
+
+	const float			total_influence =
+			central_cell_influence
+			+ left_cell_influence
+			+ right_cell_influence
+			+ top_cell_influence
+			+ bottom_cell_influence
+			+ top_left_cell_influence
+			+ top_right_cell_influence
+			+ bottom_left_cell_influence
+			+ bottom_right_cell_influence;
+
+	float				height = 0.f;
+
+	height += central_cell_height * central_cell_influence;
+	height += left_cell_height * left_cell_influence;
+	height += right_cell_height * right_cell_influence;
+	height += top_cell_height * top_cell_influence;
+	height += bottom_cell_height * bottom_cell_influence;
+	height += top_left_cell_height * top_left_cell_influence;
+	height += top_right_cell_height * top_right_cell_influence;
+	height += bottom_left_cell_height * bottom_left_cell_influence;
+	height += bottom_right_cell_height * bottom_right_cell_influence;
+
+	height /= total_influence;
+
+	return {instance->choose_biome(nearest.noise_value), (int)floor(height)};
+}
+
 void					chunk_landscape_generator::process(const shared_ptr<chunk_workspace> &workspace)
 {
 	debug::check_critical
-	(
-		workspace->state == chunk_workspace::nothing_done,
-		"[generator] Chunk workspace has unexpected state"
-	);
+			(
+					workspace->state == chunk_workspace::nothing_done,
+					"[generator] Chunk workspace has unexpected state"
+			);
 
 	workspace->state = chunk_workspace::landscape_in_process;
 	workspace->landscape_future = async(launch::async, &chunk_landscape_generator::do_process, get_instance(), workspace);
@@ -34,7 +101,7 @@ void					chunk_landscape_generator::do_process(const shared_ptr<chunk_workspace>
 	for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
 	{
 		const auto		column_position = vec3(position.x + (float)index.x, 0, position.z + (float)index.z);
-		const auto		column_info = process_column(column_position);
+		const auto		column_info = generate_column({column_position.x, column_position.z});
 
 		const auto		block_type = (enum block_type)column_info.biome.get_first_layer();
 		const auto		height_limit = min(chunk_settings::size[1], max(water_level, column_info.height));
@@ -49,71 +116,6 @@ void					chunk_landscape_generator::do_process(const shared_ptr<chunk_workspace>
 	}
 
 	workspace->state = chunk_workspace::state::landscape_done;
-}
-
-chunk_landscape_generator::column_info	chunk_landscape_generator::process_column(const vec3 &position)
-{
-	auto				result = noise_for_biome.generate(position);
-
-	const auto 			&nearest = result.nearest;
-	const auto 			&furthest = result.furthest;
-
-	const auto			&central_cell = result.central;
-	const auto			&left_cell = result.left;
-	const auto			&right_cell = result.right;
-	const auto			&top_cell = result.top;
-	const auto			&bottom_cell = result.bottom;
-	const auto			&top_left_cell = result.top_left;
-	const auto			&top_right_cell = result.top_right;
-	const auto			&bottom_left_cell = result.bottom_left;
-	const auto			&bottom_right_cell = result.bottom_right;
-
-	const auto			central_cell_height = choose_biome(central_cell.noise_value).generate_height(position);
-	const auto			left_cell_height = choose_biome(left_cell.noise_value).generate_height(position);
-	const auto			right_cell_height = choose_biome(right_cell.noise_value).generate_height(position);
-	const auto			top_cell_height = choose_biome(top_cell.noise_value).generate_height(position);
-	const auto			bottom_cell_height = choose_biome(bottom_cell.noise_value).generate_height(position);
-	const auto			top_left_cell_height = choose_biome(top_left_cell.noise_value).generate_height(position);
-	const auto			top_right_cell_height = choose_biome(top_right_cell.noise_value).generate_height(position);
-	const auto			bottom_left_cell_height = choose_biome(bottom_left_cell.noise_value).generate_height(position);
-	const auto			bottom_right_cell_height = choose_biome(bottom_right_cell.noise_value).generate_height(position);
-
-	const float			central_cell_influence = 1.f - central_cell.distance / furthest.distance;
-	const float			left_cell_influence = 1.f - left_cell.distance / furthest.distance;
-	const float			right_cell_influence = 1.f - right_cell.distance / furthest.distance;
-	const float			top_cell_influence = 1.f - top_cell.distance / furthest.distance;
-	const float			bottom_cell_influence = 1.f - bottom_cell.distance / furthest.distance;
-	const float			top_left_cell_influence = 1.f - top_left_cell.distance / furthest.distance;
-	const float			top_right_cell_influence = 1.f - top_right_cell.distance / furthest.distance;
-	const float			bottom_left_cell_influence = 1.f - bottom_left_cell.distance / furthest.distance;
-	const float			bottom_right_cell_influence = 1.f - bottom_right_cell.distance / furthest.distance;
-
-	const float			total_influence =
-							central_cell_influence
-							+ left_cell_influence
-							+ right_cell_influence
-							+ top_cell_influence
-							+ bottom_cell_influence
-							+ top_left_cell_influence
-							+ top_right_cell_influence
-							+ bottom_left_cell_influence
-							+ bottom_right_cell_influence;
-
-	float				height = 0.f;
-
-	height += central_cell_height * central_cell_influence;
-	height += left_cell_height * left_cell_influence;
-	height += right_cell_height * right_cell_influence;
-	height += top_cell_height * top_cell_influence;
-	height += bottom_cell_height * bottom_cell_influence;
-	height += top_left_cell_height * top_left_cell_influence;
-	height += top_right_cell_height * top_right_cell_influence;
-	height += bottom_left_cell_height * bottom_left_cell_influence;
-	height += bottom_right_cell_height * bottom_right_cell_influence;
-
-	height /= total_influence;
-
-	return {choose_biome(nearest.noise_value), (int)floor(height)};
 }
 
 const biome				&chunk_landscape_generator::choose_biome(float noise_value)

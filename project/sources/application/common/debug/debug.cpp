@@ -11,7 +11,7 @@ void				debug::log(const string &message)
 
 void				debug::raise_error(const string &message)
 {
-	cerr << "(Warning) " << message << endl;
+	cerr << "(Error) " << message << endl;
 	exit(0);
 }
 
@@ -25,7 +25,7 @@ void				debug::check_critical(bool statement, const string &message)
 
 void				debug::raise_warning(const string &message)
 {
-	cerr << "(Error) " << message << endl;
+	cerr << "(Warning) " << message << endl;
 }
 
 

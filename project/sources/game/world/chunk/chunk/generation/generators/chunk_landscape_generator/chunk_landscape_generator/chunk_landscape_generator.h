@@ -11,34 +11,34 @@
 #include "game/world/chunk/chunk/generation/generators/chunk_landscape_generator/noise/cellular_noise.h"
 #include "game/world/chunk/chunk/generation/generators/chunk_landscape_generator/biome/biome_collection/biome_collection.h"
 
-namespace			game
+namespace				game
 {
-	class			chunk;
-
-	class			chunk_landscape_generator;
+	class				chunk;
+	class				chunk_landscape_generator;
 }
 
-class				game::chunk_landscape_generator : public singleton<game::chunk_landscape_generator>
+class					game::chunk_landscape_generator : public singleton<game::chunk_landscape_generator>
 {
 public :
-					chunk_landscape_generator();
-					~chunk_landscape_generator() override = default;
 
-	static void 	process(const shared_ptr<chunk_workspace> &workspace);
+	struct				column_info
+	{
+		const biome		&biome;
+		int 			height;
+	};
+
+						chunk_landscape_generator();
+						~chunk_landscape_generator() override = default;
+
+	static column_info	generate_column(const ivec2 &position);
+	static void 		process(const shared_ptr<chunk_workspace> &workspace);
 
 private :
 
-	struct			column_info
-	{
-		const biome	&biome;
-		int 		height;
-	};
+	cellular_noise		noise_for_biome;
 
-	cellular_noise	noise_for_biome;
-
-	void			do_process(const shared_ptr<chunk_workspace> &workspace);
-	column_info		process_column(const vec3 &position);
-	const biome		&choose_biome(float noise_value);
+	void				do_process(const shared_ptr<chunk_workspace> &workspace);
+	const biome			&choose_biome(float noise_value);
 };
 
 
