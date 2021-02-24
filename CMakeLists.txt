@@ -95,6 +95,7 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/chunk_generation_controller/chunk_generation_controller.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/rendering/chunk_renderer/chunk_renderer.cpp
 	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk/chunk.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk_map/chunk_map.cpp
 	${SOURCES_DIRECTORY}/game/world/world/world.cpp
 	${SOURCES_DIRECTORY}/game/world/skybox/skybox.cpp
 

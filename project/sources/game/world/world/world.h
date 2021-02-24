@@ -6,90 +6,69 @@
 
 #include "game/world/chunk/block/block_pointer/block_pointer.h"
 #include "game/world/chunk/chunk/chunk/chunk.h"
+#include "game/world/chunk/chunk/chunk_map/chunk_map.h"
 #include "game/world/world/world_settings.h"
 
 #include "application/common/imports/std.h"
 
-namespace						game
+namespace					game
 {
-	enum class					block_face;
-	class						world;
+	enum class				block_face;
+	class					world;
 }
 
-class							game::world :
-									public engine::object,
-									public engine::unique_object_constructor<world>
+class						game::world :
+								public engine::object,
+								public engine::unique_object_constructor<world>
 {
-	friend class 				block_pointer;
+	friend class 			block_pointer;
 
 public :
-								world();
-								~world() override = default;
+							world();
+							~world() override = default;
 
-	static block_pointer		find_block(const vec3 &position);
+	static const chunk_map	&get_map();
 
-	static shared_ptr<chunk>	find_chunk(const vec3 &position);
-	static shared_ptr<chunk>	find_new_chunk(const vec3 &position);
+	static block_pointer	find_block(const vec3 &position);
 
-	static void					insert_block(const block_pointer &block, enum block_type type);
-	static void					remove_block(const block_pointer &block);
+	static void				insert_block(const block_pointer &block, enum block_type type);
+	static void				remove_block(const block_pointer &block);
 
-	static void					select_block(const block_pointer &block, block_face face);
-	static void 				unselect_block();
+	static void				select_block(const block_pointer &block, block_face face);
+	static void 			unselect_block();
 
-	static bool					does_collide(const aabb &aabb);
+	static float			distance(const vec3 &position);
+	static float			distance(const shared_ptr<chunk> &chunk);
+
+	static bool				does_collide(const aabb &aabb);
 
 private :
 
-	struct						vec3_hasher
-	{
-		size_t					operator() (const vec3 &vector) const
-		{
-			size_t				h1 = hash<float>()(vector.x);
-			size_t				h2 = hash<float>()(vector.y);
-			size_t				h3 = hash<float>()(vector.z);
+	chunk_map				chunks;
+	vec3					pivot;
 
-			return (h1 ^ (h2 << 1u)) ^ h3;
-		}
-	};
+	void					when_initialized() override;
+	void					when_updated() override;
+	void					when_rendered() override;
 
-	using						chunks_type = std::unordered_map<vec3, shared_ptr<chunk>, vec3_hasher>;
+	void					update_pivot();
 
-	chunks_type					chunks;
+	void					update_chunk_build(const shared_ptr<chunk> &chunk);
+	void					update_chunk_visibility(const shared_ptr<chunk> &chunk);
+	void					create_chunk_neighbors_if_needed(const shared_ptr<chunk> &chunk);
 
-	chunks_type					new_chunks;
-	vector<shared_ptr<chunk>>	old_chunks;
+	void 					create_chunk_if_needed(const vec3 &position);
+	void					destroy_chunk_if_needed(const shared_ptr<chunk> &chunk);
 
-	using						sorted_chunks_type = multimap<float, shared_ptr<chunk>>;
-	sorted_chunks_type			sorted_chunks;
+	void 					create_chunk(const vec3 &position);
+	void					destroy_chunk(const shared_ptr<chunk> &chunk);
+	void 					rebuild_chunk(const shared_ptr<chunk> &chunk);
 
-	shared_mutex				map_mutex;
+	void					rebuild_chunk_and_maybe_neighbors
+							(
+								const shared_ptr<chunk> &chunk,
+								const chunk::index &changed_block
+							);
 
-	engine::timer				update_timer;
-
-	vec3						pivot = vec3(0.f);
-
-	float						distance(const vec3 &position);
-	float						distance(const shared_ptr<chunk> &chunk);
-
-	void						when_initialized() override;
-
-	void						when_updated() override;
-	void						when_rendered() override;
-
-	void						update_pivot();
-	void						destroy_far_chunks();
-	void						update_chunks_builds();
-
-	void						process_new_chunks();
-	void						process_old_chunks();
-
-	bool						create_chunk_if_needed(const vec3 &position);
-	bool						destroy_chunk_if_needed(const shared_ptr<chunk> &chunk);
-
-	void						create_chunk(const vec3 &position);
-	void						destroy_chunk(const shared_ptr<chunk> &chunk);
-
-	void 						request_build(const shared_ptr<chunk> &chunk);
-	void						request_rebuild(const shared_ptr<chunk> &chunk, const chunk::index &changed_block);
+	void 					rebuild_chunk_if_exist(const vec3 &position);
 };

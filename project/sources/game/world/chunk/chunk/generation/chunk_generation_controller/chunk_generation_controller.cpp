@@ -143,7 +143,7 @@ bool							chunk_generation_controller::is_chunk_present_and_has_light(const vec
 	shared_ptr<chunk>			chunk;
 	shared_ptr<chunk_workspace>	workspace;
 
-	chunk = world::find_chunk(position);
+	chunk = world::get_map().find(position);
 	if (chunk == nullptr)
 		return false;
 
