@@ -7,11 +7,11 @@
 
 #include "game/world/skybox/skybox.h"
 #include "game/world/world/world.h"
-#include "game/world/chunk/texture_atlas/texture_atlas/texture_atlas.h"
-#include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
-#include "game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.h"
-#include "game/world/chunk/chunk/generation/chunk_generation_controller/chunk_generation_controller.h"
-#include "game/world/chunk/chunk/rendering/chunk_renderer/chunk_renderer.h"
+#include "game/world/texture_atlas/texture_atlas/texture_atlas.h"
+#include "game/world/block/block_highlighter/block_highlighter/block_highlighter.h"
+#include "game/world/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.h"
+#include "game/world/chunk/chunk_generation_director/chunk_generation_director.h"
+#include "game/world/chunk/chunk_renderer/chunk_renderer.h"
 #include "game/player/player/player.h"
 
 using namespace 	game;
@@ -41,7 +41,7 @@ void				daemon::construct_objects()
 	game::block_highlighter::construct();
 	game::block_highlighter_renderer::construct();
 
-	game::chunk_generation_controller::construct();
+	game::chunk_generation_director::construct();
 	game::chunk_renderer::construct();
 	game::world::construct();
 

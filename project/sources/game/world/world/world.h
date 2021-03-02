@@ -4,9 +4,9 @@
 #include "engine/main/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 #include "engine/main/system/time/timer/timer.h"
 
-#include "game/world/chunk/block/block_pointer/block_pointer.h"
-#include "game/world/chunk/chunk/chunk/chunk.h"
-#include "game/world/chunk/chunk/chunk_map/chunk_map.h"
+#include "game/world/block/block_ptr/block_ptr.h"
+#include "game/world/chunk/chunk/chunk.h"
+#include "game/world/chunk/chunk_map/chunk_map.h"
 #include "game/world/world/world_settings.h"
 
 #include "application/common/imports/std.h"
@@ -21,20 +21,18 @@ class						game::world :
 								public engine::object,
 								public engine::unique_object_constructor<world>
 {
-	friend class 			block_pointer;
+	friend class 			block_ptr;
 
 public :
 							world();
 							~world() override = default;
 
-	static const chunk_map	&get_map();
+	static block_ptr		find_block(const vec3 &position);
 
-	static block_pointer	find_block(const vec3 &position);
+	static void				insert_block(const block_ptr &block, enum block_type type);
+	static void				remove_block(const block_ptr &block);
 
-	static void				insert_block(const block_pointer &block, enum block_type type);
-	static void				remove_block(const block_pointer &block);
-
-	static void				select_block(const block_pointer &block, block_face face);
+	static void				select_block(const block_ptr &block, block_face face);
 	static void 			unselect_block();
 
 	static float			distance(const vec3 &position);

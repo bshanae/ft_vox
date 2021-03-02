@@ -5,9 +5,9 @@
 #include "engine/main/rendering/camera/camera/camera.h"
 
 #include "game/world/tools/aabb/aabb.h"
-#include "game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.h"
-#include "game/world/chunk/chunk/chunk/chunk.h"
-#include "game/world/chunk/chunk/rendering/chunk_renderer/chunk_renderer.h"
+#include "game/world/block/block_highlighter/block_highlighter/block_highlighter.h"
+#include "game/world/chunk/chunk/chunk.h"
+#include "game/world/chunk/chunk_renderer/chunk_renderer.h"
 
 using namespace				engine;
 using namespace				game;
@@ -22,12 +22,7 @@ static const vec3			back = vec3(0.f, 0.f, -chunk_settings::size[2]);
 	set_layout("Opaque");
 }
 
-const chunk_map				&world::get_map()
-{
-	return get_instance()->chunks;
-}
-
-block_pointer				world::find_block(const vec3 &position)
+block_ptr					world::find_block(const vec3 &position)
 {
 	chunk::index			index;
 	vec3					chunk_position;
@@ -46,24 +41,24 @@ block_pointer				world::find_block(const vec3 &position)
 	index.z = (int)(position.z - chunk_position.z);
 
 	if (chunk = get_instance()->chunks.find(chunk_position); chunk != nullptr and index.is_valid())
-		return block_pointer(chunk, index);
+		return block_ptr(chunk, index);
 	else
-		return block_pointer();
+		return block_ptr();
 }
 
-void						world::insert_block(const block_pointer &block, enum block_type type)
+void						world::insert_block(const block_ptr &block, enum block_type type)
 {
 	block->set_type(type);
 	get_instance()->rebuild_chunk_and_maybe_neighbors(block.get_chunk(), block.get_index());
 }
 
-void						world::remove_block(const block_pointer &block)
+void						world::remove_block(const block_ptr &block)
 {
 	block->set_type(block_type::air);
 	get_instance()->rebuild_chunk_and_maybe_neighbors(block.get_chunk(), block.get_index());
 }
 
-void						world::select_block(const block_pointer &block, block_face face)
+void						world::select_block(const block_ptr &block, block_face face)
 {
 	block_highlighter::highlight(block, face);
 }
@@ -88,13 +83,13 @@ bool						world::does_collide(const aabb &aabb)
 	vec3 					min = floor(aabb.min);
 	vec3 					max = floor(aabb.max);
 
-	block_pointer			block_iterator;
+	block_ptr				block_iterator;
 
 	for (int x = (int)min.x; x <= (int)max.x; x++)
 	for (int y = (int)min.y; y <= (int)max.y; y++)
 	for (int z = (int)min.z; z <= (int)max.z; z++)
 	{
-		if (block_iterator = find_block(vec3(x, y, z)); not block_iterator.is_valid())
+		if (block_iterator = find_block(vec3(x, y, z)); not block_iterator)
 			continue ;
 
 		if
@@ -139,7 +134,7 @@ void						world::when_updated()
 
 void						world::when_rendered()
 {
-	if (auto camera_block = find_block(camera::get_position()); camera_block.is_valid())
+	if (auto camera_block = find_block(camera::get_position()); camera_block)
 		chunk_renderer::set_apply_water_tint(camera_block->get_type() == block_type::water);
 	else
 		chunk_renderer::set_apply_water_tint(false);
@@ -203,6 +198,7 @@ void 						world::create_chunk(const vec3 &position)
 
 void						world::destroy_chunk(const shared_ptr<chunk> &chunk)
 {
+	chunk->delete_build();
 	chunks.remove(chunk);
 }
 

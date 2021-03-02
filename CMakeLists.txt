@@ -6,7 +6,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 set(CMAKE_CXX_STANDARD 20)
 
 # '-Wno-deprecated-volatile' is needed because of glm
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wno-deprecated-volatile -Ofast")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wno-deprecated-volatile -Ofast -frtti")
 
 # Variables
 
@@ -30,18 +30,25 @@ include_directories(
 
 	${SOURCES_DIRECTORY})
 
-# Sources
+# Sources : Libraries
 
-set(SOURCES
-	# Libraries
-	${LIBRARIES_DIRECTORY}/glad/build/src/glad.c
+set(SOURCES_LIBRARIES
+	${LIBRARIES_DIRECTORY}/glad/build/src/glad.c)
 
-	# Engine : Core
+# Sources : Application
+
+set(SOURCES_APPLICATION
+	${SOURCES_DIRECTORY}/application/common/debug/debug.cpp
+	${SOURCES_DIRECTORY}/application/main.cpp)
+
+# Sources : Engine
+
+set(SOURCES_ENGINE_CORE
 	${SOURCES_DIRECTORY}/engine/main/core/object/object/object.cpp
 	${SOURCES_DIRECTORY}/engine/main/core/object/object_manipulator/object_manipulator.cpp
-	${SOURCES_DIRECTORY}/engine/main/core/object/object_storage/object_storage/object_storage.cpp
+	${SOURCES_DIRECTORY}/engine/main/core/object/object_storage/object_storage/object_storage.cpp)
 
-	# Engine : Rendering
+set(SOURCES_ENGINE_RENDERING
 	${SOURCES_DIRECTORY}/engine/main/rendering/layout/layout/layout.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/layout/layout_manager/layout_manager.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/camera/camera/camera.cpp
@@ -51,64 +58,108 @@ set(SOURCES
 	${SOURCES_DIRECTORY}/engine/main/rendering/texture/cubemap/cubemap.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/texture/cubemap_loader/cubemap_loader.cpp
 	${SOURCES_DIRECTORY}/engine/main/rendering/program/program/program.cpp
-	${SOURCES_DIRECTORY}/engine/main/rendering/program/shader/shader.cpp
+	${SOURCES_DIRECTORY}/engine/main/rendering/program/shader/shader.cpp)
 
-	# Engine : System
+set(SOURCES_ENGINE_SYSTEM
 	${SOURCES_DIRECTORY}/engine/main/system/input/input.cpp
 	${SOURCES_DIRECTORY}/engine/main/system/time/timer/timer.cpp
 	${SOURCES_DIRECTORY}/engine/main/system/time/timestamp/timestamp.cpp
 	${SOURCES_DIRECTORY}/engine/main/system/window/window/window.cpp
-	project/sources/engine/main/system/window/window_tools/window_tools.cpp
+	${SOURCES_DIRECTORY}/engine/main/system/window/window_tools/window_tools.cpp)
 
-	# Engine : Processor
-	${SOURCES_DIRECTORY}/engine/main/processor/processor.cpp
+set(SOURCES_ENGINE_PROCESSOR
+	${SOURCES_DIRECTORY}/engine/main/processor/processor.cpp)
 
-	# Engine : Daemon
-	${SOURCES_DIRECTORY}/engine/daemon/daemon.cpp
+set(SOURCES_ENGINE_DAEMON
+	${SOURCES_DIRECTORY}/engine/daemon/daemon.cpp)
 
-	# Engine : Extensions
+set(SOURCES_ENGINE_EXTENSIONS
 	${SOURCES_DIRECTORY}/engine/extensions/utilities/fps_counter/fps_counter.cpp
 
 	${SOURCES_DIRECTORY}/engine/extensions/ui/text/text.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/symbol/symbol_renderer.cpp
 	${SOURCES_DIRECTORY}/engine/extensions/ui/font/font/font.cpp
-	${SOURCES_DIRECTORY}/engine/extensions/ui/font/font_library/font_library.cpp
+	${SOURCES_DIRECTORY}/engine/extensions/ui/font/font_library/font_library.cpp)
 
-	# Game : World
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block_face/block_face.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block_type/block_type/block_type.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block_pointer/block_pointer.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block_highlighter/block_highlighter/block_highlighter.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/block/block/block.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/texture_atlas/texture_coordinates/texture_coordinates.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/texture_atlas/texture_atlas/texture_atlas.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/chunk_workspace/chunk_workspace.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_landscape_generator/biome/biome_collection/biome_collection.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_landscape_generator/biome/biome/biome.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_landscape_generator/chunk_landscape_generator/chunk_landscape_generator.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_light_generator/chunk_light_generator.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_geometry_generator/tools/ao_calculator/ao_calculator.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_geometry_generator/chunk_geometry_generator/chunk_geometry_generator.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/generators/chunk_model_generator/chunk_model_generator.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/generation/chunk_generation_controller/chunk_generation_controller.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/rendering/chunk_renderer/chunk_renderer.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk/chunk.cpp
-	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk_map/chunk_map.cpp
-	${SOURCES_DIRECTORY}/game/world/world/world.cpp
-	${SOURCES_DIRECTORY}/game/world/skybox/skybox.cpp
+set(SOURCES_ENGINE
+	${SOURCES_ENGINE_CORE}
+	${SOURCES_ENGINE_RENDERING}
+	${SOURCES_ENGINE_SYSTEM}
+	${SOURCES_ENGINE_PROCESSOR}
+	${SOURCES_ENGINE_DAEMON}
+	${SOURCES_ENGINE_EXTENSIONS})
 
-	# Game : Player
+# Sources : Game
+
+set(SOURCE_GAME_WORLD_BLOCK
+	${SOURCES_DIRECTORY}/game/world/block/block_face/block_face.cpp
+	${SOURCES_DIRECTORY}/game/world/block/block_type/block_type/block_type.cpp
+	${SOURCES_DIRECTORY}/game/world/block/block_ptr/block_ptr.cpp
+	${SOURCES_DIRECTORY}/game/world/block/block_highlighter/block_highlighter/block_highlighter.cpp
+	${SOURCES_DIRECTORY}/game/world/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.cpp
+	${SOURCES_DIRECTORY}/game/world/block/block/block.cpp)
+
+set(SOURCE_GAME_WORLD_CHUNK
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_workspace/chunk_workspace.cpp
+
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_task/chunk_generation_task/chunk_generation_task.cpp
+
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_task/chunk_landscape_generation_task/chunk_landscape_generator/biome/biome_collection/biome_collection.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_task/chunk_landscape_generation_task/chunk_landscape_generator/biome/biome/biome.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_task/chunk_landscape_generation_task/chunk_landscape_generator/chunk_landscape_generator/chunk_landscape_generator.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_task/chunk_landscape_generation_task/chunk_landscape_generation_task/chunk_landscape_generation_task.cpp
+
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_task/chunk_light_generation_task/chunk_light_generation_task.cpp
+
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_task/chunk_geometry_generation_task/chunk_geometry_generation_task/chunk_geometry_generation_task.cpp
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_task/chunk_geometry_generation_task/tools/ao_calculator/ao_calculator.cpp
+
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_task/chunk_model_generation_task/chunk_model_generation_task.cpp
+
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_worker/chunk_generation_worker.cpp
+
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_generation_director/chunk_generation_director.cpp
+
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_renderer/chunk_renderer.cpp
+
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk/chunk.cpp
+
+	${SOURCES_DIRECTORY}/game/world/chunk/chunk_map/chunk_map.cpp)
+
+set(SOURCE_GAME_WORLD_SKYBOX
+	${SOURCES_DIRECTORY}/game/world/skybox/skybox.cpp)
+
+set(SOURCE_GAME_WORLD_TEXTURE_ATLAS
+	${SOURCES_DIRECTORY}/game/world/texture_atlas/texture_coordinates/texture_coordinates.cpp
+	${SOURCES_DIRECTORY}/game/world/texture_atlas/texture_atlas/texture_atlas.cpp)
+
+set(SOURCE_GAME_WORLD_WORLD
+	${SOURCES_DIRECTORY}/game/world/world/world.cpp)
+
+set(SOURCE_GAME_PLAYER
 	${SOURCES_DIRECTORY}/game/player/ray_caster/ray_caster.cpp
-	${SOURCES_DIRECTORY}/game/player/player/player.cpp
+	${SOURCES_DIRECTORY}/game/player/player/player.cpp)
 
-	# Game : Daemon
-	${SOURCES_DIRECTORY}/game/daemon/daemon.cpp
+set(SOURCE_GAME_DAEMON
+	${SOURCES_DIRECTORY}/game/daemon/daemon.cpp)
 
-	# Application : Application
-	${SOURCES_DIRECTORY}/application/common/debug/debug.cpp
-	${SOURCES_DIRECTORY}/application/main.cpp)
+set(SOURCES_GAME
+	${SOURCE_GAME_WORLD_BLOCK}
+	${SOURCE_GAME_WORLD_CHUNK}
+	${SOURCE_GAME_WORLD_SKYBOX}
+	${SOURCE_GAME_WORLD_TEXTURE_ATLAS}
+	${SOURCE_GAME_WORLD_WORLD}
+	${SOURCE_GAME_PLAYER}
+	${SOURCE_GAME_DAEMON})
+
+# Sources
+
+set(SOURCES
+	${SOURCES_LIBRARIES}
+	${SOURCES_APPLICATION}
+	${SOURCES_ENGINE}
+	${SOURCES_GAME} project/sources/game/world/chunk/chunk_build/chunk_build.h)
 
 # Executable
 

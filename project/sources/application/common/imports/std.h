@@ -48,6 +48,7 @@ using 				std::static_pointer_cast;
 using 				std::dynamic_pointer_cast;
 using 				std::enable_shared_from_this;
 using 				std::addressof;
+using 				std::cref;
 using 				std::ref;
 using 				std::reference_wrapper;
 
@@ -124,6 +125,7 @@ using				std::pair;
 
 #pragma region Other functions
 
+using				std::make_pair;
 using				std::to_string;
 using				std::filesystem::exists;
 using				std::min;

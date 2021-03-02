@@ -6,7 +6,7 @@
 #include "engine/main/system/time/timer/timer.h"
 
 #include "game/world/tools/aabb/aabb.h"
-#include "game/world/chunk/block/block_type/block_type/block_type.h"
+#include "game/world/block/block_type/block_type/block_type.h"
 
 namespace			game
 {

@@ -5,8 +5,8 @@
 #include "engine/main/system/input/input.h"
 #include "engine/main/rendering/camera/camera/camera.h"
 
-#include "game/world/chunk/block/block_face/block_face.h"
-#include "game/world/chunk/chunk/generation/generators/chunk_landscape_generator/chunk_landscape_generator/chunk_landscape_generator.h"
+#include "game/world/block/block_face/block_face.h"
+#include "game/world/chunk/chunk_generation_task/chunk_landscape_generation_task/chunk_landscape_generator/chunk_landscape_generator/chunk_landscape_generator.h"
 #include "game/world/world/world.h"
 #include "game/player/player/player_settings.h"
 #include "game/player/ray_caster/ray_caster.h"
@@ -101,7 +101,7 @@ void					player::try_place_block()
 		auto 			axis_and_sign = to_axis_and_sign(hit->face);
 		auto			neighbor = hit->block.get_neighbor(axis_and_sign.first, axis_and_sign.second);
 
-		if (not debug::check(neighbor.is_valid(), "[player] Can't put block"))
+		if (not debug::check(neighbor != nullptr, "[player] Can't put block"))
 			return;
 
 		world::world::insert_block(neighbor, last_removed_block_type);

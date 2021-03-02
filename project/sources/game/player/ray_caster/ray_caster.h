@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/world/chunk/block/block_pointer/block_pointer.h"
+#include "game/world/block/block_ptr/block_ptr.h"
 
 namespace					game
 {
@@ -14,7 +14,7 @@ public :
 
 	struct					hit
 	{
-		block_pointer		block;
+		block_ptr			block;
 		block_face			face;
 	};
 

@@ -2,7 +2,7 @@
 
 #include "engine/main/rendering/camera/camera/camera.h"
 
-#include "game/world/chunk/block/block_face/block_face.h"
+#include "game/world/block/block_face/block_face.h"
 #include "game/player/ray_caster/ray_caster_settings.h"
 #include "game/world/world/world.h"
 
@@ -86,7 +86,7 @@ optional<ray_caster::hit>	ray_caster::cast_ray()
 			face = from_axis_and_sign(axis::z, inverted_step_z);
 		}
 
-		if (auto block = game::world::find_block(vec3(x, y, z)); block.is_valid())
+		if (auto block = game::world::find_block(vec3(x, y, z)); block != nullptr)
 		{
 			if (is_editable(get_meta_type(block->get_type())))
 				return {{block, face}};
