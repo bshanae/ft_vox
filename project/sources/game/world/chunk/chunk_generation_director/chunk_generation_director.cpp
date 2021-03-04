@@ -97,16 +97,11 @@ bool							chunk_generation_director::is_chunk_present_and_has_light(const vec3 
 
 bool							chunk_generation_director::are_all_neighbors_present_and_have_light(const shared_ptr<chunk> &chunk)
 {
-	static const vec3			left = vec3(-chunk_settings::size[0], 0.f, 0.f);
-	static const vec3			right = vec3(+chunk_settings::size[0], 0.f, 0.f);
-	static const vec3			forward = vec3(0.f, 0.f, chunk_settings::size[2]);
-	static const vec3			back = vec3(0.f, 0.f, -chunk_settings::size[2]);
-
-	return
-	(
-		is_chunk_present_and_has_light(chunk->get_position() + left) and
-		is_chunk_present_and_has_light(chunk->get_position() + right) and
-		is_chunk_present_and_has_light(chunk->get_position() + forward) and
-		is_chunk_present_and_has_light(chunk->get_position() + back)
-	);
+//	return
+//	(
+//		is_chunk_present_and_has_light(chunk->get_position() + left) and
+//		is_chunk_present_and_has_light(chunk->get_position() + right) and
+//		is_chunk_present_and_has_light(chunk->get_position() + forward) and
+//		is_chunk_present_and_has_light(chunk->get_position() + back)
+//	);
 }

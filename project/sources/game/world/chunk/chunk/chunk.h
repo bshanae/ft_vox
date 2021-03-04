@@ -32,6 +32,11 @@ public :
 
 	using							index = array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>::index;
 
+	inline static const vec3		left_offset = vec3(-chunk_settings::size[0], 0.f, 0.f);
+	inline static const vec3		right_offset = vec3(+chunk_settings::size[0], 0.f, 0.f);
+	inline static const vec3		forward_offset = vec3(0.f, 0.f, chunk_settings::size[2]);
+	inline static const vec3		back_offset = vec3(0.f, 0.f, -chunk_settings::size[2]);
+
 public :
 
 	explicit						chunk(const vec3 &position);

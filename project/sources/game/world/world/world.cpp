@@ -12,11 +12,6 @@
 using namespace				engine;
 using namespace				game;
 
-static const vec3			left = vec3(-chunk_settings::size[0], 0.f, 0.f);
-static const vec3			right = vec3(+chunk_settings::size[0], 0.f, 0.f);
-static const vec3			forward = vec3(0.f, 0.f, chunk_settings::size[2]);
-static const vec3			back = vec3(0.f, 0.f, -chunk_settings::size[2]);
-
 							world::world() : pivot(0, 0, 0)
 {
 	set_layout("Opaque");
@@ -218,14 +213,14 @@ void 						world::rebuild_chunk(const shared_ptr<chunk> &chunk)
 void						world::rebuild_chunk_and_maybe_neighbors(const shared_ptr<chunk> &chunk, const chunk::index &changed_block)
 {
 	if (changed_block.x == 0)
-		rebuild_chunk_if_exist(chunk->get_position() + left);
+		rebuild_chunk_if_exist(chunk->get_position() + chunk::left_offset);
 	else if (changed_block.x == chunk_settings::size[0] - 1)
-		rebuild_chunk_if_exist(chunk->get_position() + right);
+		rebuild_chunk_if_exist(chunk->get_position() + chunk::right_offset);
 
 	if (changed_block.z == 0)
-		rebuild_chunk_if_exist(chunk->get_position() + back);
+		rebuild_chunk_if_exist(chunk->get_position() + chunk::back_offset);
 	else if (changed_block.z == chunk_settings::size[2] - 1)
-		rebuild_chunk_if_exist(chunk->get_position() + forward);
+		rebuild_chunk_if_exist(chunk->get_position() + chunk::forward_offset);
 
 	rebuild_chunk(chunk);
 }
