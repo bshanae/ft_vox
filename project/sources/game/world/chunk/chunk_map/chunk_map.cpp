@@ -4,23 +4,46 @@
 
 using namespace			game;
 
-void 					chunk_map::add(const shared_ptr<chunk> &chunk)
+void 					chunk_map::add_later(const shared_ptr<chunk> &chunk)
 {
-	lock_guard			lock{mutex_for_editing};
-
-	emplace(chunk->get_position(), chunk);
+	chunk_to_add.push(chunk);
 }
 
-void 					chunk_map::remove(const shared_ptr<chunk> &chunk)
+void 					chunk_map::remove_later(const shared_ptr<chunk> &chunk)
 {
-	lock_guard			lock{mutex_for_editing};
+	chunk_to_remove.push(chunk);
+}
 
-	if (auto iterator = parent::find(chunk->get_position()); iterator != this->end())
-		this->erase(iterator);
+void 					chunk_map::process_added_chunks()
+{
+	unique_lock			lock{mutex};
+	shared_ptr<chunk>	new_chunk;
+
+	while (not chunk_to_add.empty())
+	{
+		new_chunk = chunk_to_add.front();
+		emplace(new_chunk->get_position(), new_chunk);
+		chunk_to_add.pop();
+	}
+}
+
+void 					chunk_map::process_removed_chunks()
+{
+	unique_lock			lock{mutex};
+
+	while (not chunk_to_remove.empty())
+	{
+		if (auto iterator = parent::find(chunk_to_remove.front()->get_position()); iterator != this->end())
+			this->erase(iterator);
+
+		chunk_to_remove.pop();
+	}
 }
 
 shared_ptr<chunk>		chunk_map::find(const vec3 &position) const
 {
+	shared_lock			lock{mutex};
+
 	if (auto iterator = parent::find(position); iterator != this->cend())
 		return iterator->second;
 	else

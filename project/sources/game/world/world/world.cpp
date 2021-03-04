@@ -130,6 +130,8 @@ void						world::when_updated()
 		create_chunk_neighbors_if_needed(chunk);
 		destroy_chunk_if_needed(chunk);
 	}
+
+	update_chunk_map();
 }
 
 void						world::when_rendered()
@@ -153,6 +155,12 @@ void						world::update_pivot()
 {
 	pivot.x = camera::get_position().x;
 	pivot.z = camera::get_position().z;
+}
+
+void						world::update_chunk_map()
+{
+	chunks.process_added_chunks();
+	chunks.process_removed_chunks();
 }
 
 void						world::update_chunk_build(const shared_ptr<chunk> &chunk)
@@ -193,13 +201,13 @@ void						world::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 
 void 						world::create_chunk(const vec3 &position)
 {
-	chunks.add(make_shared<game::chunk>(position));
+	chunks.add_later(make_shared<game::chunk>(position));
 }
 
 void						world::destroy_chunk(const shared_ptr<chunk> &chunk)
 {
 	chunk->delete_build();
-	chunks.remove(chunk);
+	chunks.remove_later(chunk);
 }
 
 void 						world::rebuild_chunk(const shared_ptr<chunk> &chunk)

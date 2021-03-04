@@ -50,6 +50,7 @@ private :
 	void					when_rendered() override;
 
 	void					update_pivot();
+	void 					update_chunk_map();
 
 	void					update_chunk_build(const shared_ptr<chunk> &chunk);
 	void					update_chunk_visibility(const shared_ptr<chunk> &chunk);
