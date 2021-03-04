@@ -34,19 +34,35 @@ vec2						texture_atlas::get_texture_size()
 game::texture_coordinates	&texture_atlas::get_coordinates(block_type type)
 {
 	const auto 				instance = texture_atlas::get_instance();
-	const auto 				iterator = instance->map.find(type);
 
-	if (iterator == instance->map.end())
-	{
-		instance->mutex.lock();
-		instance->map.try_emplace(type);
-		instance->mutex.unlock();
-	}
+	if (not instance->contains(type))
+		instance->add(type);
 
-	return instance->map.at(type);
+	return instance->get(type);
 }
 
 void						texture_atlas::use(bool state)
 {
 	get_instance()->texture->use(state);
+}
+
+bool						texture_atlas::contains(block_type type) const
+{
+	shared_lock				lock(mutex);
+
+	return map.contains(type);
+}
+
+game::texture_coordinates	&texture_atlas::get(block_type type)
+{
+	shared_lock				lock(mutex);
+
+	return map.at(type);
+}
+
+void 						texture_atlas::add(block_type type)
+{
+	unique_lock				lock(mutex);
+
+	map.try_emplace(type);
 }
