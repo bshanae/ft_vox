@@ -38,8 +38,6 @@ private :
 	const bool 				is_async;
 	enum state				state;
 	optional<future<void>>	future;
-
-	void 					do_process_and_switch_states(chunk_workspace &workspace);
 };
 
 

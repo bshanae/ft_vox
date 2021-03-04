@@ -24,10 +24,25 @@ bool 						chunk_generation_task::is_finished() const
 
 void 						chunk_generation_task::launch(chunk_workspace &workspace)
 {
+	state = processing;
+
 	if (is_async)
-		future = async(launch::async, &chunk_generation_task::do_process_and_switch_states, this, ref(workspace));
+	{
+		future = async
+		(
+			launch::async,
+			[this, &workspace]()
+			{
+				do_launch(workspace);
+				state = finished;
+			}
+		);
+	}
 	else
-		do_process_and_switch_states(workspace);
+	{
+		do_launch(workspace);
+		state = finished;
+	}
 }
 
 void 						chunk_generation_task::wait()
@@ -39,11 +54,4 @@ void 						chunk_generation_task::wait()
 							chunk_generation_task::chunk_generation_task(bool is_async) : is_async(is_async)
 {
 	state = waiting;
-}
-
-void 						chunk_generation_task::do_process_and_switch_states(chunk_workspace &workspace)
-{
-	state = processing;
-	do_launch(workspace);
-	state = finished;
 }
