@@ -20,7 +20,7 @@ optional<chunk_build>			chunk_generation_director::process_build(const shared_pt
 	if (instance->get_state() == state::deinitialized)
 		return nullopt;
 
-	return instance->get_or_create_worker(chunk)->process();
+	return instance->find_or_create_worker(chunk).process();
 }
 
 void							chunk_generation_director::reset_build(const shared_ptr<chunk> &chunk)
@@ -31,7 +31,7 @@ void							chunk_generation_director::reset_build(const shared_ptr<chunk> &chunk
 		return;
 
 	instance->drop_worker(chunk);
-	instance->get_or_create_worker(chunk)->process(true);
+	instance->find_or_create_worker(chunk).process(true);
 }
 
 void 							chunk_generation_director::delete_build(const shared_ptr<chunk> &chunk)
@@ -40,6 +40,16 @@ void 							chunk_generation_director::delete_build(const shared_ptr<chunk> &chu
 		return;
 
 	get_instance()->drop_worker(chunk);
+}
+
+bool							chunk_generation_director::have_worker(const shared_ptr<chunk> &chunk)
+{
+	return get_instance()->active_workers.contains(chunk);
+}
+
+const chunk_generation_worker	&chunk_generation_director::find_worker(const shared_ptr<chunk> &chunk)
+{
+	return *get_instance()->active_workers.at(chunk);
 }
 
 void 							chunk_generation_director::when_deinitialized()
@@ -52,56 +62,25 @@ void 							chunk_generation_director::when_deinitialized()
 
 void 							chunk_generation_director::when_updated()
 {
-	for (auto iterator = dropped_workers.begin(); iterator != dropped_workers.end();)
-	{
-		if (not (*iterator)->is_busy())
-			iterator = dropped_workers.erase(iterator);
-		else
-			iterator++;
-	}
+	erase_if
+	(
+		dropped_workers,
+		[](const unique_ptr<chunk_generation_worker> &worker){ return not worker->is_busy(); }
+	);
 }
-								chunk_generation_director::worker_ptr
-								chunk_generation_director::get_or_create_worker(const shared_ptr<chunk> &chunk)
+chunk_generation_worker			&chunk_generation_director::find_or_create_worker(const shared_ptr<chunk> &chunk)
 {
 	if (not active_workers.contains(chunk))
-		active_workers.emplace(chunk, make_shared<chunk_generation_worker>(chunk));
+		active_workers.emplace(chunk, make_unique<chunk_generation_worker>(chunk));
 
-	return active_workers.at(chunk);
+	return *active_workers.at(chunk);
 }
 
 void 							chunk_generation_director::drop_worker(const shared_ptr<chunk> &chunk)
 {
 	if (auto iterator = active_workers.find(chunk); iterator != active_workers.end())
 	{
-		dropped_workers.push_back(iterator->second);
+		dropped_workers.push_back(move(iterator->second));
 		active_workers.erase(iterator);
 	}
-}
-
-bool							chunk_generation_director::is_chunk_present_and_has_light(const vec3 &position)
-{
-//	shared_ptr<chunk>			chunk;
-//	const workspace_and_task	*workspace;
-//
-//	chunk = world::get_map().find(position);
-//	if (chunk == nullptr)
-//		return false;
-//
-//	workspace = get_instance()->get_workspace_and_task(chunk);
-//	if (workspace == nullptr)
-//		return false;
-//
-//	return true;
-//	return workspace->get_state() >= chunk_workspace::light_done;
-}
-
-bool							chunk_generation_director::are_all_neighbors_present_and_have_light(const shared_ptr<chunk> &chunk)
-{
-//	return
-//	(
-//		is_chunk_present_and_has_light(chunk->get_position() + left) and
-//		is_chunk_present_and_has_light(chunk->get_position() + right) and
-//		is_chunk_present_and_has_light(chunk->get_position() + forward) and
-//		is_chunk_present_and_has_light(chunk->get_position() + back)
-//	);
 }

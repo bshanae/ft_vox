@@ -1,7 +1,7 @@
 #pragma once
 
 #include "application/common/templates/singleton/singleton.h"
-#include "application/common/templates/notifier_listener/listener.h"
+#include "application/common/templates/notifier_and_listener/listener.h"
 #include "application/common/imports/std.h"
 
 #include "engine/main/core/object/object/object.h"

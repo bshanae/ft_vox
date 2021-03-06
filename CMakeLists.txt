@@ -159,7 +159,7 @@ set(SOURCES
 	${SOURCES_LIBRARIES}
 	${SOURCES_APPLICATION}
 	${SOURCES_ENGINE}
-	${SOURCES_GAME} project/sources/game/world/chunk/chunk_build/chunk_build.h)
+	${SOURCES_GAME})
 
 # Executable
 

@@ -7,12 +7,12 @@ class 				listener
 {
 public :
 
-	void 			notify(const type &event)
+	void 			notify(const type &notification)
 	{
-		when_notified(event);
+		when_notified(notification);
 	}
 
 protected :
 
-	virtual void	when_notified(const type &event) = 0;
+	virtual void	when_notified(const type &notification) = 0;
 };

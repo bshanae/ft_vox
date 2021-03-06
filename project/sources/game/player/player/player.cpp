@@ -17,7 +17,6 @@ using namespace 		game;
 						player::player()
 {
 	set_layout("System");
-	camera::get_instance()->subscribe(*this);
 }
 
 void					player::when_updated()
@@ -28,6 +27,7 @@ void					player::when_updated()
 
 void					player::when_initialized()
 {
+	camera::get_instance()->subscribe(*this);
 	camera::set_position(calculate_initial_position());
 }
 

@@ -103,10 +103,6 @@ bool						world::does_collide(const aabb &aabb)
 void						world::when_initialized()
 {
 	create_chunk(vec3());
-	create_chunk(left);
-	create_chunk(right);
-	create_chunk(forward);
-	create_chunk(back);
 }
 
 void						world::when_updated()
@@ -172,10 +168,10 @@ void						world::create_chunk_neighbors_if_needed(const shared_ptr<chunk> &chunk
 {
 	const auto 				position = chunk->get_position();
 
-	create_chunk_if_needed(position + left);
-	create_chunk_if_needed(position + right);
-	create_chunk_if_needed(position + forward);
-	create_chunk_if_needed(position + back);
+	create_chunk_if_needed(position + chunk::left_offset);
+	create_chunk_if_needed(position + chunk::right_offset);
+	create_chunk_if_needed(position + chunk::forward_offset);
+	create_chunk_if_needed(position + chunk::back_offset);
 }
 
 void 						world::create_chunk_if_needed(const vec3 &position)

@@ -1,30 +1,31 @@
 #include "chunk_generation_task.h"
 
+#include "application/common/debug/debug.h"
+
+#include "game/world/chunk/chunk_generation_task/notifications/chunk_generation_task_launched.h"
+#include "game/world/chunk/chunk_generation_task/notifications/chunk_generation_task_done.h"
+
 using namespace				game;
+
+using						state = enum chunk_generation_task::state;
 
 							chunk_generation_task::~chunk_generation_task()
 {
 	wait();
 }
 
-bool 						chunk_generation_task::is_waiting() const
+state						chunk_generation_task::get_state() const
 {
-	return state == waiting;
-}
-
-bool 						chunk_generation_task::is_processing() const
-{
-	return state == processing;
-}
-
-bool 						chunk_generation_task::is_finished() const
-{
-	return state == finished;
+	return state;
 }
 
 void 						chunk_generation_task::launch(chunk_workspace &workspace)
 {
-	state = processing;
+#if FT_VOX_DEBUG
+	debug::check_critical(state == state::deferred, "[game::chunk_generation_task] Unexpected state");
+#endif
+
+	state = launched;
 
 	if (is_async)
 	{
@@ -33,15 +34,19 @@ void 						chunk_generation_task::launch(chunk_workspace &workspace)
 			launch::async,
 			[this, &workspace]()
 			{
+				notify(chunk_generation_task_launched());
 				do_launch(workspace);
-				state = finished;
+				state = done;
+				notify(chunk_generation_task_done());
 			}
 		);
 	}
 	else
 	{
+		notify(chunk_generation_task_launched());
 		do_launch(workspace);
-		state = finished;
+		state = done;
+		notify(chunk_generation_task_done());
 	}
 }
 
@@ -53,5 +58,5 @@ void 						chunk_generation_task::wait()
 
 							chunk_generation_task::chunk_generation_task(bool is_async) : is_async(is_async)
 {
-	state = waiting;
+	state = deferred;
 }
