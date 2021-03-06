@@ -13,7 +13,7 @@ class				engine::timer
 public :
 
 					timer();
-	explicit		timer(float value);
+	explicit		timer(float duration);
 					~timer() = default;
 
 	bool 			is_running() const;
@@ -21,8 +21,7 @@ public :
 
 private :
 
-	void			update() const;
+	float			finish_time;
 
-	mutable float	last = 0.f;
-	mutable float	left = 0.f;
+	static float 	get_finish_time(float duration);
 };

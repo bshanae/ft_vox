@@ -4,34 +4,25 @@
 
 using namespace		engine;
 
-					timer::timer()
+					timer::timer() : finish_time(0)
 {
-	last = (float)glfwGetTime();
-	left = -1.f;
 }
 
-					timer::timer(float value)
+					timer::timer(float duration) : finish_time(get_finish_time(duration))
 {
-	last = (float)glfwGetTime();
-	left = value;
 }
 
 bool 				timer::is_running() const
 {
-	update();
-	return left > 0.f;
+	return (float)glfwGetTime() <= finish_time;
 }
 
 bool 				timer::did_finish() const
 {
-	update();
-	return left < 0.f;
+	return (float)glfwGetTime() > finish_time;
 }
 
-void				timer::update() const
+float				timer::get_finish_time(float duration)
 {
-	const auto		current = (float)glfwGetTime();
-
-	left -= current - last;
-	last = current;
+	return (float)glfwGetTime() + duration;
 }

@@ -113,7 +113,7 @@ void						world::when_initialized()
 
 void						world::when_updated()
 {
-	engine::timer			timer{world_settings::chunks_generation_time_limit};
+	engine::timer			timer{ world_settings::chunks_generation_time_limit };
 
 	process_input();
 
