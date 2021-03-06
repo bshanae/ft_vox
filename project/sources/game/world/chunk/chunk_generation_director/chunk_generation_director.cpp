@@ -86,6 +86,7 @@ void 							chunk_generation_director::drop_worker(const shared_ptr<chunk> &chun
 {
 	if (auto iterator = active_workers.find(chunk); iterator != active_workers.end())
 	{
+		iterator->second->stop_workflow();
 		dropped_workers.push_back(move(iterator->second));
 		active_workers.erase(iterator);
 	}

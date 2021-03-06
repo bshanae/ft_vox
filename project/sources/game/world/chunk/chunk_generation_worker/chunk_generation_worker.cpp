@@ -24,6 +24,7 @@ using					generation_status = chunk_generation_worker::generation_status;
 							const shared_ptr<chunk> &chunk,
 							bool generate_landscape
 						) :
+							is_workflow_stopped(false),
 							should_switch_task(true),
 							status(generate_landscape ? null : generated_landscape),
 							next_status(generate_landscape ? null : generated_landscape)
@@ -57,10 +58,14 @@ optional<chunk_build>	chunk_generation_worker::process(bool try_build_at_once)
 	return nullopt;
 }
 
+void 					chunk_generation_worker::stop_workflow()
+{
+	is_workflow_stopped = true;
+}
+
 bool 					chunk_generation_worker::is_busy() const
 {
-	// TODO Fix this - Stop work when asked
-	return not is_build_ready();
+	return task != nullptr and task->get_state() == chunk_generation_task::launched;
 }
 
 void					chunk_generation_worker::when_notified(const chunk_generation_task_notification &notification)
@@ -89,6 +94,9 @@ chunk_build				chunk_generation_worker::package_build() const
 
 void					chunk_generation_worker::switch_task_if_needed()
 {
+	if (is_workflow_stopped)
+		return;
+
 	if (should_switch_task)
 		switch_task();
 }
@@ -148,6 +156,9 @@ void					chunk_generation_worker::switch_task()
 
 void 					chunk_generation_worker::launch_task_if_needed()
 {
+	if (is_workflow_stopped)
+		return;
+
 	if (task != nullptr and task->get_state() == chunk_generation_task::state::deferred)
 		launch_task();
 }

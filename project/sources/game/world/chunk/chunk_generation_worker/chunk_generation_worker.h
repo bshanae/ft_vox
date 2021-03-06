@@ -41,10 +41,14 @@ public :
 
 	optional<chunk_build>				process(bool try_build_at_once = false);
 
+	/// Tells worker not to execute new task. However, worker still waits for end of active task
+	void 								stop_workflow();
+
 private :
 
 	static constexpr float				processing_limit = 10.f / 60.f;
 
+	bool 								is_workflow_stopped;
 	unique_ptr<chunk_workspace>			workspace;
 	unique_ptr<chunk_generation_task>	task;
 
