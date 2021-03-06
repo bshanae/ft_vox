@@ -179,8 +179,8 @@ function install_fast_noise
 {
 	FAST_NOISE_NAME="FastNoise"
 	FAST_NOISE_URL="https://github.com/Auburn/FastNoise/archive/v1.0.2.tar.gz"
-	FAST_NOISE_ARCHIVE="FastNoise.tar.gz"
-	FAST_NOISE_ARCHIVE_CONTENT="FastNoise-1.0.2"
+	FAST_NOISE_ARCHIVE="FastNoiseLite.tar.gz"
+	FAST_NOISE_ARCHIVE_CONTENT="FastNoiseLite-1.0.2"
 	FAST_NOISE_PROJECT="FastNoise"
 
 	log_start "$FAST_NOISE_NAME"
@@ -241,7 +241,7 @@ function install_free_type
 }
 
 ########################################################################################################################
-# FreeType2
+# STB
 ########################################################################################################################
 
 function install_stb
