@@ -19,15 +19,19 @@ using namespace			game;
 
 using					generation_status = chunk_generation_worker::generation_status;
 
-						chunk_generation_worker::chunk_generation_worker(const shared_ptr<chunk> &chunk) :
+						chunk_generation_worker::chunk_generation_worker
+						(
+							const shared_ptr<chunk> &chunk,
+							bool generate_landscape
+						) :
 							should_switch_task(true),
-							status(generation_status::nothing_generated),
-							next_status(generation_status::nothing_generated)
+							status(generate_landscape ? null : generated_landscape),
+							next_status(generate_landscape ? null : generated_landscape)
 {
 	workspace = make_unique<chunk_workspace>(chunk);
 }
 
-generation_status		chunk_generation_worker::get_status() const
+generation_status					chunk_generation_worker::get_status() const
 {
 	return status;
 }
@@ -70,7 +74,7 @@ void					chunk_generation_worker::when_notified(const chunk_generation_task_noti
 
 bool 					chunk_generation_worker::is_build_ready() const
 {
-	return status == generation_status::model_generated;
+	return status == generation_status::generated_model;
 }
 
 chunk_build				chunk_generation_worker::package_build() const
@@ -96,42 +100,42 @@ void					chunk_generation_worker::switch_task()
 
 	switch (status)
 	{
-		case generation_status::nothing_generated:
+		case generation_status::null:
 		{
 			set_task(new chunk_landscape_generation_task());
-			next_status = generation_status::landscape_generated;
+			next_status = generation_status::generated_landscape;
 			should_switch_task = false;
 			break;
 		}
 
-		case generation_status::landscape_generated:
+		case generation_status::generated_landscape:
 		{
 			set_task(new chunk_light_generation_task());
-			next_status = generation_status::light_generated;
+			next_status = generation_status::generated_light;
 			should_switch_task = false;
 			break;
 		}
 
-		case generation_status::light_generated:
+		case generation_status::generated_light:
 		{
 			if (not can_launch_geometry_generation_task())
 				break;
 
 			set_task(new chunk_geometry_generation_task());
-			next_status = generation_status::geometry_generated;
+			next_status = generation_status::generated_geometry;
 			should_switch_task = false;
 			break;
 		}
 
-		case generation_status::geometry_generated:
+		case generation_status::generated_geometry:
 		{
 			set_task(new chunk_model_generation_task());
-			next_status = generation_status::model_generated;
+			next_status = generation_status::generated_model;
 			should_switch_task = false;
 			break;
 		}
 
-		case generation_status::model_generated:
+		case generation_status::generated_model:
 			break;
 
 		default:
@@ -174,7 +178,7 @@ bool 					chunk_generation_worker::can_launch_geometry_generation_task() const
 {
 	static const auto	did_worker_generate_light = [](const chunk_generation_worker &worker)
 	{
-		return worker.get_status() >= chunk_generation_worker::generation_status::light_generated;
+		return worker.get_status() >= generation_status::generated_light;
 	};
 
 	static const auto	is_worker_present_and_generated_light = [](const vec3 &position_of_chunk)

@@ -22,14 +22,18 @@ public :
 
 	enum								generation_status
 	{
-		nothing_generated,
-		landscape_generated,
-		light_generated,
-		geometry_generated,
-		model_generated
+		null,
+		generated_landscape,
+		generated_light,
+		generated_geometry,
+		generated_model
 	};
 
-	explicit							chunk_generation_worker(const shared_ptr<chunk> &chunk);
+	explicit							chunk_generation_worker
+										(
+											const shared_ptr<chunk> &chunk,
+											bool generate_landscape = true
+										);
 										~chunk_generation_worker() = default;
 
 	generation_status					get_status() const;

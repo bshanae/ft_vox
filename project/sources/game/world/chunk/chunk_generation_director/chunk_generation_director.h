@@ -41,7 +41,7 @@ private :
 	void 									when_deinitialized() override;
 	void 									when_updated() override;
 
-	chunk_generation_worker					&find_or_create_worker(const shared_ptr<chunk> &chunk);
+	chunk_generation_worker					&find_or_create_worker(const shared_ptr<chunk> &chunk, bool preserve_landscape = false);
 	void 									drop_worker(const shared_ptr<chunk> &chunk);
 };
 
