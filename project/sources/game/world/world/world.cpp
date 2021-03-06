@@ -41,6 +41,11 @@ block_ptr					world::find_block(const vec3 &position)
 		return block_ptr();
 }
 
+shared_ptr<chunk>			world::find_chunk(const vec3 &position)
+{
+	return get_instance()->chunks.find(position);
+}
+
 void						world::insert_block(const block_ptr &block, enum block_type type)
 {
 	block->set_type(type);

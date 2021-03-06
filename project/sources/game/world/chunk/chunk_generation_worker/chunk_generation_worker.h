@@ -16,7 +16,6 @@ namespace								game
 }
 
 class									game::chunk_generation_worker final :
-											public enable_shared_from_this<game::chunk_generation_worker>,
 											public listener<game::chunk_generation_task_notification>
 {
 public :
@@ -59,4 +58,9 @@ private :
 
 	void 								launch_task_if_needed();
 	void 								launch_task();
+
+	void 								unset_task();
+	void 								set_task(chunk_generation_task *task);
+
+	bool								can_launch_geometry_generation_task() const;
 };
