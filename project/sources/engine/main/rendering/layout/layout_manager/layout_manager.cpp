@@ -38,9 +38,9 @@ void 							layout_manager::when_constructed()
 
 void							layout_manager::when_notified(const object_storage_event &pocket)
 {
-	if (type_utility::check_type<object_was_added>(pocket))
+	if (type_utility::is_of_type<object_was_added>(pocket))
 		get_instance()->add(pocket.get_object());
-	else if (type_utility::check_type<object_was_removed>(pocket))
+	else if (type_utility::is_of_type<object_was_removed>(pocket))
 		get_instance()->remove(pocket.get_object());
 	else
 		debug::raise_warning("[layout_manager] Can't parse 'object_storage_event'");

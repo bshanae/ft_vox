@@ -65,7 +65,7 @@ bool 					chunk_generation_worker::is_busy() const
 
 void					chunk_generation_worker::when_notified(const chunk_generation_task_notification &notification)
 {
-	if (type_utility::check_type<chunk_generation_task_done>(notification))
+	if (type_utility::is_of_type<chunk_generation_task_done>(notification))
 	{
 		status = next_status;
 		should_switch_task = true;
