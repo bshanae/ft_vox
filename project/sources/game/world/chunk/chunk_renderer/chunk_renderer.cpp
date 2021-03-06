@@ -32,7 +32,6 @@ using namespace			game;
 	program->use(true);
 	uniform_background.upload(processor_settings::background);
 	uniform_texture.upload(0);
-	uniform_fog_density.upload(1.f / (world_settings::fog_limit));
 	uniform_fog_gradient.upload(15.f);
 	uniform_apply_water_tint.upload(0);
 	program->use(false);
@@ -79,6 +78,7 @@ void					chunk_renderer::render
 
 	instance->uniform_projection.upload(camera::get_instance()->get_projection_matrix());
 	instance->uniform_view.upload(camera::get_instance()->get_view_matrix());
+	instance->uniform_fog_density.upload(1.f / (world_settings::fog_limit[world_settings::current_visibility_option]));
 	instance->uniform_alpha_discard_floor.upload(alpha_discard_floor);
 	instance->uniform_apply_water_tint.upload(get_instance()->apply_water_tint);
 

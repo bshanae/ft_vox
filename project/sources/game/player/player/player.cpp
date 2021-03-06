@@ -38,40 +38,38 @@ void 					player::when_notified(const engine::camera_event &event)
 
 void 					player::process_input()
 {
-	static const float	speed_transformation = 1.f / 60.f;
-
-	vec3				movement = vec3(0.f);
-	float				speed_up;
-
 	if (engine::input::is_held(engine::input::key::command))
 		return;
 
-	speed_up = input::is_held(input::key::shift)  ? player_settings::speed_up : 1.f;
-
-	if (input::is_pressed_or_held(input::key::letter_a))
-		movement += camera::get_left();
-	else if (input::is_pressed_or_held(input::key::letter_d))
-		movement += camera::get_right();
-
-	if (input::is_pressed_or_held(input::key::letter_w))
-		movement += camera::get_front();
-	else if (input::is_pressed_or_held(input::key::letter_s))
-		movement += camera::get_back();
-
-	if (movement != vec3(0.f))
+	// Movement
 	{
-		movement = normalize(movement) * player_settings::movement_speed * speed_transformation * speed_up;
-		offset_camera_if_possible(movement);
+		vec3			movement_direction = vec3(0.f);
+
+		if (input::is_pressed_or_held(input::key::letter_a))
+			movement_direction += camera::get_left();
+		else if (input::is_pressed_or_held(input::key::letter_d))
+			movement_direction += camera::get_right();
+
+		if (input::is_pressed_or_held(input::key::letter_w))
+			movement_direction += camera::get_front();
+		else if (input::is_pressed_or_held(input::key::letter_s))
+			movement_direction += camera::get_back();
+
+		if (movement_direction != vec3(0.f))
+			move(movement_direction, input::is_held(input::key::shift));
+
+		if (input::is_held(input::key::space))
+			lift(input::is_held(input::key::shift));
 	}
 
-	if (input::is_held(input::key::space))
-		offset_camera_if_possible(player_settings::flight_lift * speed_transformation  * speed_up);
+	// Block interaction
+	{
+		if (input::is_pressed(input::key::mouse_left))
+			try_remove_block();
 
-	if (input::is_pressed(input::key::mouse_left))
-		try_remove_block();
-
-	if (input::is_pressed(input::key::mouse_right))
-		try_place_block();
+		if (input::is_pressed(input::key::mouse_right))
+			try_place_block();
+	}
 }
 
 void 					player::process_selection()
@@ -92,6 +90,31 @@ void 					player::process_selection()
 
 		should_cast_ray = false;
 	}
+}
+
+void 					player::move(const vec3 &direction, const bool speed_up)
+{
+	static const float	speed_transformation = 1.f / 60.f;
+
+	offset_camera_if_possible
+	(
+		normalize(direction) *
+		player_settings::movement_speed *
+		speed_transformation *
+		(speed_up ? player_settings::speed_up : 1.f)
+	);
+}
+
+void 					player::lift(bool speed_up)
+{
+	static const float	speed_transformation = 1.f / 60.f;
+
+	offset_camera_if_possible
+	(
+		player_settings::flight_lift *
+		speed_transformation *
+		(speed_up ? player_settings::speed_up : 1.f)
+	);
 }
 
 void					player::try_place_block()

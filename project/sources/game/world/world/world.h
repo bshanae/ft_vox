@@ -48,6 +48,8 @@ private :
 	void						when_updated() override;
 	void						when_rendered() override;
 
+	void 						process_input();
+
 	void						update_pivot();
 	void 						update_chunk_map();
 

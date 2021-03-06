@@ -33,6 +33,9 @@ private :
 	void 			process_input();
 	void 			process_selection();
 
+	void 			move(const vec3 &direction, bool speed_up);
+	void 			lift(bool speed_up);
+
 	void			try_place_block();
 	void			try_remove_block();
 

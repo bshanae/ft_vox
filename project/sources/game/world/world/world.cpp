@@ -3,6 +3,7 @@
 #include "application/common/debug/debug.h"
 
 #include "engine/main/rendering/camera/camera/camera.h"
+#include "engine/main/system/input/input.h"
 
 #include "game/world/tools/aabb/aabb.h"
 #include "game/world/block/block_highlighter/block_highlighter/block_highlighter.h"
@@ -114,6 +115,8 @@ void						world::when_updated()
 {
 	engine::timer			timer{world_settings::chunks_generation_time_limit};
 
+	process_input();
+
 	update_pivot();
 
 	for (const auto &[position, chunk] : chunks)
@@ -147,6 +150,21 @@ void						world::when_rendered()
 	}
 }
 
+void 						world::process_input()
+{
+	if
+	(
+		engine::input::is_held(engine::input::key::command) and
+		engine::input::is_pressed(engine::input::key::letter_v)
+	)
+	{
+		if (world_settings::current_visibility_option < world_settings::max_visibility_option)
+			world_settings::current_visibility_option++;
+		else
+			world_settings::current_visibility_option = 0;
+	}
+}
+
 void						world::update_pivot()
 {
 	pivot.x = camera::get_position().x;
@@ -166,7 +184,7 @@ void						world::update_chunk_build(const shared_ptr<chunk> &chunk)
 
 void						world::update_chunk_visibility(const shared_ptr<chunk> &chunk)
 {
-	chunk->set_visible(distance(chunk) < world_settings::visibility_limit);
+	chunk->set_visible(distance(chunk) < world_settings::visibility_limit[world_settings::current_visibility_option]);
 }
 
 void						world::create_chunk_neighbors_if_needed(const shared_ptr<chunk> &chunk)
@@ -181,7 +199,7 @@ void						world::create_chunk_neighbors_if_needed(const shared_ptr<chunk> &chunk
 
 void 						world::create_chunk_if_needed(const vec3 &position)
 {
-	if (distance(position) >= world_settings::cashing_limit)
+	if (distance(position) >= world_settings::cashing_limit[world_settings::current_visibility_option])
 		return;
 	if (chunks.find(position) != nullptr)
 		return;
@@ -191,7 +209,7 @@ void 						world::create_chunk_if_needed(const vec3 &position)
 
 void						world::destroy_chunk_if_needed(const shared_ptr<chunk> &chunk)
 {
-	if (distance(chunk) >= world_settings::cashing_limit)
+	if (distance(chunk) >= world_settings::cashing_limit[world_settings::current_visibility_option])
 		destroy_chunk(chunk);
 }
 
