@@ -15,7 +15,7 @@ class							engine::texture_loader
 public :
 								texture_loader() = delete;
 
-	static shared_ptr<texture>	load(const path &source);
+	static shared_ptr<texture>	load(const string &source);
 };
 
 

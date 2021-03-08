@@ -6,7 +6,7 @@
 
 using namespace		engine;
 
-					program::program(const path &vertex_source, const path &fragment_source)
+					program::program(const string &vertex_source, const string &fragment_source)
 {
 	value = glCreateProgram();
 

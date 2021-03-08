@@ -23,7 +23,7 @@ public :
 		pointer->build_map();
 		return (pointer);
 	}
-									font(const path &source, const int &width);
+									font(const string &source, const int &width);
 									~font() = default;
 
 	shared_ptr<symbol>				find_symbol(char task) const;

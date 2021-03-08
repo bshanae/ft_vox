@@ -7,7 +7,7 @@
 
 using namespace 		engine;
 
-shared_ptr<texture>		texture_loader::load(const path &source)
+shared_ptr<texture>		texture_loader::load(const string &source)
 {
 	shared_ptr<texture>	texture;
 	unsigned char		*data;

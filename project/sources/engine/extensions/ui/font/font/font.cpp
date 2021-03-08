@@ -7,7 +7,7 @@
 
 using namespace			engine::ui;
 
-						font::font(const path &source, const int &width)
+						font::font(const string &source, const int &width)
 {
 	auto				library = font_library::get_instance()->library;
 

@@ -109,7 +109,6 @@ namespace			chrono = std::chrono;
 #include <optional>
 #include <limits>
 
-using				std::filesystem::path;
 using				std::function;
 using				std::optional;
 using				std::nullopt;

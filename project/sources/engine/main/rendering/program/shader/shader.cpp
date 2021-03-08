@@ -4,7 +4,7 @@
 
 using namespace			engine;
 
-						shader::shader(type type, const path &source)
+						shader::shader(type type, const string &source)
 {
 	stringstream		stream;
 	string				string = stream.str();
@@ -34,12 +34,12 @@ using namespace			engine;
 	glDeleteShader(value);
 }
 
-void					shader::write_file_to_stream(stringstream &stream, const path &path)
+void					shader::write_file_to_stream(stringstream &stream, const string &path)
 {
 	ifstream			file;
 
 	file.open(path);
-	debug::check_critical(file.is_open(), "[shader] Can't read file at '" + path.string() + "'");
+	debug::check_critical(file.is_open(), "[shader] Can't read file at '" + path + "'");
 
 	stream << file.rdbuf();
 	file.close();

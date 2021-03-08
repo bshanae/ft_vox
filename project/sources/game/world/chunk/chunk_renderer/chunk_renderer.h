@@ -44,8 +44,8 @@ public :
 
 private :
 
-	inline static const path		path_to_vertex_shader = "project/resources/shaders/chunk.vertex.glsl";
-	inline static const path		path_to_fragment_shader = "project/resources/shaders/chunk.fragment.glsl";
+	inline static const string		path_to_vertex_shader = "project/resources/shaders/chunk.vertex.glsl";
+	inline static const string		path_to_fragment_shader = "project/resources/shaders/chunk.fragment.glsl";
 
 	bool							apply_water_tint;
 	unique_ptr<engine::program>		program;

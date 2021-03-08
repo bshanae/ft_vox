@@ -15,12 +15,12 @@ public :
 
 	static shared_ptr<cubemap>	load
 								(
-									const path &source_right,
-									const path &source_left,
-									const path &source_top,
-									const path &source_bottom,
-									const path &source_front,
-									const path &source_back
+									const string &source_right,
+									const string &source_left,
+									const string &source_top,
+									const string &source_bottom,
+									const string &source_front,
+									const string &source_back
 								);
 };
 

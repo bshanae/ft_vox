@@ -29,8 +29,8 @@ private :
 
 	shared_ptr<engine::model>	model;
 
-	inline static const path	path_to_vertex_shader = "project/resources/shaders/symbol.vertex.glsl";
-	inline static const path	path_to_fragment_shader = "project/resources/shaders/symbol.fragment.glsl";
+	inline static const string	path_to_vertex_shader = "project/resources/shaders/symbol.vertex.glsl";
+	inline static const string	path_to_fragment_shader = "project/resources/shaders/symbol.fragment.glsl";
 
 	unique_ptr<engine::program>	program;
 

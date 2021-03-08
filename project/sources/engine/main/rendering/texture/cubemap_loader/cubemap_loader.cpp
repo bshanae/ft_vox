@@ -4,25 +4,25 @@
 
 #include "application/common/imports/stb.h"
 
-using namespace			engine;
+using namespace				engine;
 
-shared_ptr<cubemap>		cubemap_loader::load
-						(
-							const path &source_right,
-							const path &source_left,
-							const path &source_top,
-							const path &source_bottom,
-							const path &source_front,
-							const path &source_back
-						)
+shared_ptr<cubemap>			cubemap_loader::load
+							(
+								const string &source_right,
+								const string &source_left,
+								const string &source_top,
+								const string &source_bottom,
+								const string &source_front,
+								const string &source_back
+							)
 {
-	const vector<path>	sources = {source_right, source_left, source_top, source_bottom, source_front, source_back};
+	const vector<string>	sources = {source_right, source_left, source_top, source_bottom, source_front, source_back};
 
-	shared_ptr<cubemap>	cubemap;
-	int					width;
-	int					height;
-	int					number_of_channels;
-	unsigned char		*data;
+	shared_ptr<cubemap>		cubemap;
+	int						width;
+	int						height;
+	int						number_of_channels;
+	unsigned char			*data;
 
 	cubemap = make_shared<engine::cubemap>();
 	cubemap->use(true);

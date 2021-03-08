@@ -11,7 +11,7 @@ namespace			engine
 class				engine::program
 {
 public :
-					program(const path &vertex_source, const path &fragment_source);
+					program(const string &vertex_source, const string &fragment_source);
 					~program();
 
 	void			use(bool state);
