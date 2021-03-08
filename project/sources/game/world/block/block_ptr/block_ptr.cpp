@@ -44,6 +44,11 @@ bool						block_ptr::operator == (const nullptr_t &ptr) const
 	return raw_ptr == nullptr;
 }
 
+bool						block_ptr::operator != (const nullptr_t &ptr) const
+{
+	return raw_ptr != nullptr;
+}
+
 							block_ptr::operator bool () const
 {
 	return *this != nullptr;

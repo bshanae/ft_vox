@@ -50,7 +50,9 @@ void 							chunk_generation_director::delete_build(const shared_ptr<chunk> &chu
 
 bool							chunk_generation_director::have_worker(const shared_ptr<chunk> &chunk)
 {
-	return get_instance()->active_workers.contains(chunk);
+	const auto 					instance = get_instance();
+
+	return instance->active_workers.find(chunk) != instance->active_workers.end();
 }
 
 const chunk_generation_worker	&chunk_generation_director::find_worker(const shared_ptr<chunk> &chunk)
@@ -68,15 +70,18 @@ void 							chunk_generation_director::when_deinitialized()
 
 void 							chunk_generation_director::when_updated()
 {
-	erase_if
-	(
-		dropped_workers,
-		[](const unique_ptr<chunk_generation_worker> &worker){ return not worker->is_busy(); }
-	);
+	for (auto iterator = dropped_workers.begin(); iterator != dropped_workers.end();)
+	{
+		if ((*iterator)->is_busy())
+			iterator = dropped_workers.erase(iterator);
+		else
+			++iterator;
+	}
 }
+
 chunk_generation_worker			&chunk_generation_director::find_or_create_worker(const shared_ptr<chunk> &chunk, bool preserve_landscape)
 {
-	if (not active_workers.contains(chunk))
+	if (active_workers.find(chunk) == active_workers.end())
 		active_workers.emplace(chunk, make_unique<chunk_generation_worker>(chunk, not preserve_landscape));
 
 	return *active_workers.at(chunk);

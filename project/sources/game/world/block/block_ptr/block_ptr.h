@@ -32,6 +32,7 @@ public :
 	block					*operator -> () const;
 
 	bool					operator == (const nullptr_t &ptr) const;
+	bool					operator != (const nullptr_t &ptr) const;
 							operator bool () const;
 
 	chunk_type				get_chunk() const;

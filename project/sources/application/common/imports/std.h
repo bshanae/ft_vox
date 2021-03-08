@@ -29,11 +29,6 @@ using				std::stack;
 using				std::multimap;
 using				std::unordered_map;
 
-using				std::erase;
-using				std::erase_if;
-using				std::find;
-using				std::find_if;
-
 #pragma endregion
 
 #pragma region Pointers

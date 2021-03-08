@@ -50,7 +50,7 @@ bool						texture_atlas::contains(block_type type) const
 {
 	shared_lock				lock(mutex);
 
-	return map.contains(type);
+	return map.find(type) != map.end();
 }
 
 game::texture_coordinates	&texture_atlas::get(block_type type)

@@ -66,7 +66,15 @@ void							layout_manager::remove(const shared_ptr<object> &object)
 	{
 		if (layout->name == object->get_layout())
 		{
-			erase(layout->objects, object);
+			for (auto iterator = layout->objects.begin(); iterator != layout->objects.end(); iterator++)
+			{
+				if (*iterator == object)
+				{
+					layout->objects.erase(iterator);
+					break;
+				}
+			}
+
 			return;
 		}
 	}

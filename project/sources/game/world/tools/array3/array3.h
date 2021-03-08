@@ -326,6 +326,11 @@ public :
 			return data == that.data and internal_index == that.internal_index;
 		}
 
+		bool					operator != (const iterator& that) const
+		{
+			return data != that.data or internal_index != that.internal_index;
+		}
+
 		auto					&get_value()
 		{
 			return (*data)[internal_index.x][internal_index.y][internal_index.z];
