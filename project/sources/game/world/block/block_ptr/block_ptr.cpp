@@ -39,12 +39,12 @@ block_ptr					&block_ptr::operator = (const block_ptr &other)
 	return *this;
 }
 
-bool						block_ptr::operator == (const nullptr_t &ptr) const
+bool						block_ptr::operator == (const std::nullptr_t &ptr) const
 {
 	return raw_ptr == nullptr;
 }
 
-bool						block_ptr::operator != (const nullptr_t &ptr) const
+bool						block_ptr::operator != (const std::nullptr_t &ptr) const
 {
 	return raw_ptr != nullptr;
 }

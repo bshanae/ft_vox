@@ -80,7 +80,7 @@ void					camera::when_updated()
 
 	float				new_fov = fov;
 
-	if (abs(yaw_change) > epsilon || abs(pitch_change) > epsilon)
+	if (std::abs(yaw_change) > epsilon || std::abs(pitch_change) > epsilon)
 	{
 		yaw += yaw_change;
 		pitch += pitch_change;
