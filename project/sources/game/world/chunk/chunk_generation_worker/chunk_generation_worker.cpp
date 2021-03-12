@@ -84,12 +84,13 @@ bool 					chunk_generation_worker::is_build_ready() const
 
 chunk_build				chunk_generation_worker::package_build() const
 {
-	return
-	{
-		.model_for_opaque = workspace->batch_for_opaque.model,
-		.model_for_transparent = workspace->batch_for_transparent.model,
-		.model_for_partially_transparent = workspace->batch_for_partially_transparent.model
-	};
+	chunk_build         chunkBuild;
+
+	chunkBuild.model_for_opaque = workspace->batch_for_opaque.model;
+    chunkBuild.model_for_transparent = workspace->batch_for_transparent.model;
+    chunkBuild.model_for_partially_transparent = workspace->batch_for_partially_transparent.model;
+
+	return chunkBuild;
 }
 
 void					chunk_generation_worker::switch_task_if_needed()
