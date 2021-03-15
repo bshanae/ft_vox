@@ -20,7 +20,7 @@ project(${PROJECT_NAME})
 
 include_directories(
 	${LIBRARIES_DIRECTORY}
-	${LIBRARIES_DIRECTORY}/glad/build/include
+	${LIBRARIES_DIRECTORY}/glad/include
 	${LIBRARIES_DIRECTORY}/glfw/include
 	${LIBRARIES_DIRECTORY}/glm
 	${LIBRARIES_DIRECTORY}/stb
@@ -32,7 +32,7 @@ include_directories(
 # Sources : Libraries
 
 set(SOURCES_LIBRARIES
-	${LIBRARIES_DIRECTORY}/glad/build/src/glad.c)
+	${LIBRARIES_DIRECTORY}/glad/src/glad.c)
 
 # Sources : Application
 

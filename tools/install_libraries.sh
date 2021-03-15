@@ -143,29 +143,22 @@ function install_glfw
 function install_glad
 {
 	GLAD_NAME="GLAD"
-	GLAD_URL="https://github.com/Dav1dde/glad/archive/v0.1.34.tar.gz"
-	GLAD_ARCHIVE="glad.tar.gz"
-	GLAD_ARCHIVE_CONTENT="glad-0.1.34"
+	GLAD_GIT="https://github.com/Dav1dde/glad.git"
 	GLAD_PROJECT="glad"
-	GLAD_BUILD="build"
 
 	write "Installing GLAD..."
 
-	clean "$GLAD_ARCHIVE" "$GLAD_ARCHIVE_CONTENT" "$GLAD_PROJECT"
-	download "$GLAD_NAME" "$GLAD_URL" "$GLAD_ARCHIVE"
-	unpack "$GLAD_NAME" "$GLAD_ARCHIVE" "$GLAD_ARCHIVE_CONTENT"
-	rename "$GLAD_NAME" "$GLAD_ARCHIVE_CONTENT" "$GLAD_PROJECT"
+	clean "$GLAD_PROJECT"
+	git clone "$GLAD_GIT"
 
 	write "Building GLAD..."
 
 	enter_folder  "$GLAD_PROJECT"
-	mkdir "$GLAD_BUILD"
-	enter_folder  "$GLAD_BUILD"
 
-	evaluate "cmake .."
+	evaluate "cmake ./"
 	evaluate "make"
 
-	enter_folder ../..
+	enter_folder ..
 
 	write "Successfully installed ${GREEN}GLAD${RESET}!"
 	write_new_line
