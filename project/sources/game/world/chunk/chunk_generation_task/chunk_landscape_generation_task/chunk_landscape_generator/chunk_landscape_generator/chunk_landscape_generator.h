@@ -36,6 +36,7 @@ public :
 private :
 
 	cellular_noise		noise_for_biome;
+	perlin_noise		perlin;
 
 	const biome			&choose_biome(float noise_value);
 };

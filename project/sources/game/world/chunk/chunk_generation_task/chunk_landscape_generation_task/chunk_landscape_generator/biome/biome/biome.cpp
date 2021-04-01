@@ -8,14 +8,29 @@ using namespace		game;
 {
 	switch (this->type = type)
 	{
-		case (test_dirt) :
+		case (dirt) :
 			noise = perlin_noise(1.f, 0.01f, 10.f);
 			first_layer = block_type::dirt;
 			break ;
 
-		case (test_stone) :
+		case (grass) :
+			noise = perlin_noise(1.f, 0.01f, 10.f);
+			first_layer = block_type::grass;
+			break ;
+
+        case (sand) :
+            noise = perlin_noise(1.f, 0.01f, 10.f);
+            first_layer = block_type::sand;
+            break ;
+
+		case (stone) :
 			noise = perlin_noise(1.f, 0.05f, 30.f);
 			first_layer = block_type::stone;
+			break ;
+
+		case (rock) :
+			noise = perlin_noise(1.f, 0.05f, 30.f);
+			first_layer = block_type::rock;
 			break ;
 
 		default :

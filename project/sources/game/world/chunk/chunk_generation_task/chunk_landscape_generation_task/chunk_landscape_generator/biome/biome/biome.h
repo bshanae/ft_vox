@@ -18,8 +18,11 @@ public :
 	enum					type
 	{
 		null,
-		test_dirt,
-		test_stone
+		dirt,
+		grass,
+        sand,
+		stone,
+		rock
 	};
 
 	explicit				biome(enum type type = biome::null);

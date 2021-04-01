@@ -8,6 +8,7 @@ using namespace			game;
 {
 	biome_collection::construct();
 	noise_for_biome = cellular_noise(0.01f);
+	perlin = perlin_noise(1.f, 0.01f, 150.f);
 }
 
 						chunk_landscape_generator::column_info
@@ -29,7 +30,7 @@ using namespace			game;
 	const auto			&bottom_left_cell = result.bottom_left;
 	const auto			&bottom_right_cell = result.bottom_right;
 
-	const auto			central_cell_height = instance->choose_biome(central_cell.noise_value).generate_height(position);
+	/*const auto			central_cell_height = instance->choose_biome(central_cell.noise_value).generate_height(position);
 	const auto			left_cell_height = instance->choose_biome(left_cell.noise_value).generate_height(position);
 	const auto			right_cell_height = instance->choose_biome(right_cell.noise_value).generate_height(position);
 	const auto			top_cell_height = instance->choose_biome(top_cell.noise_value).generate_height(position);
@@ -72,9 +73,9 @@ using namespace			game;
 	height += bottom_left_cell_height * bottom_left_cell_influence;
 	height += bottom_right_cell_height * bottom_right_cell_influence;
 
-	height /= total_influence;
+	height /= total_influence;*/
 
-	return {instance->choose_biome(nearest.noise_value), (int)floor(height)};
+	return {instance->choose_biome(nearest.noise_value), (int)floor(0.f)};
 }
 
 void					chunk_landscape_generator::generate_chunk(const shared_ptr<chunk> &chunk)
@@ -82,6 +83,7 @@ void					chunk_landscape_generator::generate_chunk(const shared_ptr<chunk> &chun
 
 	static const int	water_level = 10;
 
+    const auto			instance = get_instance();
 	const vec3			position = chunk->get_position();
 
 	chunk::index		index;
@@ -89,12 +91,14 @@ void					chunk_landscape_generator::generate_chunk(const shared_ptr<chunk> &chun
 	for (index.x = 0; index.x < chunk_settings::size[0]; index.x++)
 	for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
 	{
-		const auto		column_position = vec3(position.x + (float)index.x, 0, position.z + (float)index.z);
+	    const auto      input = vec3(position.x + (float)index.x, 0, position.z + (float)index.z);
+        const auto      perlin_shift = abs(instance->perlin.generate(vec2(input.x, input.z)));
+        const auto		column_position = vec3(input.x + perlin_shift, 0, input.z + perlin_shift);
 		const auto		column_info = generate_column({column_position.x, column_position.z});
 		const auto		block_type = (enum block_type)column_info.biome.get_first_layer();
 		const auto		height_limit = min(chunk_settings::size[1], max(water_level, column_info.height));
 
-		for (index.y = 0; index.y < height_limit; index.y++)
+		for (index.y = 0; index.y < 1; index.y++)
 		{
 			if (index.y <= column_info.height)
 				chunk->at(index).set_type(block_type);
@@ -107,8 +111,13 @@ void					chunk_landscape_generator::generate_chunk(const shared_ptr<chunk> &chun
 
 const biome				&chunk_landscape_generator::choose_biome(float noise_value)
 {
-	if (noise_value > 0.5f)
-		return (biome_collection::get_instance()->get_biome(biome::test_dirt));
-	else
-		return (biome_collection::get_instance()->get_biome(biome::test_stone));
+	if (noise_value > 0.9f)
+		return (biome_collection::get_instance()->get_biome(biome::stone));
+	else if (noise_value > 0.8f)
+		return (biome_collection::get_instance()->get_biome(biome::sand));
+	else if (noise_value > 0.6f)
+		return (biome_collection::get_instance()->get_biome(biome::rock));
+	else if (noise_value > 0.3f)
+		return (biome_collection::get_instance()->get_biome(biome::grass));
+	return (biome_collection::get_instance()->get_biome(biome::dirt));
 }

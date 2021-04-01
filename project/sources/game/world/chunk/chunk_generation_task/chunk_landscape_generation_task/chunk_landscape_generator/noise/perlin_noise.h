@@ -36,19 +36,23 @@ public :
 		float				bottom_left_angle = random.generate_1d(whole + vec2(0.0f, 1.0f)) * pi_on_2;
 		float				bottom_right_angle = random.generate_1d(whole + vec2(1.0f, 1.0f)) * pi_on_2;
 
-		vec2				top_left = rotate(vec2(1.f, 0.f), top_left_angle);
-		vec2				top_right = rotate(vec2(1.f, 0.f), top_right_angle);
-		vec2				bottom_left = rotate(vec2(1.f, 0.f), bottom_left_angle);
-		vec2				bottom_right = rotate(vec2(1.f, 0.f), bottom_right_angle);
+//		vec2				top_left = rotate(vec2(1.f, 0.f), top_left_angle);
+//		vec2				top_right = rotate(vec2(1.f, 0.f), top_right_angle);
+//		vec2				bottom_left = rotate(vec2(1.f, 0.f), bottom_left_angle);
+//		vec2				bottom_right = rotate(vec2(1.f, 0.f), bottom_right_angle);
+		vec2				top_left = vec2(-sin(top_left_angle), cos(top_left_angle));
+		vec2				top_right = vec2(-sin(top_right_angle), cos(top_right_angle));
+		vec2				bottom_left = vec2(-sin(bottom_left_angle), cos(bottom_left_angle));
+		vec2				bottom_right = vec2(-sin(bottom_right_angle), cos(bottom_right_angle));
 
-		float				top_left_dor = dot(top_left, fractional);
+		float				top_left_dot = dot(top_left, fractional);
 		float				top_right_dot = dot(top_right, fractional - vec2(1.0, 0.0));
 		float				bottom_left_dot = dot(bottom_left, fractional - vec2(0.0, 1.0));
 		float				bottom_right_dot = dot(bottom_right, fractional - vec2(1.0, 1.0));
 
 		vec2				cubic = fractional * fractional * (3.0f - 2.0f * fractional);
 
-		float				top_mix = mix(top_left_dor, top_right_dot, cubic.x);
+		float				top_mix = mix(top_left_dot, top_right_dot, cubic.x);
 		float				bottom_mix = mix(bottom_left_dot, bottom_right_dot, cubic.x);
 		float				final_mix = mix(top_mix, bottom_mix, cubic.y);
 
