@@ -92,7 +92,7 @@ void					chunk_landscape_generator::generate_chunk(const shared_ptr<chunk> &chun
 	for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
 	{
 	    const auto      input = vec3(position.x + (float)index.x, 0, position.z + (float)index.z);
-        const auto      perlin_shift = abs(instance->perlin.generate(vec2(input.x, input.z)));
+        const auto      perlin_shift = instance->perlin.generate(vec2(input.x, input.z));
         const auto		column_position = vec3(input.x + perlin_shift, 0, input.z + perlin_shift);
 		const auto		column_info = generate_column({column_position.x, column_position.z});
 		const auto		block_type = (enum block_type)column_info.biome.get_first_layer();
