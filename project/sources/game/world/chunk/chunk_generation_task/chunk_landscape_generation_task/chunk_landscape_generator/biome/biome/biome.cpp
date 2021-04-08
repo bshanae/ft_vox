@@ -6,30 +6,31 @@ using namespace		game;
 
 					biome::biome(enum type type)
 {
+    int seed = 0;
 	switch (this->type = type)
 	{
 		case (dirt) :
-			noise = perlin_noise(1.f, 0.01f, 10.f);
+			noise = perlin_noise(seed, 0.03f, 13.f);
 			first_layer = block_type::dirt;
 			break ;
 
 		case (grass) :
-			noise = perlin_noise(1.f, 0.01f, 10.f);
+			noise = perlin_noise(seed, 0.02f, 7.f);
 			first_layer = block_type::grass;
 			break ;
 
         case (sand) :
-            noise = perlin_noise(1.f, 0.01f, 10.f);
+            noise = perlin_noise(seed, 0.02f, 7.f);
             first_layer = block_type::sand;
             break ;
 
 		case (stone) :
-			noise = perlin_noise(1.f, 0.05f, 30.f);
+			noise = perlin_noise(seed, 0.01f, -25.f);
 			first_layer = block_type::stone;
 			break ;
 
 		case (rock) :
-			noise = perlin_noise(1.f, 0.05f, 30.f);
+			noise = perlin_noise(seed, 0.005f, 100.f);
 			first_layer = block_type::rock;
 			break ;
 

@@ -6,84 +6,48 @@ using namespace			game;
 
 						chunk_landscape_generator::chunk_landscape_generator()
 {
+	int seed = 13;
 	biome_collection::construct();
-	noise_for_biome = cellular_noise(0.01f);
-	perlin = perlin_noise(1.f, 0.01f, 150.f);
+	noise_for_biome = cellular_noise(0.008f, seed);
+	perlin = perlin_noise(seed, 0.01f, 150.f);
 }
 
 						chunk_landscape_generator::column_info
-						chunk_landscape_generator::generate_column(const ivec2 &position)
+						chunk_landscape_generator::
+						generate_column(const ivec2 &position)
 {
-	const auto			instance = get_instance();
-	const auto			result = instance->noise_for_biome.generate(position);
+    const auto			instance = get_instance();
 
-	const auto 			&nearest = result.nearest;
-	const auto 			&furthest = result.furthest;
+    float               perlin_shift = instance->perlin.generate(position);
+    const auto			&nearest = instance->noise_for_biome.generate((vec2)position + perlin_shift);
 
-	const auto			&central_cell = result.central;
-	const auto			&left_cell = result.left;
-	const auto			&right_cell = result.right;
-	const auto			&top_cell = result.top;
-	const auto			&bottom_cell = result.bottom;
-	const auto			&top_left_cell = result.top_left;
-	const auto			&top_right_cell = result.top_right;
-	const auto			&bottom_left_cell = result.bottom_left;
-	const auto			&bottom_right_cell = result.bottom_right;
+	float               height = 0.f;
+	float               weight;
+	float               total_weight = 0.f;
 
-	/*const auto			central_cell_height = instance->choose_biome(central_cell.noise_value).generate_height(position);
-	const auto			left_cell_height = instance->choose_biome(left_cell.noise_value).generate_height(position);
-	const auto			right_cell_height = instance->choose_biome(right_cell.noise_value).generate_height(position);
-	const auto			top_cell_height = instance->choose_biome(top_cell.noise_value).generate_height(position);
-	const auto			bottom_cell_height = instance->choose_biome(bottom_cell.noise_value).generate_height(position);
-	const auto			top_left_cell_height = instance->choose_biome(top_left_cell.noise_value).generate_height(position);
-	const auto			top_right_cell_height = instance->choose_biome(top_right_cell.noise_value).generate_height(position);
-	const auto			bottom_left_cell_height = instance->choose_biome(bottom_left_cell.noise_value).generate_height(position);
-	const auto			bottom_right_cell_height = instance->choose_biome(bottom_right_cell.noise_value).generate_height(position);
+    for (int x = -12; x <= 12; x += 3)
+    for (int y = -12; y <= 12; y += 3)
+    {
+        vec2            heighboring = (vec2)position + vec2(x, y);
 
-	const float			central_cell_influence = 1.f - central_cell.distance / furthest.distance;
-	const float			left_cell_influence = 1.f - left_cell.distance / furthest.distance;
-	const float			right_cell_influence = 1.f - right_cell.distance / furthest.distance;
-	const float			top_cell_influence = 1.f - top_cell.distance / furthest.distance;
-	const float			bottom_cell_influence = 1.f - bottom_cell.distance / furthest.distance;
-	const float			top_left_cell_influence = 1.f - top_left_cell.distance / furthest.distance;
-	const float			top_right_cell_influence = 1.f - top_right_cell.distance / furthest.distance;
-	const float			bottom_left_cell_influence = 1.f - bottom_left_cell.distance / furthest.distance;
-	const float			bottom_right_cell_influence = 1.f - bottom_right_cell.distance / furthest.distance;
+        perlin_shift = instance->perlin.generate(heighboring);
+        const auto      column = instance->noise_for_biome.generate(heighboring + perlin_shift);
+        weight = 1.f / (1.f + abs((float)x) + abs((float)y));
 
-	const float			total_influence =
-							central_cell_influence
-							+ left_cell_influence
-							+ right_cell_influence
-							+ top_cell_influence
-							+ bottom_cell_influence
-							+ top_left_cell_influence
-							+ top_right_cell_influence
-							+ bottom_left_cell_influence
-							+ bottom_right_cell_influence;
+        height += instance->choose_biome(column.noise_value).generate_height(heighboring + perlin_shift) * weight;
+        total_weight += weight;
+    }
 
-	float				height = 0.f;
+    height /= total_weight;
 
-	height += central_cell_height * central_cell_influence;
-	height += left_cell_height * left_cell_influence;
-	height += right_cell_height * right_cell_influence;
-	height += top_cell_height * top_cell_influence;
-	height += bottom_cell_height * bottom_cell_influence;
-	height += top_left_cell_height * top_left_cell_influence;
-	height += top_right_cell_height * top_right_cell_influence;
-	height += bottom_left_cell_height * bottom_left_cell_influence;
-	height += bottom_right_cell_height * bottom_right_cell_influence;
-
-	height /= total_influence;*/
-
-	return {instance->choose_biome(nearest.noise_value), (int)floor(0.f)};
+	return {instance->choose_biome(nearest.noise_value), (int)floor(height)};
 }
 
 void					chunk_landscape_generator::generate_chunk(const shared_ptr<chunk> &chunk)
 {
+    const int	water_level = -3;
+    const int   zero_height = 124 + water_level;
 
-	static const int	water_level = 10;
-
-    const auto			instance = get_instance();
 	const vec3			position = chunk->get_position();
 
 	chunk::index		index;
@@ -91,18 +55,15 @@ void					chunk_landscape_generator::generate_chunk(const shared_ptr<chunk> &chun
 	for (index.x = 0; index.x < chunk_settings::size[0]; index.x++)
 	for (index.z = 0; index.z < chunk_settings::size[2]; index.z++)
 	{
-	    const auto      input = vec3(position.x + (float)index.x, 0, position.z + (float)index.z);
-        const auto      perlin_shift = instance->perlin.generate(vec2(input.x, input.z));
-        const auto		column_position = vec3(input.x + perlin_shift, 0, input.z + perlin_shift);
-		const auto		column_info = generate_column({column_position.x, column_position.z});
+		const auto		column_info = generate_column({position.x + (float)index.x, position.z + (float)index.z});
 		const auto		block_type = (enum block_type)column_info.biome.get_first_layer();
-		const auto		height_limit = min(chunk_settings::size[1], max(water_level, column_info.height));
+		const auto		height_limit = min(chunk_settings::size[1], max(water_level, column_info.height)) + zero_height;
 
-		for (index.y = 0; index.y < 1; index.y++)
+		for (index.y = 0; index.y < height_limit; index.y++)
 		{
-			if (index.y <= column_info.height)
+			if (index.y <= column_info.height + zero_height)
 				chunk->at(index).set_type(block_type);
-			else if (index.y <= water_level)
+			else if (index.y <= zero_height)
 				chunk->at(index).set_type(block_type::water);
 		}
 	}
