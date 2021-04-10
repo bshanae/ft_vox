@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ########################################################################################################################
-# Common
+# Constants
 ########################################################################################################################
 
 REDIRECT_OUTPUT=1
@@ -11,6 +11,12 @@ RED="\033[31m"
 GREEN="\033[32m"
 
 CURL_FLAGS="-Lf"
+
+LIBRARIES="project/libraries"
+
+########################################################################################################################
+# Common
+########################################################################################################################
 
 function raise_error
 {
@@ -30,6 +36,10 @@ function evaluate
 	eval "$COMMAND" "$OPTIONS"
 }
 
+########################################################################################################################
+# IO
+########################################################################################################################
+
 function write
 {
 	echo -e "$1"
@@ -43,14 +53,6 @@ function write_new_line
 function enter_folder
 {
 	cd "$1" > /dev/null 2>&1 || raise_error "Can't enter folder $1" "Can't download from URL ${URL}"
-}
-
-function enter_libraries_folder
-{
-	LIBRARIES="project/libraries"
-
-	mkdir -p "$LIBRARIES"
-	enter_folder "$LIBRARIES"
 }
 
 function log_start
@@ -72,6 +74,30 @@ function clean
   	rm -f "$ARCHIVE"
 	rm -rf "$CONTENT"
 	rm -rf "$PROJECT"
+}
+
+########################################################################################################################
+# Libraries
+########################################################################################################################
+
+function enter_libraries_folder
+{
+	mkdir -p "$LIBRARIES"
+	enter_folder "$LIBRARIES"
+}
+
+function reset_libraries_folder
+{
+	rm -rf "$LIBRARIES"
+}
+
+########################################################################################################################
+# GIT
+########################################################################################################################
+
+function download_from_git
+{
+	evaluate "git clone $1 $2"
 }
 
 function download
@@ -120,17 +146,12 @@ function rename
 function install_glfw
 {
 	GLFW_NAME="GLFW"
-	GLFW_URL="https://github.com/glfw/glfw/archive/3.3.2.tar.gz"
-	GLFW_ARCHIVE="glfw.tar.gz"
-	GLFW_ARCHIVE_CONTENT="glfw-3.3.2"
+	GLFW_URL="https://github.com/glfw/glfw.git"
 	GLFW_PROJECT="glfw"
 
 	log_start "$GLFW_NAME"
 
-	clean "$GLFW_ARCHIVE" "$GLFW_ARCHIVE_CONTENT" "$GLFW_PROJECT"
-	download "$GLFW_NAME" "$GLFW_URL" "$GLFW_ARCHIVE"
-	unpack "$GLFW_NAME" "$GLFW_ARCHIVE" "$GLFW_ARCHIVE_CONTENT"
-	rename "$GLFW_NAME" "$GLFW_ARCHIVE_CONTENT" "$GLFW_PROJECT"
+	download_from_git "$GLFW_URL" "$GLFW_PROJECT"
 
 	log_finish "$GLFW_NAME"
 	write_new_line
@@ -143,13 +164,12 @@ function install_glfw
 function install_glad
 {
 	GLAD_NAME="GLAD"
-	GLAD_GIT="https://github.com/Dav1dde/glad.git"
+	GLAD_URL="https://github.com/Dav1dde/glad.git"
 	GLAD_PROJECT="glad"
 
-	write "Installing GLAD..."
+	write "Installing ${GLAD_NAME}..."
 
-	clean "$GLAD_PROJECT"
-	git clone "$GLAD_GIT"
+	download_from_git "$GLAD_URL" "$GLAD_PROJECT"
 
 	write "Building GLAD..."
 
@@ -160,7 +180,7 @@ function install_glad
 
 	enter_folder ..
 
-	write "Successfully installed ${GREEN}GLAD${RESET}!"
+	write "Successfully installed ${GREEN}${GLAD_NAME}${RESET}!"
 	write_new_line
 }
 
@@ -171,17 +191,12 @@ function install_glad
 function install_fast_noise
 {
 	FAST_NOISE_NAME="FastNoise"
-	FAST_NOISE_URL="https://github.com/Auburn/FastNoise/archive/v1.0.2.tar.gz"
-	FAST_NOISE_ARCHIVE="FastNoiseLite.tar.gz"
-	FAST_NOISE_ARCHIVE_CONTENT="FastNoiseLite-1.0.2"
+	FAST_NOISE_URL="https://github.com/Auburn/FastNoise.git"
 	FAST_NOISE_PROJECT="FastNoise"
 
 	log_start "$FAST_NOISE_NAME"
 
-	clean "$FAST_NOISE_ARCHIVE" "$FAST_NOISE_ARCHIVE_CONTENT" "$FAST_NOISE_PROJECT"
-	download "$FAST_NOISE_NAME" "$FAST_NOISE_URL" "$FAST_NOISE_ARCHIVE"
-	unpack "$FAST_NOISE_NAME" "$FAST_NOISE_ARCHIVE" "$FAST_NOISE_ARCHIVE_CONTENT"
-	rename "$FAST_NOISE_NAME" "$FAST_NOISE_ARCHIVE_CONTENT" "$FAST_NOISE_PROJECT"
+	download_from_git "$FAST_NOISE_URL" "$FAST_NOISE_PROJECT"
 
 	log_finish "$FAST_NOISE_NAME"
 	write_new_line
@@ -194,17 +209,12 @@ function install_fast_noise
 function install_glm
 {
 	GLM_NAME="GLM"
-	GLM_URL="https://github.com/g-truc/glm/archive/0.9.9.8.tar.gz"
-	GLM_ARCHIVE="glm.tar.gz"
-	GLM_ARCHIVE_CONTENT="glm-0.9.9.8"
+	GLM_URL="https://github.com/g-truc/glm.git"
 	GLM_PROJECT="glm"
 
 	log_start "$GLM_NAME"
 
-	clean "$GLM_ARCHIVE" "$GLM_ARCHIVE_CONTENT" "$GLM_PROJECT"
-	download "$GLM_NAME" "$GLM_URL" "$GLM_ARCHIVE"
-	unpack "$GLM_NAME" "$GLM_ARCHIVE" "$GLM_ARCHIVE_CONTENT"
-	rename "$GLM_NAME" "$GLM_ARCHIVE_CONTENT" "$GLM_PROJECT"
+	download_from_git "$GLM_URL" "$GLM_PROJECT"
 
 	log_finish "$GLM_NAME"
 	write_new_line
@@ -217,17 +227,12 @@ function install_glm
 function install_free_type
 {
 	FREE_TYPE_NAME="FreeType2"
-	FREE_TYPE_URL="https://github.com/aseprite/freetype2/archive/VER-2-10-0.tar.gz"
-	FREE_TYPE_ARCHIVE="FreeType2.tar.gz"
-	FREE_TYPE_ARCHIVE_CONTENT="freetype2-VER-2-10-0"
+	FREE_TYPE_URL="https://github.com/aseprite/freetype2.git"
 	FREE_TYPE_PROJECT="freetype2"
 
 	log_start "$FREE_TYPE_NAME"
 
-	clean "$FREE_TYPE_ARCHIVE" "$FREE_TYPE_ARCHIVE_CONTENT" "$FREE_TYPE_PROJECT"
-	download "$FREE_TYPE_NAME" "$FREE_TYPE_URL" "$FREE_TYPE_ARCHIVE"
-	unpack "$FREE_TYPE_NAME" "$FREE_TYPE_ARCHIVE" "$FREE_TYPE_ARCHIVE_CONTENT"
-	rename "$FREE_TYPE_NAME" "$FREE_TYPE_ARCHIVE_CONTENT" "$FREE_TYPE_PROJECT"
+	download_from_git "$FREE_TYPE_URL" "$FREE_TYPE_PROJECT"
 
 	log_finish "$FREE_TYPE_NAME"
 	write_new_line
@@ -240,17 +245,12 @@ function install_free_type
 function install_stb
 {
 	STB_NAME="STB"
-	STB_URL="https://raw.githubusercontent.com/nothings/stb/master/stb_image.h"
+	STB_URL="https://github.com/nothings/stb.git"
 	STB_PROJECT="stb"
-	STB_FILE="stb_image.h"
 
 	log_start "$STB_NAME"
 
-	rm -rf "$STB_PROJECT"
-	download "$STB_NAME" "$STB_URL" "$STB_FILE"
-
-	mkdir "$STB_PROJECT"
-	mv "$STB_FILE" "$STB_PROJECT"/"$STB_FILE"
+	download_from_git "$STB_URL" "$STB_PROJECT"
 
 	log_finish "$STB_NAME"
 }
@@ -259,6 +259,7 @@ function install_stb
 # Main
 ########################################################################################################################
 
+reset_libraries_folder
 enter_libraries_folder
 
 install_glfw
