@@ -5,7 +5,8 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Ofast -frtti")
+add_compile_options("-pedantic")
+add_compile_options("-Wno-deprecated-declarations")
 
 # Variables
 
@@ -26,6 +27,7 @@ include_directories(
 	${LIBRARIES_DIRECTORY}/stb
 	${LIBRARIES_DIRECTORY}/freetype2/include
 	${LIBRARIES_DIRECTORY}/FastNoise/Cpp
+	${LIBRARIES_DIRECTORY}/clhpp/include
 
 	${SOURCES_DIRECTORY})
 
@@ -174,3 +176,5 @@ target_link_libraries(${PROJECT_NAME} glfw)
 
 add_subdirectory(${LIBRARIES_DIRECTORY}/freetype2)
 target_link_libraries(${PROJECT_NAME} freetype)
+
+target_link_libraries(${PROJECT_NAME} "-framework OpenCL")

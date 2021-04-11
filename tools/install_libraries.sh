@@ -97,46 +97,7 @@ function reset_libraries_folder
 
 function download_from_git
 {
-	evaluate "git clone $1 $2"
-}
-
-function download
-{
-	NAME="$1"
-	URL="$2"
-	FILE="$3"
-
-	write "Downloading $1..."
-
-	evaluate "curl $CURL_FLAGS $URL -o $FILE"
-
-	if [ "$?" -ne 0 ]; then
-    	raise_error "Can't download from URL ${URL}"
-	fi
-}
-
-function unpack
-{
-	NAME="$1"
-	ARCHIVE="$2"
-	CONTENT="$3"
-
-	write "Unpacking $NAME..."
-
-  	tar -zxf "$ARCHIVE" "$CONTENT"
-	rm -f "$ARCHIVE"
-}
-
-function rename
-{
-	NAME="$1"
-	FROM="$2"
-	TO="$3"
-
-	write "Moving $NAME..."
-
-	rm -rf "$TO"
-	mv "$FROM" "$TO" || raise_error "Can't move $FROM to $TO"
+	evaluate "git clone --recursive $1 $2"
 }
 
 ########################################################################################################################
@@ -253,6 +214,24 @@ function install_stb
 	download_from_git "$STB_URL" "$STB_PROJECT"
 
 	log_finish "$STB_NAME"
+	write_new_line
+}
+
+########################################################################################################################
+# OpenCL
+########################################################################################################################
+
+function install_clhpp
+{
+	CLHPP_NAME="OpenCL-CLHPP"
+	CLHPP_URL="https://github.com/KhronosGroup/OpenCL-CLHPP.git"
+	CLHPP_PROJECT="clhpp"
+
+	log_start "$CLHPP_NAME"
+
+	download_from_git "$CLHPP_URL" "$CLHPP_PROJECT"
+
+	log_finish "$CLHPP_NAME"
 }
 
 ########################################################################################################################
@@ -268,3 +247,4 @@ install_fast_noise
 install_glm
 install_free_type
 install_stb
+install_clhpp
