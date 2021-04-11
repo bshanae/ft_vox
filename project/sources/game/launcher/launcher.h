@@ -2,10 +2,10 @@
 
 namespace			game
 {
-	class 			daemon;
+	class 			launcher;
 }
 
-class				game::daemon
+class				game::launcher
 {
 public :
 

@@ -2,10 +2,10 @@
 
 namespace			engine
 {
-	class 			daemon;
+	class 			launcher;
 }
 
-class				engine::daemon
+class				engine::launcher
 {
 public :
 

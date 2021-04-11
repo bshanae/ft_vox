@@ -71,8 +71,8 @@ set(SOURCES_ENGINE_SYSTEM
 set(SOURCES_ENGINE_PROCESSOR
 	${SOURCES_DIRECTORY}/engine/main/processor/processor.cpp)
 
-set(SOURCES_ENGINE_DAEMON
-	${SOURCES_DIRECTORY}/engine/daemon/daemon.cpp)
+set(SOURCES_ENGINE_LAUNCHER
+	${SOURCES_DIRECTORY}/engine/launcher/launcher.cpp)
 
 set(SOURCES_ENGINE_EXTENSIONS
 	${SOURCES_DIRECTORY}/engine/extensions/utilities/fps_counter/fps_counter.cpp
@@ -88,7 +88,7 @@ set(SOURCES_ENGINE
 	${SOURCES_ENGINE_RENDERING}
 	${SOURCES_ENGINE_SYSTEM}
 	${SOURCES_ENGINE_PROCESSOR}
-	${SOURCES_ENGINE_DAEMON}
+	${SOURCES_ENGINE_LAUNCHER}
 	${SOURCES_ENGINE_EXTENSIONS})
 
 # Sources : Game
@@ -142,8 +142,8 @@ set(SOURCE_GAME_PLAYER
 	${SOURCES_DIRECTORY}/game/player/ray_caster/ray_caster.cpp
 	${SOURCES_DIRECTORY}/game/player/player/player.cpp)
 
-set(SOURCE_GAME_DAEMON
-	${SOURCES_DIRECTORY}/game/daemon/daemon.cpp)
+set(SOURCE_GAME_LAUNCHER
+	${SOURCES_DIRECTORY}/game/launcher/launcher.cpp)
 
 set(SOURCES_GAME
 	${SOURCE_GAME_WORLD_BLOCK}
@@ -152,7 +152,7 @@ set(SOURCES_GAME
 	${SOURCE_GAME_WORLD_TEXTURE_ATLAS}
 	${SOURCE_GAME_WORLD_WORLD}
 	${SOURCE_GAME_PLAYER}
-	${SOURCE_GAME_DAEMON})
+	${SOURCE_GAME_LAUNCHER})
 
 # Sources
 
