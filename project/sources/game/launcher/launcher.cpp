@@ -1,4 +1,4 @@
-#include "daemon.h"
+#include "launcher.h"
 
 #include "engine/main/rendering/layout/layout_manager/layout_manager.h"
 #include "engine/extensions/utilities/fps_counter/fps_counter.h"
@@ -16,7 +16,7 @@
 
 using namespace 	game;
 
-void 				daemon::construct_engine_extension_objects()
+void 				launcher::construct_engine_extension_objects()
 {
 	engine::utilities::fps_counter::construct();
 
@@ -24,7 +24,7 @@ void 				daemon::construct_engine_extension_objects()
 	engine::ui::symbol_renderer::construct();
 }
 
-void				daemon::setup_layouts()
+void				launcher::setup_layouts()
 {
 	engine::layout_manager::add("System");
 	engine::layout_manager::add("Background");
@@ -33,7 +33,7 @@ void				daemon::setup_layouts()
 	engine::layout_manager::add("UI");
 }
 
-void				daemon::construct_objects()
+void				launcher::construct_objects()
 {
 	game::skybox::construct();
 	game::texture_atlas::construct();
@@ -48,7 +48,7 @@ void				daemon::construct_objects()
 	game::player::construct();
 }
 
-void				daemon::setup_texture_atlas()
+void				launcher::setup_texture_atlas()
 {
 	game::texture_atlas::get_coordinates(game::block_type::dirt).set_all(ivec2(2, 15));
     game::texture_atlas::get_coordinates(game::block_type::sand).set_all(ivec2(2, 14));

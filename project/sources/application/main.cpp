@@ -1,16 +1,16 @@
-#include "engine/daemon/daemon.h"
-#include "game/daemon/daemon.h"
+#include "engine/launcher/launcher.h"
+#include "game/launcher/launcher.h"
 
 int					main()
 {
-	engine::daemon::construct_mandatory_objects();
+	engine::launcher::construct_mandatory_objects();
 
-	game::daemon::construct_engine_extension_objects();
-	game::daemon::setup_layouts();
-	game::daemon::construct_objects();
-	game::daemon::setup_texture_atlas();
+	game::launcher::construct_engine_extension_objects();
+	game::launcher::setup_layouts();
+	game::launcher::construct_objects();
+	game::launcher::setup_texture_atlas();
 
-	engine::daemon::start_game_loop();
+	engine::launcher::start_game_loop();
 
 	return 0;
 }

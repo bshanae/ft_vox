@@ -1,4 +1,4 @@
-#include "daemon.h"
+#include "launcher.h"
 
 #include "engine/main/system/window/window/window.h"
 #include "engine/main/system/input/input.h"
@@ -9,7 +9,7 @@
 
 using namespace		engine;
 
-void				daemon::construct_mandatory_objects()
+void				launcher::construct_mandatory_objects()
 {
 	// We need layout manager to be constructed first
 	// So it tracks any object added to object_storage
@@ -22,7 +22,7 @@ void				daemon::construct_mandatory_objects()
 	camera::construct();
 }
 
-void				daemon::start_game_loop()
+void				launcher::start_game_loop()
 {
 	processor::execute();
 }
