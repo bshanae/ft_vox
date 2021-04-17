@@ -27,7 +27,6 @@ include_directories(
 	${LIBRARIES_DIRECTORY}/stb
 	${LIBRARIES_DIRECTORY}/freetype2/include
 	${LIBRARIES_DIRECTORY}/FastNoise/Cpp
-	${LIBRARIES_DIRECTORY}/clhpp/include
 
 	${SOURCES_DIRECTORY})
 
@@ -176,5 +175,3 @@ target_link_libraries(${PROJECT_NAME} glfw)
 
 add_subdirectory(${LIBRARIES_DIRECTORY}/freetype2)
 target_link_libraries(${PROJECT_NAME} freetype)
-
-target_link_libraries(${PROJECT_NAME} "-framework OpenCL")
