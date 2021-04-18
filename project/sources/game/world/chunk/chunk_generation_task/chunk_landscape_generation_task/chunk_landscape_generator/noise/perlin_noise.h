@@ -33,7 +33,6 @@ public :
 
 		static const float	pi_on_2 = M_PI * 2.f;
 
-		float test = seed / 1000000000;
 		float				top_left_angle = random.generate_1d(whole) * pi_on_2;
 		float				top_right_angle = random.generate_1d(whole + vec2(1.0f, 0.0f)) * pi_on_2;
 		float				bottom_left_angle = random.generate_1d(whole + vec2(0.0f, 1.0f)) * pi_on_2;
@@ -55,17 +54,17 @@ public :
 		float				bottom_mix = mix(bottom_left_dot, bottom_right_dot, cubic.x);
 		float				final_mix = mix(top_mix, bottom_mix, cubic.y);
 
-		return ((final_mix + 0.5f) * multiplier + shift);
+		return (final_mix + 0.5f) * multiplier + shift;
 	}
 
-    float					generate3d(vec3 input) const
+    float					generate_3d(vec3 input) const
     {
+		static const float	pi_on_2 = M_PI * 2.f;
+
         input *= frequency;
 
         const vec3			whole = floor(input);
         const vec3			fractional = fract(input);
-
-        static const float	pi_on_2 = M_PI * 2.f;
 
         float				left_top_further_angle = random.generate_1d(whole) * pi_on_2;
         float				left_top_nearest_angle = random.generate_1d(whole + vec3(0.0f, 0.0f, 1.0f)) * pi_on_2;
@@ -94,8 +93,6 @@ public :
         vec3				right_bottom_further = rotate(vec3(1.f, 0.f, 0.f), right_bottom_further_angle, normal);
         vec3				right_bottom_nearest = rotate(vec3(1.f, 0.f, 0.f), right_bottom_nearest_angle, normal);
 
-
-
         float				left_top_further_dot = dot(left_top_further, fractional);
         float				left_top_nearest_dot = dot(left_top_nearest, fractional - vec3(0.f, 0.f, 1.f));
 
@@ -120,7 +117,7 @@ public :
 
         float				final_mix = mix(top_mix, bottom_mix, cubic.y);
 
-        return (final_mix + 0.5f);
+        return final_mix + 0.5f;
     }
 
 private :

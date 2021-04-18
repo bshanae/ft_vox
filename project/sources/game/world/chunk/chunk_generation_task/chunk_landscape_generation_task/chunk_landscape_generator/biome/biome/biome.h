@@ -21,8 +21,7 @@ public :
 		dirt,
 		grass,
         sand,
-		stone,
-		rock
+		stone
 	};
 
 	explicit				biome(enum type type = biome::null);

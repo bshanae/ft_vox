@@ -11,7 +11,6 @@ namespace			game
 		dirt,
 		grass,
 		sand,
-		rock,
 		dirt_with_grass,
 		water,
 		blue_flower

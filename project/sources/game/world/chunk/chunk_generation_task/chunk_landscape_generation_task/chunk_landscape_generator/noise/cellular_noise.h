@@ -14,13 +14,10 @@ public :
 	struct					cell
 	{
 		vec2				position = vec2(0.f);
-		float				noise_value = 0.f;
 		float				distance = 0.f;
 	};
 
-    explicit				cellular_noise(float frequency = 1.f, int seed = 0)
-            : frequency(frequency),
-              seed(seed) {}
+    explicit				cellular_noise(int seed = 0, float frequency = 1.f) : frequency(frequency), seed(seed) {}
 
 	cell					generate(vec2 input) const
 	{
@@ -45,8 +42,6 @@ public :
                 nearest.distance = current.distance;
             }
         }
-
-        nearest.noise_value = random.generate_1d(nearest.position);
 
 		return (nearest);
 	}

@@ -30,20 +30,21 @@ public :
 						chunk_landscape_generator();
 						~chunk_landscape_generator() override = default;
 
-	static column_info	generate_column(const ivec2 &position);
-	static float	    smoothing_height(const ivec2 &position);
 	static void 		generate_chunk(const shared_ptr<chunk> &workspace);
-	static void 		generation_dungeons(const shared_ptr<chunk> &chunk, chunk::index index, vec3 position, block_type block_type);
-	static void 		generation_clouds(const shared_ptr<chunk> &chunk, vec3 position, chunk::index index);
+	static column_info	generate_column(const ivec2 &position);
 
 private :
 
-	cellular_noise		noise_for_biome;
-	perlin_noise		perlin;
-	perlin_noise		perlinCloud;
-	perlin_noise		perlin3d;
+	cellular_noise		noise_for_cell;
+	perlin_noise		noise_for_cell_shift;
+	random_noise		noise_for_biome;
+	perlin_noise		noise_for_clouds;
+	perlin_noise		noise_for_dungeons;
 
-	const biome			&choose_biome(float noise_value);
+	static float	    smoothing_height(const ivec2 &position);
+	static void 		generation_dungeons(const shared_ptr<chunk> &chunk, chunk::index index, vec3 position, block_type block_type);
+	static void 		generation_clouds(const shared_ptr<chunk> &chunk, vec3 position, chunk::index index);
+	const biome			&generate_biome(const vec2 &cell_position);
 };
 
 

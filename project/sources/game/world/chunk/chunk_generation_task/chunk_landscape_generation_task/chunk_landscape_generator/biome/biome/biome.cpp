@@ -25,13 +25,8 @@ using namespace		game;
             break ;
 
 		case (stone) :
-			noise = perlin_noise(seed, 0.01f, 10.f,  -25.f);
+			noise = perlin_noise(seed, 0.015f, 90.f,  -25.f);
 			first_layer = block_type::stone;
-			break ;
-
-		case (rock) :
-			noise = perlin_noise(seed, 0.005f, 50.f, 15.f);
-			first_layer = block_type::rock;
 			break ;
 
 		default :

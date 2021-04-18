@@ -15,7 +15,6 @@ block_meta_type		game::get_meta_type(block_type type)
 		case block_type::dirt:
 		case block_type::grass:
 		case block_type::sand:
-		case block_type::rock:
 		case block_type::dirt_with_grass:
 			return block_meta_type::opaque;
 

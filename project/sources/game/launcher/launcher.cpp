@@ -54,7 +54,6 @@ void				launcher::setup_texture_atlas()
     game::texture_atlas::get_coordinates(game::block_type::sand).set_all(ivec2(2, 14));
 	game::texture_atlas::get_coordinates(game::block_type::grass).set_all(ivec2(12, 3));
     game::texture_atlas::get_coordinates(game::block_type::stone).set_all(ivec2(1, 15));
-	game::texture_atlas::get_coordinates(game::block_type::rock).set_all(ivec2(0, 14));
 
 	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_left(ivec2(3, 15));
 	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_right(ivec2(3, 15));
