@@ -152,6 +152,7 @@ void						world::when_rendered()
 
 void 						world::process_input()
 {
+#if FT_VOX_DYNAMIC_VISIBILITY
 	if
 	(
 		engine::input::is_held(engine::input::key::command) and
@@ -163,6 +164,7 @@ void 						world::process_input()
 		else
 			world_settings::current_visibility_option = 0;
 	}
+#endif
 }
 
 void						world::update_pivot()
