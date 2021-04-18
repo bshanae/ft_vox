@@ -8,8 +8,8 @@ using namespace			game;
 {
 	biome_collection::construct();
 
-	noise_for_cell = cellular_noise(chunk_settings::landscape_seed, 0.008f);
-	noise_for_cell_shift = perlin_noise(chunk_settings::landscape_seed, 0.01f, 150.f);
+	noise_for_cell = cellular_noise(chunk_settings::landscape_seed, 0.003f);
+	noise_for_cell_shift = perlin_noise(chunk_settings::landscape_seed, 0.01f, 50.f);
 	noise_for_biome = random_noise();
 	noise_for_clouds = perlin_noise(chunk_settings::landscape_seed, 0.03f);
 	noise_for_dungeons = perlin_noise(chunk_settings::landscape_seed, 0.03f);
@@ -91,7 +91,6 @@ void                    chunk_landscape_generator::generation_clouds(const share
     if (get_instance()->noise_for_clouds.generate({position.x, position.z}) > 0.7f)
     {
         index.y = 150;
-
         chunk->at(index).set_type(block_type::water);
     }
 }
