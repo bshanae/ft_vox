@@ -35,15 +35,22 @@ public :
 
 private :
 
+    int                 seed;
+
 	cellular_noise		noise_for_cell;
 	perlin_noise		noise_for_cell_shift;
 	random_noise		noise_for_biome;
 	perlin_noise		noise_for_clouds;
+	perlin_noise		noise_for_snow;
 	perlin_noise		noise_for_dungeons;
+	perlin_noise		noise_for_mushroom;
 
 	static float	    smoothing_height(const ivec2 &position);
 	static void 		generation_dungeons(const shared_ptr<chunk> &chunk, chunk::index index, vec3 position, block_type block_type);
 	static void 		generation_clouds(const shared_ptr<chunk> &chunk, vec3 position, chunk::index index);
+	static void 		generation_flora(const shared_ptr<chunk> &chunk, vec3 position, chunk::index index, block_type block_type);
+	static void 		generation_vertex(const shared_ptr<chunk> &chunk, chunk::index index, vec3 position, block_type block_type);
+	static void 		generation_tree(const shared_ptr<chunk> &chunk, chunk::index index);
 	const biome			&generate_biome(const vec2 &cell_position);
 };
 

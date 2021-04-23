@@ -21,7 +21,10 @@ public :
 		dirt,
 		grass,
         sand,
-		stone
+		stone,
+		snow,
+		mushroom,
+        cloud
 	};
 
 	explicit				biome(enum type type = biome::null);

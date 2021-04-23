@@ -60,7 +60,7 @@ private :
 
 	void					position_determination(cell &cell, const vec2 &position) const
 	{
-		cell.position = position + random.generate_2d(position);
+		cell.position = position + random.generate_2d(position, seed);
 	}
 
 	void 					calculate_distance(cell &cell, const vec2 &point) const

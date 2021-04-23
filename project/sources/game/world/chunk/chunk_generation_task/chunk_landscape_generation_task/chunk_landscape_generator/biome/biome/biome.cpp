@@ -29,6 +29,20 @@ using namespace		game;
 			first_layer = block_type::stone;
 			break ;
 
+		case (cloud) :
+			first_layer = block_type::cloud;
+			break ;
+
+		case (snow) :
+            noise = perlin_noise(seed, 0.015f);
+			first_layer = block_type::snow;
+			break ;
+
+		case (mushroom) :
+            noise = perlin_noise(seed, 0.015f);
+			first_layer = block_type::mushroom;
+			break ;
+
 		default :
 			break ;
 	}

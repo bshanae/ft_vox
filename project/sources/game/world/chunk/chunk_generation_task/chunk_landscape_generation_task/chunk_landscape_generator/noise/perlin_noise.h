@@ -33,10 +33,10 @@ public :
 
 		static const float	pi_on_2 = M_PI * 2.f;
 
-		float				top_left_angle = random.generate_1d(whole) * pi_on_2;
-		float				top_right_angle = random.generate_1d(whole + vec2(1.0f, 0.0f)) * pi_on_2;
-		float				bottom_left_angle = random.generate_1d(whole + vec2(0.0f, 1.0f)) * pi_on_2;
-		float				bottom_right_angle = random.generate_1d(whole + vec2(1.0f, 1.0f)) * pi_on_2;
+		float				top_left_angle = random.generate_1d(whole, seed) * pi_on_2;
+		float				top_right_angle = random.generate_1d(whole + vec2(1.0f, 0.0f), seed) * pi_on_2;
+		float				bottom_left_angle = random.generate_1d(whole + vec2(0.0f, 1.0f), seed) * pi_on_2;
+		float				bottom_right_angle = random.generate_1d(whole + vec2(1.0f, 1.0f), seed) * pi_on_2;
 
 		vec2				top_left = rotate(vec2(1.f, 0.f), top_left_angle);
 		vec2				top_right = rotate(vec2(1.f, 0.f), top_right_angle);
@@ -66,17 +66,17 @@ public :
         const vec3			whole = floor(input);
         const vec3			fractional = fract(input);
 
-        float				left_top_further_angle = random.generate_1d(whole) * pi_on_2;
-        float				left_top_nearest_angle = random.generate_1d(whole + vec3(0.0f, 0.0f, 1.0f)) * pi_on_2;
+        float				left_top_further_angle = random.generate_1d(whole, seed) * pi_on_2;
+        float				left_top_nearest_angle = random.generate_1d(whole + vec3(0.0f, 0.0f, 1.0f), seed) * pi_on_2;
 
-        float				right_top_further_angle = random.generate_1d(whole + vec3(1.0f, 0.0f, 0.0f)) * pi_on_2;
-        float				right_top_nearest_angle = random.generate_1d(whole + vec3(1.0f, 0.0f, 1.0f)) * pi_on_2;
+        float				right_top_further_angle = random.generate_1d(whole + vec3(1.0f, 0.0f, 0.0f), seed) * pi_on_2;
+        float				right_top_nearest_angle = random.generate_1d(whole + vec3(1.0f, 0.0f, 1.0f), seed) * pi_on_2;
 
-        float				left_bottom_further_angle = random.generate_1d(whole + vec3(0.0f, 1.0f, 0.0f)) * pi_on_2;
-        float				left_bottom_nearest_angle = random.generate_1d(whole + vec3(0.0f, 1.0f, 1.0f)) * pi_on_2;
+        float				left_bottom_further_angle = random.generate_1d(whole + vec3(0.0f, 1.0f, 0.0f), seed) * pi_on_2;
+        float				left_bottom_nearest_angle = random.generate_1d(whole + vec3(0.0f, 1.0f, 1.0f), seed) * pi_on_2;
 
-        float				right_bottom_further_angle = random.generate_1d(whole + vec3(1.0f, 1.0f, 0.0f)) * pi_on_2;
-        float				right_bottom_nearest_angle = random.generate_1d(whole + vec3(1.0f, 1.0f, 1.0f)) * pi_on_2;
+        float				right_bottom_further_angle = random.generate_1d(whole + vec3(1.0f, 1.0f, 0.0f), seed) * pi_on_2;
+        float				right_bottom_nearest_angle = random.generate_1d(whole + vec3(1.0f, 1.0f, 1.0f), seed) * pi_on_2;
 
 
         vec3                normal = normalize(vec3(1, 1, 1));

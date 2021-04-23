@@ -15,21 +15,21 @@ public :
                         ~random_noise() = default;
 public :
 
-    float				generate_1d(vec2 input) const
+    float				generate_1d(vec2 input, int seed) const
     {
         input = mod(input, vec2(10000.f));
 
         return ((float)fract(sin(dot(input, const_vector_1d_v2)) * const_factor));
     }
 
-    float				generate_1d(vec3 input) const
+    float				generate_1d(vec3 input, int seed) const
     {
         input = mod(input, vec3(10000.f));
 
         return ((float)fract(sin(dot(input, const_vector_1d_v3)) * const_factor));
     }
 
-    vec2				generate_2d(vec2 input) const
+    vec2				generate_2d(vec2 input, int seed) const
     {
         input = mod(input, vec2(10000.f));
 

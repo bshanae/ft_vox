@@ -11,7 +11,10 @@ namespace			game
 		dirt,
 		grass,
 		sand,
+		cloud,
+		snow,
 		dirt_with_grass,
+		mushroom,
 		water,
 		blue_flower
 	};

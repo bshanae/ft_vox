@@ -6,6 +6,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..)
 set(CMAKE_CXX_STANDARD 17)
 
 add_compile_options("-pedantic")
+add_compile_options("-Ofast")
+add_compile_options("-frtti")
 add_compile_options("-Wno-deprecated-declarations")
 
 # Variables
