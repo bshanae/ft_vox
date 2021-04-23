@@ -30,7 +30,7 @@ shared_ptr<symbol>		font::find_symbol(char task) const
 
 void					font::build_map()
 {
-	for (int i = 0; i < size_of_map; i++)
+	for (int i = first_char_code; i < last_char_code; i++)
 		map.emplace(i, build_symbol(static_cast<char>(i)));
 }
 
@@ -40,7 +40,7 @@ shared_ptr<symbol>		font::build_symbol(char task)
 
 	debug::check_critical
 	(
-		FT_Load_Char(face, task, FT_LOAD_RENDER) != 0,
+		FT_Load_Char(face, task, FT_LOAD_RENDER) == 0,
 		"[font] Can't build symbol '" + string(1, task) + "'"
 	);
 

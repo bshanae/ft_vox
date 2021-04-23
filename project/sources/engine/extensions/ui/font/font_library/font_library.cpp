@@ -14,5 +14,5 @@ using namespace		engine::ui;
 
 				font_library::~font_library()
 {
-FT_Done_FreeType(library);
+	FT_Done_FreeType(library);
 }

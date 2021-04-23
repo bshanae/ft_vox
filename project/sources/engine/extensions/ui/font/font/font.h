@@ -33,7 +33,8 @@ private :
 	void							build_map();
 	shared_ptr<symbol>				build_symbol(char task);
 
-	static constexpr int			size_of_map = 128;
+	static constexpr int			first_char_code = 44;
+	static constexpr int			last_char_code = 122;
 
 	FT_Face							face = nullptr;
 	map<char, shared_ptr<symbol>>	map;
