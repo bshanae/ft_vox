@@ -8,13 +8,12 @@
 using namespace		engine;
 using namespace		engine::ui;
 
-					text::text()
+					text::text(const ivec2 &position, const shared_ptr<class font> &font, const std::string &string) :
+						position(position),
+						font(font),
+						string(string)
 {
 	set_layout("UI");
-
-	string = "EMPTY";
-	position = ivec2(0, 0);
-	font = nullptr;
 }
 
 std::string			text::get_string() const
@@ -44,12 +43,6 @@ void				text::set_string(const std::string &string)
 	recalculate_size();
 }
 
-void				text::set_font(const shared_ptr<ui::font> &font)
-{
-	this->font = font;
-	recalculate_size();
-}
-
 void 				text::when_rendered()
 {
 	if (font == nullptr)
@@ -72,12 +65,12 @@ void 				text::when_rendered()
 		auto		bearing = symbol->get_bearing();
 		auto		advance = symbol->get_advance();
 
-		position_of_symbol.x = (float)(position_iterator.x);
+		position_of_symbol.x = (float)(position_iterator.x + bearing.x);
 		position_of_symbol.y = (float)(position_iterator.y - bearing.y);
 
 		symbol->render(position_of_symbol);
 
-		position_iterator.x += advance + bearing.x;
+		position_iterator.x += advance;
 	}
 }
 
@@ -90,7 +83,7 @@ void				text::recalculate_size()
 
 	for (char character : string)
 	{
-		auto 		symbol = font->find_symbol(character);
+		const auto	symbol = font->find_symbol(character);
 
 		if (!symbol)
 			continue;

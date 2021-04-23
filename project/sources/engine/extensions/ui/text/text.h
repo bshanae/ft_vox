@@ -1,6 +1,7 @@
 #pragma once
 
 #include "engine/main/core/object/object/object.h"
+#include "engine/main/core/object/object_constructor/object_constructor/object_constructor.h"
 
 #include "application/common/imports/glm.h"
 
@@ -10,10 +11,12 @@ namespace				engine::ui
 	class 				text;
 }
 
-class					engine::ui::text : public engine::object
+class					engine::ui::text :
+							public engine::object,
+							public engine::object_constructor<engine::ui::text>
 {
 public :
-						text();
+						text(const ivec2 &position, const shared_ptr<font> &font, const string &string);
 						~text() override = default;
 
 	std::string			get_string() const;
@@ -21,8 +24,7 @@ public :
 	shared_ptr<font>	get_font() const;
 	ivec2				get_size() const;
 
-	void				set_string(const std::string &string);
-	void				set_font(const shared_ptr<font> &font);
+	void				set_string(const string &string);
 
 private :
 

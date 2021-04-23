@@ -21,7 +21,6 @@ class				engine::ui::font_library :
 public :
 					font_library();
 					~font_library() override;
-
 private :
 
 	FT_Library		library = nullptr;

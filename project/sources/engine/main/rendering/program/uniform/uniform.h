@@ -24,7 +24,7 @@ public :
 
 	bool 			is_valid() const
 	{
-		return value != 1u;
+		return value != -1u;
 	}
 
 	void			upload(const type &data) const
