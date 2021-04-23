@@ -24,6 +24,7 @@ public :
 		stone,
 		snow,
 		mushroom,
+		tree,
         cloud
 	};
 

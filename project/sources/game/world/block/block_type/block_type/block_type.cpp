@@ -18,6 +18,7 @@ block_meta_type		game::get_meta_type(block_type type)
 		case block_type::cloud:
 		case block_type::snow:
 		case block_type::dirt_with_grass:
+		case block_type::tree:
 			return block_meta_type::opaque;
 
 		case block_type::water:

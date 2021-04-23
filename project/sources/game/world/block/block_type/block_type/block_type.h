@@ -15,6 +15,7 @@ namespace			game
 		snow,
 		dirt_with_grass,
 		mushroom,
+		tree,
 		water,
 		blue_flower
 	};

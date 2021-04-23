@@ -11,6 +11,7 @@ using namespace 	game;
     collection.emplace(biome::sand, biome(biome::sand));
 	collection.emplace(biome::stone, biome(biome::stone));
 	collection.emplace(biome::cloud, biome(biome::cloud));
+	collection.emplace(biome::tree, biome(biome::tree));
 }
 
 const biome			&biome_collection::get_biome(enum biome::type type) const

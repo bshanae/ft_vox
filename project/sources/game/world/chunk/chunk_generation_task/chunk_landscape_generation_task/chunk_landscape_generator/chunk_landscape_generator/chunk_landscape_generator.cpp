@@ -41,12 +41,17 @@ void					chunk_landscape_generator::generate_chunk(const shared_ptr<chunk> &chun
 		{
 			position.y = index.y;
 
-            if (index.y <= column_info.height) {
-                if (index.y > zero_height + 45) {
+            if (index.y <= column_info.height)
+            {
+                if (index.y > zero_height + 45)
+                {
                     if (index.y == column_info.height - 1
-                        && chunk->at({index.x, index.y - 1, index.z}).get_type() != block_type::air) {
-                        if (index.y <= zero_height + 55) {
-                            if (get_instance()->noise_for_snow.generate({position.x + position.z, position.y}) > 0.5f) {
+                        && chunk->at({index.x, index.y - 1, index.z}).get_type() != block_type::air)
+                    {
+                        if (index.y <= zero_height + 55)
+                        {
+                            if (get_instance()->noise_for_snow.generate({position.x + position.z, position.y}) > 0.5f)
+                            {
                                 chunk->at(index).set_type(block_type::snow);
                             }
                             else
@@ -65,7 +70,7 @@ void					chunk_landscape_generator::generate_chunk(const shared_ptr<chunk> &chun
                 chunk->at(index).set_type(block_type::water);
         }
 
-		generation_flora(chunk, position, index, block_type);
+//		generation_flora(chunk, position, index, block_type);
 		generation_clouds(chunk, position, index);
 	}
 }
@@ -120,48 +125,42 @@ void                    chunk_landscape_generator::generation_clouds(const share
 
 void                    chunk_landscape_generator::generation_flora(const shared_ptr<chunk> &chunk, vec3 position, chunk::index index, block_type block_type)
 {
-    if (chunk->at({index.x, index.y - 1, index.z}).get_type() != block_type::air) {
-        if (block_type == block_type::dirt) {
+    if (chunk->at({index.x, index.y - 1, index.z}).get_type() != block_type::air)
+    {
+        if (block_type == block_type::dirt)
+        {
             if (get_instance()->noise_for_mushroom.generate({position.x, position.z}) > 0.95f)
                 chunk->at(index).set_type(block_type::mushroom);
         }
-//        if (block_type == block_type::dirt) {
-//            if ((int)position.x % 7 == 0 && (int)position.z % 7 == 0)
-//                if (get_instance()->noise_for_mushroom.generate({position.x, position.z}) > 0.80f)
-//                    generation_tree(chunk, index);
-//        }
+        if ((int)index.x == 8 && (int)index.z == 8)
+            generation_tree(chunk, index);
     }
 }
 
 void                    chunk_landscape_generator::generation_tree(const shared_ptr<chunk> &chunk, chunk::index index)
 {
-
-//    while (index.y < height) {
-//        chunk->at(index).set_type(block_type::snow);
-//        if (height - index.y > 3)
-//
-//        index.y++;
-//    }
-    int height = 7;
+    int                 height = 7;
+    random_noise        random;
 
     for (int y = 0; y < height; y++) {
-        chunk->at(index).set_type(block_type::snow);
+        chunk->at(index).set_type(block_type::tree);
 
-//        int test = height - y;
-//        if (test % 2 == 0 && test > 5) {
-//            for (int x = -test; x < height; x++)
-//            for (int z = -test; z < height; z++) {
-//                chunk->at({index.x + x, index.y, index.z + z}).set_type(block_type::grass);
-//            }
-//        }
+        int delta = height - y;
+        if (delta <= 4)
+        {
+            if (delta == 4)
+                delta = 3;
 
-//        if (7 - y > 0) {
-//            for (int x = -(7 - y); x < 7 - y; x++)
-//            for (int z = -(7 - y); z < 7 - y; z++) {
-//
-//                chunk->at({index.x + x, index.y, index.z + z}).set_type(block_type::grass);
-//            }
-//        }
+            for (int x = -delta; x <= delta; x++)
+            for (int z = -delta; z <= delta; z++)
+            {
+                if (x == 0 && z == 0)
+                    continue;
+
+                if (random.generate_1d({x, z + y}, 0) > 0.1)
+                    chunk->at({index.x + x, index.y, index.z + z}).set_type(block_type::grass);
+            }
+        }
         index.y++;
     }
 }

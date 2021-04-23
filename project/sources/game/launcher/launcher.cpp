@@ -68,4 +68,5 @@ void				launcher::setup_texture_atlas()
 
 	game::texture_atlas::get_coordinates(game::block_type::blue_flower).set_all(ivec2(12, 15));
 	game::texture_atlas::get_coordinates(game::block_type::mushroom).set_all(ivec2(12, 14));
+	game::texture_atlas::get_coordinates(game::block_type::tree).set_all(ivec2(4, 14));
 }

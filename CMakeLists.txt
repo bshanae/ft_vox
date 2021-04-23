@@ -161,7 +161,7 @@ set(SOURCES
 	${SOURCES_LIBRARIES}
 	${SOURCES_APPLICATION}
 	${SOURCES_ENGINE}
-	${SOURCES_GAME})
+	${SOURCES_GAME} project/sources/game/world/chunk/chunk_generation_task/chunk_landscape_generation_task/chunk_landscape_generator/chunk_landscape_generator/chunk_fauna_generator.cpp project/sources/game/world/chunk/chunk_generation_task/chunk_landscape_generation_task/chunk_landscape_generator/chunk_landscape_generator/chunk_fauna_generator.h)
 
 # Executable
 

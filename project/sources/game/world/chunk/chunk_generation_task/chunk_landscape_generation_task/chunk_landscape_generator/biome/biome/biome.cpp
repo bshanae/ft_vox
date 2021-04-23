@@ -39,8 +39,11 @@ using namespace		game;
 			break ;
 
 		case (mushroom) :
-            noise = perlin_noise(seed, 0.015f);
 			first_layer = block_type::mushroom;
+			break ;
+
+		case (tree) :
+			first_layer = block_type::tree;
 			break ;
 
 		default :
