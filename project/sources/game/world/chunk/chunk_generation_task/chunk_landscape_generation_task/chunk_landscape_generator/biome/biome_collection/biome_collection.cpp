@@ -6,12 +6,9 @@ using namespace 	game;
 
 					biome_collection::biome_collection()
 {
-	collection.emplace(biome::dirt, biome(biome::dirt));
-    collection.emplace(biome::grass, biome(biome::grass));
-    collection.emplace(biome::sand, biome(biome::sand));
-	collection.emplace(biome::stone, biome(biome::stone));
-	collection.emplace(biome::cloud, biome(biome::cloud));
-	collection.emplace(biome::tree, biome(biome::tree));
+	collection.emplace(biome::plain, biome(biome::plain));
+	collection.emplace(biome::desert, biome(biome::desert));
+	collection.emplace(biome::mountains, biome(biome::mountains));
 }
 
 const biome			&biome_collection::get_biome(enum biome::type type) const

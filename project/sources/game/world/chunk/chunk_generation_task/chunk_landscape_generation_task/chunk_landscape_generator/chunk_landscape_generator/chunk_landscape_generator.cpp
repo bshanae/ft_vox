@@ -52,13 +52,13 @@ void					chunk_landscape_generator::generate_chunk(const shared_ptr<chunk> &chun
                         {
                             if (get_instance()->noise_for_snow.generate({position.x + position.z, position.y}) > 0.5f)
                             {
-                                chunk->at(index).set_type(block_type::snow);
+                                chunk->at(index).set_type(block_type::stone_with_snow);
                             }
                             else
                                 generation_dungeons(chunk, index, position, block_type);
                         }
                         else
-                            chunk->at(index).set_type(block_type::snow);
+                            chunk->at(index).set_type(block_type::stone_with_snow);
                     }
                     else
                         generation_dungeons(chunk, index, position, block_type);
@@ -142,8 +142,9 @@ void                    chunk_landscape_generator::generation_tree(const shared_
     int                 height = 7;
     random_noise        random;
 
-    for (int y = 0; y < height; y++) {
-        chunk->at(index).set_type(block_type::tree);
+    for (int y = 0; y < height; y++)
+    {
+        chunk->at(index).set_type(block_type::wood);
 
         int delta = height - y;
         if (delta <= 4)
@@ -158,7 +159,7 @@ void                    chunk_landscape_generator::generation_tree(const shared_
                     continue;
 
                 if (random.generate_1d({x, z + y}, 0) > 0.1)
-                    chunk->at({index.x + x, index.y, index.z + z}).set_type(block_type::grass);
+                    chunk->at({index.x + x, index.y, index.z + z}).set_type(block_type::leaves);
             }
         }
         index.y++;
@@ -180,11 +181,9 @@ const biome				&chunk_landscape_generator::generate_biome(const vec2 &cell_posit
 	const float			noise = noise_for_biome.generate_1d(cell_position, seed);
 
 	if (noise > 0.6f)
-		return biome_collection::get_instance()->get_biome(biome::stone);
-	else if (noise > 0.4f)
-		return biome_collection::get_instance()->get_biome(biome::sand);
-	else if (noise > 0.2f)
-		return biome_collection::get_instance()->get_biome(biome::grass);
-
-	return biome_collection::get_instance()->get_biome(biome::dirt);
+		return biome_collection::get_instance()->get_biome(biome::mountains);
+	else if (noise > 0.3f)
+		return biome_collection::get_instance()->get_biome(biome::plain);
+	else
+		return biome_collection::get_instance()->get_biome(biome::desert);
 }

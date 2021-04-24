@@ -50,23 +50,36 @@ void				launcher::construct_objects()
 
 void				launcher::setup_texture_atlas()
 {
-	game::texture_atlas::get_coordinates(game::block_type::dirt).set_all(ivec2(2, 15));
-    game::texture_atlas::get_coordinates(game::block_type::sand).set_all(ivec2(2, 14));
-	game::texture_atlas::get_coordinates(game::block_type::grass).set_all(ivec2(12, 3));
-    game::texture_atlas::get_coordinates(game::block_type::stone).set_all(ivec2(1, 15));
-    game::texture_atlas::get_coordinates(game::block_type::cloud).set_all(ivec2(3, 2));
-    game::texture_atlas::get_coordinates(game::block_type::snow).set_all(ivec2(2, 11));
+	//				Solid
 
-	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_left(ivec2(3, 15));
-	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_right(ivec2(3, 15));
-	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_front(ivec2(3, 15));
-	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_back(ivec2(3, 15));
-	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_top(ivec2(12, 3));
-	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_bottom(ivec2(2, 15));
+	game::texture_atlas::get_coordinates(game::block_type::dirt).set_all({2, 15});
 
-	game::texture_atlas::get_coordinates(game::block_type::water).set_all(ivec2(13, 3));
+	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_all({3, 15});
+	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_top({12, 3});
+	game::texture_atlas::get_coordinates(game::block_type::dirt_with_grass).set_bottom({2, 15});
 
-	game::texture_atlas::get_coordinates(game::block_type::blue_flower).set_all(ivec2(12, 15));
-	game::texture_atlas::get_coordinates(game::block_type::mushroom).set_all(ivec2(12, 14));
-	game::texture_atlas::get_coordinates(game::block_type::tree).set_all(ivec2(4, 14));
+    game::texture_atlas::get_coordinates(game::block_type::sand).set_all({2, 14});
+
+    game::texture_atlas::get_coordinates(game::block_type::stone).set_all({1, 15});
+
+	game::texture_atlas::get_coordinates(game::block_type::stone_with_snow).set_all({1, 15});
+	game::texture_atlas::get_coordinates(game::block_type::stone_with_snow).set_top({2, 11});
+
+	game::texture_atlas::get_coordinates(game::block_type::wood).set_all({4, 14});
+	game::texture_atlas::get_coordinates(game::block_type::wood).set_top({5, 14});
+	game::texture_atlas::get_coordinates(game::block_type::wood).set_bottom({5, 14});
+
+    game::texture_atlas::get_coordinates(game::block_type::cloud).set_all({3, 2});
+
+	//				Transparent
+
+	game::texture_atlas::get_coordinates(game::block_type::water).set_all({13, 3});
+
+	game::texture_atlas::get_coordinates(game::block_type::leaves).set_all({11, 1});
+
+	//				Diagonal
+
+	game::texture_atlas::get_coordinates(game::block_type::blue_flower).set_all({12, 15});
+
+	game::texture_atlas::get_coordinates(game::block_type::mushroom).set_all({12, 14});
 }

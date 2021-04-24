@@ -17,18 +17,12 @@ public :
 
 	enum					type
 	{
-		null,
-		dirt,
-		grass,
-        sand,
-		stone,
-		snow,
-		mushroom,
-		tree,
-        cloud
+		plain,
+        desert,
+		mountains
 	};
 
-	explicit				biome(enum type type = biome::null);
+	explicit				biome(enum type type);
 							biome(const biome &other);
 
 	friend bool 			operator == (const biome &left, const biome &right);

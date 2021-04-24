@@ -14,10 +14,10 @@
 namespace				game
 {
     class				chunk;
-    class				chunk_landscape_generator;
+    class				chunk_fauna_generator;
 }
 
-class					game::chunk_landscape_generator : public singleton<game::chunk_landscape_generator>
+class					game::chunk_fauna_generator : public singleton<game::chunk_fauna_generator>
 {
 public :
 
@@ -27,8 +27,8 @@ public :
         int 			height;
     };
 
-    chunk_landscape_generator();
-    ~chunk_landscape_generator() override = default;
+    chunk_fauna_generator();
+    ~chunk_fauna_generator() override = default;
 
     static void 		generate_chunk(const shared_ptr<chunk> &workspace);
     static column_info	generate_column(const ivec2 &position);

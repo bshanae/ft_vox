@@ -6,17 +6,24 @@ namespace			game
 {
 	enum class		block_type
 	{
+		// Empty
 		air,
+
+		// Solid
 		stone,
+		stone_with_snow,
 		dirt,
-		grass,
-		sand,
-		cloud,
-		snow,
 		dirt_with_grass,
-		mushroom,
-		tree,
+		sand,
+		wood,
+		cloud,
+
+		// Transparent
 		water,
+		leaves,
+
+		// Diagonal
+		mushroom,
 		blue_flower
 	};
 
