@@ -35,8 +35,6 @@ public :
 
 private :
 
-    int                 seed;
-
 	cellular_noise		noise_for_cell;
 	perlin_noise		noise_for_cell_shift;
 	random_noise		noise_for_biome;

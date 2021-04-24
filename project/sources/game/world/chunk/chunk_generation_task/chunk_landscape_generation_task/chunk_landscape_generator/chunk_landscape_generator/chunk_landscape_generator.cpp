@@ -8,8 +8,6 @@ using namespace			game;
 {
 	biome_collection::construct();
 
-    seed = 13;
-
 	noise_for_cell = cellular_noise(chunk_settings::landscape_seed, 0.003f);
 	noise_for_cell_shift = perlin_noise(chunk_settings::landscape_seed, 0.01f, 50.f);
 	noise_for_biome = random_noise();
@@ -178,7 +176,7 @@ void                    chunk_landscape_generator::generation_dungeons(const sha
 
 const biome				&chunk_landscape_generator::generate_biome(const vec2 &cell_position)
 {
-	const float			noise = noise_for_biome.generate_1d(cell_position, seed);
+	const float			noise = noise_for_biome.generate_1d(cell_position, FT_VOX_SEED);
 
 	if (noise > 0.6f)
 		return biome_collection::get_instance()->get_biome(biome::mountains);

@@ -1,30 +1,31 @@
 #include "biome.h"
 
 #include "application/common/debug/debug.h"
+#include "application/common/defines.h"
 
 using namespace		game;
 
 					biome::biome(enum type type)
 {
-    int seed = 0;
 	switch (this->type = type)
 	{
 		case (plain) :
-			noise = perlin_noise(seed, 0.02f, 7.f);
+			noise = perlin_noise(FT_VOX_SEED, 0.02f, 7.f);
 			first_layer = block_type::dirt_with_grass;
 			break ;
 
         case (desert) :
-            noise = perlin_noise(seed, 0.02f, 7.f);
+            noise = perlin_noise(FT_VOX_SEED, 0.02f, 7.f);
             first_layer = block_type::sand;
             break ;
 
 		case (mountains) :
-			noise = perlin_noise(seed, 0.015f, 90.f,  -25.f);
+			noise = perlin_noise(FT_VOX_SEED, 0.015f, 90.f,  -25.f);
 			first_layer = block_type::stone;
 			break ;
 
 		default :
+			debug::raise_error("Unexpected code branch");
 			break ;
 	}
 }
