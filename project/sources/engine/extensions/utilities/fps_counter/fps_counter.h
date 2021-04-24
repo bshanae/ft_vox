@@ -15,7 +15,7 @@ public :
 					fps_counter();
 					~fps_counter() override = default;
 
-	static int		get_fps();
+	int				get_fps() const;
 
 private :
 

@@ -11,9 +11,9 @@ using namespace		engine::utilities;
 	last_fps = 0;
 }
 
-int					fps_counter::get_fps()
+int					fps_counter::get_fps() const
 {
-	return get_instance()->last_fps;
+	return last_fps;
 }
 
 void 				fps_counter::when_updated()
