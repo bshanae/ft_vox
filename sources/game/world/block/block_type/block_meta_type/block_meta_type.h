@@ -64,5 +64,10 @@ inline bool			game::is_editable(block_meta_type meta_type)
 
 inline bool			game::does_transmit_light(block_meta_type meta_type)
 {
-	return meta_type == block_meta_type::empty || meta_type == block_meta_type::transparent;
+	return
+	(
+		meta_type == block_meta_type::empty ||
+		meta_type == block_meta_type::transparent ||
+		meta_type == block_meta_type::diagonal
+	);
 }
