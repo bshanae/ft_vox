@@ -8,7 +8,7 @@ using namespace				game;
 
 							texture_atlas::texture_atlas()
 {
-	texture = engine::texture_loader::load("project/resources/atlases/default.png");
+	texture = engine::texture_loader::load("resources/atlases/default.png");
 
 	debug::check_critical
 	(

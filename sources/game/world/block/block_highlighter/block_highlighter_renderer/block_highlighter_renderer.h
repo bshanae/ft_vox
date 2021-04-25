@@ -32,8 +32,8 @@ public :
 
 private :
 
-	inline static const string	path_to_vertex_shader = "project/resources/shaders/selector.vertex.glsl";
-	inline static const string	path_to_fragment_shader = "project/resources/shaders/selector.fragment.glsl";
+	inline static const string	path_to_vertex_shader = "resources/shaders/selector.vertex.glsl";
+	inline static const string	path_to_fragment_shader = "resources/shaders/selector.fragment.glsl";
 
 	unique_ptr<engine::program>	program;
 

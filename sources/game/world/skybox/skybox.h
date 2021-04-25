@@ -27,8 +27,8 @@ public :
 								~skybox() override = default;
 private :
 
-	inline static const string	path_to_vertex_shader = "project/resources/shaders/skybox.vertex.glsl";
-	inline static const string	path_to_fragment_shader = "project/resources/shaders/skybox.fragment.glsl";
+	inline static const string	path_to_vertex_shader = "resources/shaders/skybox.vertex.glsl";
+	inline static const string	path_to_fragment_shader = "resources/shaders/skybox.fragment.glsl";
 
 	bool						should_render;
 
