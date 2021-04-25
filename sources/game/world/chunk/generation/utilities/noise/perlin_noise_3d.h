@@ -46,7 +46,6 @@ public :
         float				right_bottom_further_angle = random(whole + vec3(1.0f, 1.0f, 0.0f)) * pi_on_2;
         float				right_bottom_nearest_angle = random(whole + vec3(1.0f, 1.0f, 1.0f)) * pi_on_2;
 
-
         vec3                normal = normalize(vec3(1, 1, 1));
 
         vec3				left_top_further = rotate(vec3(1.f, 0.f, 0.f), left_top_further_angle, normal);
