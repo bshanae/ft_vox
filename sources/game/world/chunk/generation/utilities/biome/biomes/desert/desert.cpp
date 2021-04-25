@@ -4,7 +4,7 @@ using namespace		game::biomes;
 
 					desert::desert() :
 						height_generator(0.02f, 25.f),
-						decoration_generator(0.005f)
+						decoration_generator(0.05f, 0.99f)
 {}
 
 int					desert::generate_height(const vec2 &column) const
@@ -25,6 +25,6 @@ void				desert::generate_decoration(const block_ptr &block, bool is_height_affec
 	const auto		block_position = block.get_world_position();
 	const auto 		column_position = vec2(block_position.x, block_position.z);
 
-	if (not is_height_affected_by_cave)
+	if (decoration_generator(column_position) and not is_height_affected_by_cave)
 		block->set_type(block_type::blue_flower);
 }

@@ -1,7 +1,6 @@
 #include "chunk_decoration_generation_task.h"
 
 #include "game/world/chunk/generation/utilities/chunk_workspace/chunk_workspace.h"
-#include "game/world/chunk/generation/utilities/biome/biome_generator/biome_generator.h"
 #include "game/world/chunk/generation/utilities/height_interpolator/height_interpolator.h"
 
 using namespace			game;

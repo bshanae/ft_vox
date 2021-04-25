@@ -4,24 +4,24 @@
 #include "game/world/chunk/generation/utilities/height_generator/height_generator.h"
 #include "game/world/chunk/generation/utilities/decoration_generator/decoration_generator.h"
 
-namespace						game::biomes
+namespace					game::biomes
 {
-	class 						desert;
+	class 					desert;
 }
 
-class							game::biomes::desert : public game::biomes::abstract
+class						game::biomes::desert : public game::biomes::abstract
 {
 public :
 
-								desert();
-								~desert() override = default;
+							desert();
+							~desert() override = default;
 
-	int							generate_height(const vec2 &column) const override;
-	block_type					generate_block(int current_height, int total_height) const override;
-	void						generate_decoration(const block_ptr &block, bool is_height_affected_by_cave) const override;
+	int						generate_height(const vec2 &column) const override;
+	block_type				generate_block(int current_height, int total_height) const override;
+	void					generate_decoration(const block_ptr &block, bool is_height_affected_by_cave) const override;
 
 private :
 
-	game::height_generator		height_generator;
-	game::decoration_generator	decoration_generator;
+	height_generator		height_generator;
+	decoration_generator	decoration_generator;
 };

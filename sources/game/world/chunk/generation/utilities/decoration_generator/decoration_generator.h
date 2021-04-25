@@ -11,10 +11,11 @@ class				game::decoration_generator
 {
 public :
 
-	explicit		decoration_generator(float frequency);
+					decoration_generator(float frequency, float area);
 	bool 			operator () (const vec2 &column)const;
 
 private :
 
+	float			area;
 	perlin_noise_2d	noise;
 };

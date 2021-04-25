@@ -16,6 +16,8 @@ game::block_type	plain::generate_block(int current_height, int total_height) con
 {
 	if (current_height > total_height)
 		return block_type::air;
+	else if (current_height == total_height)
+		return block_type::dirt_with_grass;
 	else
 		return block_type::dirt;
 }

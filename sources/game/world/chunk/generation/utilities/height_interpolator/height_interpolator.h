@@ -11,7 +11,8 @@ namespace				game
 class					game::height_interpolator
 {
 public :
-						height_interpolator(const function<int(vec2)> &height_generator);
+
+	explicit			height_interpolator(const function<int(vec2)> &height_generator);
 	int					operator () (const vec2 &initial_position) const;
 
 private :

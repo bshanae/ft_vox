@@ -35,18 +35,14 @@ void					chunk_landscape_generation_task::generate_column(chunk_workspace &works
 	const auto			&chunk = workspace.chunk;
 	const auto 			column = vec2(chunk->get_position().x + (float)index.x, chunk->get_position().z + (float)index.z);
 
-	const auto			&biome = biome_generator::generate_biome(column);
+	const auto			biome = biome_generator::generate_biome(column);
 	const auto			interpolated_height = height_interpolator(height_generator)(column);
 
 	optional<int>		final_height;
 
 	for (index.y = interpolated_height; index.y >= 0; index.y--)
 	{
-		if (cave_generator(chunk->get_position() + (vec3)index))
-		{
-			// A cave
-		}
-		else
+		if (not cave_generator(chunk->get_position() + (vec3)index))
 		{
 			if (not final_height.has_value())
 				final_height = index.y;

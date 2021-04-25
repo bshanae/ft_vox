@@ -4,10 +4,12 @@
 
 using namespace	game;
 
-				decoration_generator::decoration_generator(float frequency) : noise(FT_VOX_SEED, frequency)
+				decoration_generator::decoration_generator(float frequency, float area) :
+					noise(FT_VOX_SEED, frequency),
+					area(area)
 {}
 
 bool 			decoration_generator::operator () (const vec2 &column) const
 {
-	return noise(column) > 0.95f;
+	return noise(column) > area;
 }
