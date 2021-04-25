@@ -50,6 +50,7 @@ public :
 										~chunk_workspace();
 
 	void								reset();
+	void								share(chunk_workspace &target);
 
 	const shared_ptr<chunk>				chunk;
 

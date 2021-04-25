@@ -2,7 +2,8 @@
 
 using namespace				game;
 
-							chunk_workspace::chunk_workspace(const shared_ptr<game::chunk> &chunk) : chunk(chunk)
+							chunk_workspace::chunk_workspace(const shared_ptr<game::chunk> &chunk) :
+								chunk(chunk)
 {}
 
 							chunk_workspace::~chunk_workspace()
@@ -42,4 +43,9 @@ void						chunk_workspace::reset()
 	reset_batch(batch_for_opaque);
 	reset_batch(batch_for_transparent);
 	reset_batch(batch_for_partially_transparent);
+}
+
+void						chunk_workspace::share(chunk_workspace &target)
+{
+	target.column_infos = this->column_infos;
 }

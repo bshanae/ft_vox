@@ -34,7 +34,7 @@ public :
 	explicit							chunk_generation_worker
 										(
 											const shared_ptr<chunk> &chunk,
-											bool generate_landscape = true
+											bool generate_landscape_and_decorations = true
 										);
 										~chunk_generation_worker() = default;
 
@@ -45,6 +45,8 @@ public :
 
 	/// Tells worker not to execute new task. However, worker still waits for end of active task
 	void 								stop_workflow();
+
+	void								share_workspace(chunk_generation_worker &target) const;
 
 private :
 

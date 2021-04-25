@@ -34,7 +34,7 @@ void					chunk_decoration_generation_task::generate_decoration_on_column
 	const auto 			column = vec2(chunk->get_position().x + (float)index.x, chunk->get_position().z + (float)index.z);
 	const auto			column_info = workspace.column_infos.at({index.x, 0, index.z});
 
-	const auto			&biome = column_info.biome;
+	const auto			biome = column_info.biome;
 	const auto			block = block_ptr(chunk, {index.x, column_info.final_height + 1, index.z});
 
 	biome->generate_decoration(block, column_info.is_height_affected_by_cave);

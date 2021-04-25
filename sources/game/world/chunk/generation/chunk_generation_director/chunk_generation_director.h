@@ -31,7 +31,13 @@ public :
 	static void 							delete_build(const shared_ptr<chunk> &chunk);
 
 	static bool								have_worker(const shared_ptr<chunk> &chunk);
-	static const chunk_generation_worker	&find_worker(const shared_ptr<chunk> &chunk);
+	static chunk_generation_worker			&find_worker(const shared_ptr<chunk> &chunk);
+
+	static chunk_generation_worker			&find_or_create_worker
+											(
+												const shared_ptr<chunk> &chunk,
+												bool preserve_landscape_and_decorations = false
+											);
 
 private :
 
@@ -41,7 +47,6 @@ private :
 	void 									when_deinitialized() override;
 	void 									when_updated() override;
 
-	chunk_generation_worker					&find_or_create_worker(const shared_ptr<chunk> &chunk, bool preserve_landscape = false);
 	void 									drop_worker(const shared_ptr<chunk> &chunk);
 };
 

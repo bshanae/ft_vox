@@ -19,7 +19,7 @@ optional<chunk_build>			chunk_generation_director::process_build(const shared_pt
 	if (instance->get_state() == state::deinitialized)
 		return nullopt;
 
-	return instance->find_or_create_worker(chunk).process();
+	return find_or_create_worker(chunk).process();
 }
 
 void							chunk_generation_director::reset_build(const shared_ptr<chunk> &chunk)
@@ -29,14 +29,20 @@ void							chunk_generation_director::reset_build(const shared_ptr<chunk> &chunk
 	if (get_instance()->get_state() == state::deinitialized)
 		return;
 
-	bool is_landscape_generated =
+	bool						is_landscape_and_decorations_generated =
 	(
 		instance->have_worker(chunk) and
-		instance->find_worker(chunk).get_status() >= chunk_generation_worker::generated_landscape
+		instance->find_worker(chunk).get_status() >= chunk_generation_worker::generated_decorations
 	);
 
+	const auto					&old_worker = find_worker(chunk);
+
 	instance->drop_worker(chunk);
-	instance->find_or_create_worker(chunk, is_landscape_generated).process(true);
+
+	auto						&new_worker = instance->find_or_create_worker(chunk, is_landscape_and_decorations_generated);
+
+	old_worker.share_workspace(new_worker);
+	new_worker.process(true);
 }
 
 void 							chunk_generation_director::delete_build(const shared_ptr<chunk> &chunk)
@@ -54,9 +60,23 @@ bool							chunk_generation_director::have_worker(const shared_ptr<chunk> &chunk
 	return instance->active_workers.find(chunk) != instance->active_workers.end();
 }
 
-const chunk_generation_worker	&chunk_generation_director::find_worker(const shared_ptr<chunk> &chunk)
+chunk_generation_worker			&chunk_generation_director::find_worker(const shared_ptr<chunk> &chunk)
 {
 	return *get_instance()->active_workers.at(chunk);
+}
+
+chunk_generation_worker			&chunk_generation_director::find_or_create_worker
+								(
+									const shared_ptr<chunk> &chunk,
+									bool preserve_landscape_and_decorations
+								)
+{
+	const auto 					instance = get_instance();
+
+	if (instance->active_workers.find(chunk) == instance->active_workers.end())
+		instance->active_workers.emplace(chunk, make_unique<chunk_generation_worker>(chunk, not preserve_landscape_and_decorations));
+
+	return *instance->active_workers.at(chunk);
 }
 
 void 							chunk_generation_director::when_deinitialized()
@@ -76,14 +96,6 @@ void 							chunk_generation_director::when_updated()
 		else
 			++iterator;
 	}
-}
-
-chunk_generation_worker			&chunk_generation_director::find_or_create_worker(const shared_ptr<chunk> &chunk, bool preserve_landscape)
-{
-	if (active_workers.find(chunk) == active_workers.end())
-		active_workers.emplace(chunk, make_unique<chunk_generation_worker>(chunk, not preserve_landscape));
-
-	return *active_workers.at(chunk);
 }
 
 void 							chunk_generation_director::drop_worker(const shared_ptr<chunk> &chunk)

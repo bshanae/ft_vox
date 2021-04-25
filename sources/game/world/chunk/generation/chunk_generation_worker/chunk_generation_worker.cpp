@@ -23,17 +23,17 @@ using					generation_status = chunk_generation_worker::generation_status;
 						chunk_generation_worker::chunk_generation_worker
 						(
 							const shared_ptr<chunk> &chunk,
-							bool generate_landscape
+							bool generate_landscape_and_decorations
 						) :
 							is_workflow_stopped(false),
 							should_switch_task(true),
-							status(generate_landscape ? null : generated_landscape),
-							next_status(generate_landscape ? null : generated_landscape)
+							status(generate_landscape_and_decorations ? null : generated_decorations),
+							next_status(generate_landscape_and_decorations ? null : generated_light)
 {
 	workspace = make_unique<chunk_workspace>(chunk);
 }
 
-generation_status					chunk_generation_worker::get_status() const
+generation_status		chunk_generation_worker::get_status() const
 {
 	return status;
 }
@@ -62,6 +62,11 @@ optional<chunk_build>	chunk_generation_worker::process(bool try_build_at_once)
 void 					chunk_generation_worker::stop_workflow()
 {
 	is_workflow_stopped = true;
+}
+
+void					chunk_generation_worker::share_workspace(chunk_generation_worker &target) const
+{
+	workspace->share(*target.workspace);
 }
 
 bool 					chunk_generation_worker::is_busy() const
@@ -120,7 +125,10 @@ void					chunk_generation_worker::switch_task()
 
 		case generation_status::generated_landscape:
 		{
-			set_task(new chunk_light_generation_task());
+			if (not can_launch_decoration_generation_task())
+				break;
+
+			set_task(new chunk_decoration_generation_task());
 			next_status = generation_status::generated_decorations;
 			should_switch_task = false;
 			break;
@@ -128,10 +136,7 @@ void					chunk_generation_worker::switch_task()
 
 		case generation_status::generated_decorations:
 		{
-			if (not can_launch_decoration_generation_task())
-				break;
-
-			set_task(new chunk_decoration_generation_task());
+			set_task(new chunk_light_generation_task());
 			next_status = generation_status::generated_light;
 			should_switch_task = false;
 			break;
