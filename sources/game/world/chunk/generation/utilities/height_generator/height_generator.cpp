@@ -12,5 +12,5 @@ using namespace		game;
 
 int 				height_generator::operator () (const vec2 &column) const
 {
-	return chunk_settings::zero_height + (int)noise.generate(column);
+	return chunk_settings::zero_height + (int)noise(column);
 }

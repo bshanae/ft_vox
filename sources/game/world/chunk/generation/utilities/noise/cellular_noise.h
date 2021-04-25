@@ -1,6 +1,6 @@
 #pragma once
 
-#include "random_noise.h"
+#include "random_noise_2d.h"
 
 namespace					game
 {
@@ -23,7 +23,7 @@ public :
     							random(seed)
 	{}
 
-	cell					generate(vec2 input) const
+	cell					operator () (vec2 input) const
 	{
 		input *= frequency;
 
@@ -50,21 +50,17 @@ public :
 		return (nearest);
 	}
 
-	cell					generate(const vec3 &input) const
-	{
-		return (generate({input.x, input.z}));
-	}
 
 private :
 
 	float 					frequency;
 	int 					seed;
 
-	random_noise			random;
+	random_noise_2d			random;
 
 	void					position_determination(cell &cell, const vec2 &position) const
 	{
-		cell.position = position + random.generate_2d(position);
+		cell.position = position + random(position);
 	}
 
 	void 					calculate_distance(cell &cell, const vec2 &point) const

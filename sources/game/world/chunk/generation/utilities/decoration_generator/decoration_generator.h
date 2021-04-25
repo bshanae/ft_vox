@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/world/chunk/generation/utilities/noise/perlin_noise.h"
+#include "game/world/chunk/generation/utilities/noise/perlin_noise_2d.h"
 
 namespace			game
 {
@@ -16,5 +16,5 @@ public :
 
 private :
 
-	perlin_noise	noise;
+	perlin_noise_2d	noise;
 };

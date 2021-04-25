@@ -2,7 +2,6 @@
 
 #include "game/world/block/block_type/block_type/block_type.h"
 #include "game/world/block/block_ptr/block_ptr.h"
-#include "game/world/chunk/generation/utilities/noise/perlin_noise.h"
 
 namespace				game::biomes
 {

@@ -9,5 +9,5 @@ using namespace	game;
 
 bool 			decoration_generator::operator () (const vec2 &column) const
 {
-	return noise.generate(column) > 0.95f;
+	return noise(column) > 0.95f;
 }

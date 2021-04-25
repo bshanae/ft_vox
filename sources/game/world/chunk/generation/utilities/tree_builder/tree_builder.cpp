@@ -1,13 +1,13 @@
 #include "tree_builder.h"
 
-#include "game/world/chunk/generation/utilities/noise/random_noise.h"
+#include "game/world/chunk/generation/utilities/noise/random_noise_1d.h"
 
 
 using namespace		game;
 
 void				tree_builder::build(const block_ptr &block)
 {
-	random_noise	random(FT_VOX_SEED);
+	random_noise_1d	random(FT_VOX_SEED);
 	int				delta;
 
 	block_ptr		trunk_block = block;
@@ -29,7 +29,7 @@ void				tree_builder::build(const block_ptr &block)
 				if (x == 0 && z == 0)
 					continue;
 
-				if (random.generate_1d({x, z + y}) > 0.1)
+				if (random({x, z + y}) > 0.1)
 				{
 					leave_block = trunk_block.get_neighbor({x, 0, z});
 					validate_leave_block(leave_block);

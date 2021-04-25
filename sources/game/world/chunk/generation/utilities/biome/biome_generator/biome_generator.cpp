@@ -6,12 +6,12 @@ using namespace					game;
 
 shared_ptr<biomes::abstract>	biome_generator::generate_biome(const vec2 &column)
 {
-	const auto 					shift_x = noise_for_cell_shift.generate({column.x, column.y});
-	const auto 					shift_y = noise_for_cell_shift.generate({column.y, column.x});
+	const auto 					shift_x = noise_for_cell_shift({column.x, column.y});
+	const auto 					shift_y = noise_for_cell_shift({column.y, column.x});
 	const auto					shift = vec2(shift_x, shift_y);
 
-	const auto					cell = noise_for_cell.generate(column + shift);
-	const auto					biome_noise = noise_for_selection.generate_1d(cell.position);
+	const auto					cell = noise_for_cell(column + shift);
+	const auto					biome_noise = noise_for_selection(cell.position);
 
 	return select_biome(biome_noise);
 }

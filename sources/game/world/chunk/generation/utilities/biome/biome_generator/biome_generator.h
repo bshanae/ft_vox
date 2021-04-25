@@ -5,6 +5,7 @@
 #include "application/common/defines.h"
 
 #include "game/world/chunk/generation/utilities/noise/cellular_noise.h"
+#include "game/world/chunk/generation/utilities/noise/perlin_noise_2d.h"
 #include "game/world/chunk/generation/utilities/biome/biomes/abstract/abstract.h"
 
 namespace									game
@@ -38,9 +39,9 @@ private :
 		float								max;
 	};
 
-	static inline cellular_noise			noise_for_cell = cellular_noise(FT_VOX_SEED, 0.002f);
-	static inline perlin_noise				noise_for_cell_shift = perlin_noise(FT_VOX_SEED, 0.02f, 50.f);
-	static inline random_noise				noise_for_selection = random_noise(FT_VOX_SEED);
+	static inline cellular_noise			noise_for_cell{FT_VOX_SEED, 0.002f};
+	static inline perlin_noise_2d			noise_for_cell_shift{FT_VOX_SEED, 0.02f, 50.f};
+	static inline random_noise_1d			noise_for_selection{FT_VOX_SEED};
 
 	static inline list<biome_config>		biome_configs = {};
 
