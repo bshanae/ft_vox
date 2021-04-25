@@ -2,8 +2,11 @@
 
 using namespace		game::biomes;
 
-					mountains::mountains() : height_generator( 0.008f, 90.f)
-{}
+					mountains::mountains()
+{
+	height_generator.add_layer(0.008f, 100.f, 3.f);
+	height_generator.add_layer(0.08f, 20.f, 1.f);
+}
 
 int					mountains::generate_height(const vec2 &column) const
 {

@@ -2,10 +2,11 @@
 
 using namespace		game::biomes;
 
-					desert::desert() :
-						height_generator(0.02f, 25.f),
-						decoration_generator(0.05f, 0.99f)
-{}
+					desert::desert() : decoration_generator(0.05f, 0.99f)
+{
+	height_generator.add_layer(0.02f, 25.f, 1.5f);
+	height_generator.add_layer(0.08f, 10.f, 1.f);
+}
 
 int					desert::generate_height(const vec2 &column) const
 {

@@ -4,8 +4,11 @@
 
 using namespace		game::biomes;
 
-					plain::plain() : height_generator(0.02f, 7.f)
-{}
+					plain::plain()
+{
+	height_generator.add_layer(0.01f, 18.f, 1.f);
+	height_generator.add_layer(0.08f, 4.f, 1.f);
+}
 
 int					plain::generate_height(const vec2 &column) const
 {
