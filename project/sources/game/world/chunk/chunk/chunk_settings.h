@@ -15,7 +15,7 @@ struct							game::chunk_settings
 	static constexpr int		size[3] = {16, 256, 16};
 	static inline const vec3	size_as_vector = vec3(size[0], size[1], size[2]);
 
-	static inline int			landscape_seed = 21;
-
 	using						underlying_array = array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>;
+
+	static constexpr int		zero_height = 60;
 };

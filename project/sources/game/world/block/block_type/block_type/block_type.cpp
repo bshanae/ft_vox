@@ -18,10 +18,10 @@ block_meta_type		game::get_meta_type(block_type type)
 		case block_type::stone_with_snow:
 		case block_type::cloud:
 		case block_type::wood:
+		case block_type::leaves:
 			return block_meta_type::opaque;
 
 		case block_type::water:
-		case block_type::leaves:
 			return block_meta_type::transparent;
 
 		case block_type::blue_flower:

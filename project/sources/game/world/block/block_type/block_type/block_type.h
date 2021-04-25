@@ -16,11 +16,11 @@ namespace			game
 		dirt_with_grass,
 		sand,
 		wood,
+		leaves,
 		cloud,
 
 		// Transparent
 		water,
-		leaves,
 
 		// Diagonal
 		mushroom,

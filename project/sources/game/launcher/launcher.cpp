@@ -10,19 +10,17 @@
 #include "game/world/texture_atlas/texture_atlas/texture_atlas.h"
 #include "game/world/block/block_highlighter/block_highlighter/block_highlighter.h"
 #include "game/world/block/block_highlighter/block_highlighter_renderer/block_highlighter_renderer.h"
-#include "game/world/chunk/chunk_generation_director/chunk_generation_director.h"
+#include "game/world/chunk/generation/chunk_generation_director/chunk_generation_director.h"
 #include "game/world/chunk/chunk_renderer/chunk_renderer.h"
+#include "game/world/chunk/generation/utilities/biome/biome_generator/biome_generator.h"
+#include "game/world/chunk/generation/utilities/biome/biomes/plain/plain.h"
+#include "game/world/chunk/generation/utilities/biome/biomes/desert/desert.h"
+#include "game/world/chunk/generation/utilities/biome/biomes/mountains/mountains.h"
 #include "game/player/player/player.h"
 
+#include "engine/extensions/ui/font/font/font.h"
+
 using namespace 	game;
-
-void 				launcher::construct_engine_extension_objects()
-{
-	engine::utilities::fps_counter::construct();
-
-	engine::ui::font_library::construct();
-	engine::ui::symbol_renderer::construct();
-}
 
 void				launcher::setup_layouts()
 {
@@ -33,7 +31,15 @@ void				launcher::setup_layouts()
 	engine::layout_manager::add("UI");
 }
 
-void				launcher::construct_objects()
+void 				launcher::construct_engine_extension_objects()
+{
+	engine::utilities::fps_counter::construct();
+
+	engine::ui::font_library::construct();
+	engine::ui::symbol_renderer::construct();
+}
+
+void				launcher::construct_game_objects()
 {
 	game::skybox::construct();
 	game::texture_atlas::construct();
@@ -44,8 +50,6 @@ void				launcher::construct_objects()
 	game::chunk_generation_director::construct();
 	game::chunk_renderer::construct();
 	game::world::construct();
-
-	game::player::construct();
 }
 
 void				launcher::setup_texture_atlas()
@@ -69,17 +73,29 @@ void				launcher::setup_texture_atlas()
 	game::texture_atlas::get_coordinates(game::block_type::wood).set_top({5, 14});
 	game::texture_atlas::get_coordinates(game::block_type::wood).set_bottom({5, 14});
 
+	game::texture_atlas::get_coordinates(game::block_type::leaves).set_all({12, 1});
+
     game::texture_atlas::get_coordinates(game::block_type::cloud).set_all({3, 2});
 
 	//				Transparent
 
 	game::texture_atlas::get_coordinates(game::block_type::water).set_all({13, 3});
 
-	game::texture_atlas::get_coordinates(game::block_type::leaves).set_all({11, 1});
-
 	//				Diagonal
 
 	game::texture_atlas::get_coordinates(game::block_type::blue_flower).set_all({12, 15});
 
 	game::texture_atlas::get_coordinates(game::block_type::mushroom).set_all({12, 14});
+}
+
+void				launcher::setup_biomes()
+{
+	game::biome_generator::register_biome<biomes::plain>(10);
+	game::biome_generator::register_biome<biomes::desert>(10);
+	game::biome_generator::register_biome<biomes::mountains>(10);
+}
+
+void 				launcher::construct_player()
+{
+	game::player::construct();
 }

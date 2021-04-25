@@ -4,7 +4,7 @@
 
 #include "engine/main/rendering/model/model/model.h"
 
-#include "game/world/chunk/chunk_generation_director/chunk_generation_director.h"
+#include "game/world/chunk/generation/chunk_generation_director/chunk_generation_director.h"
 
 using namespace				game;
 

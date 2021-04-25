@@ -6,8 +6,9 @@
 #include "engine/main/rendering/camera/camera/camera.h"
 
 #include "game/world/block/block_face/block_face.h"
-#include "game/world/chunk/chunk_generation_task/chunk_landscape_generation_task/chunk_landscape_generator/chunk_landscape_generator/chunk_landscape_generator.h"
 #include "game/world/world/world.h"
+#include "game/world/chunk/generation/utilities/biome/biome_generator/biome_generator.h"
+#include "game/world/chunk/generation/utilities/height_interpolator/height_interpolator.h"
 #include "game/player/player/player_settings.h"
 #include "game/player/ray_caster/ray_caster.h"
 
@@ -149,12 +150,23 @@ void					player::try_remove_block()
 
 vec3					player::calculate_initial_position()
 {
-	const auto 			column_info = chunk_landscape_generator::generate_column(vec2());
+	static const auto	height_generator = [](const vec2 &position)
+	{
+		return biome_generator::generate_biome(position)->generate_height(position);
+	};
+
+	const auto 			column = vec2();
+	const auto			&biome = biome_generator::generate_biome(column);
+	const auto			interpolated_height = height_interpolator(height_generator)(column);
+
+	static const float	tree_like_offset = 7.f;
+	static const float	one_block_offset = 1.f;
+
 	vec3				position;
 
 	position.x = 0.5f;
 	position.z = 0.5f;
-	position.y = (float)column_info.height + 1.f + player_settings::aabb_size.y;
+	position.y = (float)interpolated_height + one_block_offset + tree_like_offset + player_settings::aabb_size.y;
 
 	return position;
 }
