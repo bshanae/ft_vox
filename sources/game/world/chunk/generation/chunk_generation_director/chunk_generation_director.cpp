@@ -37,6 +37,12 @@ void							chunk_generation_director::reset_build(const shared_ptr<chunk> &chunk
 
 	const auto					&old_worker = find_worker(chunk);
 
+	debug::check
+	(
+		not old_worker.is_busy(),
+		"[game::chunk_generation_director] Old worker haven't finish its work, but a new worker is created. This may cause artifacts"
+	);
+
 	instance->drop_worker(chunk);
 
 	auto						&new_worker = instance->find_or_create_worker(chunk, is_landscape_and_decorations_generated);
@@ -91,7 +97,7 @@ void 							chunk_generation_director::when_updated()
 {
 	for (auto iterator = dropped_workers.begin(); iterator != dropped_workers.end();)
 	{
-		if ((*iterator)->is_busy())
+		if (not (*iterator)->is_busy())
 			iterator = dropped_workers.erase(iterator);
 		else
 			++iterator;
