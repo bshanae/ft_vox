@@ -19,7 +19,7 @@ public :
 
 private :
 
-	static inline int 	snow_level = 40;
+	static inline int 	snow_level = 105;
 
 	height_generator	height_generator;
 };

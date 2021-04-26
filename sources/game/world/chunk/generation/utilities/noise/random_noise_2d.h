@@ -11,7 +11,6 @@ class 					game::random_noise_2d
 {
 public :
 
-                        random_noise_2d(int seed) : seed(seed) {}
                         ~random_noise_2d() = default;
 
     vec2				operator () (vec2 input) const
@@ -21,8 +20,6 @@ public :
     }
 
 private :
-
-	const int 			seed;
 
     static inline float	const_factor = 43758.5453f;
     static inline vec2	const_vector_2d1 = vec2(127.1f, 311.7f);

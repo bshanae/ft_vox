@@ -20,5 +20,5 @@ int 				height_generator::operator () (const vec2 &column) const
 
 void				height_generator::add_layer(float frequency, float multiplier, float power)
 {
-	layers.emplace_back(FT_VOX_SEED, frequency, multiplier, power);
+	layers.emplace_back(frequency, multiplier, power);
 }

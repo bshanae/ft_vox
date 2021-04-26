@@ -7,7 +7,7 @@ using namespace		game;
 
 void				tree_builder::build(const block_ptr &block)
 {
-	random_noise_1d	random(FT_VOX_SEED);
+	random_noise_1d	random;
 	int				delta;
 
 	block_ptr		trunk_block = block;

@@ -15,16 +15,13 @@ public :
 
 	explicit				perlin_noise_2d
 							(
-								int seed = 0,
 								float frequency = 1.f,
 								float multiplier = 1.f,
 								float power = 1.f
 							) :
-								seed(seed),
 								frequency(frequency),
 								multiplier(multiplier),
-								power(power),
-								random(seed)
+								power(power)
 							{}
 
 
@@ -73,7 +70,6 @@ public :
 
 private :
 
-	int 					seed;
 	float 					frequency;
 	float 					multiplier;
 	float 					power;
