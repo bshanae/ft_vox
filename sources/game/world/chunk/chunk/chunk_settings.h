@@ -12,7 +12,7 @@ namespace						game
 
 struct							game::chunk_settings
 {
-	static constexpr int		size[3] = {16, 256, 16};
+	static constexpr int		size[3] = {64, 256, 64};
 	static inline const vec3	size_as_vector = vec3(size[0], size[1], size[2]);
 
 	using						underlying_array = array3<block, chunk_settings::size[0], chunk_settings::size[1], chunk_settings::size[2]>;
