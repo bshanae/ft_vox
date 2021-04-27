@@ -43,8 +43,8 @@ public :
 
 	optional<chunk_build>				process(bool try_build_at_once = false);
 
-	/// Tells worker not to execute new task. However, worker still waits for end of active task
 	void 								stop_workflow();
+	void 								wait_for_finish_of_task();
 
 	void								share_workspace(chunk_generation_worker &target) const;
 

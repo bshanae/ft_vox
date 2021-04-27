@@ -64,6 +64,12 @@ void 					chunk_generation_worker::stop_workflow()
 	is_workflow_stopped = true;
 }
 
+void 					chunk_generation_worker::wait_for_finish_of_task()
+{
+	if (task != nullptr)
+		task->wait();
+}
+
 void					chunk_generation_worker::share_workspace(chunk_generation_worker &target) const
 {
 	workspace->share(*target.workspace);

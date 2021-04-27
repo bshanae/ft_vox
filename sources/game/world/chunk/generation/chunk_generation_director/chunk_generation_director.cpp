@@ -87,10 +87,15 @@ chunk_generation_worker			&chunk_generation_director::find_or_create_worker
 
 void 							chunk_generation_director::when_deinitialized()
 {
-#if !FT_VOX_FORCE_EXIT
-	active_workers.clear();
-	dropped_workers.clear();
+#if FT_VOX_FORCE_EXIT
+	return;
 #endif
+
+	for (const auto &worker : dropped_workers)
+		worker->wait_for_finish_of_task();
+
+	for (const auto &[chunk, worker] : active_workers)
+		worker->wait_for_finish_of_task();
 }
 
 void 							chunk_generation_director::when_updated()
