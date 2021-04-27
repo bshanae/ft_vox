@@ -66,7 +66,7 @@ void				launcher::setup_texture_atlas()
 
     game::texture_atlas::get_coordinates(game::block_type::stone).set_all({1, 15});
 
-	game::texture_atlas::get_coordinates(game::block_type::stone_with_snow).set_all({0, 15});
+	game::texture_atlas::get_coordinates(game::block_type::stone_with_snow).set_all({1, 15});
 	game::texture_atlas::get_coordinates(game::block_type::stone_with_snow).set_top({2, 11});
 
 	game::texture_atlas::get_coordinates(game::block_type::wood).set_all({4, 14});

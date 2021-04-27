@@ -17,8 +17,10 @@ public :
 		float				distance = 0.f;
 	};
 
-    explicit				cellular_noise(float frequency = 1.f) :
-    							frequency(frequency)
+    explicit				cellular_noise(int seed = 0, float frequency = 1.f) :
+    							frequency(frequency),
+    							seed(seed),
+    							random(seed)
 	{}
 
 	cell					operator () (vec2 input) const
@@ -52,6 +54,7 @@ public :
 private :
 
 	float 					frequency;
+	int 					seed;
 
 	random_noise_2d			random;
 

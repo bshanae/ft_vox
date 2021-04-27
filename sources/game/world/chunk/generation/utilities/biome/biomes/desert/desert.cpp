@@ -26,7 +26,14 @@ void				desert::generate_decoration(const block_ptr &block, bool is_height_affec
 	const auto		block_position = block.get_world_position();
 	const auto 		column_position = vec2(block_position.x, block_position.z);
 
-	if (decoration_generator(column_position) and not is_height_affected_by_cave
-	    and (int)column_position.x % 2 == 0 and (int)column_position.y % 2 == 0)
+	if
+	(
+		decoration_generator(column_position) and
+		not is_height_affected_by_cave and
+		(int)column_position.x % 2 == 0 and
+		(int)column_position.y % 2 == 0
+	)
+	{
 		block->set_type(block_type::blue_flower);
+	}
 }

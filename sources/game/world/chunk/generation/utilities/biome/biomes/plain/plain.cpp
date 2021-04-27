@@ -30,9 +30,14 @@ void				plain::generate_decoration(const block_ptr &block, bool is_height_affect
     const auto		block_position = block.get_world_position();
     const auto 		column_position = vec2(block_position.x, block_position.z);
 
-    if (decoration_generator(column_position) and not is_height_affected_by_cave
-        and (int)column_position.x % 1 == 0 and (int)column_position.y % 1 == 0)
-        tree_builder::build(block);
-
-
+    if
+    (
+    	decoration_generator(column_position) and
+    	not is_height_affected_by_cave and
+    	(int)column_position.x % 1 == 0
+    	and (int)column_position.y % 1 == 0
+    )
+	{
+		tree_builder::build(block);
+	}
 }

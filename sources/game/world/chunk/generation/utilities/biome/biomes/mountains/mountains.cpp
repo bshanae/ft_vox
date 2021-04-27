@@ -22,9 +22,7 @@ game::block_type	mountains::generate_block(int current_height, int total_height)
 	else
 	{
 		if (current_height >= snow_level and current_height == total_height)
-        {
-		    return block_type::stone_with_snow;
-        }
+			return block_type::stone_with_snow;
 		else
 			return block_type::stone;
 	}

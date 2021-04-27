@@ -5,7 +5,7 @@
 using namespace	game;
 
 				decoration_generator::decoration_generator(float frequency, float area) :
-					noise(frequency),
+					noise(FT_VOX_SEED, frequency),
 					area(area)
 {}
 

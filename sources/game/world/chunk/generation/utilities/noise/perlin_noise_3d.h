@@ -13,13 +13,16 @@ public :
 
 	explicit				perlin_noise_3d
 							(
+								int seed = 0,
 								float frequency = 1.f,
 								float multiplier = 1.f,
 								float shift = 0.f
 							) :
+								seed(seed),
 								frequency(frequency),
 								multiplier(multiplier),
-								shift(shift)
+								shift(shift),
+								random(seed)
 							{}
 
     float					operator () (vec3 input) const
@@ -86,6 +89,7 @@ public :
 
 private :
 
+	int 					seed;
 	float 					frequency;
 	float 					multiplier;
 	float 					shift;

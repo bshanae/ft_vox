@@ -154,7 +154,7 @@ set(SOURCES
 	${SOURCES_LIBRARIES}
 	${SOURCES_APPLICATION}
 	${SOURCES_ENGINE}
-	${SOURCES_GAME} sources/game/world/world/world_settings.h)
+	${SOURCES_GAME})
 
 # Executable
 
