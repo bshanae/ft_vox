@@ -34,8 +34,8 @@ void				plain::generate_decoration(const block_ptr &block, bool is_height_affect
     (
     	decoration_generator(column_position) and
     	not is_height_affected_by_cave and
-    	(int)column_position.x % 1 == 0
-    	and (int)column_position.y % 1 == 0
+    	(int)column_position.x % 1 == 0 and
+    	(int)column_position.y % 1 == 0
     )
 	{
 		tree_builder::build(block);

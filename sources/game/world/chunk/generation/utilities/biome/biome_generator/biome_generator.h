@@ -39,9 +39,9 @@ private :
 		float								max;
 	};
 
-	static inline cellular_noise			noise_for_cell{0.002f};
-	static inline perlin_noise_2d			noise_for_cell_shift{0.02f, 50.f};
-	static inline random_noise_1d			noise_for_selection{};
+	static inline cellular_noise			noise_for_cell {FT_VOX_SEED, 0.002f};
+	static inline perlin_noise_2d			noise_for_cell_shift {FT_VOX_SEED, 0.02f, 50.f};
+	static inline random_noise_1d			noise_for_selection {FT_VOX_SEED};
 
 	static inline list<biome_config>		biome_configs = {};
 
