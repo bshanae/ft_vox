@@ -39,7 +39,7 @@ private :
 		float								max;
 	};
 
-	static inline cellular_noise			noise_for_cell {FT_VOX_SEED, 0.002f};
+	static inline cellular_noise			noise_for_cell {FT_VOX_SEED, 0.0018f};
 	static inline perlin_noise_2d			noise_for_cell_shift {FT_VOX_SEED, 0.02f, 50.f};
 	static inline random_noise_1d			noise_for_selection {FT_VOX_SEED};
 

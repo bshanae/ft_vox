@@ -15,9 +15,9 @@ int					plain::generate_height(const vec2 &column) const
 	return height_generator(column);
 }
 
-game::block_type	plain::generate_block(int current_height, int total_height) const
+game::block_type	plain::generate_block(int current_height, int total_height, bool is_cave) const
 {
-	if (current_height > total_height)
+	if (is_cave or current_height > total_height)
 		return block_type::air;
 	else if (current_height == total_height)
 		return block_type::dirt_with_grass;
@@ -34,8 +34,8 @@ void				plain::generate_decoration(const block_ptr &block, bool is_height_affect
     (
     	decoration_generator(column_position) and
     	not is_height_affected_by_cave and
-    	(int)column_position.x % 1 == 0 and
-    	(int)column_position.y % 1 == 0
+    	(int)column_position.x % 2 == 0 and
+    	(int)column_position.y % 2 == 0
     )
 	{
 		tree_builder::build(block);

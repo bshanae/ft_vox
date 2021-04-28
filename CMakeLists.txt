@@ -104,6 +104,7 @@ set(SOURCE_GAME_WORLD_CHUNK
 	sources/game/world/chunk/generation/utilities/biome/biomes/plain/plain.cpp
 	sources/game/world/chunk/generation/utilities/biome/biomes/desert/desert.cpp
 	sources/game/world/chunk/generation/utilities/biome/biomes/mountains/mountains.cpp
+	sources/game/world/chunk/generation/utilities/biome/biomes/lakes/lakes.cpp
 
 	sources/game/world/chunk/generation/chunk_generation_task/chunk_generation_task/chunk_generation_task.cpp
 	sources/game/world/chunk/generation/chunk_generation_task/chunk_landscape_generation_task/chunk_landscape_generation_task.cpp

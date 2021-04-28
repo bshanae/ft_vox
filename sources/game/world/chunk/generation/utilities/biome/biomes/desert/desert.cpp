@@ -13,9 +13,9 @@ int					desert::generate_height(const vec2 &column) const
 	return height_generator(column);
 }
 
-game::block_type	desert::generate_block(int current_height, int total_height) const
+game::block_type	desert::generate_block(int current_height, int total_height, bool is_cave) const
 {
-	if (current_height > total_height)
+	if (is_cave or current_height > total_height)
 		return block_type::air;
 	else
 		return block_type::sand;

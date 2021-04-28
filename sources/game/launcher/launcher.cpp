@@ -16,6 +16,7 @@
 #include "game/world/chunk/generation/utilities/biome/biomes/plain/plain.h"
 #include "game/world/chunk/generation/utilities/biome/biomes/desert/desert.h"
 #include "game/world/chunk/generation/utilities/biome/biomes/mountains/mountains.h"
+#include "game/world/chunk/generation/utilities/biome/biomes/lakes/lakes.h"
 #include "game/player/player/player.h"
 
 #include "engine/extensions/ui/font/font/font.h"
@@ -93,6 +94,7 @@ void				launcher::setup_biomes()
 	game::biome_generator::register_biome<biomes::plain>(10);
 	game::biome_generator::register_biome<biomes::desert>(10);
 	game::biome_generator::register_biome<biomes::mountains>(10);
+	game::biome_generator::register_biome<biomes::lakes>(10);
 }
 
 void 				launcher::construct_player()

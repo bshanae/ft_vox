@@ -39,16 +39,18 @@ void					chunk_landscape_generation_task::generate_column(chunk_workspace &works
 	const auto			interpolated_height = height_interpolator(height_generator)(column);
 
 	optional<int>		final_height;
+	bool 				is_cave;
+	block_type			block_type;
 
-	for (index.y = interpolated_height; index.y >= 0; index.y--)
+	for (index.y = chunk_settings::size[1]; index.y >= 0; index.y--)
 	{
-		if (not cave_generator(chunk->get_position() + (vec3)index))
-		{
-			if (not final_height.has_value())
-				final_height = index.y;
+		is_cave = cave_generator(chunk->get_position() + (vec3)index);
+		block_type = biome->generate_block(index.y, interpolated_height, is_cave);
 
-			chunk->at(index).set_type(biome->generate_block(index.y, interpolated_height));
-		}
+		if (not final_height.has_value() and block_type != block_type::air)
+			final_height = index.y;
+
+		chunk->at(index).set_type(block_type);
 	}
 
 	if (not final_height.has_value())
