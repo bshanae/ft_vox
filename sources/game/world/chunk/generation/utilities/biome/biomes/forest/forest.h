@@ -7,15 +7,15 @@
 
 namespace					game::biomes
 {
-	class 					plain;
+	class 					forest;
 }
 
-class						game::biomes::plain : public game::biomes::abstract
+class						game::biomes::forest : public game::biomes::abstract
 {
 public :
 
-							plain();
-							~plain() override = default;
+	forest();
+	~forest() override = default;
 
 	int						generate_height(const vec2 &column) const override;
 	block_type				generate_block(int current_height, int total_height, bool is_cave, bool is_cloud) const override;
@@ -26,4 +26,5 @@ private :
 	height_generator		height_generator;
 	decoration_generator	generator_tree;
 	decoration_generator	generator_grass;
+	decoration_generator	generator_mushroom;
 };

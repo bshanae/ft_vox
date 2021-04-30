@@ -5,6 +5,7 @@
 #include "game/world/chunk/generation/utilities/biome/biomes/abstract/abstract.h"
 #include "game/world/chunk/generation/chunk_generation_task/chunk_generation_task/chunk_generation_task.h"
 #include "game/world/chunk/generation/utilities/cave_generator/cave_generator.h"
+#include "game/world/chunk/generation/utilities/cloud_generator/cloud_generator.h"
 
 namespace							game
 {
@@ -19,6 +20,7 @@ public :
 protected :
 
 	static inline cave_generator	cave_generator;
+	static inline cloud_generator	cloud_generator;
 
 	void 							do_launch(chunk_workspace &workspace) override;
 

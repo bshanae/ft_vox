@@ -23,6 +23,7 @@ namespace			game
 		water,
 
 		// Diagonal
+		grass,
 		mushroom,
 		blue_flower
 	};

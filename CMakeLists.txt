@@ -99,9 +99,11 @@ set(SOURCE_GAME_WORLD_CHUNK
 	sources/game/world/chunk/generation/utilities/height_interpolator/height_interpolator.cpp
 	sources/game/world/chunk/generation/utilities/decoration_generator/decoration_generator.cpp
 	sources/game/world/chunk/generation/utilities/cave_generator/cave_generator.cpp
+	sources/game/world/chunk/generation/utilities/cloud_generator/cloud_generator.cpp
 	sources/game/world/chunk/generation/utilities/tree_builder/tree_builder.cpp
 	sources/game/world/chunk/generation/utilities/biome/biome_generator/biome_generator.cpp
 	sources/game/world/chunk/generation/utilities/biome/biomes/plain/plain.cpp
+	sources/game/world/chunk/generation/utilities/biome/biomes/forest/forest.cpp
 	sources/game/world/chunk/generation/utilities/biome/biomes/desert/desert.cpp
 	sources/game/world/chunk/generation/utilities/biome/biomes/mountains/mountains.cpp
 	sources/game/world/chunk/generation/utilities/biome/biomes/lakes/lakes.cpp

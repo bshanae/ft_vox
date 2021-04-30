@@ -24,8 +24,9 @@ block_meta_type		game::get_meta_type(block_type type)
 		case block_type::water:
 			return block_meta_type::transparent;
 
+		case block_type::grass:
+		case block_type::mushroom:
 		case block_type::blue_flower:
-        case block_type::mushroom:
 			return block_meta_type::diagonal;
 	}
 

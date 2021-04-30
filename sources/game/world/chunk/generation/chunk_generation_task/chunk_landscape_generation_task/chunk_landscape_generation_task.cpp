@@ -40,14 +40,26 @@ void					chunk_landscape_generation_task::generate_column(chunk_workspace &works
 
 	optional<int>		final_height;
 	bool 				is_cave;
+	bool 				is_cloud;
 	block_type			block_type;
 
 	for (index.y = chunk_settings::size[1]; index.y >= 0; index.y--)
 	{
-		is_cave = cave_generator(chunk->get_position() + (vec3)index);
-		block_type = biome->generate_block(index.y, interpolated_height, is_cave);
+		if (index.y > 0)
+			is_cave = cave_generator(chunk->get_position() + (vec3)index);
+		else
+			is_cave = false;
 
-		if (not final_height.has_value() and block_type != block_type::air)
+		if (index.y == 180)
+			is_cloud = cloud_generator(chunk->get_position() + (vec3)index);
+		else
+			is_cloud = false;
+
+		block_type = biome->generate_block(index.y, interpolated_height, is_cave, is_cloud);
+
+		if (not final_height.has_value()
+			and block_type != block_type::air
+			and block_type != block_type::cloud)
 			final_height = index.y;
 
 		chunk->at(index).set_type(block_type);

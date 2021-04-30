@@ -9,5 +9,5 @@ using namespace	game;
 
 bool 			cave_generator::operator () (const vec3 &position)
 {
-	return noise(position) < 0.18f;
+	return noise(position) < 0.25f;
 }

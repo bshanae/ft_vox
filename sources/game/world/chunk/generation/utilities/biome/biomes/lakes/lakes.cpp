@@ -13,9 +13,11 @@ int					lakes::generate_height(const vec2 &column) const
 	return height_generator(column);
 }
 
-game::block_type	lakes::generate_block(int current_height, int total_height, bool is_cave) const
+game::block_type	lakes::generate_block(int current_height, int total_height, bool is_cave, bool is_cloud) const
 {
-	if (is_cave)
+	if (is_cloud)
+		return block_type::cloud;
+	else if (is_cave)
 		return generate_block_in_cave(current_height, total_height);
 	else if (current_height > total_height)
 		return generate_empty_block(current_height, total_height);

@@ -14,6 +14,7 @@
 #include "game/world/chunk/chunk_renderer/chunk_renderer.h"
 #include "game/world/chunk/generation/utilities/biome/biome_generator/biome_generator.h"
 #include "game/world/chunk/generation/utilities/biome/biomes/plain/plain.h"
+#include "game/world/chunk/generation/utilities/biome/biomes/forest/forest.h"
 #include "game/world/chunk/generation/utilities/biome/biomes/desert/desert.h"
 #include "game/world/chunk/generation/utilities/biome/biomes/mountains/mountains.h"
 #include "game/world/chunk/generation/utilities/biome/biomes/lakes/lakes.h"
@@ -67,7 +68,7 @@ void				launcher::setup_texture_atlas()
 
     game::texture_atlas::get_coordinates(game::block_type::stone).set_all({1, 15});
 
-	game::texture_atlas::get_coordinates(game::block_type::stone_with_snow).set_all({1, 15});
+	game::texture_atlas::get_coordinates(game::block_type::stone_with_snow).set_all({7, 3});
 	game::texture_atlas::get_coordinates(game::block_type::stone_with_snow).set_top({2, 11});
 
 	game::texture_atlas::get_coordinates(game::block_type::wood).set_all({4, 14});
@@ -84,6 +85,8 @@ void				launcher::setup_texture_atlas()
 
 	//				Diagonal
 
+	game::texture_atlas::get_coordinates(game::block_type::grass).set_all({10, 10});
+
 	game::texture_atlas::get_coordinates(game::block_type::blue_flower).set_all({12, 15});
 
 	game::texture_atlas::get_coordinates(game::block_type::mushroom).set_all({12, 14});
@@ -92,6 +95,7 @@ void				launcher::setup_texture_atlas()
 void				launcher::setup_biomes()
 {
 	game::biome_generator::register_biome<biomes::plain>(10);
+	game::biome_generator::register_biome<biomes::forest>(10);
 	game::biome_generator::register_biome<biomes::desert>(10);
 	game::biome_generator::register_biome<biomes::mountains>(10);
 	game::biome_generator::register_biome<biomes::lakes>(10);
