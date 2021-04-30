@@ -5,8 +5,8 @@
 using namespace		game::biomes;
 
 					plain::plain() :
-										generator_tree(0.05f, 0.98f),
-										generator_grass(0.5f, 0.80f)
+						tree_generator(0.05f, 0.98f),
+						grass_generator(0.5f, 0.80f)
 {
 	height_generator.add_layer(0.01f, 18.f, 1.f);
 	height_generator.add_layer(0.08f, 4.f, 1.f);
@@ -36,15 +36,18 @@ void				plain::generate_decoration(const block_ptr &block, bool is_height_affect
 
     if (not is_height_affected_by_cave)
     {
-		if (generator_tree(column_position))
+		if (tree_generator(column_position))
 		{
-			if ((int)column_position.x % 7 == 0 and
-				(int)column_position.y % 7 == 0)
+			if
+			(
+				(int)column_position.x % 7 == 0 and
+				(int)column_position.y % 7 == 0
+			)
 			{
 				tree_builder::build(block);
 			}
 		}
-		else if (generator_grass(column_position))
+		else if (grass_generator(column_position))
 		{
 			block->set_type(block_type::grass);
 		}

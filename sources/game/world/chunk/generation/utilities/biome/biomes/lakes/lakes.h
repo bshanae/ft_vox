@@ -1,5 +1,6 @@
 #pragma once
 
+#include <game/world/chunk/generation/utilities/decoration_generator/decoration_generator.h>
 #include "game/world/chunk/generation/utilities/biome/biomes/abstract/abstract.h"
 #include "game/world/chunk/generation/utilities/height_generator/height_generator.h"
 
@@ -22,6 +23,7 @@ private :
 	static constexpr int	water_level = chunk_settings::zero_height - 2;
 
 	height_generator		height_generator;
+	decoration_generator	grass_generator;
 
 	static block_type		generate_block_in_cave(int current_height, int total_height);
 	static block_type		generate_empty_block(int current_height, int total_height);

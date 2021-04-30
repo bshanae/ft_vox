@@ -2,7 +2,7 @@
 
 using namespace		game::biomes;
 
-					lakes::lakes()
+					lakes::lakes() : grass_generator(0.8f, 0.80f)
 {
 	height_generator.add_layer(0.04f, 8.f, 1.f);
 	height_generator.add_layer(0.008f, -14.f, 1.f);
@@ -27,6 +27,14 @@ game::block_type	lakes::generate_block(int current_height, int total_height, boo
 
 void				lakes::generate_decoration(const block_ptr &block, bool is_height_affected_by_cave) const
 {
+	const auto		block_position = block.get_world_position();
+	const auto 		column_position = vec2(block_position.x, block_position.z);
+
+	if (auto neighbor = block.get_neighbor(block_face::bottom); neighbor)
+	{
+		if (neighbor->get_type() != block_type::water and grass_generator(column_position))
+			block->set_type(block_type::grass);
+	}
 }
 
 game::block_type	lakes::generate_block_in_cave(int current_height, int total_height)

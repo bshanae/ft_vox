@@ -24,6 +24,6 @@ public :
 private :
 
 	height_generator		height_generator;
-	decoration_generator	generator_tree;
-	decoration_generator	generator_grass;
+	decoration_generator	tree_generator;
+	decoration_generator	grass_generator;
 };

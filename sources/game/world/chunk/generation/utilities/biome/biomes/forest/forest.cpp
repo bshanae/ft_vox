@@ -5,9 +5,9 @@
 using namespace		game::biomes;
 
 					forest::forest() :
-											generator_tree(0.8f, 0.90f),
-											generator_mushroom(0.8f, 0.85f),
-											generator_grass(0.4f, 0.97f)
+						tree_generator(0.8f, 0.90f),
+						mushroom_generator(0.8f, 0.85f),
+						grass_generator(0.4f, 0.97f)
 {
 	height_generator.add_layer(0.01f, 18.f, 1.f);
 	height_generator.add_layer(0.08f, 4.f, 1.f);
@@ -37,23 +37,29 @@ void				forest::generate_decoration(const block_ptr &block, bool is_height_affec
 
 	if (not is_height_affected_by_cave)
 	{
-		if (generator_tree(column_position))
+		if (tree_generator(column_position))
 		{
-			if ((int)column_position.x % 2 == 0 and
-				(int)column_position.y % 2 == 0)
+			if
+			(
+				(int)column_position.x % 2 == 0 and
+				(int)column_position.y % 2 == 0
+			)
 			{
 				tree_builder::build(block);
 			}
 		}
-		else if (generator_mushroom(column_position))
+		else if (mushroom_generator(column_position))
 		{
-			if ((int)column_position.x % 2 == 0 and
-				(int)column_position.y % 2 == 0)
+			if
+			(
+				(int)column_position.x % 2 == 0 and
+				(int)column_position.y % 2 == 0
+			)
 			{
 				block->set_type(block_type::mushroom);
 			}
 		}
-		else if (generator_grass(column_position))
+		else if (grass_generator(column_position))
 		{
 			block->set_type(block_type::grass);
 		}
