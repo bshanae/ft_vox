@@ -11,18 +11,18 @@ class 					game::random_noise_2d
 {
 public :
 
-                        random_noise_2d(int seed) : seed(seed) {}
+                        random_noise_2d(float seed) : seed(1.f + mod((seed / 100000.f), 100.f)) {}
                         ~random_noise_2d() = default;
 
     vec2				operator () (vec2 input) const
     {
         input = mod(input, vec2(10000.f));
-        return fract(sin(vec2(dot(input, const_vector_2d1), dot(input, const_vector_2d2))) * const_factor);
+        return fract(sin(vec2(dot(input, const_vector_2d1), dot(input, const_vector_2d2))) * (const_factor * seed));
     }
 
 private :
 
-	const int 			seed;
+	const float 		seed;
 
     static inline float	const_factor = 43758.5453f;
     static inline vec2	const_vector_2d1 = vec2(127.1f, 311.7f);
