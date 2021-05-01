@@ -2,7 +2,7 @@
 
 using namespace		game::biomes;
 
-					mountains::mountains() : snow_borders(0.2f, 0.4f)
+					mountains::mountains() : snow_generator(0.2f, 0.4f)
 {
 	height_generator.add_layer(0.008f, 100.f, 3.f);
 	height_generator.add_layer(0.08f, 20.f, 1.f);
@@ -25,26 +25,26 @@ game::block_type	mountains::generate_block(int current_height, int total_height,
 
 void				mountains::generate_decoration(const block_ptr &block, bool is_height_affected_by_cave) const
 {
-	int 			current_height = block.get_world_position().y;
-
-	if (not is_height_affected_by_cave
-		and current_height >= snow_level)
+	if (not is_height_affected_by_cave and block.get_world_position().y >= (float) snow_level)
 	{
-		if (block.get_neighbor(block_face::bottom))
-		{
-			auto block_bottom = block.get_neighbor(block_face::bottom);
+		auto		bottom_neighbor = block.get_neighbor(block_face::bottom);
 
-			if (current_height < snow_level + 10)
-			{
-				const auto		block_position = block_bottom.get_world_position();
-
-				if (snow_borders({block_position.x + block_position.z, block_position.y}))
-					block_bottom->set_type(block_type::stone_with_snow);
-				else
-					block_bottom->set_type(block_type::stone);
-			}
-			else
-				block_bottom->set_type(block_type::stone_with_snow);
-		}
+		if (bottom_neighbor and should_replace_stone_with_snowy_stone(bottom_neighbor))
+			replace_stone_with_snowy_stone(bottom_neighbor);
 	}
+}
+
+bool				mountains::should_replace_stone_with_snowy_stone(const block_ptr &block) const
+{
+	const auto 		block_position = block.get_world_position();
+
+	if (block_position.y >= (float)(snow_level + 10))
+		return true;
+	else
+		return snow_generator({block_position.x, block_position.z});
+}
+
+void				mountains::replace_stone_with_snowy_stone(const block_ptr &block) const
+{
+	block->set_type(block_type::stone_with_snow);
 }
