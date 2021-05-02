@@ -123,7 +123,7 @@ function install_glfw
 function install_glad
 {
 	GLAD_NAME="GLAD"
-	GLAD_URL="https://github.com/Dav1dde/glad.git"
+	GLAD_URL="https://github.com/Lyahasik/glad"
 	GLAD_PROJECT="glad"
 
 	write "Installing ${GLAD_NAME}..."
@@ -133,9 +133,6 @@ function install_glad
 	write "Building GLAD..."
 
 	enter_folder  "$GLAD_PROJECT"
-
-	evaluate "cmake ./"
-	evaluate "make"
 
 	enter_folder ..
 
