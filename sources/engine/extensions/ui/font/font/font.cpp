@@ -30,7 +30,7 @@ shared_ptr<symbol>		font::find_symbol(char task) const
 
 void					font::build_map()
 {
-	for (int i = first_char_code; i < last_char_code; i++)
+	for (int i = first_char_code; i <= last_char_code; i++)
 		map.emplace(i, build_symbol(static_cast<char>(i)));
 }
 

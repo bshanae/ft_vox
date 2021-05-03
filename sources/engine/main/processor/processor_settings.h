@@ -6,6 +6,6 @@ namespace					engine
 {
 	struct					processor_settings
 	{
-		static inline vec3	background = vec3(0.75f, 0.75f, 0.8f);
+		static inline vec3	background = vec3(0.72f, 0.85f, 1.f);
 	};
 }

@@ -19,6 +19,7 @@
 #include "game/world/chunk/generation/utilities/biome/biomes/mountains/mountains.h"
 #include "game/world/chunk/generation/utilities/biome/biomes/lakes/lakes.h"
 #include "game/player/player/player.h"
+#include "game/ui/info/info.h"
 
 #include "engine/extensions/ui/font/font/font.h"
 
@@ -104,4 +105,9 @@ void				launcher::setup_biomes()
 void 				launcher::construct_player()
 {
 	game::player::construct();
+}
+
+void					launcher::setup_ui()
+{
+	game::ui::info::construct();
 }

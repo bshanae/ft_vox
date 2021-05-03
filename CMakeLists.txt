@@ -139,6 +139,9 @@ set(SOURCE_GAME_PLAYER
 	sources/game/player/ray_caster/ray_caster.cpp
 	sources/game/player/player/player.cpp)
 
+set(SOURCE_GAME_UI
+		sources/game/ui/info/info.cpp)
+
 set(SOURCE_GAME_LAUNCHER
 	sources/game/launcher/launcher.cpp)
 
@@ -149,6 +152,7 @@ set(SOURCES_GAME
 	${SOURCE_GAME_WORLD_TEXTURE_ATLAS}
 	${SOURCE_GAME_WORLD_WORLD}
 	${SOURCE_GAME_PLAYER}
+	${SOURCE_GAME_UI}
 	${SOURCE_GAME_LAUNCHER})
 
 # Sources

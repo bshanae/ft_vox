@@ -58,17 +58,22 @@ void				symbol_renderer::render(symbol &symbol, const ivec2 &position)
 {
 	auto			instance = get_instance();
 
+	if (not symbol.has_texture())
+		return;
+
 	instance->model->set_translation(vec3(position.x, position.y, 0));
 	instance->model->set_scaling(vec3(symbol.get_size().x, symbol.get_size().y, 0));
 
 	instance->program->use(true);
 	instance->model->use(true);
-	symbol.use(true);
+
+	symbol.use_texture(true);
 
 	instance->uniform_transformation.upload(instance->model->get_transformation());
 	instance->model->render();
 
-	symbol.use(false);
+	symbol.use_texture(false);
+
 	instance->model->use(false);
 	instance->program->use(false);
 }

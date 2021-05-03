@@ -25,5 +25,6 @@ GLuint				texture::get_height() const
 
 void 				texture::use(bool state)
 {
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, state ? _value : 0);
 }

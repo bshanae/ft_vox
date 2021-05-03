@@ -14,6 +14,8 @@ int					main()
 
 	game::launcher::construct_player();
 
+	game::launcher::setup_ui();
+
 	engine::launcher::start_game_loop();
 
 	return 0;

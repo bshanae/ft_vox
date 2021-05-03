@@ -21,10 +21,14 @@ class				game::player :
 public :
 					player();
 					~player() override = default;
+
+	float			get_approximate_speed() const;
+
 private :
 
-	bool			should_cast_ray = false;
-	block_type		last_removed_block_type = block_type::air;
+	bool			should_cast_ray;
+	block_type		last_removed_block_type;
+	float			approximate_speed;
 
 	void			when_initialized() override;
 	void			when_updated() override;

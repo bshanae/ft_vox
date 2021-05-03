@@ -18,10 +18,21 @@ using namespace 		game;
 						player::player()
 {
 	set_layout("System");
+
+	should_cast_ray = false;
+	last_removed_block_type = block_type::air;
+	approximate_speed = 0.f;
+}
+
+float					player::get_approximate_speed() const
+{
+	return approximate_speed;
 }
 
 void					player::when_updated()
 {
+	approximate_speed = 0;
+
 	process_input();
 	process_selection();
 }
@@ -97,6 +108,8 @@ void 					player::move(const vec3 &direction, const bool speed_up)
 {
 	static const float	speed_transformation = 1.f / 60.f;
 
+	approximate_speed = player_settings::movement_speed * (speed_up ? player_settings::speed_up : 1.f);
+
 	offset_camera_if_possible
 	(
 		normalize(direction) *
@@ -109,6 +122,8 @@ void 					player::move(const vec3 &direction, const bool speed_up)
 void 					player::lift(bool speed_up)
 {
 	static const float	speed_transformation = 1.f / 60.f;
+
+	approximate_speed = player_settings::movement_speed * (speed_up ? player_settings::speed_up : 1.f);
 
 	offset_camera_if_possible
 	(

@@ -15,4 +15,5 @@ public :
 	static void 	setup_texture_atlas();
 	static void 	setup_biomes();
 	static void 	construct_player();
+	static void 	setup_ui();
 };

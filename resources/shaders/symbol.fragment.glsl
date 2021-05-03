@@ -11,5 +11,5 @@ void				main()
 	vec4			sampled;
 
 	sampled = vec4(1, 1, 1, texture(uniform_texture, pass_texture_coordinates).r);
-	out_color = vec4(0, 0, 0, 1) * sampled;
+	out_color = vec4(1, 1, 1, 1) * sampled;
 }

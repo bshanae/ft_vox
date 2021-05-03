@@ -7,32 +7,39 @@
 #include "application/common/imports/freetype.h"
 #include "application/common/imports/std.h"
 
-namespace				engine::ui
+namespace						engine::ui
 {
-	class				font;
-	class				symbol;
+	class						font;
+	class						symbol;
 }
 
-class					engine::ui::symbol : public engine::texture
+class							engine::ui::symbol final
 {
-	friend class		font;
+	friend class				font;
 
 public :
 
-	explicit			symbol(FT_Face &face);
-						~symbol() = default;
+	explicit					symbol(FT_Face &face);
+								~symbol() = default;
 
-	ivec2				get_size() const;
-	ivec2				get_bearing() const;
-	int					get_advance() const;
+	ivec2						get_size() const;
+	ivec2						get_bearing() const;
+	int							get_advance() const;
 
-	void 				render(const ivec2 &position);
+	bool 						has_texture() const;
+	void						use_texture(bool state);
+
+	void 						render(const ivec2 &position);
 
 private :
 
-	ivec2				size;
-	ivec2				bearing;
-	int					advance;
+	ivec2						size;
+	ivec2						bearing;
+	int							advance;
 
-	shared_ptr<font>	font;
+	shared_ptr<font>			font;
+	unique_ptr<texture>			texture;
+
+	static
+	unique_ptr<engine::texture>	extract_free_type_bitmap(const FT_Bitmap &bitmap);
 };

@@ -91,9 +91,9 @@ void					camera::when_updated()
 
 	if (input::is_held(input::key::command) and input::is_held(input::key::letter_f))
 	{
-		if (input::is_pressed_or_held(input::key::plus))
+		if (input::is_pressed(input::key::plus))
 			new_fov += camera_settings::fov_delta;
-		else if (input::is_pressed_or_held(input::key::minus))
+		else if (input::is_pressed(input::key::minus))
 			new_fov -= camera_settings::fov_delta;
 	}
 

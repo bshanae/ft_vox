@@ -1,3 +1,5 @@
+#pragma once
+
 #include "engine/main/core/object/object/object.h"
 #include "engine/main/core/object/object_constructor/unique_object_constructor/unique_object_constructor.h"
 #include "engine/main/system/time/timer/timer.h"
