@@ -1,11 +1,20 @@
-**TODO : Screenshot**
+![](resources/gifs/demo.gif)
 
 # ft_vox
 
 This project is about creating a minecraft engine in C++ and OpenGL.
-The key feature is productivity and biomes generation.
-There is just a few other features, like transparency (but it is not finished), rivers generation,
-special blocks, flowers and UI.   
+Main goal is efficiency - chunk generation is done with asynchronous tasks system. 
+
+## Features
+
+* Block adding/removing
+* Optimized algorithm for generating chunks
+* Simple UI
+* Many biomes : plain, mountains, lakes, forest, desert
+* Collision test
+* Transparent water
+* Clouds
+* Decorations : trees, grass and other
 
 ## Installation
 
@@ -26,7 +35,16 @@ Now you can run executable :
 
 ## Controls
 
-**TODO**
+* escape - exit
+* left mouse - remove a block
+* right mouse - put a block (the one you removed last time)
+* w/a/s/d/space - move around
+* shift + w/a/s/d/space - move faster
+* cmd + p - enable/disable wireframe mod
+* cmd + s - enable/disable skybox
+* cmd + v - switch visibility distance (if this option is enabled in defines.h)
+* cmd + f + '+' - increase FOV
+* cmd + f + '-' - decrease FOV
 
 ## Resources
 
