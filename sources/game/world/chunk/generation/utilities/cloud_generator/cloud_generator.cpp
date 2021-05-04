@@ -9,7 +9,7 @@ using namespace	game;
 
 bool 			cloud_generator::operator () (const vec3 &position)
 {
-	if (position.y != 180)
+	if (position.y != 220)
 		return false;
 
 	return noise({position.x, position.z}) > 0.65f;
